@@ -35,10 +35,17 @@ module.exports = {
         flamingo: "#E9529E",
         light: "#F9F6FB",
         dark: "#292925",
-        success: "#ED4B9E",
+        success: "#31D0AA",
         error: "#E43F40",
+        brand_green: "#3B8D60",
         text: "#4A4A68",
         subtle_text: "#8C8CA1",
+        green_text: "#48A874",
+        base: {
+          100: "#E2E6EB",
+          400: "#76859A",
+          900: "#363A43",
+        },
       },
       fontFamily: {
         sans: ["Outfit", "sans-serif"],

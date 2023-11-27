@@ -10,7 +10,7 @@
     "cssVariables": false
   },
   "aliases": {
-    "components": "src/components",
+    "components": "@/components",
     "utils": "@/lib/utils"
   }
 }
