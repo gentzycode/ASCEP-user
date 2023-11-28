@@ -1,4 +1,4 @@
-import About from "./About";
+import { SignupPage } from "./Auth";
 import Home from "./Home";
 
 const routes: RouterType[] = [
@@ -7,10 +7,13 @@ const routes: RouterType[] = [
     element: <Home />,
     title: "home",
   },
+];
+
+export const unauthenticatedRoutes: RouterType[] = [
   {
-    path: "about",
-    element: <About />,
-    title: "about",
+    path: "signup",
+    element: <SignupPage />,
+    title: "signup",
   },
 ];
 

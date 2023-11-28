@@ -1,4 +1,15 @@
-import { Control, FieldValues } from "react-hook-form";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// @ts-ignore
+import * as lodash from "lodash";
+import {
+  Control,
+  DeepMap,
+  FieldError,
+  FieldErrors,
+  FieldValues,
+  Path,
+} from "react-hook-form";
 
 import {
   FormControl,
@@ -7,27 +18,32 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { Input } from "../ui/input";
 import { ReactNode, useState } from "react";
+import { Input, InputProps } from "../ui/input";
 
-interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  control: Control<FieldValues>;
-  name: string;
+type FormInputProps<TFormValues extends FieldValues = FieldValues> = {
+  control: Control<TFormValues>;
+  name: Path<TFormValues>;
   label?: string;
   placeholder?: string;
   rightElement?: ReactNode;
   leftElement?: ReactNode;
-}
+  errors?: Partial<DeepMap<TFormValues, FieldError>> | FieldErrors<TFormValues>;
+} & Omit<InputProps, "name">;
 
-export default function FormInput({
+const FormInput = <TFormValues extends Record<string, unknown>>({
   control,
   label,
   name,
   placeholder,
   rightElement,
   leftElement,
+  errors,
   ...props
-}: FormInputProps) {
+}: FormInputProps<TFormValues>): JSX.Element => {
+  const errorMessage = lodash.get(errors, name);
+  const hasError = !!errors && errorMessage;
+
   const [show, setShow] = useState(false);
   return (
     <FormField
@@ -44,10 +60,15 @@ export default function FormInput({
               </div>
             )}
             <FormControl>
+              {/* @ts-ignore */}
               <Input
                 className={`bg-[#F5F5F5] text-base text-text focus-visible:ring-2 focus-visible:ring-primary border-none focus:border-none focus-visible:ring-offset-0 rounded-[20px] h-[50px] placeholder:text-base placeholder:text-subtle_text/30 placeholder:font-medium ${
-                  leftElement ? "pl-12" : "pl-[18px]"
-                }  ${rightElement ? "pr-12" : "pr-[18px]"}`}
+                  hasError
+                    ? "focus-visible:ring-red-500 ring-red-500 ring-2"
+                    : "focus-visible:ring-primary"
+                } ${leftElement ? "pl-12" : "pl-[18px]"}  ${
+                  rightElement ? "pr-12" : "pr-[18px]"
+                }`}
                 placeholder={placeholder}
                 type={
                   props?.type === "password"
@@ -74,9 +95,15 @@ export default function FormInput({
               </div>
             )}
           </div>
-          <FormMessage />
+          {hasError && (
+            <FormMessage className="px-4 text-xs">
+              {errorMessage.message}
+            </FormMessage>
+          )}
         </FormItem>
       )}
     />
   );
-}
+};
+
+export default FormInput;
