@@ -1,9 +1,4 @@
-import React, {
-  PropsWithChildren,
-  createContext,
-  useContext,
-  useState,
-} from "react";
+import { PropsWithChildren, createContext, useContext, useState } from "react";
 
 const AuthContext = createContext({
   isLoggedIn: true,

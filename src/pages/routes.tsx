@@ -3,7 +3,7 @@ import Home from "./Home";
 
 const routes: RouterType[] = [
   {
-    path: "",
+    path: "/",
     element: <Home />,
     title: "home",
   },

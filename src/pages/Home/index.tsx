@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 
 export default function HomePage() {
   const form = useForm();
+
   return (
     <div className="flex flex-col items-center p-12 ">
       <h1 className="h1">Index Page </h1>

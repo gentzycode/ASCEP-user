@@ -1,6 +1,11 @@
-import { Outlet } from "react-router-dom";
+import { useAuthContext } from "@/providers/AuthProvider";
+import { Navigate, Outlet } from "react-router-dom";
 
 export default function AuthPagesLayout() {
+  const { isLoggedIn } = useAuthContext();
+
+  if (isLoggedIn) return <Navigate to="/" />;
+
   return (
     <div className="relative min-h-screen bg-[#F5F5F5] ">
       {/* <div className="absolute top-0 left-0 w-full h-full bg-white rounded-[40px] "></div> */}
