@@ -26,6 +26,7 @@ const Router = () => {
           {authRoutes}
         </Route>
       )}
+      <Route path="*" element={<div>Route Not Found</div>} />
     </Routes>
   );
 };
