@@ -2,7 +2,7 @@ import PinInput from "react-pin-input";
 
 interface CustomPinInputProps {
   length: number;
-  error?: string;
+  error?: string | null;
   onChange: (value: string) => void;
 }
 
@@ -23,13 +23,23 @@ export default function CustomPinInput({
         }}
         type="numeric"
         inputMode="number"
+        style={{
+          // backgroundColor: "red",
+          display: "flex",
+          justifyContent: "space-between",
+          maxWidth: 400,
+          gap: 8,
+        }}
         inputStyle={{
           borderColor: "transparent",
           backgroundColor: "#F5F5f5",
           borderRadius: 20,
           height: 52,
-          width: 52,
+          width: 55,
         }}
+        // style={{
+        //   gap: 20,
+        // }}
         inputFocusStyle={{ borderColor: "#FFC334", borderWidth: 2 }}
         //   onComplete={(value, index) => {}}
         autoSelect={true}

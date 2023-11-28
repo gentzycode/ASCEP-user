@@ -29,3 +29,41 @@ export const signupSchema = z.object({
       "Password should have at least one upper and lowercase, a number and a special character"
     ),
 });
+
+export const loginSchema = z.object({
+  username: z
+    .string({ required_error: "Username is required" })
+    .min(1, { message: "Username is required" }),
+  password: z
+    .string({ required_error: "Password is required" })
+    .min(1, { message: "Username is required" }),
+});
+
+export const forgotPasswordSchema = z.object({
+  email: z
+    .string({ required_error: "Email is required" })
+    .email({ message: "Enter a valid email" })
+    .min(3, {
+      message: "Email must be at least 3 characters.",
+    }),
+});
+
+export const newPasswordSchema = z
+  .object({
+    password: z
+      .string({ required_error: "Password is required" })
+      .regex(
+        /((?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*\W)\w.{6,18}\w)/,
+        "Password should have at least one upper and lowercase, a number and a special character"
+      ),
+    confirmPassword: z.string(),
+  })
+  .refine(
+    (values) => {
+      return values.password === values.confirmPassword;
+    },
+    {
+      message: "Passwords must match!",
+      path: ["confirmPassword"],
+    }
+  );

@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as z from "zod";
 
 import { FormCard } from "@/components/Auth";
@@ -13,6 +13,9 @@ export default function SignupPage() {
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
   });
+
+  const navigate = useNavigate();
+
   const {
     control,
     handleSubmit,
@@ -21,6 +24,7 @@ export default function SignupPage() {
 
   function onSubmit(values: z.infer<typeof signupSchema>) {
     console.log(values);
+    navigate("/auth/otp");
   }
   return (
     <div>
@@ -78,8 +82,8 @@ export default function SignupPage() {
               </Button>
 
               <div className="flex items-center justify-center w-full gap-1 text-xs text-center">
-                <p>Don’t have an account? </p>
-                <Link to="#" className="font-bold">
+                <p>Have an account? </p>
+                <Link to="/auth/login" className="font-bold">
                   Login now
                 </Link>
               </div>
