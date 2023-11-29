@@ -40,24 +40,28 @@ export default function SignupPage() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-[30px]">
               <FormInput
                 name="firstName"
+                label="First Name"
                 control={control}
                 placeholder="First Name"
                 errors={errors}
               />
               <FormInput
                 name="lastName"
+                label="Last Name"
                 control={control}
                 placeholder="Last Name"
                 errors={errors}
               />
               <FormInput
                 name="email"
+                label="Email"
                 control={control}
                 placeholder="Enter email"
                 errors={errors}
               />
               <FormInput
                 name="phone"
+                label="Phone Number"
                 control={control}
                 placeholder="Phone number"
                 errors={errors}
@@ -65,12 +69,14 @@ export default function SignupPage() {
               />
               <FormInput
                 name="username"
+                label="Username"
                 control={control}
                 placeholder="Username"
                 errors={errors}
               />
               <FormInput
                 name="password"
+                label="Password"
                 control={control}
                 placeholder="Enter password"
                 type="password"

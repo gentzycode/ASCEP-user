@@ -45,6 +45,7 @@ export default function CreateNewPassword() {
             name="password"
             control={control}
             placeholder="Enter password"
+            label="Password"
             type="password"
             errors={errors}
           />
@@ -52,7 +53,8 @@ export default function CreateNewPassword() {
           <FormInput
             name="confirmPassword"
             control={control}
-            placeholder="Enter password"
+            placeholder="Re-enter password"
+            label="Password"
             type="password"
             errors={errors}
           />

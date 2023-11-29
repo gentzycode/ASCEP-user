@@ -41,12 +41,14 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-7">
             <FormInput
               name="username"
+              label="Username"
               control={control}
               placeholder="Enter username"
               errors={errors}
             />
             <FormInput
               name="password"
+              label="Password"
               control={control}
               placeholder="Enter Password"
               errors={errors}

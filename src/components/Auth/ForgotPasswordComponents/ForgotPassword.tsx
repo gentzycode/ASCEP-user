@@ -5,10 +5,11 @@ import { useForgotPasswordContext } from "@/providers/ForgotPasswordProvider";
 import { forgotPasswordSchema } from "@/schemas/AuthSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 export default function ForgotPassword() {
-  const { next, prev } = useForgotPasswordContext();
+  const { next } = useForgotPasswordContext();
   const form = useForm<z.infer<typeof forgotPasswordSchema>>({
     resolver: zodResolver(forgotPasswordSchema),
   });
@@ -22,9 +23,10 @@ export default function ForgotPassword() {
     console.log(data);
     next();
   };
+  const navigate = useNavigate();
   return (
     <div className="space-y-7">
-      <CardBackBtn onClick={prev} />
+      <CardBackBtn onClick={() => navigate(-1)} />
       <h2 className="text-[30px] text-center text-dark">Forgot Password?</h2>
 
       <p className="font-medium text-center text-text">
@@ -35,6 +37,7 @@ export default function ForgotPassword() {
         <form className="space-y-7" onSubmit={handleSubmit(onSubmit)}>
           <FormInput
             name="email"
+            label="Email"
             control={control}
             placeholder="Enter email"
             errors={errors}
