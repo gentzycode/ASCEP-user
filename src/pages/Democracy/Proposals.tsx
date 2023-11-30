@@ -23,12 +23,16 @@ const Proposals: React.FC<ProposalsProps> = () => {
           </Button>
         </div>
 
-        <div className="mt-14 flex justify-start gap-[16px]">
+        <div className="mt-14 flex justify-start gap-[8px] items-center">
           <button className="flex items-center text-[14px] gap-[6px] border-light_grey border-2 px-4 py-2" >
             <ListViewIcon />
             <span>List View</span>
           </button>
-          <h4>Advanced Search</h4>
+          <h4 className="text-[18px]">Advanced Search</h4>
+        </div>
+
+        <div>
+          b
         </div>
       </div>
     </DemocracyLayout>
