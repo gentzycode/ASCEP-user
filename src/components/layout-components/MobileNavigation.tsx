@@ -17,7 +17,7 @@ const MobileNavigation = () => {
   } = useNavigationContext();
 
   return (
-    <nav className="md:hidden py-8 px-2 bg-light_grey relative">
+    <nav className="md:hidden py-8 px-2 bg-light_grey sticky top-0">
       <div className="flex justify-between items-center max-w-[700px] mx-auto w-[95%]">
         <button className="cursor-pointer" onClick={toggleMobileNav}>
           <HamburgerIcon />

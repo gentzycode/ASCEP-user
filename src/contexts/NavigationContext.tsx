@@ -24,7 +24,7 @@ const NavigationContextProvider = ({
   children,
 }: NavigationContextProviderProps) => {
   const [openSidebar, setOpenSidebar] = useState<boolean>(false);
-  const [openMobileNav, setOpenMobileNav] = useState<boolean>(true);
+  const [openMobileNav, setOpenMobileNav] = useState<boolean>(false);
   const [activeLink, setActiveLink] = useState("Debates");
   const [activeModule, setActiveModule] = useState("ASCEP Democracy");
   const toggleSidebar = () => setOpenSidebar(!openSidebar);

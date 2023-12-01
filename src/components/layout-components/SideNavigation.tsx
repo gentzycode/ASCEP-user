@@ -20,8 +20,8 @@ const SideNavigation: React.FC<SideNavigationProps> = () => {
         <img src="/images/logopic.png" alt="logo" className="h-[70px] -mb-3 " />
         <h1 className="text-[18px] text-[#6B6B6B]">ASCEP</h1>
       </div>
-      <div className="flex flex-col justify-center w-full items-center mt-[100px]">
-        <ul className="flex flex-col justify-center gap-[25px]">
+      <div className="flex flex-col justify-center w-full items-center mt-[50px]">
+        <ul className="flex flex-col justify-center gap-[20px]">
           {sidebarLinks.map((links: NavLinkType, index) => {
             return (
               <li
@@ -35,7 +35,7 @@ const SideNavigation: React.FC<SideNavigationProps> = () => {
                     activeModule === links.title
                       ? "text-primary"
                       : "text-[#6B6B6B]"
-                  }  flex items-center text-[18px]  font-[500] gap-[14px]`}
+                  }  flex items-center text-[14px] lg:text-[18px] w-max  font-[500] gap-[14px]`}
                   onClick={() => handleNavigation(links)}
                 >
                   {links.Icon}

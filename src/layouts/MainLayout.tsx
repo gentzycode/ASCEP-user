@@ -12,7 +12,7 @@ export default function MainLayout() {
     <NavigationContextProvider>
       <div>
         <MobileNavigation />
-        <div className="flex w-full">
+        <div className="md:flex w-full">
           <SideNavigation />
           <Outlet />
         </div>

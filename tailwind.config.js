@@ -45,6 +45,7 @@ module.exports = {
         green_text: "#48A874",
         base: {
           100: "#E2E6EB",
+          200: "#C9CFD8",
           400: "#76859A",
           900: "#363A43",
         },
