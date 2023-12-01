@@ -9,7 +9,7 @@ const AuthContext = createContext({
 export const useAuthContext = () => useContext(AuthContext);
 
 export default function AuthProvider({ children }: PropsWithChildren) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   const login = () => setIsLoggedIn(true);
   const logout = () => setIsLoggedIn(false);

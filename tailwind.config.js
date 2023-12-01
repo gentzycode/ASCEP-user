@@ -31,6 +31,8 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       colors: {
+        light_grey: "#EBE5F0",
+        dark_grey: "#363636",
         primary: "#FFC334",
         flamingo: "#E9529E",
         light: "#F9F6FB",
@@ -43,12 +45,14 @@ module.exports = {
         green_text: "#48A874",
         base: {
           100: "#E2E6EB",
+          200: "#C9CFD8",
           400: "#76859A",
           900: "#363A43",
         },
       },
       fontFamily: {
         sans: ["Outfit", "sans-serif"],
+        barlow: ["Barlow", "sans-serif"],
       },
     },
   },
