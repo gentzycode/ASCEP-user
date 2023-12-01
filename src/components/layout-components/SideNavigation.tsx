@@ -9,41 +9,50 @@ const SideNavigation: React.FC<SideNavigationProps> = () => {
 
   return (
     <div
-      className={`bg-[#EBE5F0] h-screen relative hidden md:block duration-300 px-6 ${
-        openSidebar ? "w-[285px]" : "w-[130px]"
+      className={`bg-[#EBE5F0] h-screen relative hidden md:block duration-300 px-4 ${
+        openSidebar ? "w-[285px]" : "w-[100px]"
       }`}
     >
-      <button className="absolute -right-3 top-12 z-10" onClick={toggleSidebar}>
+      <button className="absolute -right-3 top-12 z-20" onClick={toggleSidebar}>
         {openSidebar ? <ArrowSquareLeft /> : <ArrowSquareRight />}
       </button>
-      <div className="w-fit mx-auto flex justify-center flex-wrap my-8 items-center duration-700">
+      <div className="w-full mx-auto flex justify-center flex-wrap my-8 items-center duration-700">
         <img src="/images/logopic.png" alt="logo" className="h-[70px] -mb-3 " />
         <h1 className="text-[18px] text-[#6B6B6B]">ASCEP</h1>
       </div>
-      <div className="flex flex-col justify-center w-full items-center mt-[50px]">
-        <ul className="flex flex-col justify-center gap-[20px]">
+      <div className="flex flex-col justify-start w-full items-start mt-[50px]">
+        <ul className="flex flex-col gap-[20px]">
           {sidebarLinks.map((links: NavLinkType, index) => {
             return (
-              <li
+              <ul
                 key={index}
-                className={`${
-                  activeModule === links.title ? "bg-dark" : ""
-                } px-3 py-4 rounded-3xl`}
+                className={`${activeModule === links.title ? "bg-dark" : ""}  ${
+                  !openSidebar
+                    ? "w-[50px] h-[50px] pl-2 rounded-lg  justify-start"
+                    : "px-3 py-4 rounded-3xl "
+                } cursor-pointer inline-flex items-center duration-300`}
+                onClick={() => handleNavigation(links)}
               >
                 <button
                   className={` ${
                     activeModule === links.title
                       ? "text-primary"
                       : "text-[#6B6B6B]"
-                  }  flex items-center text-[14px] lg:text-[18px] w-max  font-[500] gap-[14px]`}
-                  onClick={() => handleNavigation(links)}
+                  } float-left mr-2 block `}
                 >
                   {links.Icon}
-                  <span className={`${!openSidebar && "hidden"}`}>
-                    {links.title}
-                  </span>
                 </button>
-              </li>
+                <p
+                  className={`lg:text-[18px] text-[14px]  font-[500] origin-left w-max 
+                  ${!openSidebar && "scale-0"}  ${
+                    activeModule === links.title
+                      ? "text-primary"
+                      : "text-[#6B6B6B]"
+                  } duration-300 `}
+                >
+                  {links.title}
+                </p>
+              </ul>
             );
           })}
         </ul>

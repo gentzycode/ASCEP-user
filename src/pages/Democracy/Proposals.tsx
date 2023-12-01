@@ -1,5 +1,4 @@
 import { ArrowRoundRight, FilterIcon, ListViewIcon } from "@/Icons";
-import { FormInput } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import DemocracyLayout from "@/layouts/DemocracyLayout";
+import { SDG_Images } from "@/utils/Democracy/Images";
 import {
   CategoriesAndTarget_Data,
   Proposals_Data,
@@ -50,12 +50,34 @@ const Proposals: React.FC<ProposalsProps> = () => {
         </div>
       </div>
       <div className="xl:flex gap-16 mt-[50px] max-w-[1200px] mx-auto">
-        <div>
-          <div className=" flex justify-start gap-[8px] items-center">
-            <h4 className="text-[18px] font-400 w-full text-right mb-4">
+        <div className="flex-1 max-w-[1200px]">
+          <div className=" flex justify-between gap-[8px] items-center  mb-4">
+            <div className="md:hidden">
+              {view === "list view" && (
+                <button
+                  className="flex items-center text-[14px] tracking-[-0.28px] gap-[6px] bg-[#fff] border-light_grey border-2 px-4 py-2"
+                  onClick={() => setView("card view")}
+                >
+                  <ListViewIcon />
+                  <span>List View</span>
+                </button>
+              )}
+              {view === "card view" && (
+                <button
+                  className="flex items-center text-[14px] tracking-[-0.28px] gap-[6px] bg-[#fff] border-light_grey border-2 px-4 py-2"
+                  onClick={() => setView("list view")}
+                >
+                  <ListViewIcon />
+                  <span>Card View</span>
+                </button>
+              )}
+            </div>
+
+            <h4 className="text-[18px] font-400 text-right md:w-full">
               Advanced Search
             </h4>
           </div>
+
           <div className="flex justify-between gap-2">
             <ToggleGroup
               type="single"
@@ -63,7 +85,7 @@ const Proposals: React.FC<ProposalsProps> = () => {
               onValueChange={(value) => {
                 if (value) setFilterOption(value);
               }}
-              className="gap-4"
+              className="gap-4 w-full md:w-fit justify-start"
             >
               {filterOptions.map((option, index) => (
                 <ToggleGroupItem
@@ -84,22 +106,30 @@ const Proposals: React.FC<ProposalsProps> = () => {
                 </ToggleGroupItem>
               ))}
             </ToggleGroup>
-            {view === "list view" && (
-              <button className="flex items-center text-[14px] tracking-[-0.28px] gap-[6px] bg-[#fff] border-light_grey border-2 px-4 py-2" onClick={()=>setView("card   view")}>
-                <ListViewIcon />
-                <span>List View</span>
-              </button>
-            )}
-            {view === "card view" && (
-              <button className="flex items-center text-[14px] tracking-[-0.28px] gap-[6px] bg-[#fff] border-light_grey border-2 px-4 py-2" onClick={()=>setView("list view")}>
-                <ListViewIcon />
-                <span>Card View</span>
-              </button>
-            )}
+            <div className="hidden md:block">
+              {view === "list view" && (
+                <button
+                  className="flex items-center text-[14px] tracking-[-0.28px] gap-[6px] bg-[#fff] border-light_grey border-2 px-4 py-2"
+                  onClick={() => setView("card view")}
+                >
+                  <ListViewIcon />
+                  <span>List View</span>
+                </button>
+              )}
+              {view === "card view" && (
+                <button
+                  className="flex items-center text-[14px] tracking-[-0.28px] gap-[6px] bg-[#fff] border-light_grey border-2 px-4 py-2"
+                  onClick={() => setView("list view")}
+                >
+                  <ListViewIcon />
+                  <span>Card View</span>
+                </button>
+              )}
+            </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
-            <div className="col-span-3">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="col-span-2 md:col-span-3">
               <Label className="text-primary text-[12px]">By words</Label>
               <Input className="rounded-full h-[42px] bg-transparent border-subtle_text focus-visible:ring-0 focus-visible:ring-offset-0" />
             </div>
@@ -142,14 +172,14 @@ const Proposals: React.FC<ProposalsProps> = () => {
                 </SelectContent>
               </Select>
             </div>
-            <Button className="w-[175px]">
+            <Button className="w-[175px] col-span-2">
               Filter <FilterIcon />
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 my-10 gap-10">
-            {view === "list view" &&
-              Proposals_Data.map((proposal, index) => {
+          {view === "list view" && (
+            <div className="grid grid-cols-1 my-10 gap-10">
+              {Proposals_Data.map((proposal, index) => {
                 return (
                   <div key={index} className="col-span-1">
                     <Button
@@ -165,17 +195,25 @@ const Proposals: React.FC<ProposalsProps> = () => {
                   </div>
                 );
               })}
-          </div>
-          <div className="grid grid-cols-1 my-10 gap-10">
-            {view === "card view" &&
-              Proposals_Data.map((proposal, index) => {
+            </div>
+          )}
+
+          {view === "card view" && (
+            <div className="grid grid-cols-1 my-10 gap-10">
+              {Proposals_Data.map((proposal, index) => {
                 return (
                   <div
                     key={index}
                     className="col-span-1 flex flex-col lg:flex-row gap-3"
                   >
-                    <div className="bg-[#FFFFFF] shadow-xl flex rounded-xl overflow-hidden">
-                      <img src="/images/card-image.png" alt="image" />
+                    <div className="bg-[#FFFFFF] shadow-xl flex flex-col md:flex-row justify-start rounded-xl overflow-hidden">
+                      <div className="relative h-[100px] md:h-full w-full">
+                        <img
+                          src="/images/card-image.png"
+                          alt="image"
+                          className="absolute top-0 left-0 w-full h-full object-cover"
+                        />
+                      </div>
                       <div className="p-8">
                         <div>
                           <h1 className="text-[20px] text-dark">
@@ -243,53 +281,56 @@ const Proposals: React.FC<ProposalsProps> = () => {
                       >
                         {proposal.percentage}%
                       </Button>
-                      <Button className="h-fit text-[12px] bg-dark text-light">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="14"
-                          viewBox="0 0 16 14"
-                          fill="none"
-                        >
-                          <path
-                            d="M11.2072 12.181H7.54053V9.51432H12.2072V6.84766H14.8739V12.181H13.2072L12.2072 13.181L11.2072 12.181Z"
-                            stroke="#F9F6FB"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                          <path
-                            d="M1.54053 1.51465H12.2072V9.51465H5.87386L4.54053 10.848L3.20719 9.51465H1.54053V1.51465Z"
-                            stroke="#F9F6FB"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                          <path
-                            d="M4.20703 6.84831H6.20703M4.20703 4.18164H8.20703"
-                            stroke="#F9F6FB"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                          />
-                        </svg>
-                        <span>5 support needed</span>
-                      </Button>
-                      <Button className="h-fit text-[16px] w-[140px] rounded-full">
-                        Support
-                      </Button>
+                      <div className="flex flex-col gap-2">
+                        <Button className="h-fit text-[12px] bg-dark text-light">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="14"
+                            viewBox="0 0 16 14"
+                            fill="none"
+                          >
+                            <path
+                              d="M11.2072 12.181H7.54053V9.51432H12.2072V6.84766H14.8739V12.181H13.2072L12.2072 13.181L11.2072 12.181Z"
+                              stroke="#F9F6FB"
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                            <path
+                              d="M1.54053 1.51465H12.2072V9.51465H5.87386L4.54053 10.848L3.20719 9.51465H1.54053V1.51465Z"
+                              stroke="#F9F6FB"
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                            <path
+                              d="M4.20703 6.84831H6.20703M4.20703 4.18164H8.20703"
+                              stroke="#F9F6FB"
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                            />
+                          </svg>
+                          <span>5 support needed</span>
+                        </Button>
+                        <Button className="h-fit text-[16px] w-full rounded-full">
+                          Support
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 );
               })}
-          </div>
+            </div>
+          )}
         </div>
 
-        <div className="xl:max-w-[350px]">
-          <h2 className="p-[16px] pt-0 pl-0 border-b-4 text-[18px] font-400 border-primary w-fit">
+        <div className="max-w-[400px]">
+          <h2 className="p-[16px] pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
             Categories and Target
           </h2>
 
-          <div className="flex flex-wrap gap-[9px] mt-[23px]">
+          <div className="flex flex-wrap gap-[9px] mt-[23px] max-w-[500px]">
             {CategoriesAndTarget_Data.map((item, index) => (
               <Button
                 key={index}
@@ -298,6 +339,27 @@ const Proposals: React.FC<ProposalsProps> = () => {
                 {item}
               </Button>
             ))}
+          </div>
+
+          <h2 className="p-[16px] pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit my-6">
+            Filters by SDG
+          </h2>
+          <div className="grid grid-cols-4 gap-[9px] justify-start max-w-[500px] mt-[23px]">
+            {SDG_Images.map((item, index) => (
+              <Button
+                key={index}
+                className="bg-transparent h-fit p-0 hover:bg-transparent flex justify-start"
+              >
+                <img src={item} alt={index.toString()} />
+              </Button>
+            ))}
+          </div>
+          <h2 className="p-[10px] pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit my-6">
+            District
+          </h2>
+          <div className="w-full h-[300px] relative">
+            <img src="/images/SDG/map.png" alt="map" className="absolute top-0 left-0 h-full w-full object-cover" />
+
           </div>
         </div>
       </div>
