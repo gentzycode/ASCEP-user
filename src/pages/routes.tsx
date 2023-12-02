@@ -2,6 +2,7 @@ import { ForgotPasswordPage, LoginPage, OTPPage, SignupPage } from "./Auth";
 import Debates from "./Democracy/Debates";
 import Proposals from "./Democracy/Proposals";
 import Home from "./Home";
+import { MainPage } from "./Main";
 import Response from "./Response";
 
 const routes: RouterType[] = [
@@ -12,7 +13,7 @@ const routes: RouterType[] = [
   },
   {
     path: "/main",
-    element: <Home />,
+    element: <MainPage />,
     title: "main",
   },
   {
