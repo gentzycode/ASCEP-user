@@ -1,14 +1,21 @@
-import { HTMLProps, PropsWithChildren, ReactNode } from "react";
+import { HTMLProps, ReactNode } from "react";
 
 interface IconWrapperProps extends HTMLProps<HTMLDivElement> {
   children: ReactNode;
 }
 
-export default function IconWrapper({ children, ...props }: IconWrapperProps) {
+export default function IconWrapper({
+  children,
+  className,
+  ...props
+}: IconWrapperProps) {
   return (
     <div
+      className={
+        "w-10 h-10 bg-[#6B6B6B]/10 flex justify-center items-center rounded-[20px] " +
+        className
+      }
       {...props}
-      className="w-10 h-10 rounded-full bg-[#6B6B6B]/10 flex justify-center items-center cursor-pointer"
     >
       {children}
     </div>

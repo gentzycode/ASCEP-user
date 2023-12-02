@@ -32,7 +32,7 @@ module.exports = {
       },
       colors: {
         light_grey: "#EBE5F0",
-        dark_grey: "#363636",
+        secondary: "#363636",
         primary: "#FFC334",
         flamingo: "#E9529E",
         light: "#F9F6FB",
@@ -43,6 +43,7 @@ module.exports = {
         text: "#4A4A68",
         subtle_text: "#8C8CA1",
         green_text: "#48A874",
+        link: "#2570EB",
         base: {
           100: "#E2E6EB",
           200: "#C9CFD8",

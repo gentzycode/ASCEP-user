@@ -12,10 +12,10 @@ export default function MainHeader() {
       </div>
 
       <div className="flex items-center gap-6">
-        <IconWrapper>
+        <IconWrapper className="rounded-full cursor-pointer">
           <SearchNormal1 size="20" color="black" />
         </IconWrapper>
-        <IconWrapper>
+        <IconWrapper className="rounded-full cursor-pointer">
           <Notification size="20" color="black" />
         </IconWrapper>
 
