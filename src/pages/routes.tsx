@@ -6,6 +6,7 @@ import Home from "./Home";
 import { MainPage } from "./Main";
 import Response from "./Response";
 import Initiatives from "./Democracy/Initiatives";
+import { SettingsPage } from "./Settings";
 
 const routes: RouterType[] = [
   {
@@ -42,6 +43,11 @@ const routes: RouterType[] = [
     path: "/response",
     element: <Response />,
     title: "response",
+  },
+  {
+    path: "/settings",
+    element: <SettingsPage />,
+    title: "ssettings",
   },
 ];
 
