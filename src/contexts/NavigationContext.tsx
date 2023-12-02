@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 interface NavigationContextProps {
   openSidebar: boolean;
   setOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,8 +12,6 @@ interface NavigationContextProps {
   setActiveLink: React.Dispatch<React.SetStateAction<string>>;
   activeModule: string;
   setActiveModule: React.Dispatch<React.SetStateAction<string>>;
-  handleNavigation: (links: NavLinkType) => void;
-  handleActiveLink: (links: NavLinkType) => void;
 }
 const NavigationContext = createContext({} as NavigationContextProps);
 interface NavigationContextProviderProps {
@@ -23,21 +21,20 @@ interface NavigationContextProviderProps {
 const NavigationContextProvider = ({
   children,
 }: NavigationContextProviderProps) => {
-  const [openSidebar, setOpenSidebar] = useState<boolean>(false);
+  const [openSidebar, setOpenSidebar] = useState<boolean>(true);
   const [openMobileNav, setOpenMobileNav] = useState<boolean>(false);
-  const [activeLink, setActiveLink] = useState("Debates");
-  const [activeModule, setActiveModule] = useState("ASCEP Democracy");
+  const [activeModule, setActiveModule] = useState<string>("");
   const toggleSidebar = () => setOpenSidebar(!openSidebar);
   const toggleMobileNav = () => setOpenMobileNav(!openMobileNav);
-  const navigate = useNavigate();
-  const handleNavigation = (link: NavLinkType) => {
-    setActiveModule(link.title);
-    navigate(link.path);
-  };
-  const handleActiveLink = (link: NavLinkType) => {
-    setActiveLink(link.title);
-    navigate(link.path);
-  };
+  const [activeLink, setActiveLink] = useState<string>("");
+
+  const location = useLocation();
+
+  useEffect(() => {
+    setActiveLink(location.pathname);
+    setActiveModule(location.pathname.split("/")[1]);
+  }, [location]);
+
   return (
     <NavigationContext.Provider
       value={{
@@ -51,8 +48,6 @@ const NavigationContextProvider = ({
         setActiveLink,
         activeModule,
         setActiveModule,
-        handleNavigation,
-        handleActiveLink,
       }}
     >
       {children}

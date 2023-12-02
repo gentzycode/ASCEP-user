@@ -1,12 +1,12 @@
 import { ArrowSquareLeft, ArrowSquareRight } from "@/Icons";
 import { sidebarLinks } from "@/utils/NavigationData";
 import { useNavigationContext } from "@/contexts/NavigationContext";
+import { Link } from "react-router-dom";
 interface SideNavigationProps {}
 
 const SideNavigation: React.FC<SideNavigationProps> = () => {
-  const { openSidebar, toggleSidebar, activeModule, handleNavigation } =
+  const { openSidebar, toggleSidebar, activeModule } =
     useNavigationContext();
-
   return (
     <div
       className={`bg-[#EBE5F0] h-screen relative hidden md:block duration-300 px-4 ${
@@ -21,21 +21,23 @@ const SideNavigation: React.FC<SideNavigationProps> = () => {
         <h1 className="text-[18px] text-[#6B6B6B]">ASCEP</h1>
       </div>
       <div className="flex flex-col justify-start w-full items-start mt-[50px]">
-        <ul className="flex flex-col gap-[20px]">
+        <div className="flex flex-col gap-[20px]">
           {sidebarLinks.map((links: NavLinkType, index) => {
             return (
-              <ul
+              <Link
                 key={index}
-                className={`${activeModule === links.title ? "bg-dark" : ""}  ${
+                className={`${
+                  activeModule === links.module ? "bg-dark" : ""
+                }  ${
                   !openSidebar
                     ? "w-[50px] h-[50px] pl-2 rounded-lg  justify-start"
                     : "px-3 py-4 rounded-3xl "
                 } cursor-pointer inline-flex items-center duration-300`}
-                onClick={() => handleNavigation(links)}
+                to={links.path}
               >
                 <button
                   className={` ${
-                    activeModule === links.title
+                    activeModule === links.module
                       ? "text-primary"
                       : "text-[#6B6B6B]"
                   } float-left mr-2 block `}
@@ -45,17 +47,17 @@ const SideNavigation: React.FC<SideNavigationProps> = () => {
                 <p
                   className={`lg:text-[18px] text-[14px]  font-[500] origin-left w-max 
                   ${!openSidebar && "scale-0"}  ${
-                    activeModule === links.title
+                    activeModule === links.module
                       ? "text-primary"
                       : "text-[#6B6B6B]"
                   } duration-300 `}
                 >
                   {links.title}
                 </p>
-              </ul>
+              </Link>
             );
           })}
-        </ul>
+        </div>
       </div>
     </div>
   );

@@ -5,19 +5,14 @@ import {
   FooterLinks,
   sidebarLinks,
 } from "@/utils/NavigationData";
+import { Link } from "react-router-dom";
 
 const MobileNavigation = () => {
-  const {
-    openMobileNav,
-    toggleMobileNav,
-    activeLink,
-    activeModule,
-    handleNavigation,
-    handleActiveLink,
-  } = useNavigationContext();
+  const { openMobileNav, toggleMobileNav, activeLink, activeModule } =
+    useNavigationContext();
 
   return (
-    <nav className="md:hidden py-8 px-2 bg-light_grey sticky top-0">
+    <nav className="md:hidden py-8 px-2 bg-light_grey sticky top-0 z-10">
       <div className="flex justify-between items-center max-w-[700px] mx-auto w-[95%]">
         <button className="cursor-pointer" onClick={toggleMobileNav}>
           <HamburgerIcon />
@@ -28,6 +23,7 @@ const MobileNavigation = () => {
         className={` ${
           openMobileNav ? "w-screen" : "w-0 overflow-hidden"
         } duration-300 fixed top-0 left-0 h-screen z-20 bg-light_grey  overflow-y-scroll`}
+        onClick={toggleMobileNav}
       >
         <button
           className={`${
@@ -39,30 +35,28 @@ const MobileNavigation = () => {
         </button>
 
         {/* Democracy links */}
-        {activeModule === "ASCEP Democracy" && (
+        {activeModule === "democracy" && (
           <>
             <div className="flex flex-col mt-[60px]  pb-20 px-6">
-              <ul className="flex flex-col justify-start gap-[25px]">
+              <div className="flex flex-col justify-start gap-[25px]">
                 {DemocracyLinks.map((link: NavLinkType, index) => {
                   return (
-                    <li
+                    <Link
                       key={index}
                       className={`${
-                        activeLink === link.title
+                        activeLink === link.path
                           ? "border-b-4 border-primary"
                           : "text-[#6B6B6B]"
                       } w-fit`}
+                      to={link.path}
                     >
-                      <button
-                        className={`inline-flex text-[18px] duration-300 font-[500] gap-[14px] pb-2`}
-                        onClick={() => handleActiveLink(link)}
-                      >
+                      <button className="inline-flex text-[18px] duration-300 font-[500] gap-[14px] pb-2">
                         {link.title}
                       </button>
-                    </li>
+                    </Link>
                   );
                 })}
-              </ul>
+              </div>
             </div>
 
             <svg
@@ -97,30 +91,30 @@ const MobileNavigation = () => {
 
         {/* Module  links */}
         <div className="flex flex-col mt-[50px] pb-20 px-6">
-          <ul className="flex flex-col justify-center gap-[25px]">
-            {sidebarLinks.map((links: NavLinkType, index) => {
+          <div className="flex flex-col justify-center gap-[25px]">
+            {sidebarLinks.map((link: NavLinkType, index) => {
               return (
-                <li
+                <Link
                   key={index}
                   className={`${
-                    activeModule === links.title ? "bg-dark" : ""
+                    activeModule === link.module ? "bg-dark" : ""
                   } px-3 py-4 rounded-3xl`}
+                  to={link.path}
                 >
                   <button
                     className={` ${
-                      activeModule === links.title
+                      activeModule === link.module
                         ? "text-primary"
                         : "text-[#6B6B6B]"
                     }  flex items-center text-[18px] duration-300 font-[500] gap-[14px]`}
-                    onClick={() => handleNavigation(links)}
                   >
-                    {links.Icon}
-                    <span>{links.title}</span>
+                    {link.Icon}
+                    <span>{link.title}</span>
                   </button>
-                </li>
+                </Link>
               );
             })}
-          </ul>
+          </div>
         </div>
 
         <svg
