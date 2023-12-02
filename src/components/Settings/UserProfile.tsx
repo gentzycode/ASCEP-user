@@ -11,7 +11,7 @@ export default function UserProfile() {
         <ProfileRow title="Phone number" value="07086245441" />
         <ProfileRow title="Username" value="DexOla" />
         <ProfileRow title="Role" value="User" />
-        <ProfileRow title="Date Joined" value=" Aug 21st, 2023 | 12:55 AM" />
+        <ProfileRow title="Date Joined" value="Aug 21st, 2023 | 12:55 AM" />
       </div>
     </div>
   );
@@ -19,7 +19,7 @@ export default function UserProfile() {
 
 function ProfileRow({ title, value }: { title: string; value: string }) {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between font-medium">
       <p className="text-subtle_text ">{title}</p>
       <p className="text-dark">{value}</p>
     </div>
