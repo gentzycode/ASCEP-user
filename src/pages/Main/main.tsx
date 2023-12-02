@@ -1,14 +1,16 @@
+import { Messages1, Profile2User } from "iconsax-react";
+
 import {
   MainHeader,
   MainStatsCard,
+  PopularPoll,
   Recommendation,
   ResponseActivity,
 } from "@/components/Main";
-import { Messages1, Profile2User } from "iconsax-react";
 
 export default function MainPage() {
   return (
-    <div className="w-full px-8 py-9 bg-[#F9F6FB] overflow-x-hidden h-screen overflow-y-auto">
+    <div className="w-full px-8  bg-[#F9F6FB] overflow-x-hidden h-screen overflow-y-auto">
       <MainHeader />
 
       <div className="mt-8 space-y-5">
@@ -40,7 +42,6 @@ export default function MainPage() {
 
         {/* RESPONSE ACTIVITIES */}
         <p className="text-lg text-subtle_text">Recommendations</p>
-
         <div className="flex w-full gap-4 pb-5 overflow-x-auto">
           <ResponseActivity />
           <ResponseActivity />
@@ -48,9 +49,14 @@ export default function MainPage() {
           <ResponseActivity />
           <ResponseActivity />
           <ResponseActivity />
-          <ResponseActivity />
-          <ResponseActivity />
-          <ResponseActivity />
+        </div>
+
+        {/* POPULAR POLLS */}
+        <p className="text-lg text-subtle_text">Popular Polls</p>
+
+        <div className="space-y-4">
+          <PopularPoll />
+          <PopularPoll />
         </div>
       </div>
     </div>

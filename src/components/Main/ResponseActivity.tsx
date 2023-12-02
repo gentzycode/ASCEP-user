@@ -1,9 +1,8 @@
 import { Location } from "iconsax-react";
-import React from "react";
 
 export default function ResponseActivity() {
   return (
-    <div className=" rounded-[20px] bg-white min-w-[288px] ">
+    <div className=" rounded-[40px] bg-white min-w-[288px] ">
       <img
         src="/public/images/activity.png"
         className="h-[147px] object-contain rounded-t-[20px]"

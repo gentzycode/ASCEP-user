@@ -3,7 +3,7 @@ import { Profile2User } from "iconsax-react";
 
 export default function Recommendation() {
   return (
-    <div className="bg-white rounded-[20px] p-6 flex items-center">
+    <div className="bg-white rounded-[40px] p-6 flex items-center">
       <div className="flex-1">
         <IconWrapper className="h-[50px] w-[50px]">
           <Profile2User />
