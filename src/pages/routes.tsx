@@ -1,9 +1,11 @@
+import { Navigate } from "react-router-dom";
 import { ForgotPasswordPage, LoginPage, OTPPage, SignupPage } from "./Auth";
 import Debates from "./Democracy/Debates";
 import Proposals from "./Democracy/Proposals";
 import Home from "./Home";
 import { MainPage } from "./Main";
 import Response from "./Response";
+import Initiatives from "./Democracy/Initiatives";
 
 const routes: RouterType[] = [
   {
@@ -17,14 +19,24 @@ const routes: RouterType[] = [
     title: "main",
   },
   {
-    path: "/debates",
+    path: "/democracy",
+    element: <Navigate to="/democracy/debates" />,
+    title: "democracy",
+  },
+  {
+    path: "/democracy/debates",
     element: <Debates />,
     title: "democracy-debates",
   },
   {
-    path: "/proposals",
+    path: "/democracy/proposals",
     element: <Proposals />,
     title: "democracy-proposals",
+  },
+  {
+    path: "/democracy/initiatives",
+    element: <Initiatives />,
+    title: "democracy-initiatives",
   },
   {
     path: "/response",

@@ -1,4 +1,4 @@
-export const Proposals_Data = [
+export const Proposals_Data: ProposalType[] = [
   {
     title: "Strategic plan for a 100% green city",
     date: "2023-10-28",
@@ -38,6 +38,49 @@ export const Proposals_Data = [
       "This is a debate that has been going on for a long time and it is the possibility of opening the metro on weekends at night. It would be important to know if it is a positive measure or too expensive for what it reports to the city.  is a debate that has been going on for a long time and it is the possibility of opening the metro on weekends at night",
     tags: ["Urbanism", "Transport", "Metro"],
     percentage: 70,
+  },
+];
+
+export const Initiatives_Data: InitiativesType[] = [
+  {
+    status: "published",
+    content:
+      "This is a debate that has been going on for a long time and it is the possibility of opening the metro on weekends at night. It would be important to know if it is a positive measure or too expensive for what it reports to the city.  is a debate that has been going on for a long time and it is the possibility of opening the metro on weekends at night",
+    follower: 2,
+    comments: 2,
+    tags: ["Urbanism", "Transport", "Metro"],
+    date: "2023-10-28",
+    signed: 1,
+  },
+  {
+    status: "published",
+    content:
+      "This is a debate that has been going on for a long time and it is the possibility of opening the metro on weekends at night. It would be important to know if it is a positive measure or too expensive for what it reports to the city.  is a debate that has been going on for a long time and it is the possibility of opening the metro on weekends at night",
+    follower: 2,
+    comments: 2,
+    tags: ["Urbanism", "Transport", "Metro"],
+    date: "2023-10-28",
+    signed: 1,
+  },
+  {
+    status: "published",
+    content:
+      "This is a debate that has been going on for a long time and it is the possibility of opening the metro on weekends at night. It would be important to know if it is a positive measure or too expensive for what it reports to the city.  is a debate that has been going on for a long time and it is the possibility of opening the metro on weekends at night",
+    follower: 2,
+    comments: 2,
+    tags: ["Urbanism", "Transport", "Metro"],
+    date: "2023-10-28",
+    signed: 1,
+  },
+  {
+    status: "published",
+    content:
+      "This is a debate that has been going on for a long time and it is the possibility of opening the metro on weekends at night. It would be important to know if it is a positive measure or too expensive for what it reports to the city.  is a debate that has been going on for a long time and it is the possibility of opening the metro on weekends at night",
+    follower: 2,
+    comments: 2,
+    tags: ["Urbanism", "Transport", "Metro"],
+    date: "2023-10-28",
+    signed: 1,
   },
 ];
 
