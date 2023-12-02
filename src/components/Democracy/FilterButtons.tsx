@@ -19,7 +19,7 @@ const FilterButtons: React.FC<FilterButtonsProps> = ({
       onValueChange={(value) => {
         if (value) setFilterOption(value);
       }}
-      className="gap-4 mb-2 w-full md:w-fit justify-start"
+      className="gap-4 mb-2 w-full md:w-fit justify-start flex-wrap"
     >
       {filterOptions.map((option, index) => (
         <ToggleGroupItem

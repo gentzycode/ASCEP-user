@@ -1,4 +1,6 @@
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
+import { Notification, Messages1 } from "iconsax-react";
 
 interface InitiativesCardViewCardProps {
   initiatives: InitiativesType;
@@ -7,17 +9,25 @@ interface InitiativesCardViewCardProps {
 const InitiativesCardViewCard: React.FC<InitiativesCardViewCardProps> = ({
   initiatives,
 }) => {
-  const bgColors = [
-    "rgba(232, 67, 86, 0.10)",
-    "rgba(221, 166, 58, 0.10)",
-    "rgba(76,159, 56, 0.10)",
-    "#292925",
-  ];
-  const textColors = ["#E84356", "#DDA63A", "#4C9F38", "#F9F6FB"];
+  const bgColors = {
+    red: "rgba(232, 67, 86, 0.10)",
+    yellow: "rgba(221, 166, 58, 0.10)",
+    green: "rgba(76,159, 56, 0.10)",
+    black: "#292925",
+  };
+  const textColors = {
+    red: "#E84356",
+    yellow: "#DDA63A",
+    green: "#4C9F38",
+    black: "#F9F6FB",
+  };
+
   return (
-    <div className=" flex flex-col gap-3">
+    <div className=" flex flex-col gap-3 max-w-[600px] ">
+      {/* TOP CON */}
       <div className="bg-[#FFFFFF] shadow-xl flex flex-col justify-start rounded-xl overflow-hidden">
-        <div className="relative h-[100px] md:h-full w-full">
+        {/* image */}
+        <div className="relative h-[100px]  w-full">
           <img
             src="/images/card-image.png"
             alt="image"
@@ -26,22 +36,42 @@ const InitiativesCardViewCard: React.FC<InitiativesCardViewCardProps> = ({
         </div>
         <div className="p-8">
           <div>
-            {/* <h1 className="text-[20px] text-dark">{initiatives.title}</h1> */}
+            <h1 className="text-[20px] text-dark">{initiatives.title}</h1>
+            {/* user info */}
+            <div className="flex gap-3 my-2">
+              <Avatar className="h-12 w-12">
+                <AvatarImage src="/images/avatar.png" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <div>
+                <h2 className="text-dark text-[14px]">{initiatives.user}</h2>
+                <h3 className="text-[12px] text-subtle_text">
+                  {initiatives.email}
+                </h3>
+              </div>
+            </div>
             <div className="flex justify-start gap-4">
               <p className="text-[12px] text-base-400 my-3 ">
                 {initiatives.date}
               </p>
-              <p className="text-[12px] text-base-400 my-3 ">
+              <p className="text-[12px] text-base-400 my-3 capitalize">
                 {initiatives.status}
               </p>
             </div>
-            <p className="text-14px text-transparent h-[65px] pb-10 bg-gradient-to-t to-[#64748B] to-70% from-[#f0f2f4] bg-clip-text">
+            <p className="text-14px text-transparent h-[80px] pb-10 bg-gradient-to-t to-[#64748B] to-70% from-[#f0f2f4] bg-clip-text">
               {initiatives.content}
             </p>
           </div>
 
-          <div className="my-6 flex gap-[4px]">
-            <Button>{initiatives.follower} followers</Button>
+          <div className="my-6 flex justify-between gap-1 flex-wrap">
+            <Button className="bg-dark text-light capitalize text-[14px]">
+              <Notification size="25" />
+              <span>{initiatives.follower} followers</span>
+            </Button>
+            <Button className="bg-dark text-light capitalize text-[14px]">
+              <Messages1 size="25" />
+              <span>{initiatives.comments} comments</span>
+            </Button>
           </div>
           <div className="flex gap-[8px] flex-wrap">
             {initiatives.tags.map((tag, index) => (
@@ -55,58 +85,22 @@ const InitiativesCardViewCard: React.FC<InitiativesCardViewCardProps> = ({
           </div>
         </div>
       </div>
+
+      {/* BOTTOM CON */}
       <div
-        className="bg-[#FFFFFF] shadow-xl flex lg:flex-col
-       justify-center items-center  rounded-xl px-4 gap-4 py-3 "
+        className="bg-[#FFFFFF] shadow-xl flex
+       justify-center items-center  rounded-xl px-4 gap-4 py-4 "
       >
-        {/* <Button
-          className={`${
-            proposal.percentage < 40
-              ? "bg-[rgba(232,67,86,0.10)]"
-              : proposal.percentage > 40 && proposal.percentage < 70
-              ? "bg-[rgba(221,166,58,0.10)]"
-              : "bg-[rgba(76,159,56,0.10)]"
-          } ${
-            proposal.percentage < 40
-              ? "text-[#E84356]"
-              : proposal.percentage > 40 && proposal.percentage < 70
-              ? "text-[#DDA63A]"
-              : "text-[#4C9F38]"
-          } w-[74px] h-[74px] hover:bg-inherit `}
+        <Button
+          className={`h-[74px] hover:bg-inherit px-8 w-fit`}
+          style={{ color: textColors["red"], backgroundColor: bgColors["red"] }}
         >
-          {proposal.percentage}%
-        </Button> */}
+          1/2000
+        </Button>
         <div className="flex flex-col gap-2">
-          <Button className="h-fit text-[12px] bg-dark text-light">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="14"
-              viewBox="0 0 16 14"
-              fill="none"
-            >
-              <path
-                d="M11.2072 12.181H7.54053V9.51432H12.2072V6.84766H14.8739V12.181H13.2072L12.2072 13.181L11.2072 12.181Z"
-                stroke="#F9F6FB"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M1.54053 1.51465H12.2072V9.51465H5.87386L4.54053 10.848L3.20719 9.51465H1.54053V1.51465Z"
-                stroke="#F9F6FB"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M4.20703 6.84831H6.20703M4.20703 4.18164H8.20703"
-                stroke="#F9F6FB"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
-            </svg>
-            <span>5 support needed</span>
+          <Button className="h-fit py-2 text-[12px] bg-dark text-light">
+            <Messages1 size="20" />
+            <span>1999 support needed</span>
           </Button>
           <Button className="h-fit text-[16px] w-full rounded-full">
             Support
