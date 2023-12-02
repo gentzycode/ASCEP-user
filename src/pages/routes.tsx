@@ -1,7 +1,4 @@
-import { SignupPage } from "./Auth";
-import ForgotPasswordPage from "./Auth/forgot-password";
-import LoginPage from "./Auth/login";
-import OTPPage from "./Auth/otp";
+import { ForgotPasswordPage, LoginPage, OTPPage, SignupPage } from "./Auth";
 import Debates from "./Democracy/Debates";
 import Proposals from "./Democracy/Proposals";
 import Home from "./Home";
@@ -12,6 +9,11 @@ const routes: RouterType[] = [
     path: "/",
     element: <Home />,
     title: "home",
+  },
+  {
+    path: "/main",
+    element: <Home />,
+    title: "main",
   },
   {
     path: "/debates",
