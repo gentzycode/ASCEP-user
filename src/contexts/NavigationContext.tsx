@@ -31,7 +31,7 @@ const NavigationContextProvider = ({
   const location = useLocation();
 
   useEffect(() => {
-    setActiveLink(location.pathname);
+    setActiveLink(location.pathname.split("/").slice(0, 3).join("/"));
     setActiveModule(location.pathname.split("/")[1]);
   }, [location]);
 

@@ -4,7 +4,12 @@ import Home from "./Home";
 import { MainPage } from "./Main";
 import Response from "./Response";
 import { SettingsPage } from "./Settings";
-import { DebatesPage, InitiativesPage, ProposalsPage } from "./Democracy";
+import {
+  DebatesHomePage,
+  DebatesInfoPage,
+  InitiativesHomePage,
+  ProposalsHomePage,
+} from "./Democracy";
 
 const routes: RouterType[] = [
   {
@@ -24,17 +29,22 @@ const routes: RouterType[] = [
   },
   {
     path: "/democracy/debates",
-    element: <DebatesPage />,
+    element: <DebatesHomePage />,
+    title: "democracy-debates",
+  },
+  {
+    path: "/democracy/debates/:id",
+    element: <DebatesInfoPage />,
     title: "democracy-debates",
   },
   {
     path: "/democracy/proposals",
-    element: <ProposalsPage />,
+    element: <ProposalsHomePage />,
     title: "democracy-proposals",
   },
   {
     path: "/democracy/initiatives",
-    element: <InitiativesPage />,
+    element: <InitiativesHomePage />,
     title: "democracy-initiatives",
   },
   {

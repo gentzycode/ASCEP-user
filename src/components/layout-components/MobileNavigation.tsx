@@ -1,4 +1,3 @@
-import { HamburgerIcon, NavCloseIcon } from "@/Icons";
 import { useNavigationContext } from "@/contexts/NavigationContext";
 import {
   DemocracyLinks,
@@ -6,7 +5,7 @@ import {
   sidebarLinks,
 } from "@/utils/NavigationData";
 import { Link } from "react-router-dom";
-
+import { HambergerMenu, CloseCircle } from "iconsax-react";
 const MobileNavigation = () => {
   const { openMobileNav, toggleMobileNav, activeLink, activeModule } =
     useNavigationContext();
@@ -15,7 +14,7 @@ const MobileNavigation = () => {
     <nav className="md:hidden py-8 px-2 bg-light_grey sticky top-0 z-10">
       <div className="flex justify-between items-center max-w-[700px] mx-auto w-[95%]">
         <button className="cursor-pointer" onClick={toggleMobileNav}>
-          <HamburgerIcon />
+          <HambergerMenu />
         </button>
         <img src="/images/logo.png" alt="logo" className="h-[70px] -mb-6" />
       </div>
@@ -31,7 +30,7 @@ const MobileNavigation = () => {
           } fixed right-[25px] top-[40px]  duration-1000`}
           onClick={toggleMobileNav}
         >
-          <NavCloseIcon />
+          <CloseCircle />
         </button>
 
         {/* Democracy links */}

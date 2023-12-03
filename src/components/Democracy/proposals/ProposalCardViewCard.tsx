@@ -1,5 +1,5 @@
 import { Messages1 } from "iconsax-react";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 
 interface ProposalCardViewCardProps {
   proposal: ProposalType;

@@ -11,7 +11,7 @@ import {
 export default function MainPage() {
   return (
     <div className="w-full px-8 pt-8  bg-[#F9F6FB] overflow-x-hidden h-screen overflow-y-auto">
-      <MainHeader />
+      {/* <MainHeader /> */}
 
       <div className="mt-8 space-y-5">
         {/* MAIN STATS */}

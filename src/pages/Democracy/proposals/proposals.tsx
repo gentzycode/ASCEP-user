@@ -2,9 +2,8 @@ import {
   AdvancedSearch,
   ListViewCard,
   PagesHeroSection,
+  ProposalCardViewCard,
 } from "@/components/Democracy";
-import { PopularPoll } from "@/components/Main";
-import { IconWrapper } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import DemocracyLayout from "@/layouts/DemocracyLayout";
 import { SDG_Images } from "@/utils/Democracy/Images";
@@ -12,22 +11,21 @@ import {
   CategoriesAndTarget_Data,
   Proposals_Data,
 } from "@/utils/Democracy/Mock_Data";
-import { ArrowCircleRight2 } from "iconsax-react";
 import { useState } from "react";
 
-interface DebatesProps {}
-const Debates: React.FC<DebatesProps> = () => {
+interface ProposalsHomePageProps {}
+const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
   const [filterOption, setFilterOption] = useState<string>("Most active");
   const [view, setView] = useState<string>("card view");
   const [advanceSearch, setAdvanceSearch] = useState<boolean>(false);
   const filterOptions = ["Most active", "Highest rated", "Newest"];
   const pageDescription =
-    "Citizens' proposals are an opportunity for neighbours and collectives to decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.";
+    "Citizens' proposals are an opportunity for neighbours and collectivesto decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.";
+
   return (
     <DemocracyLayout>
       {/* HEADING */}
-      <PagesHeroSection title="debates" description={pageDescription} />
-      {/* ADVANCED SEARCH */}
+      <PagesHeroSection title="proposals" description={pageDescription} />
       <div className="xl:flex gap-16 mt-[50px] max-w-[1200px]">
         <div className="flex-1 max-w-[1200px]">
           <AdvancedSearch
@@ -51,11 +49,12 @@ const Debates: React.FC<DebatesProps> = () => {
           {view === "card view" && (
             <div className="grid grid-cols-1 my-10 gap-10">
               {Proposals_Data.map((proposal, index) => (
-                <PopularPoll />
+                <ProposalCardViewCard proposal={proposal} key={index} />
               ))}
             </div>
           )}
         </div>
+
         <div className="max-w-[400px]">
           {/*  Filters by Categories and Target  */}
           <h2 className="p-[16px] pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
@@ -102,4 +101,4 @@ const Debates: React.FC<DebatesProps> = () => {
     </DemocracyLayout>
   );
 };
-export default Debates;
+export default ProposalsHomePage;

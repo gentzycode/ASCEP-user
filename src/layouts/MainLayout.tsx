@@ -1,5 +1,8 @@
-import MobileNavigation from "@/components/layout-components/MobileNavigation";
-import SideNavigation from "@/components/layout-components/SideNavigation";
+import {
+  Header,
+  MobileNavigation,
+  SideNavigation,
+} from "@/components/layout-components";
 import NavigationContextProvider from "@/contexts/NavigationContext";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { Navigate, Outlet } from "react-router-dom";
@@ -12,9 +15,12 @@ export default function MainLayout() {
     <NavigationContextProvider>
       <div>
         <MobileNavigation />
-        <div className="md:flex w-full">
+        <div className="md:flex">
           <SideNavigation />
-          <Outlet />
+          <div className="flex-1 max-w-[1440px] md:flex-auto md:h-screen md:overflow-y-scroll">
+            <Header />
+            <Outlet />
+          </div>
         </div>
       </div>
     </NavigationContextProvider>

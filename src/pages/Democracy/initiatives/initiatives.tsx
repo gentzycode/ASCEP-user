@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import DemocracyLayout from "@/layouts/DemocracyLayout";
 import { SDG_Images } from "@/utils/Democracy/Images";
-import { Initiatives_Data, Proposals_Data } from "@/utils/Democracy/Mock_Data";
+import { Initiatives_Data } from "@/utils/Democracy/Mock_Data";
 import { useState } from "react";
 import {
   AdvancedSearch,
@@ -11,7 +11,7 @@ import {
   PagesHeroSection,
 } from "@/components/Democracy";
 
-const Initiatives = () => {
+const InitiativesHomePage = () => {
   const [filterOption, setFilterOption] = useState<string>("Most active");
   const [view, setView] = useState<string>("card view");
   const [advanceSearch, setAdvanceSearch] = useState<boolean>(false);
@@ -111,4 +111,4 @@ const Initiatives = () => {
   );
 };
 
-export default Initiatives;
+export default InitiativesHomePage;
