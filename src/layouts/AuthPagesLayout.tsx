@@ -4,7 +4,7 @@ import { Navigate, Outlet } from "react-router-dom";
 export default function AuthPagesLayout() {
   const { isLoggedIn } = useAuthContext();
 
-  if (isLoggedIn) return <Navigate to="/" />;
+  if (isLoggedIn) return <Navigate to="/main" />;
 
   return (
     <div className="relative min-h-screen bg-[#F5F5F5] ">

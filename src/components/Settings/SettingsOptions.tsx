@@ -1,8 +1,11 @@
+import { useAuthContext } from "@/providers/AuthProvider";
 import { useSettingsContext } from "@/providers/SettingsProvider";
 import { ArrowRight2 } from "iconsax-react";
 
 export default function SettingsOptions() {
   const { activeOption, setActiveOption } = useSettingsContext();
+  const { logout } = useAuthContext();
+
   return (
     <div className="col-span-5 bg-white p-6 rounded-[40px] h-fit">
       {options?.map((option) => (
@@ -21,7 +24,10 @@ export default function SettingsOptions() {
         </div>
       ))}
 
-      <div className="flex items-center justify-between py-4 border-b border-[#F0F0F0]">
+      <div
+        onClick={logout}
+        className="flex items-center justify-between py-4 border-b border-[#F0F0F0]"
+      >
         <div className="cursor-pointer spacey-y-8">
           <p className="text-sm font-bold text-[#E43F40]">Sign out</p>
           <p className="text-[10px] text-[#E43F40]/50">
