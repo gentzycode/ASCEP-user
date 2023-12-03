@@ -44,3 +44,12 @@ export const editProfileSchema = z.object({
     message: "Username must be at least 3 characters.",
   }),
 });
+
+export const twoFactorAuthSchema = z.object({
+  email: z
+    .string({ required_error: "Email is required" })
+    .email({ message: "Enter a valid email" })
+    .min(3, {
+      message: "Email must be at least 3 characters.",
+    }),
+});

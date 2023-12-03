@@ -2,6 +2,8 @@ import { UserProfile } from ".";
 import { useSettingsContext } from "@/providers/SettingsProvider";
 import ChangePassword from "./ChangePassword";
 import EditProfile from "./EditProfile";
+import TwoFactorAuth from "./TwoFactorAuth";
+import TwoFactorAuthOTP from "./TwoFactorAuthOTP";
 
 export default function ActiveSettingsOption() {
   const { activeOption } = useSettingsContext();
@@ -14,6 +16,8 @@ export default function ActiveSettingsOption() {
       {activeOption === "User Profile" && <UserProfile />}
       {activeOption === "Change Password" && <ChangePassword />}
       {activeOption === "Edit Profile" && <EditProfile />}
+      {activeOption === "Enable 2FA" && <TwoFactorAuth />}
+      {activeOption === "Verify 2FA OTP" && <TwoFactorAuthOTP />}
     </div>
   );
 }
