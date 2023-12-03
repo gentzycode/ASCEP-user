@@ -1,5 +1,6 @@
 import MobileNavigation from "@/components/layout-components/MobileNavigation";
 import SideNavigation from "@/components/layout-components/SideNavigation";
+import { Toaster } from "@/components/ui/toaster";
 import NavigationContextProvider from "@/contexts/NavigationContext";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { Navigate, Outlet } from "react-router-dom";
@@ -12,11 +13,12 @@ export default function MainLayout() {
     <NavigationContextProvider>
       <div>
         <MobileNavigation />
-        <div className="md:flex w-full">
+        <div className="w-full md:flex">
           <SideNavigation />
           <Outlet />
         </div>
       </div>
+      <Toaster />
     </NavigationContextProvider>
   );
 }

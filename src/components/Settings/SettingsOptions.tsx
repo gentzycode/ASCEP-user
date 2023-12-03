@@ -1,18 +1,23 @@
+import { useSettingsContext } from "@/providers/SettingsProvider";
 import { ArrowRight2 } from "iconsax-react";
 
 export default function SettingsOptions() {
+  const { activeOption, setActiveOption } = useSettingsContext();
   return (
     <div className="col-span-5 bg-white p-6 rounded-[40px]">
       {options?.map((option) => (
         <div
           key={option.title}
-          className="flex items-center justify-between py-4 border-b border-[#F0F0F0]"
+          className={`flex cursor-pointer items-center justify-between py-4 border-b border-[#F0F0F0] ${
+            activeOption === option.title ? "opacity-100" : "opacity-30"
+          } `}
+          onClick={() => setActiveOption(option.title)}
         >
-          <div className="cursor-pointer spacey-y-8">
+          <div className=" spacey-y-8">
             <p className="text-sm font-bold text-dark">{option.title}</p>
             <p className="text-[10px] text-dark/40">{option.subtitle}</p>
           </div>
-          <ArrowRight2 size={16} />
+          {activeOption === option.title && <ArrowRight2 size={16} />}
         </div>
       ))}
 
@@ -29,7 +34,7 @@ export default function SettingsOptions() {
   );
 }
 
-const options = [
+const options: SettingsOptionObj[] = [
   {
     title: "User Profile",
     subtitle: "View Profile",

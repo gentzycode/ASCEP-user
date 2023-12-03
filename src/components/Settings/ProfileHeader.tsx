@@ -1,6 +1,8 @@
 import { Button } from "../ui/button";
+import { useToast } from "../ui/use-toast";
 
 export default function ProfileHeader() {
+  const { toast } = useToast();
   return (
     <div
       className="relative h-[141px] w-full flex justify-end items-center p-5 "
@@ -10,7 +12,19 @@ export default function ProfileHeader() {
         backgroundPosition: "center",
       }}
     >
-      <Button className="px-12"> Edit Profile</Button>
+      <Button
+        onClick={() =>
+          toast({
+            description: "Hello",
+            variant: "success",
+            title: "Success",
+            duration: 4000,
+          })
+        }
+        className="px-12"
+      >
+        Edit Profile
+      </Button>
 
       <div className="absolute -bottom-[120px] left-16 flex gap-5 items-end">
         <div className="rounded-full border-[#F9F6FB] border-[10px] w-[200px] h-[200px] ">
