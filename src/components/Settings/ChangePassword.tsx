@@ -15,14 +15,10 @@ export default function ChangePassword() {
   });
 
   const { toast } = useToast();
-
-  //   const navigate = useNavigate();
-
   const {
     control,
     handleSubmit,
     formState: { errors },
-    resetField,
   } = form;
 
   function onSubmit(values: z.infer<typeof changePasswordSchema>) {

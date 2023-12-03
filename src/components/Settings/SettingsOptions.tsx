@@ -4,7 +4,7 @@ import { ArrowRight2 } from "iconsax-react";
 export default function SettingsOptions() {
   const { activeOption, setActiveOption } = useSettingsContext();
   return (
-    <div className="col-span-5 bg-white p-6 rounded-[40px]">
+    <div className="col-span-5 bg-white p-6 rounded-[40px] h-fit">
       {options?.map((option) => (
         <div
           key={option.title}

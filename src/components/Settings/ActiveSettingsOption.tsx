@@ -1,6 +1,7 @@
 import { UserProfile } from ".";
 import { useSettingsContext } from "@/providers/SettingsProvider";
 import ChangePassword from "./ChangePassword";
+import EditProfile from "./EditProfile";
 
 export default function ActiveSettingsOption() {
   const { activeOption } = useSettingsContext();
@@ -12,6 +13,7 @@ export default function ActiveSettingsOption() {
       </p>
       {activeOption === "User Profile" && <UserProfile />}
       {activeOption === "Change Password" && <ChangePassword />}
+      {activeOption === "Edit Profile" && <EditProfile />}
     </div>
   );
 }

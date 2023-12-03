@@ -22,3 +22,25 @@ export const changePasswordSchema = z
       path: ["confirmPassword"],
     }
   );
+
+export const editProfileSchema = z.object({
+  fullName: z.string({ required_error: "Full name is required" }).min(3, {
+    message: "Full name must be at least 3 characters.",
+  }),
+
+  email: z
+    .string({ required_error: "Email is required" })
+    .email({ message: "Enter a valid email" })
+    .min(3, {
+      message: "Email must be at least 3 characters.",
+    }),
+  phone: z
+    .string({ required_error: "Phone number is required" })
+    .min(11, {
+      message: "Phone number must be at 11 characters.",
+    })
+    .max(11, { message: "Phone must be at 11 characters." }),
+  username: z.string({ required_error: "Username is required" }).min(3, {
+    message: "Username must be at least 3 characters.",
+  }),
+});

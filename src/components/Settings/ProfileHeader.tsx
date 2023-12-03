@@ -1,8 +1,8 @@
+import { useSettingsContext } from "@/providers/SettingsProvider";
 import { Button } from "../ui/button";
-import { useToast } from "../ui/use-toast";
 
 export default function ProfileHeader() {
-  const { toast } = useToast();
+  const { setActiveOption } = useSettingsContext();
   return (
     <div
       className="relative h-[141px] w-full flex justify-end items-center p-5 "
@@ -12,17 +12,7 @@ export default function ProfileHeader() {
         backgroundPosition: "center",
       }}
     >
-      <Button
-        onClick={() =>
-          toast({
-            description: "Hello",
-            variant: "success",
-            title: "Success",
-            duration: 4000,
-          })
-        }
-        className="px-12"
-      >
+      <Button onClick={() => setActiveOption("Edit Profile")} className="px-12">
         Edit Profile
       </Button>
 
