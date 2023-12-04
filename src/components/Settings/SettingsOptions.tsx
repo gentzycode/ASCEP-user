@@ -18,7 +18,7 @@ export default function SettingsOptions() {
         >
           <div className=" spacey-y-8">
             <p className="text-sm font-bold text-dark">{option.title}</p>
-            <p className="text-[10px] text-dark/40">{option.subtitle}</p>
+            <p className="text-[12px] text-dark/40">{option.subtitle}</p>
           </div>
           {activeOption === option.title && <ArrowRight2 size={16} />}
         </div>
