@@ -6,6 +6,9 @@ interface ProposalType {
     percentage: number
 }
 interface InitiativesType {
+    user: string
+    email: string
+    title: string
     status: string
     content: string
     follower: number

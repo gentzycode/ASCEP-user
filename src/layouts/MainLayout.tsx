@@ -1,5 +1,8 @@
-import MobileNavigation from "@/components/layout-components/MobileNavigation";
-import SideNavigation from "@/components/layout-components/SideNavigation";
+import {
+  Header,
+  MobileNavigation,
+  SideNavigation,
+} from "@/components/layout-components";
 import { Toaster } from "@/components/ui/toaster";
 import NavigationContextProvider from "@/contexts/NavigationContext";
 import { useAuthContext } from "@/providers/AuthProvider";
@@ -15,7 +18,10 @@ export default function MainLayout() {
         <MobileNavigation />
         <div className="w-full md:flex">
           <SideNavigation />
-          <Outlet />
+          <div className="flex-1 max-w-[1440px] md:flex-auto md:h-screen md:overflow-y-scroll">
+            <Header />
+            <Outlet />
+          </div>
         </div>
       </div>
       <Toaster />

@@ -43,7 +43,10 @@ export const Proposals_Data: ProposalType[] = [
 
 export const Initiatives_Data: InitiativesType[] = [
   {
+    user: "Dexter Olaniyi",
+    email: "Dexterola@gmail.com",
     status: "published",
+    title: "Strategic plan for a 100% green city",
     content:
       "This is a debate that has been going on for a long time and it is the possibility of opening the metro on weekends at night. It would be important to know if it is a positive measure or too expensive for what it reports to the city.  is a debate that has been going on for a long time and it is the possibility of opening the metro on weekends at night",
     follower: 2,
@@ -53,7 +56,10 @@ export const Initiatives_Data: InitiativesType[] = [
     signed: 1,
   },
   {
+    user: "Dexter Olaniyi",
+    email: "Dexterola@gmail.com",
     status: "published",
+    title: "Strategic plan for a 100% green city",
     content:
       "This is a debate that has been going on for a long time and it is the possibility of opening the metro on weekends at night. It would be important to know if it is a positive measure or too expensive for what it reports to the city.  is a debate that has been going on for a long time and it is the possibility of opening the metro on weekends at night",
     follower: 2,
@@ -63,7 +69,10 @@ export const Initiatives_Data: InitiativesType[] = [
     signed: 1,
   },
   {
+    user: "Dexter Olaniyi",
+    email: "Dexterola@gmail.com",
     status: "published",
+    title: "Strategic plan for a 100% green city",
     content:
       "This is a debate that has been going on for a long time and it is the possibility of opening the metro on weekends at night. It would be important to know if it is a positive measure or too expensive for what it reports to the city.  is a debate that has been going on for a long time and it is the possibility of opening the metro on weekends at night",
     follower: 2,
@@ -73,7 +82,10 @@ export const Initiatives_Data: InitiativesType[] = [
     signed: 1,
   },
   {
+    user: "Dexter Olaniyi",
+    email: "Dexterola@gmail.com",
     status: "published",
+    title: "Strategic plan for a 100% green city",
     content:
       "This is a debate that has been going on for a long time and it is the possibility of opening the metro on weekends at night. It would be important to know if it is a positive measure or too expensive for what it reports to the city.  is a debate that has been going on for a long time and it is the possibility of opening the metro on weekends at night",
     follower: 2,

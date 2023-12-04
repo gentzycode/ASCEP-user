@@ -1,7 +1,9 @@
-import { ArrowSquareLeft, ArrowSquareRight } from "@/Icons";
+
 import { sidebarLinks } from "@/utils/NavigationData";
 import { useNavigationContext } from "@/contexts/NavigationContext";
 import { Link } from "react-router-dom";
+import { ArrowSquareLeft, ArrowSquareRight } from "iconsax-react";
+
 interface SideNavigationProps {}
 
 const SideNavigation: React.FC<SideNavigationProps> = () => {
@@ -13,8 +15,8 @@ const SideNavigation: React.FC<SideNavigationProps> = () => {
         openSidebar ? "w-[285px]" : "w-[100px]"
       }`}
     >
-      <button className="absolute -right-3 top-12 z-20" onClick={toggleSidebar}>
-        {openSidebar ? <ArrowSquareLeft /> : <ArrowSquareRight />}
+      <button className="absolute -right-3 top-12 z-20 text-primary " onClick={toggleSidebar}>
+        {openSidebar ? <ArrowSquareLeft size={30} /> : <ArrowSquareRight size={30} />}
       </button>
       <div className="w-full mx-auto flex justify-center flex-wrap my-8 items-center duration-700">
         <img src="/images/logopic.png" alt="logo" className="h-[70px] -mb-3 " />

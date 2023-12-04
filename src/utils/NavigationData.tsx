@@ -1,14 +1,12 @@
 import {
-  DemocracyIcon,
-  DialogueIcon,
-  FacebookIcon,
-  LinkedinIcon,
-  MainIcon,
-  ResponseIcon,
-  SettingsIcon,
-  XIcon,
-  YoutubeIcon,
-} from "@/Icons";
+  TrendUp,
+  Messages1,
+  Profile2User,
+  Setting2,
+  TickSquare,
+  Facebook,
+  Youtube,
+} from "iconsax-react";
 
 export const DemocracyLinks: NavLinkType[] = [
   {
@@ -57,31 +55,31 @@ export const FooterLinks: NavLinkType[] = [
 export const sidebarLinks: NavLinkType[] = [
   {
     title: "Main",
-    Icon: <MainIcon />,
+    Icon: <TrendUp size={25} />,
     path: "/main",
     module: "main",
   },
   {
     title: "ASCEP Response",
-    Icon: <ResponseIcon />,
+    Icon: <Messages1 size={25} />,
     path: "/response",
     module: "response",
   },
   {
     title: "ASCEP Dialogue",
-    Icon: <DialogueIcon />,
+    Icon: <Profile2User size={25} />,
     path: "/dialogue",
     module: "dialogue",
   },
   {
     title: "ASCEP Democracy",
-    Icon: <DemocracyIcon />,
+    Icon: <TickSquare size={25} />,
     path: "/democracy",
     module: "democracy",
   },
   {
     title: "Settings",
-    Icon: <SettingsIcon />,
+    Icon: <Setting2 size={25} />,
     path: "/settings",
     module: "settings",
   },
@@ -90,21 +88,21 @@ export const SocialLinks: NavLinkType[] = [
   {
     title: "Facebook",
     path: "#",
-    Icon: <FacebookIcon />,
+    Icon: <Facebook />,
   },
   {
     title: "X",
     path: "#",
-    Icon: <XIcon />,
+    Icon: <Facebook />,
   },
   {
     title: "Youtube",
     path: "#",
-    Icon: <YoutubeIcon />,
+    Icon: <Youtube />,
   },
   {
     title: "Linkedin",
     path: "#",
-    Icon: <LinkedinIcon />,
+    Icon: <Facebook />,
   },
 ];

@@ -16,6 +16,9 @@
   h4 {
     @apply text-[24px] font-bold;
   }
+  body{
+    @apply bg-light
+  }
 }
 
 @layer utilities {
