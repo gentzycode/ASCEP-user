@@ -40,6 +40,8 @@ module.exports = {
         success: "#31D0AA",
         error: "#E43F40",
         brand_green: "#3B8D60",
+        brand_green2: "#008940",
+        faded_green: "#DEF5DC",
         text: "#4A4A68",
         subtle_text: "#8C8CA1",
         green_text: "#48A874",

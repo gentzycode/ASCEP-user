@@ -6,7 +6,7 @@ import {
 import NavigationContextProvider from "@/contexts/NavigationContext";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { Navigate, Outlet } from "react-router-dom";
-
+import { Toaster } from "@/components/ui/toaster";
 export default function MainLayout() {
   const { isLoggedIn } = useAuthContext();
 
@@ -23,6 +23,7 @@ export default function MainLayout() {
           </div>
         </div>
       </div>
+      <Toaster />
     </NavigationContextProvider>
   );
 }
