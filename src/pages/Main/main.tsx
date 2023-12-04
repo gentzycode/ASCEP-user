@@ -1,7 +1,6 @@
 import { Messages1, Profile2User } from "iconsax-react";
 
 import {
-  MainHeader,
   MainStatsCard,
   PopularPoll,
   Recommendation,
@@ -11,8 +10,6 @@ import {
 export default function MainPage() {
   return (
     <div className="w-full px-8 pt-8  bg-[#F9F6FB] overflow-x-hidden h-screen overflow-y-auto">
-      {/* <MainHeader /> */}
-
       <div className="mt-8 space-y-5">
         {/* MAIN STATS */}
         <div className="grid grid-cols-3 gap-6 ">
