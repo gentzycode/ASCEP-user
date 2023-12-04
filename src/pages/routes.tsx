@@ -9,7 +9,7 @@ import {
   InitiativesHomePage,
   ProposalsHomePage,
 } from "./Democracy";
-import { MapView } from "./Response";
+import { DataView, MapView } from "./Response";
 
 const routes: RouterType[] = [
   {
@@ -64,12 +64,12 @@ export const responseRoutes: RouterType[] = [
   {
     path: "/response/map-view",
     element: <MapView />,
-    title: "response",
+    title: "Map View",
   },
   {
     path: "/response/data-view",
-    element: <MapView />,
-    title: "response",
+    element: <DataView />,
+    title: "Data View",
   },
   {
     path: "/response/activity",

@@ -1,13 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { FilterSquare } from "iconsax-react";
+import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 export default function ResponseLayout() {
+  const [selectedPage, setSelectedPage] = useState("");
   const location = useLocation();
+
+  useEffect(() => {
+    setSelectedPage(
+      responsePages?.filter((page) => page.path === location.pathname)[0].title
+    );
+  }, []);
+
   return (
     <div className="relative w-full h-[calc(100%-93px)] px-8 ">
       <div className="flex items-center justify-between mb-8 ">
-        <h4>Map View</h4>
+        <h4>{selectedPage}</h4>
 
         <div className="flex gap-4">
           <Button size="xs" variant="pill">
