@@ -31,7 +31,7 @@ export const DemocracyLinks: NavLinkType[] = [
   },
   {
     title: "SDG",
-    path: "#",
+    path: "/democracy/sdg",
   },
 ];
 export const FooterLinks: NavLinkType[] = [

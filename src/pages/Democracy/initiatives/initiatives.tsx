@@ -63,7 +63,7 @@ const InitiativesHomePage = () => {
         </div>
 
         {/* START OF RIGHT SIDE */}
-        <div className=" xl:w-[320px]">
+        <div className=" xl:w-[280px]">
           {/*  Filters by Status  */}
           <h2 className="p-[16px] pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit my-6 mt-4">
             Status

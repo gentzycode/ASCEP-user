@@ -16,8 +16,8 @@
   h4 {
     @apply text-[24px] font-bold;
   }
-  body{
-    @apply bg-light
+  body {
+    @apply bg-light;
   }
 }
 
@@ -51,6 +51,10 @@
   }
 }
 
+/* TEXT EDITOR */
+.ql-editor {
+  @apply !h-[200px] bg-[#C4C4C41F];
+}
 /* Hide the scrollbar track */
 .custom-scrollbar::-webkit-scrollbar {
   width: 12px;

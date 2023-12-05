@@ -1,16 +1,16 @@
-import { IconWrapper } from "../custom";
+import { IconWrapper } from "../../custom";
 import { Calendar2, Filter } from "iconsax-react";
-import { Button } from "../ui/button";
-import { FilterButtons } from ".";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
+import { Button } from "../../ui/button";
+import { FilterButtons } from "..";
+import { Label } from "../../ui/label";
+import { Input } from "../../ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "../../ui/select";
 
 interface AdvancedSearchProps {
   filterOptions: string[];
@@ -128,7 +128,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
         <Button className="w-[175px] col-span-2">
           Filter
           <IconWrapper className="bg-transparent">
-            <Filter size="25" color="#292925" />
+            <Filter size="25" color="#292925" variant="Bold" />
           </IconWrapper>
         </Button>
       </div>

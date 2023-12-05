@@ -9,6 +9,8 @@ import {
   DebatesInfoPage,
   InitiativesHomePage,
   ProposalsHomePage,
+  SDGsHomePage,
+  StartDebatePage,
 } from "./Democracy";
 
 const routes: RouterType[] = [
@@ -35,7 +37,12 @@ const routes: RouterType[] = [
   {
     path: "/democracy/debates/:id",
     element: <DebatesInfoPage />,
-    title: "democracy-debates",
+    title: "democracy-debate-info",
+  },
+  {
+    path: "/democracy/debates/start-debate",
+    element: <StartDebatePage />,
+    title: "democracy-debate-start",
   },
   {
     path: "/democracy/proposals",
@@ -46,6 +53,11 @@ const routes: RouterType[] = [
     path: "/democracy/initiatives",
     element: <InitiativesHomePage />,
     title: "democracy-initiatives",
+  },
+  {
+    path: "/democracy/sdg",
+    element: <SDGsHomePage />,
+    title: "democracy-SDGs",
   },
   {
     path: "/response",

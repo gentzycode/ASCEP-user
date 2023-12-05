@@ -1,5 +1,5 @@
-import { Button } from "../ui/button";
-import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
+import { Button } from "../../ui/button";
+import { ToggleGroup, ToggleGroupItem } from "../../ui/toggle-group";
 
 interface FilterButtonsProps {
   filterOptions: string[];

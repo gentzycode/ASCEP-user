@@ -1,5 +1,5 @@
 import { ArrowCircleRight2 } from "iconsax-react";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { Link } from "react-router-dom";
 
 interface ListViewCardsProps {

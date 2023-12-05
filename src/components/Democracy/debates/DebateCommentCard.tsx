@@ -7,7 +7,6 @@ import { useState } from "react";
 interface DebateCommentCardProps {}
 const DebateCommentCard: React.FC<DebateCommentCardProps> = () => {
   const [showResponse, setShowResponse] = useState(false);
-  const showResponseClass = "h-auto";
   return (
     <div className="bg-[#fff] p-6 rounded-xl">
       <div className="flex justify-start items-center gap-6 my-4 flex-wrap">
@@ -89,7 +88,7 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = () => {
       {/* RESPONSE */}
       <div
         className={` ${
-          showResponse ? "h-auto" : "h-0"
+          showResponse ? "max-h-auto" : "h-0"
         } overflow-hidden duration-700`}
       >
         <div className=" border-t-2 border-base-500 mt-2" />

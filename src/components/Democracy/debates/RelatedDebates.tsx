@@ -5,9 +5,11 @@ import { z } from "zod";
 import { FormInput } from "@/components/custom";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 interface RelatedDebatesProps {}
 const RelatedDebates: React.FC<RelatedDebatesProps> = () => {
+  const [addRelated, setAddRelated] = useState(false);
   const addRelatedSchema = z.object({
     url: z
       .string({ required_error: "Url is required" })
@@ -30,14 +32,17 @@ const RelatedDebates: React.FC<RelatedDebatesProps> = () => {
         <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
           Related content (3)
         </h2>
-        <button>Add related content</button>
+        <button onClick={() => setAddRelated(!addRelated)}>
+          Add related content
+        </button>
       </div>
       <h4 className="mt-6">Link to related content</h4>
       <p>You can add links of Proposal, Debate, and Budget investment.</p>
       <Form {...form}>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex items-start justify-stretch gap-2  my-5"
+          className={`${
+            addRelated ? "h-[60px] opacity-100" : "h-0 opacity-0"} overflow-hidden duration-300 flex items-start justify-stretch gap-2  my-5`}
         >
           <div className="flex-1">
             <FormInput
@@ -54,6 +59,7 @@ const RelatedDebates: React.FC<RelatedDebatesProps> = () => {
           </Button>
         </form>
       </Form>
+
       <div className="flex gap-10 flex-col mt-10">
         <ListViewCard title="The right to play: for a more child-friendly city" />
         <ListViewCard title="The right to play: for a more child-friendly city" />
