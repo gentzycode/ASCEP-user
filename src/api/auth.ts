@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "react-query";
 import axios from "axios";
 import baseUrl from "./baseUrl";
-import { signupSchema } from "@/schemas/AuthSchema";
+import { loginSchema, signupSchema } from "@/schemas/AuthSchema";
 import { z } from "zod";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { useToast } from "@/components/ui/use-toast";
@@ -23,6 +23,25 @@ export const useRegister = () => {
         navigate("/auth/otp", {
           state: { email, timeLimit: res.data.timeLimit },
         });
+      },
+    }
+  );
+};
+
+export const useLogin = () => {
+  const { login } = useAuthContext();
+
+  return useMutation(
+    (values: z.infer<typeof loginSchema>) => {
+      return axios
+        .post(`${baseUrl}/user/login`, values)
+        .then((res) => res.data);
+    },
+    {
+      onSuccess: (res) => {
+        if (res.code === "VERIFY-EMAIL") {
+          //
+        } else login(res.data);
       },
     }
   );

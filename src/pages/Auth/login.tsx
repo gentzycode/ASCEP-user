@@ -1,8 +1,8 @@
+import { useLogin } from "@/api/auth";
 import { FormCard } from "@/components/Auth";
 import { FormInput } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useAuthContext } from "@/providers/AuthProvider";
 import { loginSchema } from "@/schemas/AuthSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -10,8 +10,6 @@ import { Link } from "react-router-dom";
 import { z } from "zod";
 
 export default function LoginPage() {
-  const { login } = useAuthContext();
-
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
   });
@@ -22,9 +20,10 @@ export default function LoginPage() {
     formState: { errors },
   } = form;
 
+  const { mutate, isLoading } = useLogin();
+
   function onSubmit(values: z.infer<typeof loginSchema>) {
-    console.log(values);
-    login();
+    mutate(values);
   }
 
   return (
@@ -59,7 +58,7 @@ export default function LoginPage() {
               <Link to="/auth/forgot-password">Forgot Password?</Link>
             </div>
 
-            <Button type="submit" className="w-full">
+            <Button isLoading={isLoading} type="submit" className="w-full">
               Login
             </Button>
 
