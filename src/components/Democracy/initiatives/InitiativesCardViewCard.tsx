@@ -64,11 +64,11 @@ const InitiativesCardViewCard: React.FC<InitiativesCardViewCardProps> = ({
           </div>
 
           <div className="my-6 flex justify-between gap-1 flex-wrap">
-            <Button className="bg-dark text-light capitalize text-[14px]">
+            <Button className="bg-dark text-light capitalize text-[12px]">
               <Notification size="25" />
               <span>{initiatives.follower} followers</span>
             </Button>
-            <Button className="bg-dark text-light capitalize text-[14px]">
+            <Button className="bg-dark text-light capitalize text-[12px]">
               <Messages1 size="25" />
               <span>{initiatives.comments} comments</span>
             </Button>

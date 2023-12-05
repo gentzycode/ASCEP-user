@@ -7,7 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 import NavigationContextProvider from "@/contexts/NavigationContext";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { Navigate, Outlet } from "react-router-dom";
-
+import Footer from "./Footer";
 export default function MainLayout() {
   const { isLoggedIn } = useAuthContext();
 
@@ -18,9 +18,10 @@ export default function MainLayout() {
         <MobileNavigation />
         <div className="w-full md:flex">
           <SideNavigation />
-          <div className="flex-1 max-w-[1440px] md:flex-auto md:h-screen md:overflow-y-scroll">
+          <div className="flex-1 w-full max-w-[1440px] md:flex-auto md:h-screen md:overflow-y-scroll">
             <Header />
             <Outlet />
+            <Footer />
           </div>
         </div>
       </div>

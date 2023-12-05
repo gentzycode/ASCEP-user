@@ -5,7 +5,7 @@ interface ProposalType {
     tags: string[]
     percentage: number
 }
-interface InitiativesType {
+interface InitiativeType {
     user: string
     email: string
     title: string

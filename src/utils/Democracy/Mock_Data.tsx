@@ -41,7 +41,7 @@ export const Proposals_Data: ProposalType[] = [
   },
 ];
 
-export const Initiatives_Data: InitiativesType[] = [
+export const Initiatives_Data: InitiativeType[] = [
   {
     user: "Dexter Olaniyi",
     email: "Dexterola@gmail.com",

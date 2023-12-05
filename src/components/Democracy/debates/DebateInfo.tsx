@@ -1,11 +1,13 @@
 import { IconWrapper } from "@/components/custom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
   CardEdit,
   Dislike,
   DocumentCopy,
   Facebook,
+  Flag,
   Like1,
   Messages1,
   Whatsapp,
@@ -16,37 +18,41 @@ interface DebateInfoProps {}
 const DebateInfo: React.FC<DebateInfoProps> = () => {
   return (
     <div className="flex justify-start gap-10 lg:flex-row flex-col">
-      <div className=" w-full lg:w-fit">
-        <h1 className="text-[20px] text-dark">
-          Metro at night (on weekends). Is it positive?
-        </h1>
-        <div className="flex justify-start items-center gap-6 my-4 flex-wrap">
-          <Avatar className="h-12 w-12">
-            <AvatarImage src="/images/avatar.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <h2 className="text-dark text-[14px] -ml-4">Dexter Olaniyi</h2>
-          <p className="text-[12px] text-base-400 my-3 ">2023-10-28</p>
-          <div className="flex items-center gap-3 rounded-[10px] px-3 py-1 text-white bg-dark text-xs w-fit">
-            <Messages1 size={20} />3 Comments
+      <div className=" w-full lg:w-fit flex flex-col gap-6">
+        {/* MAIN INFO */}
+        <div>
+          <h1 className="text-[20px] text-dark">
+            Metro at night (on weekends). Is it positive?
+          </h1>
+          <div className="flex justify-start items-center gap-6 my-4 flex-wrap">
+            <Avatar className="h-12 w-12">
+              <AvatarImage src="/images/avatar.png" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <h2 className="text-dark text-[14px] -ml-4">Dexter Olaniyi</h2>
+            <p className="text-[12px] text-base-400 my-3 ">2023-10-28</p>
+            <div className="flex items-center gap-3 rounded-[10px] px-3 py-1 text-white bg-dark text-xs w-fit">
+              <Messages1 size={20} />3 Comments
+            </div>
           </div>
+          <p className="max-w-[900px] text-justify">
+            This is a debate that has been going on for a long time and it is
+            the possibility of opening the metro on weekends at night. It would
+            be important to know if it is a positive measure or too expensive
+            for what it reports to the city. is a debate that has been going on
+            for a long time and it is the possibility of opening the metro on
+            weekends at night We do not need too high a frequency, but we do not
+            need more than 20 minutes, because if we had to change trains, it
+            would drive many people back. It would be interesting, if someone
+            knows a little more about the subject, to know the cons that this
+            would have, because I believe that currently, there is no metro in
+            the world that is open at night, so I do not think it is an easy
+            task.
+          </p>
         </div>
 
-        <p className="max-w-[900px] text-justify">
-          This is a debate that has been going on for a long time and it is the
-          possibility of opening the metro on weekends at night. It would be
-          important to know if it is a positive measure or too expensive for
-          what it reports to the city. is a debate that has been going on for a
-          long time and it is the possibility of opening the metro on weekends
-          at night We do not need too high a frequency, but we do not need more
-          than 20 minutes, because if we had to change trains, it would drive
-          many people back. It would be interesting, if someone knows a little
-          more about the subject, to know the cons that this would have, because
-          I believe that currently, there is no metro in the world that is open
-          at night, so I do not think it is an easy task.
-        </p>
-
-        <div className="my-6 flex gap-[4px]">
+        {/* SDGs */}
+        <div className="flex gap-[4px]">
           {Array.from(["1", "2", "3", "+3"]).map((num, index) => {
             return (
               <Button
@@ -58,6 +64,19 @@ const DebateInfo: React.FC<DebateInfoProps> = () => {
             );
           })}
         </div>
+
+        {/* TARGETS */}
+        <div className="flex gap-[8px] flex-wrap">
+          {["Target 1.1", "Target 1.1", "Target 1.1"].map((tag, index) => (
+            <Button
+              key={index}
+              className="h-fit text-[12px] text-dark bg-light_grey px-[25px]"
+            >
+              {tag}
+            </Button>
+          ))}
+        </div>
+        {/* TAGS */}
         <div className="flex gap-[8px] flex-wrap">
           {["Urbanism", "Transport", "Metro"].map((tag, index) => (
             <Button
@@ -70,7 +89,27 @@ const DebateInfo: React.FC<DebateInfoProps> = () => {
         </div>
       </div>
 
-      <div className="w-full  md:w-[400px] flex justify-start flex-col gap-12">
+      <div className="w-full  md:w-[400px] flex justify-start flex-col gap-10">
+        <div className="flex gap-2">
+          <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
+            <Flag size="25" />
+          </Button>
+
+          <Separator
+            orientation="vertical"
+            className="h-5  text-dark bg-base-500"
+          />
+          <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
+            Hide
+          </Button>
+          <Separator
+            orientation="vertical"
+            className="h-5  text-dark bg-base-500"
+          />
+          <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
+            Block Author
+          </Button>
+        </div>
         {/* AUTHOR */}
         <div>
           <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">

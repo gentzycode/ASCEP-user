@@ -1,6 +1,6 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
-import { Label } from "../ui/label";
+import { Label } from "../../ui/label";
 
 const items = [
   {
