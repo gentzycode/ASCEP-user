@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import * as z from "zod";
 
 import { FormCard } from "@/components/Auth";
@@ -8,13 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { signupSchema } from "@/schemas/AuthSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRegister } from "@/api/auth";
 
 export default function SignupPage() {
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
   });
-
-  const navigate = useNavigate();
 
   const {
     control,
@@ -22,9 +21,10 @@ export default function SignupPage() {
     formState: { errors },
   } = form;
 
+  const { mutate, isLoading } = useRegister();
+
   function onSubmit(values: z.infer<typeof signupSchema>) {
-    console.log(values);
-    navigate("/auth/otp");
+    mutate(values);
   }
   return (
     <div>
@@ -38,7 +38,7 @@ export default function SignupPage() {
 
           <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-[30px]">
-              <FormInput
+              {/* <FormInput
                 name="firstName"
                 label="First Name"
                 control={control}
@@ -51,7 +51,7 @@ export default function SignupPage() {
                 control={control}
                 placeholder="Last Name"
                 errors={errors}
-              />
+              /> */}
               <FormInput
                 name="email"
                 label="Email"
@@ -60,7 +60,7 @@ export default function SignupPage() {
                 errors={errors}
               />
               <FormInput
-                name="phone"
+                name="mobile"
                 label="Phone Number"
                 control={control}
                 placeholder="Phone number"
@@ -83,7 +83,7 @@ export default function SignupPage() {
                 errors={errors}
               />
 
-              <Button type="submit" className="w-full">
+              <Button isLoading={isLoading} type="submit" className="w-full">
                 Get Started
               </Button>
 

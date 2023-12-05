@@ -18,8 +18,8 @@ export default function VerifyOtp() {
   function onSubmit(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (otp.length < 5) {
-      setOtpError("Enter a 5 digit code");
+    if (otp.length < 6) {
+      setOtpError("Enter a 6 digit code");
     } else {
       setOtpError(null);
       next();
@@ -33,13 +33,13 @@ export default function VerifyOtp() {
       <h2 className="text-[30px] text-center text-dark">Verify OTP</h2>
 
       <p className="font-medium text-center text-text">
-        Enter the five (5) Digit code that was sent to your email
+        Enter the six (6) Digit code that was sent to your email
       </p>
 
       <form onSubmit={onSubmit} className="space-y-[30px]">
         <div className="flex justify-center">
           <CustomPinInput
-            length={5}
+            length={6}
             onChange={(e) => handleOtpChange(e)}
             error={otpError}
           />
