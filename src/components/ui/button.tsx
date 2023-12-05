@@ -12,6 +12,7 @@ const buttonVariants = cva(
         primary: "bg-primary text-btn-text hover:bg-primary/90",
         green: "bg-brand_green text-white hover:bg-brand_green/90",
         success: "bg-success text-white hover:bg-success/90 ",
+        pill: "bg-dark/10 text-dark  hover:bg-dark/20",
         secondary: "bg-base-100 text-base-400 hover:bg-base-100/50 ",
         "outline-primary":
           "border border-primary bg-transparent hover:bg-primary/10 text-primary",
@@ -31,6 +32,7 @@ const buttonVariants = cva(
       size: {
         default: "h-[52px] px-4 py-2 gap-3",
         sm: "h-8 rounded-[4px] px-3 gap-[6px] text-sm",
+        xs: "h-7 rounded-[10px] px-7 gap-[6px] text-xs font-medium",
         // lg: "h-11 rounded-[4px] px-8",
         // icon: "h-10 w-10",
       },

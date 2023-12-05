@@ -2,7 +2,6 @@ import { Navigate } from "react-router-dom";
 import { ForgotPasswordPage, LoginPage, OTPPage, SignupPage } from "./Auth";
 import Home from "./Home";
 import { MainPage } from "./Main";
-import Response from "./Response";
 import { SettingsPage } from "./Settings";
 import {
   DebatesHomePage,
@@ -12,6 +11,7 @@ import {
   SDGsHomePage,
   StartDebatePage,
 } from "./Democracy";
+import { ActivityPage, DataView, MapView } from "./Response";
 
 const routes: RouterType[] = [
   {
@@ -61,13 +61,32 @@ const routes: RouterType[] = [
   },
   {
     path: "/response",
-    element: <Response />,
+    element: <Navigate to="/response/map-view" />,
     title: "response",
   },
+
   {
     path: "/settings",
     element: <SettingsPage />,
     title: "ssettings",
+  },
+];
+
+export const responseRoutes: RouterType[] = [
+  {
+    path: "/response/map-view",
+    element: <MapView />,
+    title: "Map View",
+  },
+  {
+    path: "/response/data-view",
+    element: <DataView />,
+    title: "Data View",
+  },
+  {
+    path: "/response/activity",
+    element: <ActivityPage />,
+    title: "Activity",
   },
 ];
 
