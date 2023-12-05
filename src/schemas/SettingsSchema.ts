@@ -53,3 +53,14 @@ export const twoFactorAuthSchema = z.object({
       message: "Email must be at least 3 characters.",
     }),
 });
+export const createPostSchema = z.object({
+  title: z.string({ required_error: "Title is required" }).min(3, {
+    message: "Title must be at least 3 characters.",
+  }),
+  category: z.string({ required_error: "Category is required" }).min(3, {
+    message: "Category must be at least 3 characters.",
+  }),
+  location: z.string({ required_error: "Location is required" }).min(3, {
+    message: "Location must be at least 3 characters.",
+  }),
+});

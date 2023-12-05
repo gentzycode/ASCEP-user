@@ -1,4 +1,6 @@
+import { CreatePostModal } from "@/components/Response";
 import { Button } from "@/components/ui/button";
+import useDisclosure from "@/hooks/useDisclosure";
 import { FilterSquare } from "iconsax-react";
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
@@ -6,6 +8,8 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 export default function ResponseLayout() {
   const [selectedPage, setSelectedPage] = useState("");
   const location = useLocation();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     setSelectedPage(
@@ -19,6 +23,10 @@ export default function ResponseLayout() {
         <h4>{selectedPage}</h4>
 
         <div className="flex gap-4">
+          <Button onClick={onOpen} size="xs" variant="pill">
+            Add new post
+          </Button>
+          <CreatePostModal isOpen={isOpen} onClose={onClose} />
           <Button size="xs" variant="pill">
             Post history
           </Button>
