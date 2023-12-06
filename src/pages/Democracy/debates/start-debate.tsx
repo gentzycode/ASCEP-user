@@ -10,19 +10,21 @@ import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { CloseCircle } from "iconsax-react";
 import { Link } from "react-router-dom";
-import { SDG_Images } from "@/utils/Democracy/Images";
+import { SDG_Options } from "@/utils/Democracy/Images";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface StartDebateProps {}
+
 const StartDebate: React.FC<StartDebateProps> = () => {
   const [topics, setTopics] = useState<{ topic: string; id: string }[] | []>(
     []
   );
-
+  const [sdg, setSdg] = useState<SdgOptionsType[] | []>([]);
   const form = useForm<z.infer<typeof startDebateSchema>>({
     resolver: zodResolver(startDebateSchema),
   });
   const {
-    reset,
+    trigger,
     setValue,
     register,
     control,
@@ -30,13 +32,23 @@ const StartDebate: React.FC<StartDebateProps> = () => {
     watch,
     formState: { errors },
   } = form;
-  function onSubmit(values: z.infer<typeof startDebateSchema>) {
-    console.log("called");
+
+  async function onSubmit(values: z.infer<typeof startDebateSchema>) {
     console.log(values);
   }
   useEffect(() => {
     register("text");
   }, [register]);
+
+  useEffect(() => {
+    const sdgValue = sdg.map((item) => item.value).join(",");
+    setValue("sdg", sdgValue);
+  }, [sdg]);
+
+  useEffect(() => {
+    const Value = topics.map((item) => item.topic).join(",");
+    setValue("topics", Value);
+  }, [topics]);
 
   const onEditorStateChange = (text: any) => {
     setValue("text", text);
@@ -44,16 +56,22 @@ const StartDebate: React.FC<StartDebateProps> = () => {
 
   const addTopic = () => {
     const topic = watch("topics");
-    if (topic) {
-      const id = uuidv4();
-      setTopics((topics) => [...topics, { topic, id }]);
+    if (topic !== "") {
+      trigger("topics").then((isValid) => {
+        if (isValid) {
+          const value = topic?.split(",").pop()?.trim() as string;
+          const check = topics.find((topic) => topic.topic === value);
+          if (!check) {
+            const id = uuidv4();
+            setTopics((topics) => [...topics, { topic: value, id }]);
+          }
+        }
+      });
     }
-    reset({ topics: "" });
   };
 
-  const removeTopic = (id: string) => {
+  const removeTopic = (id: string) =>
     setTopics((topics) => topics.filter((topic) => topic.id !== id));
-  };
 
   const editorContent = watch("text");
 
@@ -131,8 +149,9 @@ const StartDebate: React.FC<StartDebateProps> = () => {
                   label="Topics"
                   control={control}
                   errors={errors}
-                  placeholder="Enter the tags you would like to use"
+                  placeholder="Enter the tags you would like to use separated with commas (‘,’)"
                 />
+
                 <Button
                   className="w-fit h-fit rounded-md"
                   type="button"
@@ -164,6 +183,7 @@ const StartDebate: React.FC<StartDebateProps> = () => {
                 </div>
               )}
             </div>
+
             {/* SDGs */}
             <div>
               <h5 className="text-[16px] md:text-[18px] text-dark -tracking-[0.36px] ">
@@ -173,26 +193,42 @@ const StartDebate: React.FC<StartDebateProps> = () => {
                 You can choose one or several SDGs aligned with your debate
               </p>
               <div className="flex flex-wrap gap-[15px] justify-stretch  mt-[23px]">
-                {SDG_Images.map((item, index) => (
-                  <Button
-                    key={index}
-                    className="bg-transparent h-fit p-0 hover:bg-transparent flex justify-start"
+                {SDG_Options.map((item) => (
+                  <div
+                    className="h-fit p-0 flex justify-start relative overflow-hidden"
+                    key={item.id}
                   >
-                    <img src={item} alt={index.toString()} />
-                  </Button>
+                    <Checkbox
+                      className="border-dark absolute top-0 left-0 w-full h-full border-transparent  
+                        opacity-60 checked:bg-primary appearance-none rounded-lg
+                      "
+                      onCheckedChange={(checked) => {
+                        return checked
+                          ? setSdg((values) => [...values, { ...item }])
+                          : setSdg((values) => {
+                              return values.filter(
+                                (value) => value.id !== item.id
+                              );
+                            });
+                      }}
+                    />
+                    <img src={item.image} alt={item.value.toString()} />
+                  </div>
                 ))}
               </div>
-              <p className="text-[14px] md:text-[16px] text-subtle_text -tracking-[0.36px]">
+              <p className="text-[14px] md:text-[16px] text-subtle_text -tracking-[0.36px] my-2">
                 You can introduce the code of a specific goal/target or a text
                 to find one. For more information visit the
-                <Link to="#" className="text-primary">
-                  {" "}
+                <Link to="#" className="text-primary ml-1">
                   SDG help page.
                 </Link>
               </p>
             </div>
 
-            <Button type="submit" className="w-fit">
+            <Button
+              type="submit"
+              className="w-full max-w-[400px] p-0 h-fit py-3"
+            >
               Start A Debate
             </Button>
           </form>
