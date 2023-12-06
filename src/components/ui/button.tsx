@@ -3,6 +3,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+import { FaSpinner } from "react-icons/fa";
 
 const buttonVariants = cva(
   "inline-flex items-center  justify-center whitespace-nowrap rounded-[16px] text-base font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300",
@@ -12,6 +13,7 @@ const buttonVariants = cva(
         primary: "bg-primary text-btn-text hover:bg-primary/90",
         green: "bg-brand_green text-white hover:bg-brand_green/90",
         success: "bg-success text-white hover:bg-success/90 ",
+        pill: "bg-dark/10 text-dark  hover:bg-dark/20",
         secondary: "bg-base-100 text-base-400 hover:bg-base-100/50 ",
         "outline-primary":
           "border border-primary bg-transparent hover:bg-primary/10 text-primary",
@@ -31,6 +33,7 @@ const buttonVariants = cva(
       size: {
         default: "h-[52px] px-4 py-2 gap-3",
         sm: "h-8 rounded-[4px] px-3 gap-[6px] text-sm",
+        xs: "h-7 rounded-[10px] px-7 gap-[6px] text-xs font-medium",
         // lg: "h-11 rounded-[4px] px-8",
         // icon: "h-10 w-10",
       },
@@ -48,6 +51,7 @@ export interface ButtonProps
   asChild?: boolean;
   rightIcon?: React.ReactNode;
   leftIcon?: React.ReactNode;
+  isLoading?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -60,6 +64,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       rightIcon,
       children,
       asChild = false,
+      isLoading,
       ...props
     },
     ref
@@ -72,7 +77,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {leftIcon}
-        {children}
+        {isLoading ? <FaSpinner className="animate-spin " /> : children}
         {rightIcon}
       </Comp>
     );

@@ -13,14 +13,14 @@ export default function Recommendation() {
         <p className="text-xl font-semibold mb-[14px] ">
           Request for Public Records
         </p>
-        <div className="flex gap-1 mb-[10px]">
+        <p className="flex gap-1 mb-[10px]">
           <span className="font-medium text-link">David Ubaka</span> sent this
           request to the{" "}
           <span className="font-medium text-link">
             Chicago Department of Public Health
           </span>{" "}
           on Oct 28, 2023
-        </div>
+        </p>
 
         <p className="text-sm font-medium text-subtle_text">
           I am writing to request access to the following public records under

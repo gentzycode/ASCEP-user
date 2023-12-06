@@ -8,7 +8,6 @@ import {
 export default function ForgotPasswordSteps() {
   const { step } = useForgotPasswordContext();
 
-  console.log(step);
   return (
     <div>
       {step === 1 && <ForgotPassword />}
