@@ -28,6 +28,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
   const login = (args: LoginResp) => {
     localStorage.setItem(config.key.accessToken, args.accessToken);
     localStorage.setItem(config.key.refreshToken, args.accessToken);
+    localStorage.setItem(config.key.expiresAt, args.expiresAt);
     localStorage.setItem(config.key.isLoggedIn, "true");
 
     setIsLoggedIn(true);
@@ -37,6 +38,8 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     localStorage.removeItem(config.key.accessToken);
     localStorage.removeItem(config.key.refreshToken);
     localStorage.removeItem(config.key.isLoggedIn);
+    localStorage.removeItem(config.key.expiresAt);
+
     setIsLoggedIn(false);
   };
 

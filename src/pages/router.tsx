@@ -6,6 +6,7 @@ import { AuthPagesLayout, MainLayout, ResponseLayout } from "@/layouts";
 import config from "@/utils/config";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect } from "react";
+import useAutoLogout from "@/hooks/useAuthoLogout";
 
 const Router = () => {
   const pageRoutes = routes.map(({ path, title, element }: RouterType) => {
@@ -26,10 +27,12 @@ const Router = () => {
 
   const { toast } = useToast();
 
+  useAutoLogout();
+
   useEffect(() => {
     axios.interceptors.request.use(
       (axiosConfig) => {
-        const token = localStorage.getItem(config.key.token);
+        const token = localStorage.getItem(config.key.accessToken);
         axiosConfig.headers.Authorization = `Bearer ${token}`;
         return axiosConfig;
       },
