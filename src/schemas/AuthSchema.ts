@@ -1,19 +1,19 @@
 import * as z from "zod";
 
 export const signupSchema = z.object({
-  firstName: z.string({ required_error: "First name is required" }).min(3, {
-    message: "First name must be at least 3 characters.",
-  }),
-  lastName: z.string({ required_error: "Last name is required" }).min(3, {
-    message: "Last name must be at least 3 characters.",
-  }),
+  // firstName: z.string({ required_error: "First name is required" }).min(3, {
+  //   message: "First name must be at least 3 characters.",
+  // }),
+  // lastName: z.string({ required_error: "Last name is required" }).min(3, {
+  //   message: "Last name must be at least 3 characters.",
+  // }),
   email: z
     .string({ required_error: "Email is required" })
     .email({ message: "Enter a valid email" })
     .min(3, {
       message: "Email must be at least 3 characters.",
     }),
-  phone: z
+  mobile: z
     .string({ required_error: "Phone number is required" })
     .min(11, {
       message: "Phone number must be at 11 characters.",
