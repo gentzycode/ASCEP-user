@@ -8,7 +8,7 @@ export const startDebateSchema = z.object({
     }),
     topics: z
         .string()
-        .min(4, "Please enter a valid value")
+        // .min(4, "Please enter a valid value")
         .optional()
         .or(z.literal('')),
     sdg: z

@@ -17,3 +17,8 @@ interface InitiativeType {
     date: string
     signed: number
 }
+interface SdgOptionsType {
+    image: string;
+    id: number;
+    value: number;
+}

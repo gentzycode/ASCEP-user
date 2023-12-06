@@ -17,3 +17,22 @@ export const SDG_Images = [
   "/images/SDG/image 34.png",
   "/images/SDG/image 35.png",
 ];
+export const SDG_Options = [
+  { image: "/images/SDG/image 19.png", id: 1, value: 1 },
+  { image: "/images/SDG/image 20.png", id: 2, value: 2 },
+  { image: "/images/SDG/image 21.png", id: 3, value: 3 },
+  { image: "/images/SDG/image 22.png", id: 4, value: 4 },
+  { image: "/images/SDG/image 23.png", id: 5, value: 5 },
+  { image: "/images/SDG/image 24.png", id: 6, value: 6 },
+  { image: "/images/SDG/image 25.png", id: 7, value: 7 },
+  { image: "/images/SDG/image 26.png", id: 8, value: 8 },
+  { image: "/images/SDG/image 27.png", id: 9, value: 9 },
+  { image: "/images/SDG/image 28.png", id: 10, value: 10 },
+  { image: "/images/SDG/image 29.png", id: 11, value: 11 },
+  { image: "/images/SDG/image 30.png", id: 12, value: 12 },
+  { image: "/images/SDG/image 31.png", id: 13, value: 13 },
+  { image: "/images/SDG/image 32.png", id: 14, value: 14 },
+  { image: "/images/SDG/image 33.png", id: 15, value: 15 },
+  { image: "/images/SDG/image 34.png", id: 16, value: 16 },
+  { image: "/images/SDG/image 35.png", id: 17, value: 17 },
+];

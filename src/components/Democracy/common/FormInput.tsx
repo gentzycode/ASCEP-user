@@ -21,7 +21,7 @@ import {
 import { Input, InputProps } from "../../ui/input";
 
 type FormInputProps<TFormValues extends FieldValues = FieldValues> = {
-  control: Control<TFormValues>;
+  control?: Control<TFormValues>;
   name: Path<TFormValues>;
   label?: string;
   placeholder?: string;
