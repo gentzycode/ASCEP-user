@@ -31,6 +31,7 @@ export const useRegister = () => {
 
 export const useLogin = () => {
   const { login } = useAuthContext();
+  const navigate = useNavigate();
 
   return useMutation(
     (values: z.infer<typeof loginSchema>) => {
@@ -41,6 +42,9 @@ export const useLogin = () => {
     {
       onSuccess: (res) => {
         if (res.code === "VERIFY-EMAIL") {
+          navigate("/auth/otp", {
+            state: { email: res.data.email, timeLimit: res.data.timeLimit },
+          });
           //
         } else login(res.data);
       },
