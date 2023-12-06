@@ -9,3 +9,9 @@ interface LoginResp {
   expiresAt: string;
   refreshToken: string;
 }
+
+interface ForgotPasswordCredentials {
+  token?: string;
+  email?: string;
+  password?: string;
+}

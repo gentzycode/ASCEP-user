@@ -8,7 +8,8 @@ export default function VerifyOtp() {
   const [otp, setotp] = useState("");
   const [otpError, setOtpError] = useState<string | null>(null);
 
-  const { next, prev } = useForgotPasswordContext();
+  const { next, prev, setResetPasswordData, resetPasswordData } =
+    useForgotPasswordContext();
 
   const handleOtpChange = (value: string) => {
     setOtpError(null);
@@ -22,9 +23,10 @@ export default function VerifyOtp() {
       setOtpError("Enter a 6 digit code");
     } else {
       setOtpError(null);
+
       next();
+      setResetPasswordData({ ...resetPasswordData, token: otp });
     }
-    console.log(otp);
   }
 
   return (

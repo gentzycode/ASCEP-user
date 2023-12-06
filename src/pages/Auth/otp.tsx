@@ -48,7 +48,7 @@ export default function OTPPage() {
 
       <FormCard>
         <div className="space-y-7">
-          <CardBackBtn onClick={() => navigate("/auth/signup")} />
+          <CardBackBtn onClick={() => navigate(-1)} />
           <h2 className="text-[30px] text-center text-dark">Verify OTP</h2>
 
           <p className="font-medium text-center text-text">

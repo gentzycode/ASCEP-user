@@ -1,3 +1,4 @@
+import { useResetPassword } from "@/api/auth";
 import { CardBackBtn, FormInput } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -5,12 +6,11 @@ import { useForgotPasswordContext } from "@/providers/ForgotPasswordProvider";
 import { newPasswordSchema } from "@/schemas/AuthSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import * as z from "zod";
 
 export default function CreateNewPassword() {
-  const { prev } = useForgotPasswordContext();
-  const navigate = useNavigate();
+  const { prev, resetPasswordData } = useForgotPasswordContext();
 
   const form = useForm<z.infer<typeof newPasswordSchema>>({
     resolver: zodResolver(newPasswordSchema),
@@ -21,9 +21,14 @@ export default function CreateNewPassword() {
     handleSubmit,
   } = form;
 
+  const { mutate, isLoading } = useResetPassword();
+
   const onSubmit = (data: z.infer<typeof newPasswordSchema>) => {
-    console.log(data);
-    navigate("/auth/login");
+    mutate({
+      email: resetPasswordData?.email,
+      token: resetPasswordData?.token,
+      password: data.password,
+    });
   };
 
   return (
@@ -58,7 +63,7 @@ export default function CreateNewPassword() {
             type="password"
             errors={errors}
           />
-          <Button type="submit" className="w-full">
+          <Button isLoading={isLoading} type="submit" className="w-full">
             Get Started
           </Button>
 

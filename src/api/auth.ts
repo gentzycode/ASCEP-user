@@ -6,6 +6,7 @@ import { loginSchema, signupSchema } from "@/schemas/AuthSchema";
 import { z } from "zod";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { useToast } from "@/components/ui/use-toast";
+import { useForgotPasswordContext } from "@/providers/ForgotPasswordProvider";
 
 export const useRegister = () => {
   const navigate = useNavigate();
@@ -93,6 +94,52 @@ export const useResendOTP = (email: string | null) => {
       },
       enabled: !!email,
       retry: false,
+    }
+  );
+};
+
+export const useForgotPassword = (email: string | null) => {
+  const { next, setResetPasswordData, resetPasswordData } =
+    useForgotPasswordContext();
+
+  return useQuery(
+    ["forgot-password", email],
+    () => {
+      return axios
+        .get(`${baseUrl}/user/forgot-password/${email}`)
+        .then((res) => res.data);
+    },
+    {
+      onSuccess: () => {
+        if (email) {
+          setResetPasswordData({ ...resetPasswordData, email });
+          next();
+        }
+      },
+      enabled: !!email,
+      retry: false,
+    }
+  );
+};
+
+export const useResetPassword = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  return useMutation(
+    (values: ForgotPasswordCredentials) =>
+      axios
+        .post(`${baseUrl}/user/reset-password`, values)
+        .then((res) => res.data),
+    {
+      onSuccess: () => {
+        toast({
+          title: "Success!",
+          variant: "success",
+          description: `Password reset successful`,
+        });
+        navigate("/auth/login");
+      },
     }
   );
 };
