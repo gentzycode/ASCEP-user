@@ -11,7 +11,9 @@ export default function UserProfile() {
       <ProfileRow title="Role" value={data?.roleDetail.name || ""} />
       <ProfileRow
         title="Date Joined"
-        value={new Date(data!.date_joined)?.toDateString() || ""}
+        value={
+          data?.date_joined ? new Date(data!.date_joined)?.toDateString() : ""
+        }
       />
     </div>
   );
