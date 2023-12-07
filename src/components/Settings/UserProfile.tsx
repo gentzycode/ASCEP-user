@@ -1,12 +1,18 @@
+import { useGetUserProfile } from "@/api/auth";
+
 export default function UserProfile() {
+  const { data } = useGetUserProfile();
   return (
     <div className="space-y-6">
-      <ProfileRow title="Full name" value="Dexter Olaniyi" />
-      <ProfileRow title="Email" value="dexterolaniyi@demo.com" />
-      <ProfileRow title="Phone number" value="07086245441" />
-      <ProfileRow title="Username" value="DexOla" />
-      <ProfileRow title="Role" value="User" />
-      <ProfileRow title="Date Joined" value="Aug 21st, 2023 | 12:55 AM" />
+      <ProfileRow title="Full name" value="" />
+      <ProfileRow title="Email" value={data?.email || ""} />
+      <ProfileRow title="Phone number" value={""} />
+      <ProfileRow title="Username" value={data?.username || ""} />
+      <ProfileRow title="Role" value={data?.roleDetail.name || ""} />
+      <ProfileRow
+        title="Date Joined"
+        value={new Date(data!.date_joined)?.toDateString() || ""}
+      />
     </div>
   );
 }

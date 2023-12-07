@@ -147,3 +147,17 @@ export const useResetPassword = () => {
     }
   );
 };
+
+export const useGetUserProfile = () => {
+  return useQuery(
+    ["user-profile"],
+    (): Promise<UserData> => {
+      return axios
+        .get(`${baseUrl}/user/profile`)
+        .then((res) => res.data.data[0]);
+    },
+    {
+      retry: false,
+    }
+  );
+};
