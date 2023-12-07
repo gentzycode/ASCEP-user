@@ -8,11 +8,32 @@ export const startDebateSchema = z.object({
     }),
     topics: z
         .string()
-        // .min(4, "Please enter a valid value")
         .optional()
         .or(z.literal('')),
     sdg: z
         .string()
         .optional()
         .or(z.literal('')),
+});
+
+
+export const getDebateSchema = z.object({
+    page: z.number(),
+    perPage: z.number(),
+    filter: z.object({
+        sdgs: z.array(z.number()).optional(),
+        specificSDG: z.number().optional(),
+        specificTarget: z.number().optional(),
+        targets: z.array(z.number()).optional(),
+        tags: z.array(z.string()).optional(),
+        mostactive: z.boolean().optional(),
+        text: z.string().optional(),
+        highestrating: z.boolean().optional(),
+        newest: z.boolean().optional(),
+        datetimeSpecific: z.string().optional(),
+        datetimeRange: z.object({
+            startDate: z.string(),
+            endDate: z.string(),
+        }).optional(),
+    }),
 });

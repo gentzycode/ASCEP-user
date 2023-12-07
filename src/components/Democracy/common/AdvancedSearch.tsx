@@ -11,26 +11,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../ui/select";
-
+import { useAppContext } from "@/contexts/AppContext";
+import { useState } from "react";
 interface AdvancedSearchProps {
-  filterOptions: string[];
+  filterButtonOptions: FilterButtonOptionsType[];
   view: string;
   setView: React.Dispatch<React.SetStateAction<string>>;
-  advanceSearch: boolean;
-  setAdvanceSearch: React.Dispatch<React.SetStateAction<boolean>>;
-  filterOption: string;
-  setFilterOption: React.Dispatch<React.SetStateAction<string>>;
+  filterByButton: (value: string) => void;
+  setSearchtext: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
-  filterOptions,
+  filterButtonOptions,
   view,
   setView,
-  advanceSearch,
-  setAdvanceSearch,
-  filterOption,
-  setFilterOption,
+  filterByButton,
+  setSearchtext,
 }) => {
+  const [advanceSearch, setAdvanceSearch] = useState(false);
+  const { sdgData } = useAppContext();
   return (
     <>
       <div className=" flex justify-between md:justify-end gap-[8px] items-center  mb-4">
@@ -38,13 +37,13 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
           <button
             className="flex items-center text-[14px] tracking-[-0.28px] gap-[4px] bg-[#fff] border-light_grey border-2 px-4 py-0"
             onClick={() =>
-              view === "card view" ? setView("list view") : setView("card view")
+              view === "card-view" ? setView("list-view") : setView("card-view")
             }
           >
             <IconWrapper className="bg-transparent text-light">
               <Calendar2 size="20" color="#292925" />
             </IconWrapper>
-            <span>{view === "card view" ? "List View" : "Card View"}</span>
+            <span>{view === "card-view" ? "List View" : "Card View"}</span>
           </button>
         </div>
         <Button
@@ -57,21 +56,20 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
 
       <div className="flex justify-between gap-2 mb-2 flex-wrap">
         <FilterButtons
-          filterOption={filterOption}
-          setFilterOption={setFilterOption}
-          filterOptions={filterOptions}
+          filterButtonOptions={filterButtonOptions}
+          filterByButton={filterByButton}
         />
         <div className="hidden md:block">
           <button
             className="flex items-center text-[14px] tracking-[-0.28px] gap-[4px] bg-[#fff] border-light_grey border-2 px-4 py-0"
             onClick={() =>
-              view === "card view" ? setView("list view") : setView("card view")
+              view === "card-view" ? setView("list-view") : setView("card-view")
             }
           >
             <IconWrapper className="bg-transparent text-light">
               <Calendar2 size="25" color="#292925" />
             </IconWrapper>
-            <span>{view === "card view" ? "List View" : "Card View"}</span>
+            <span>{view === "card-view" ? "List View" : "Card View"}</span>
           </button>
         </div>
       </div>
@@ -84,20 +82,14 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
       >
         <div className="col-span-2 md:col-span-3">
           <Label className="text-dark text-[12px]">By words</Label>
-          <Input className="rounded-full h-[42px] bg-transparent border-subtle_tex focus-visible:ring-0 focus-visible:ring-offset-0" />
+          <Input
+            className="rounded-full h-[42px] bg-transparent border-subtle_tex focus-visible:ring-0 focus-visible:ring-offset-0"
+            onChange={(e) => setSearchtext(e.target.value)}
+          />
         </div>
         <div className="col-span-1">
-          <Label className="text-dark text-[12px]">By words</Label>
-          <Select>
-            <SelectTrigger className="rounded-full h-[42px] bg-transparent text-[12px] border-subtle_text text-subtle_text focus:ring-0 focus:ring-offset-0">
-              <SelectValue placeholder="Choose a date" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="light">Light</SelectItem>
-              <SelectItem value="dark">Dark</SelectItem>
-              <SelectItem value="system">System</SelectItem>
-            </SelectContent>
-          </Select>
+          <Label className="text-dark text-[12px]">By date</Label>
+          <Input type="date" className="text-subtle_text" />
         </div>
         <div className="col-span-1">
           <Label className="text-dark text-[12px]">By SDG</Label>
@@ -106,9 +98,11 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
               <SelectValue placeholder="Select a goal" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="light">Light</SelectItem>
-              <SelectItem value="dark">Dark</SelectItem>
-              <SelectItem value="system">System</SelectItem>
+              {sdgData?.data.map((sdg) => (
+                <SelectItem value={sdg.id} key={sdg.id}>
+                  {sdg.title}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -119,9 +113,24 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
               <SelectValue placeholder="Select a goal" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="light">Light</SelectItem>
-              <SelectItem value="dark">Dark</SelectItem>
-              <SelectItem value="system">System</SelectItem>
+              {[
+                {
+                  id: 3,
+                  code: "2.1",
+                  description: "Universal Access to Safe and Nutritious Food",
+                  sdgs_id: 2,
+                },
+                {
+                  id: 4,
+                  code: "2.2",
+                  description: "End All Forms of Malnitrition",
+                  sdgs_id: 2,
+                },
+              ].map((target) => (
+                <SelectItem value={target.code} key={target.id}>
+                  {target.description}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>

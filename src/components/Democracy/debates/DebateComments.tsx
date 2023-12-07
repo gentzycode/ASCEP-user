@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DebateCommentCard, FilterButtons } from "..";
-import { debateFilterOptions } from "@/utils/Democracy/Debates";
+import { debateFilterButtonOptions } from "@/utils/Democracy/Debates";
 import { IconWrapper } from "@/components/custom";
 import { CloseCircle, Danger } from "iconsax-react";
 import { Link } from "react-router-dom";
@@ -12,7 +12,7 @@ const DebateComments: React.FC<DebateCommentsCardProps> = () => {
   return (
     <>
       <FilterButtons
-        filterOptions={debateFilterOptions}
+        filterButtonOptions={debateFilterButtonOptions}
         filterOption={filterOption}
         setFilterOption={setFilterOption}
       />
