@@ -22,6 +22,12 @@ export const signupSchema = z.object({
   username: z.string({ required_error: "Username is required" }).min(3, {
     message: "Username must be at least 3 characters.",
   }),
+  firstname: z.string({ required_error: "Username is required" }).min(3, {
+    message: "Username must be at least 3 characters.",
+  }),
+  lastname: z.string({ required_error: "Username is required" }).min(3, {
+    message: "Username must be at least 3 characters.",
+  }),
   password: z
     .string({ required_error: "Password is required" })
     .regex(

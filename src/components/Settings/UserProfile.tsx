@@ -4,9 +4,12 @@ export default function UserProfile() {
   const { data } = useGetUserProfile();
   return (
     <div className="space-y-6">
-      <ProfileRow title="Full name" value="" />
+      <ProfileRow
+        title="Full name"
+        value={`${data?.firstname} ${data?.lastname}`}
+      />
       <ProfileRow title="Email" value={data?.email || ""} />
-      <ProfileRow title="Phone number" value={""} />
+      <ProfileRow title="Phone number" value={data?.mobile || ""} />
       <ProfileRow title="Username" value={data?.username || ""} />
       <ProfileRow title="Role" value={data?.roleDetail.name || ""} />
       <ProfileRow

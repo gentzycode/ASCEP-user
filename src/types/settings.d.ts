@@ -23,6 +23,9 @@ interface UserData {
   id: number;
   email: string;
   username: string;
+  firstname: string;
+  lastname: string;
+  mobile: string;
   bio: any;
   role: number;
   dob: any;

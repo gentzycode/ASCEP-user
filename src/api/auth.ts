@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 import baseUrl from "./baseUrl";
 import { loginSchema, signupSchema } from "@/schemas/AuthSchema";
@@ -158,6 +158,28 @@ export const useGetUserProfile = () => {
     },
     {
       retry: false,
+    }
+  );
+};
+
+export const useUpdateProfile = () => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  return useMutation(
+    (values: FormData) => {
+      return axios
+        .post(`${baseUrl}/user/update-profile`, values)
+        .then((res) => res.data);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("user-profile");
+        toast({
+          title: "Success!",
+          variant: "success",
+          description: `Profile update successful`,
+        });
+      },
     }
   );
 };
