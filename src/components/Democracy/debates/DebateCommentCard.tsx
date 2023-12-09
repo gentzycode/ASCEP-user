@@ -4,8 +4,10 @@ import { Separator } from "@/components/ui/separator";
 import { AddSquare, Dislike, Flag, Like1, MinusSquare } from "iconsax-react";
 import { useState } from "react";
 
-interface DebateCommentCardProps {}
-const DebateCommentCard: React.FC<DebateCommentCardProps> = () => {
+interface DebateCommentCardProps {
+  comment: DebateCommentType;
+}
+const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
   const [showResponse, setShowResponse] = useState(false);
   return (
     <div className="bg-[#fff] p-6 rounded-xl">
@@ -14,14 +16,13 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = () => {
           <AvatarImage src="/images/avatar.png" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
-        <h2 className="text-dark text-[14px] -ml-4">Dexter Olaniyi</h2>
+        <h2 className="text-dark text-[14px] -ml-4">
+          {comment.author.username}
+        </h2>
         <p className="text-[12px] text-base-400 my-3 ">2023-10-28</p>
       </div>
       <p className="border-b-2 border-base-500 pb-2 text-base-500">
-        I am writing to request access to the following public records under the
-        Freedom of Information Act. [Specify the documents or information you're
-        seeking, e.g., meeting minutes, financial reports, emails, etc.]. Please
-        provide these records in an electronic format if possible. Thank you.
+        {comment.content}
       </p>
 
       {/* FOOTER */}
@@ -32,7 +33,7 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = () => {
             onClick={() => setShowResponse(!showResponse)}
           >
             {showResponse ? <MinusSquare size={25} /> : <AddSquare size={25} />}
-            <span>2 responses</span>
+            <span>{comment.responses.length} responses</span>
           </Button>
 
           <Separator
@@ -78,10 +79,10 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = () => {
             className="h-5  text-dark bg-base-500"
           />
           <Button className="text-[#31D0AA] gap-1 bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
-            <Like1 variant="Bold" /> <span>10</span>
+            <Like1 variant="Bold" /> <span>{comment.dislikes}</span>
           </Button>
           <Button className="text-[#E43F40] gap-1 bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
-            <Dislike variant="Bold" /> <span>3</span>
+            <Dislike variant="Bold" /> <span>{comment.dislikePercentage}</span>
           </Button>
         </div>
       </div>

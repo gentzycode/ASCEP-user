@@ -12,6 +12,7 @@ import {
   StartDebatePage,
 } from "./Democracy";
 import { ActivityPage, DataView, MapView } from "./Response";
+import DebateProvider from "@/contexts/DebateContext";
 
 const routes: RouterType[] = [
   {
@@ -31,11 +32,15 @@ const routes: RouterType[] = [
   },
   {
     path: "/democracy/debates",
-    element: <DebatesHomePage />,
+    element: (
+      <DebateProvider>
+        <DebatesHomePage />
+      </DebateProvider>
+    ),
     title: "democracy-debates",
   },
   {
-    path: "/democracy/debates/:id",
+    path: "/democracy/debates/:debateId",
     element: <DebatesInfoPage />,
     title: "democracy-debate-info",
   },

@@ -5,26 +5,35 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { startDebateSchema } from "@/schemas/DebateSchema";
-import { FormInput, TextEditor } from "@/components/Democracy";
+import {
+  FormCheckBoxSDG,
+  FormComboboxTarget,
+  FormInput,
+  TextEditor,
+} from "@/components/Democracy";
 import { useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { CloseCircle } from "iconsax-react";
 import { Link } from "react-router-dom";
-import { SDG_Options } from "@/utils/Democracy/Images";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 
 interface StartDebateProps {}
 
 const StartDebate: React.FC<StartDebateProps> = () => {
-  const [topics, setTopics] = useState<{ topic: string; id: string }[] | []>(
-    []
-  );
-  const [sdg, setSdg] = useState<SdgOptionsType[] | []>([]);
+  const [tagInput, setTagInput] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [target, setTarget] = useState<number | null>(null);
+  const [targets, setTargets] = useState<number[]>([]);
   const form = useForm<z.infer<typeof startDebateSchema>>({
     resolver: zodResolver(startDebateSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      sdgs: [],
+      targets: [],
+      tags: [],
+    },
   });
   const {
-    trigger,
     setValue,
     register,
     control,
@@ -36,44 +45,61 @@ const StartDebate: React.FC<StartDebateProps> = () => {
   async function onSubmit(values: z.infer<typeof startDebateSchema>) {
     console.log(values);
   }
+
   useEffect(() => {
-    register("text");
+    register("description");
   }, [register]);
 
   useEffect(() => {
-    const sdgValue = sdg.map((item) => item.value).join(",");
-    setValue("sdg", sdgValue);
-  }, [sdg]);
+    if (target) {
+      setTargets((targets) => [...targets, target]);
+    }
+  }, [target]);
 
   useEffect(() => {
-    const Value = topics.map((item) => item.topic).join(",");
-    setValue("topics", Value);
-  }, [topics]);
+    setValue("targets", targets);
+  }, [targets]);
+
+  useEffect(() => {
+    setValue("tags", tags);
+  }, [tags]);
 
   const onEditorStateChange = (text: any) => {
-    setValue("text", text);
+    setValue("description", text);
   };
 
   const addTopic = () => {
-    const topic = watch("topics");
-    if (topic !== "") {
-      trigger("topics").then((isValid) => {
-        if (isValid) {
-          const value = topic?.split(",").pop()?.trim() as string;
-          const check = topics.find((topic) => topic.topic === value);
-          if (!check) {
-            const id = uuidv4();
-            setTopics((topics) => [...topics, { topic: value, id }]);
-          }
-        }
-      });
+    // const tags = watch("tags");
+
+    if (tagInput && tagInput !== "") {
+      if (!tags.includes(tagInput)) {
+        setTags((tag) => [...tag, tagInput]);
+        setTagInput("");
+      }
     }
+    console.log(tags);
+
+    // if (tag !== "") {
+    //   trigger("tags").then((isValid) => {
+    //     if (isValid) {
+    //       const value = tags?.split(",").pop()?.trim() as string;
+    //       const check = topics.find((topic) => topic.topic === value);
+    //       if (!check) {
+    //         const id = uuidv4();
+    //         setTopics((topics) => [...topics, { topic: value, id }]);
+    //       }
+    //     }
+    //   });
+    // }
   };
 
-  const removeTopic = (id: string) =>
-    setTopics((topics) => topics.filter((topic) => topic.id !== id));
+  const removeTopic = (value: string) =>
+    setTags((tags) => tags.filter((tag) => value !== tag));
 
-  const editorContent = watch("text");
+  const removeTarget = (value: number) =>
+    setTargets((targets) => targets.filter((target) => value !== target));
+
+  const editorContent = watch("description");
 
   return (
     <DemocracyLayout>
@@ -130,13 +156,14 @@ const StartDebate: React.FC<StartDebateProps> = () => {
               placeholder="Enter title of the debate "
             />
             <TextEditor
-              name="text"
+              name="description"
               label="Initial Debate Text"
               control={control}
               errors={errors}
               onChange={onEditorStateChange}
               value={editorContent}
             />
+
             {/* OPTIONAL FIELDS */}
             <h2 className="text-[20px] md:text-[24px] text-dark -tracking-[0.48px]">
               Optional Fields
@@ -144,12 +171,11 @@ const StartDebate: React.FC<StartDebateProps> = () => {
             {/* TAGS */}
             <div>
               <div className="flex gap-2 items-end">
-                <FormInput
-                  name="topics"
-                  label="Topics"
-                  control={control}
-                  errors={errors}
-                  placeholder="Enter the tags you would like to use separated with commas (‘,’)"
+                <Input
+                  onChange={(e) => setTagInput(e.target.value)}
+                  value={tagInput}
+                  className="h-12 text-dark focus-visible:ring-primary focus-visible:ring-offset-0 rounded-full  focus-visible:ring-1 bg-[#C4C4C41F]"
+                  placeholder="Enter the tag name you would like to use"
                 />
 
                 <Button
@@ -160,20 +186,20 @@ const StartDebate: React.FC<StartDebateProps> = () => {
                   Add tag
                 </Button>
               </div>
-              {topics.length > 0 && (
+              {tags.length > 0 && (
                 <div className="my-4">
                   <h5>Tags</h5>
                   <div className="flex gap-2 flex-wrap">
-                    {topics.map((topic) => (
+                    {tags.map((tag, index) => (
                       <Button
                         type="button"
                         className=" w-fit h-fit rounded-md bg-dark text-light hover:bg-dark flex justify-between items-center cursor-auto text-[14px] "
-                        key={topic.id}
+                        key={index}
                       >
-                        <span>{topic.topic}</span>
+                        <span>{tag}</span>
                         <CloseCircle
                           size={18}
-                          onClick={() => removeTopic(topic.id)}
+                          onClick={() => removeTopic(tag)}
                           className="cursor-pointer"
                           variant="Bold"
                         />
@@ -193,28 +219,7 @@ const StartDebate: React.FC<StartDebateProps> = () => {
                 You can choose one or several SDGs aligned with your debate
               </p>
               <div className="flex flex-wrap gap-[15px] justify-stretch  mt-[23px]">
-                {SDG_Options.map((item) => (
-                  <div
-                    className="h-fit p-0 flex justify-start relative overflow-hidden"
-                    key={item.id}
-                  >
-                    <Checkbox
-                      className="border-dark absolute top-0 left-0 w-full h-full border-transparent  
-                        opacity-60 checked:bg-primary appearance-none rounded-lg
-                      "
-                      onCheckedChange={(checked) => {
-                        return checked
-                          ? setSdg((values) => [...values, { ...item }])
-                          : setSdg((values) => {
-                              return values.filter(
-                                (value) => value.id !== item.id
-                              );
-                            });
-                      }}
-                    />
-                    <img src={item.image} alt={item.value.toString()} />
-                  </div>
-                ))}
+                <FormCheckBoxSDG control={control} name="sdgs" />
               </div>
               <p className="text-[14px] md:text-[16px] text-subtle_text -tracking-[0.36px] my-2">
                 You can introduce the code of a specific goal/target or a text
@@ -224,7 +229,33 @@ const StartDebate: React.FC<StartDebateProps> = () => {
                 </Link>
               </p>
             </div>
+            {/* TARGETS */}
+            <div>
+              <FormComboboxTarget setTarget={setTarget} />
 
+              {targets.length > 0 && (
+                <div className="my-4">
+                  <h5>Targets</h5>
+                  <div className="flex gap-2 flex-wrap">
+                    {targets.map((target, index) => (
+                      <Button
+                        type="button"
+                        className=" w-fit h-fit rounded-md bg-dark text-light hover:bg-dark flex justify-between items-center cursor-auto text-[14px] "
+                        key={index}
+                      >
+                        <span>{target}</span>
+                        <CloseCircle
+                          size={18}
+                          onClick={() => removeTarget(target)}
+                          className="cursor-pointer"
+                          variant="Bold"
+                        />
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
             <Button
               type="submit"
               className="w-full max-w-[400px] p-0 h-fit py-3"
