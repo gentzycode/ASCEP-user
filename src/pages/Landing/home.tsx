@@ -1,18 +1,18 @@
-import { BannerSection, NavBar } from "@/components/Landing";
+import { AboutUsSection, BannerSection, NavBar } from "@/components/Landing";
 
 export default function LandingPage() {
   return (
-    <div className="relative w-full h-screen bg-secondary ">
-      <img
-        className="absolute w-full"
-        src="/public/images/landing/gradient1.svg"
-        alt=""
-      />
-
-      <div className="relative z-10 h-full overflow-y-auto">
+    <div className="relative w-full h-screen overflow-y-auto bg-secondary ">
+      <div className="relative z-10 ">
+        <img
+          className="absolute top-0 w-full"
+          src="/public/images/landing/gradient1.svg"
+          alt=""
+        />
         <NavBar />
         <BannerSection />
       </div>
+      <AboutUsSection />
     </div>
   );
 }
