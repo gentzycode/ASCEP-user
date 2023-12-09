@@ -5,7 +5,6 @@ import routes, { responseRoutes, unauthenticatedRoutes } from "./routes";
 import { AuthPagesLayout, MainLayout, ResponseLayout } from "@/layouts";
 import config from "@/utils/config";
 import { useToast } from "@/components/ui/use-toast";
-import { useEffect } from "react";
 import useAutoLogout from "@/hooks/useAuthoLogout";
 
 const Router = () => {
