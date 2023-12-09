@@ -29,45 +29,51 @@ const Router = () => {
 
   useAutoLogout();
 
-  useEffect(() => {
-    axios.interceptors.request.use(
-      (axiosConfig) => {
-        const token = localStorage.getItem(config.key.accessToken);
-        axiosConfig.headers.Authorization = `Bearer ${token}`;
-        return axiosConfig;
-      },
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
+  // useEffect(() => {
+  axios.interceptors.request.use(
+    (axiosConfig) => {
+      const token = localStorage.getItem(config.key.accessToken);
+      axiosConfig.headers.Authorization = `Bearer ${token}`;
+      return axiosConfig;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
 
-    axios.interceptors.response.use(
-      function (response) {
-        return response;
-      },
-      function (error) {
-        if (error.response) {
+  axios.interceptors.response.use(
+    function (response) {
+      return response;
+    },
+    function (error) {
+      if (error.response) {
+        if (error?.response?.status === 401) {
+          // SIGNOUT LOGIC
+        } else {
           if (error?.response?.status === 401) {
-            // SIGNOUT LOGIC
+            toast({
+              title: "Error!",
+              description: "An error occurred on the server",
+              variant: "error",
+            });
           } else {
-            // SOME LOGIC TO SHOW ERROR MESSAGE
-            // alert(error?.response?.data?.message);
             toast({
               title: "Error!",
               description: error?.response?.data?.message,
               variant: "error",
             });
           }
-        } else if (error.request) {
-          // LOGIC TO SHOW ERROR MESSAGE
-        } else {
-          // flash error message
         }
-
-        return Promise.reject(error);
+      } else if (error.request) {
+        // LOGIC TO SHOW ERROR MESSAGE
+      } else {
+        // flash error message
       }
-    );
-  }, []);
+
+      return Promise.reject(error);
+    }
+  );
+  // }, []);
 
   return (
     <Routes>
