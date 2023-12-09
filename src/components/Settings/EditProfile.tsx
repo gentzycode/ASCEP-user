@@ -158,11 +158,11 @@ export default function EditProfile({
                 errors={errors}
               />
 
-              <div className="flex justify-end">
+              {/* <div className="flex justify-end">
                 <p className="font-medium underline text-primary">
                   Change Phone number
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
 

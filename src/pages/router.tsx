@@ -50,13 +50,19 @@ const Router = () => {
         if (error?.response?.status === 401) {
           // SIGNOUT LOGIC
         } else {
-          // SOME LOGIC TO SHOW ERROR MESSAGE
-          // alert(error?.response?.data?.message);
-          toast({
-            title: "Error!",
-            description: error?.response?.data?.message,
-            variant: "error",
-          });
+          if (error?.response?.status === 401) {
+            toast({
+              title: "Error!",
+              description: "An error occurred on the server",
+              variant: "error",
+            });
+          } else {
+            toast({
+              title: "Error!",
+              description: error?.response?.data?.message,
+              variant: "error",
+            });
+          }
         }
       } else if (error.request) {
         // LOGIC TO SHOW ERROR MESSAGE
