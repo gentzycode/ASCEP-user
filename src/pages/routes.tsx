@@ -40,7 +40,7 @@ const routes: RouterType[] = [
     title: "democracy-debates",
   },
   {
-    path: "/democracy/debates/:id",
+    path: "/democracy/debates/:debateId",
     element: <DebatesInfoPage />,
     title: "democracy-debate-info",
   },

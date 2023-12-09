@@ -61,9 +61,9 @@ const RelatedDebates: React.FC<RelatedDebatesProps> = () => {
       </Form>
 
       <div className="flex gap-10 flex-col mt-10">
-        <ListViewCard title="The right to play: for a more child-friendly city" />
-        <ListViewCard title="The right to play: for a more child-friendly city" />
-        <ListViewCard title="The right to play: for a more child-friendly city" />
+        {/* <ListViewCard title="The right to play: for a more child-friendly city" /> */}
+        {/* <ListViewCard title="The right to play: for a more child-friendly city" /> */}
+        {/* <ListViewCard title="The right to play: for a more child-friendly city" /> */}
       </div>
     </div>
   );

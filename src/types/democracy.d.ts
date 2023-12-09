@@ -49,19 +49,58 @@ interface DebateTargetType {
         id: number
     }
 }
+interface DebateSDGsType {
+    sdgs_id: number
+    debate_id: number
+    sdgs: {
+        banner: string
+        id: number
+        title: string
+    }
+}
 
-
+interface DebateMetaDataType {
+    total: number
+    per_page: number
+    current_page: number
+    last_page: number
+    first_page: number
+    first_page_url: string | null
+    last_page_url: string | null
+    next_page_url: string | null
+    previous_page_url: string | null
+}
 interface DebateDataType {
-    status: string
-    message: string
-    data: DebateType[]
+    meta: DebateMetaDataType
+    debates: DebateType[]
+}
+interface DebateCommentType {
+    content: string
+    id: number
+    user_id: number
+    author: DebateAuthorType
+    responses: {
+        response_id: number
+        comment_id: number
+        commentDetail: {
+            content
+            id: number
+            user_id: number
+            user: DebateAuthorType
+        }
+    }[]
+    likes: number
+    dislikes: number
+    likePercentage: number
+    dislikePercentage: number
+    userVoted: boolean
 }
 interface DebateType {
     id: number
     title: string
     description: string
     shareable_id: string
-    user_id: string
+    user_id: number
     total_comments_cache: number
     total_votes_cache: number
     inapproriate_flag: boolean
@@ -69,6 +108,7 @@ interface DebateType {
     debateTag: DebateTagType[]
     author: DebateAuthorType
     debateTarget: DebateTargetType[]
+    debateSDGs: DebateSDGsType[]
     likes: number
     dislikes: number
     likePercentage: number
@@ -90,13 +130,14 @@ interface SDGType {
     data: SDGsType[]
 }
 interface SDGsType {
-    id: string
+    id: number
     title: string
     description: string
     official_link: string
     banner: string
     sdgTarget: SDGTarget[]
 }
+
 
 
 type RequestStatustType = "error" | "idle" | "loading" | "success"

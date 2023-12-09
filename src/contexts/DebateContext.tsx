@@ -1,4 +1,5 @@
 import { useGetAllDebates } from "@/api/democracy/debates";
+import { filterDebateSchema } from "@/schemas/DebateSchema";
 import { debateFilterButtonOptions } from "@/utils/Democracy/Debates";
 import {
   PropsWithChildren,
@@ -7,6 +8,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import * as z from "zod";
 
 interface DebateContextType {
   view: string;
@@ -16,10 +18,23 @@ interface DebateContextType {
   fetchedDebatesData: DebateDataType | null;
   refetchDebates: () => void;
   filterByButton: (value: string) => void;
-  searchText: string;
-  setSearchtext: React.Dispatch<React.SetStateAction<string>>;
+  filterOptions: z.infer<typeof filterDebateSchema>;
+  setFilterOptions: React.Dispatch<
+    React.SetStateAction<z.infer<typeof filterDebateSchema>>
+  >;
 }
-
+const initialFilter = {
+  sdgs: [],
+  specificSDG: undefined,
+  specificTarget: undefined,
+  targets: [],
+  tags: [],
+  mostactive: false,
+  text: "",
+  highestrating: false,
+  newest: false,
+  datetimeSpecific: "",
+};
 const DebateContext = createContext<DebateContextType>({
   view: "",
   setView: () => {},
@@ -28,8 +43,8 @@ const DebateContext = createContext<DebateContextType>({
   fetchedDebatesData: null,
   refetchDebates: () => {},
   filterByButton: () => {},
-  searchText: "",
-  setSearchtext: () => {},
+  filterOptions: initialFilter,
+  setFilterOptions: () => {},
 });
 
 export const useDebateContext = () => useContext(DebateContext);
@@ -42,96 +57,66 @@ export default function DebateProvider({ children }: PropsWithChildren) {
     data: fetchedDebatesData,
   } = useGetAllDebates();
 
-  const initialFilter = {
-    sdgs: [],
-    specificSDG: undefined,
-    specificTarget: undefined,
-    targets: [],
-    tags: [],
-    mostactive: false,
-    text: "",
-    highestrating: false,
-    newest: false,
-    datetimeSpecific: "",
-    // datetimeRange: "",
-  };
   const [view, setView] = useState<string>("card-view");
-  const [filterWithValues, setFilterWithValues] = useState({});
-  const [filterOptions, setFilterOption] = useState(initialFilter);
+  const [filterOptions, setFilterOptions] =
+    useState<z.infer<typeof filterDebateSchema>>(initialFilter);
   const [page] = useState<number>(1);
   const [perPage] = useState<number>(20);
-  const [searchText, setSearchtext] = useState<string>("");
 
   const getFiltersWithValues = () => {
-    // filter the true values in the filterOptions
     const entries = Object.entries(filterOptions);
     const filteredEntries = entries.filter(([key, value]) => {
-      // check if the value is truthy
       if (value) {
-        // check if the value is an array
         if (Array.isArray(value)) {
-          // return true if the array is not empty
           return value.length > 0;
         } else {
-          // return true if the value is not an array
           return true;
         }
       } else {
-        // return false if the value is falsy
         return false;
       }
     });
     const filteredObject = Object.fromEntries(filteredEntries);
 
-    // set it as the value of the filterWithValues
-    setFilterWithValues(filteredObject);
+    return filteredObject;
   };
-
-  //   const filterByButton = (value: string) => {
-  //     const isValidOption = debateFilterButtonOptions.some(
-  //       (option) => option.value === value
-  //     );
-  //     if (isValidOption) {
-  //       const filter = { [value]: true };
-  //       getAllDebates({ page, perPage, filter });
-  //     } else {
-  //       return;
-  //     }
-  //   };
 
   const filterByButton = (value: string) => {
     const isValidOption = debateFilterButtonOptions.some(
       (option) => option.value === value
     );
 
+    const filterOptionsWithAssertion = filterOptions as {
+      [key: string]: any;
+    };
     if (isValidOption) {
-      // Create the new filter object
-      const newFilter = { ...initialFilter, [value]: true };
+      Object.keys(filterOptionsWithAssertion).forEach((key) => {
+        if (filterOptionsWithAssertion[key] === true) {
+          filterOptionsWithAssertion[key] = false;
+        }
+      });
 
-      // Set the new filterOptions state
-      setFilterOption(newFilter);
-
-      // Call getAllDebates with the new filter object
-      getAllDebates({ page, perPage, filter: newFilter });
+      const newFilter = { ...filterOptions, [value]: true };
+      setFilterOptions(newFilter);
     } else {
       return;
     }
   };
 
+  const fetchDebate = () => {
+    getAllDebates({ page, perPage, filter: getFiltersWithValues() });
+  };
+
   useEffect(() => {
-    getAllDebates({ page: 1, perPage: 20, filter: {} });
+    getAllDebates({ page, perPage, filter: getFiltersWithValues() });
   }, []);
 
   useEffect(() => {
-    getFiltersWithValues();
+    fetchDebate();
   }, [filterOptions]);
 
-  useEffect(() => {
-    getAllDebates({ page, perPage: 20, filter: filterWithValues });
-  }, [filterWithValues]);
-
   const refetchDebates = () => {
-    getAllDebates({ page: 1, perPage: 20, filter: filterWithValues });
+    getAllDebates({ page, perPage, filter: {} });
   };
   return (
     <DebateContext.Provider
@@ -143,8 +128,8 @@ export default function DebateProvider({ children }: PropsWithChildren) {
         fetchedDebatesData,
         refetchDebates,
         filterByButton,
-        searchText,
-        setSearchtext,
+        filterOptions,
+        setFilterOptions,
       }}
     >
       {children}

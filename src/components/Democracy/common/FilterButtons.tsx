@@ -2,19 +2,17 @@ import { ToggleGroup, ToggleGroupItem } from "../../ui/toggle-group";
 
 interface FilterButtonsProps {
   filterButtonOptions: FilterButtonOptionsType[];
-  // filterOption: string;
   filterByButton?: (value: string) => void;
 }
 
 const FilterButtons: React.FC<FilterButtonsProps> = ({
   filterButtonOptions,
-  // filterOption,
   filterByButton,
 }) => {
   return (
     <ToggleGroup
       type="single"
-      // defaultValue={filterOption}
+      defaultValue=""
       onValueChange={(value) => {
         if (value) {
           if (filterByButton) {

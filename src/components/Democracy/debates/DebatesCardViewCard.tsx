@@ -4,6 +4,7 @@ import { Button } from "../../ui/button";
 import { Link } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
 import { formattedDate } from "@/utils/helper";
+import { DebateSDGs } from "..";
 
 interface DebatesCardViewCardProps {
   debate: DebateType;
@@ -11,15 +12,8 @@ interface DebatesCardViewCardProps {
 const DebatesCardViewCard: React.FC<DebatesCardViewCardProps> = ({
   debate,
 }) => {
-  const bgColors = [
-    "rgba(232, 67, 86, 0.10)",
-    "rgba(221, 166, 58, 0.10)",
-    "rgba(76,159, 56, 0.10)",
-    "#292925",
-  ];
-  const textColors = ["#E84356", "#DDA63A", "#4C9F38", "#F9F6FB"];
   return (
-    <div className="col-span-1 flex flex-col lg:flex-row gap-3">
+    <div className="flex flex-col gap-3 justify-start">
       <div className="bg-[#FFFFFF] shadow-xl flex flex-col md:flex-row justify-start rounded-xl overflow-hidden flex-1">
         <div className="p-8 ">
           <Link to={ROUTES.DEBATE_INFO_ROUTE(debate.id)}>
@@ -35,21 +29,9 @@ const DebatesCardViewCard: React.FC<DebatesCardViewCardProps> = ({
           </p>
           {/* SDGs */}
           <div className="my-6 flex gap-[4px]">
-            {Array.from(["1", "2", "3", "+3"]).map((num, index) => {
-              return (
-                <Button
-                  className={`w-[50px] rounded-lg hover:bg-current`}
-                  key={index}
-                  style={{
-                    backgroundColor: `${bgColors[index]}`,
-                    color: `${textColors[index]}`,
-                    opacity: "10",
-                  }}
-                >
-                  {num}
-                </Button>
-              );
-            })}
+            {debate.debateSDGs.map((SDGs) => (
+              <DebateSDGs SDGs={SDGs} key={SDGs.sdgs_id} />
+            ))}
           </div>
           {/* TARGETS */}
           <div className="flex gap-[8px] flex-wrap my-3">
@@ -75,7 +57,7 @@ const DebatesCardViewCard: React.FC<DebatesCardViewCardProps> = ({
           </div>
         </div>
       </div>
-      <div className="bg-[#FFFFFF] shadow-xl flex lg:flex-col justify-center items-center  rounded-xl px-4 gap-4 py-3 flex-wrap">
+      <div className="bg-[#FFFFFF] shadow-xl flex justify-start items-center  rounded-xl px-4 gap-4 py-3 flex-wrap">
         <IconWrapper className="w-[72px] h-[72px] bg-[#31D0AA]/10 text-[#31D0AA]  ">
           <div className="flex items-center gap-1">
             <Like1 />
