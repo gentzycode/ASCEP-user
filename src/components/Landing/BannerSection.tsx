@@ -8,7 +8,7 @@ export default function BannerSection() {
           Empowering Citizens through Digital Engagement
         </h1>
 
-        <p className="text-2xl text-subtle_text">
+        <p className="text-2xl text-subtitle_text">
           Gift yourself, your family, a friend or a boo a Bion card to manage
           their spendings
         </p>

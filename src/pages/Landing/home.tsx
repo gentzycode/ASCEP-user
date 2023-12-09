@@ -1,8 +1,13 @@
-import { AboutUsSection, BannerSection, NavBar } from "@/components/Landing";
+import {
+  AboutUsSection,
+  BannerSection,
+  NavBar,
+  ServicesSection,
+} from "@/components/Landing";
 
 export default function LandingPage() {
   return (
-    <div className="relative w-full h-screen overflow-y-auto bg-secondary ">
+    <div className="relative w-full h-screen space-y-40 overflow-y-auto bg-dark ">
       <div className="relative z-10 ">
         <img
           className="absolute top-0 w-full"
@@ -13,6 +18,7 @@ export default function LandingPage() {
         <BannerSection />
       </div>
       <AboutUsSection />
+      <ServicesSection />
     </div>
   );
 }
