@@ -74,3 +74,17 @@
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: #ffc334;
 }
+
+/* CUSTOM CSS */
+
+.landing-header-gradient {
+  fill: linear-gradient(
+    92deg,
+    #ffc334 23.34%,
+    #4d3397 44.47%,
+    #ef4444 78.95%,
+    #9747ff 104.35%
+  );
+  opacity: 0.3;
+  filter: blur(114.47763061523438px);
+}
