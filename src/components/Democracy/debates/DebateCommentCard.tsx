@@ -25,9 +25,7 @@ import { useClickAway } from "@uidotdev/usehooks";
 interface DebateCommentCardProps {
   comment: DebateCommentType;
 }
-const DebateCommentCard: React.FC<DebateCommentCardProps> = ({
-  comment,
-}) => {
+const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
   const [dynamicPadding] = useState(24);
 
   const { mutateAsync: publishResponse, isLoading: isPublishingComment } =
@@ -69,8 +67,8 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({
 
   return (
     <div className="bg-[#fff] p-6 rounded-xl" ref={ref}>
-      <div className="flex justify-start items-center gap-6 my-4 flex-wrap">
-        <Avatar className="h-10 w-10">
+      <div className="flex flex-wrap items-center justify-start gap-6 my-4">
+        <Avatar className="w-10 h-10">
           <AvatarImage src="/images/avatar.png" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
@@ -81,13 +79,13 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({
           {formattedDate(comment.createdAt)}
         </p>
       </div>
-      <p className="border-b-2 border-base-500 pb-2 text-base-500">
+      <p className="pb-2 border-b-2 border-base-500 text-base-500">
         {comment.content}
       </p>
 
       {/* FOOTER */}
-      <div className="flex justify-between items-center flex-wrap-reverse gap-2 py-2">
-        <div className="flex justify-start  gap-2 items-center flex-wrap">
+      <div className="flex flex-wrap-reverse items-center justify-between gap-2 py-2">
+        <div className="flex flex-wrap items-center justify-start gap-2">
           <Button
             className="bg-transparent hover:bg-transparent h-fit w-fit p-0  text-[14px]"
             onClick={() => setShowResponse(!showResponse)}
@@ -98,7 +96,7 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({
 
           <Separator
             orientation="vertical"
-            className="h-5  text-dark bg-base-500"
+            className="h-5 text-dark bg-base-500"
           />
 
           <Button
@@ -110,7 +108,7 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({
 
           <Separator
             orientation="vertical"
-            className="h-5  text-dark bg-base-500"
+            className="h-5 text-dark bg-base-500"
           />
 
           <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
@@ -119,27 +117,27 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({
 
           <Separator
             orientation="vertical"
-            className="h-5  text-dark bg-base-500"
+            className="h-5 text-dark bg-base-500"
           />
           <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
             Hide
           </Button>
           <Separator
             orientation="vertical"
-            className="h-5  text-dark bg-base-500"
+            className="h-5 text-dark bg-base-500"
           />
           <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
             Block Author
           </Button>
         </div>
 
-        <div className="flex justify-start items-center  gap-2">
+        <div className="flex items-center justify-start gap-2">
           <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
             13 Votes
           </Button>
           <Separator
             orientation="vertical"
-            className="h-5  text-dark bg-base-500"
+            className="h-5 text-dark bg-base-500"
           />
           <Button className="text-[#31D0AA] gap-1 bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
             <Like1 variant="Bold" /> <span>{comment.dislikes}</span>
@@ -163,10 +161,10 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({
                 control={control}
                 name="content"
                 errors={errors}
-                className="h-8 focus-visible:ring-primary focus-visible:ring-1 rounded-full focus-visible:ring-offset-0"
+                className="h-8 rounded-full focus-visible:ring-primary focus-visible:ring-1 focus-visible:ring-offset-0"
               />
 
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <Button
                   type="submit"
                   className="w-fit h-fit text-[12px] font-[500]"
@@ -175,7 +173,7 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({
                   Publish response
                 </Button>
                 <IconWrapper
-                  className="text-dark p-0 cursor-pointer"
+                  className="p-0 cursor-pointer text-dark"
                   onClick={closeResponse}
                 >
                   <CloseCircle size={20} />

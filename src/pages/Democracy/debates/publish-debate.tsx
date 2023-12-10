@@ -104,7 +104,7 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
           <h2 className="text-[18px] md:text-[24px] -tracking-[0.48px] text-dark mb-2">
             Recommendations for creating a debate
           </h2>
-          <ul className="list-disc list-inside pl-3 text-subtle_text flex flex-col gap-4">
+          <ul className="flex flex-col gap-4 pl-3 list-disc list-inside text-subtle_text">
             <li className="text-[14px] md:text-[16px] -tracking-[0.32px]">
               Do not use capital letters for the debate title or for whole
               sentences. On the internet, this is considered shouting. And
@@ -156,7 +156,7 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
             </h2>
             {/* TAGS */}
             <div>
-              <div className="flex gap-2 items-end">
+              <div className="flex items-end gap-2">
                 <Input
                   onChange={(e) => setTagInput(e.target.value)}
                   value={tagInput}
@@ -165,7 +165,7 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
                 />
 
                 <Button
-                  className="w-fit h-fit rounded-md"
+                  className="rounded-md w-fit h-fit"
                   type="button"
                   onClick={addTopic}
                 >
@@ -175,7 +175,7 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
               {tags.length > 0 && (
                 <div className="my-4">
                   <h5>Tags</h5>
-                  <div className="flex gap-2 flex-wrap">
+                  <div className="flex flex-wrap gap-2">
                     {tags.map((tag, index) => (
                       <Button
                         type="button"
@@ -210,7 +210,7 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
               <p className="text-[14px] md:text-[16px] text-subtle_text -tracking-[0.36px] my-2">
                 You can introduce the code of a specific goal/target or a text
                 to find one. For more information visit the
-                <Link to="#" className="text-primary ml-1">
+                <Link to="#" className="ml-1 text-primary">
                   SDG help page.
                 </Link>
               </p>
@@ -222,7 +222,7 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
               {targets.length > 0 && (
                 <div className="my-4">
                   <h5>Targets</h5>
-                  <div className="flex gap-2 flex-wrap">
+                  <div className="flex flex-wrap gap-2">
                     {targets.map((target, index) => (
                       <Button
                         type="button"
