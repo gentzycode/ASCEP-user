@@ -5,7 +5,7 @@ export default function NavBar() {
   return (
     <div className="flex py-8 justify-between  items-center px-[100px]">
       <div className="flex items-center">
-        <img src="/public/images/logopic.png" className="" alt="" />
+        <img src="/images/logopic.png" className="" alt="" />
         <p className="mb-4 text-xl font-bold text-white">ASCEP</p>
       </div>
 

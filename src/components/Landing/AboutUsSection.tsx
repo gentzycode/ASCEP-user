@@ -2,7 +2,7 @@ export default function AboutUsSection() {
   return (
     <div className="px-[100px] grid grid-cols-11">
       <div className="flex justify-center col-span-5">
-        <img src="/public/images/landing/large-logo.svg" alt="" />
+        <img src="/images/landing/large-logo.svg" alt="" />
       </div>
 
       <div className="col-span-6">

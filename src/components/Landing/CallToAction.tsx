@@ -20,7 +20,7 @@ export default function CallToAction() {
         <div>
           <img
             className="mt-[70px] rounded-br-[40px]"
-            src="/public/images/landing/response-screenshot-2.png"
+            src="/images/landing/response-screenshot-2.png"
             alt=""
           />
         </div>

@@ -6,6 +6,7 @@ import {
   NavBar,
   ServicesSection,
 } from "@/components/Landing";
+import Testimonials from "@/components/Landing/Testimonials";
 
 export default function LandingPage() {
   return (
@@ -13,7 +14,7 @@ export default function LandingPage() {
       <div className="relative z-10 ">
         <img
           className="absolute top-0 w-full"
-          src="/public/images/landing/gradient1.svg"
+          src="/images/landing/gradient1.svg"
           alt=""
         />
         <NavBar />
@@ -23,6 +24,7 @@ export default function LandingPage() {
       <ServicesSection />
       <CallToAction />
       <Faq />
+      <Testimonials />
     </div>
   );
 }

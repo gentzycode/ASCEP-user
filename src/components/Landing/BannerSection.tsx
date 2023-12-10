@@ -22,7 +22,7 @@ export default function BannerSection() {
       </div>
 
       <div className="flex justify-end">
-        <img src="/public/images/landing/landing-banner.svg" alt="" />
+        <img src="/images/landing/landing-banner.svg" alt="" />
       </div>
     </div>
   );
