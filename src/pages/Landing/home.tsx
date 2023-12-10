@@ -1,6 +1,7 @@
 import {
   AboutUsSection,
   BannerSection,
+  CallToAction,
   NavBar,
   ServicesSection,
 } from "@/components/Landing";
@@ -19,6 +20,7 @@ export default function LandingPage() {
       </div>
       <AboutUsSection />
       <ServicesSection />
+      <CallToAction />
     </div>
   );
 }
