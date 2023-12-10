@@ -74,26 +74,32 @@ interface DebateDataType {
     meta: DebateMetaDataType
     debates: DebateType[]
 }
+
+
+interface DebateCommentResponseType {
+    response_id: number
+    comment_id: number
+    commentDetail: {
+        content
+        id: number
+        user_id: number
+        user: DebateAuthorType
+        responses: DebateCommentResponseType[]
+    }
+}
+
 interface DebateCommentType {
     content: string
     id: number
     user_id: number
     author: DebateAuthorType
-    responses: {
-        response_id: number
-        comment_id: number
-        commentDetail: {
-            content
-            id: number
-            user_id: number
-            user: DebateAuthorType
-        }
-    }[]
+    responses: DebateCommentResponseType[]
     likes: number
     dislikes: number
     likePercentage: number
     dislikePercentage: number
     userVoted: boolean
+    createdAt: string
 }
 interface DebateType {
     id: number
@@ -142,3 +148,8 @@ interface SDGsType {
 
 type RequestStatustType = "error" | "idle" | "loading" | "success"
 
+interface ResponseDataType {
+    status: string;
+    message: string;
+    data?: any;
+};

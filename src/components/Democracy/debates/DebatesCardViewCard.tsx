@@ -24,9 +24,9 @@ const DebatesCardViewCard: React.FC<DebatesCardViewCardProps> = ({
           <p className="text-[12px] text-base-400 my-3 ">
             {formattedDate(debate.createdAt)}
           </p>
-          <p className="text-14px text-transparent max-h-[65px] pb-5 bg-gradient-to-t to-[#64748B] to-70% from-[#f0f2f4] bg-clip-text">
-            {debate.description}
-          </p>
+          <div className="text-14px text-transparent max-h-[65px] pb-5 bg-gradient-to-t to-[#64748B] to-70% from-[#f0f2f4] bg-clip-text overflow-hidden">
+            <div dangerouslySetInnerHTML={{ __html: debate.description }} />
+          </div>
           {/* SDGs */}
           <div className="my-6 flex gap-[4px]">
             {debate.debateSDGs.map((SDGs) => (

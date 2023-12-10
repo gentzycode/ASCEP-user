@@ -1,7 +1,6 @@
 import { IconWrapper } from "@/components/custom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { formattedDate } from "@/utils/helper";
 import {
@@ -51,7 +50,7 @@ const DebateInfo: React.FC<DebateInfoProps> = ({ debate }) => {
               {debate.total_comments_cache} Comments
             </div>
           </div>
-          <p className="max-w-[900px] text-justify">{debate.description}</p>
+          <div dangerouslySetInnerHTML={{ __html: debate.description }} />
         </div>
 
         {/* SDGs */}

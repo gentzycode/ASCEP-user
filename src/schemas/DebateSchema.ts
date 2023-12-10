@@ -12,7 +12,17 @@ export const startDebateSchema = z.object({
 
 });
 
-
+export const commentSchema = z.object({
+    content: z
+        .string({ required_error: "comment text is required" })
+        .refine((data) => data.trim() !== "", {
+            message: "comment text cannot be empty",
+        }),
+    debate_id: z
+        .number({ required_error: "debate id is required" }),
+    comment_reference: z
+        .number().optional()
+});
 export const filterDebateSchema = z.object({
     sdgs: z.array(z.number()).optional(),
     specificSDG: z.number().optional(),
