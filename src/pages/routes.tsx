@@ -8,7 +8,7 @@ import {
   InitiativesHomePage,
   ProposalsHomePage,
   SDGsHomePage,
-  StartDebatePage,
+  PublishDebatePage,
 } from "./Democracy";
 import { ActivityPage, DataView, MapView, ViewResponsePage } from "./Response";
 import DebateProvider from "@/contexts/DebateContext";
@@ -53,8 +53,8 @@ const routes: RouterType[] = [
     title: "democracy-debate-info",
   },
   {
-    path: "/democracy/debates/start-debate",
-    element: <StartDebatePage />,
+    path: "/democracy/debates/publish-debate",
+    element: <PublishDebatePage />,
     title: "democracy-debate-start",
   },
   {
