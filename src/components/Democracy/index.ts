@@ -18,3 +18,5 @@ export { default as FormSelectTarget } from "./common/FormSelectTarget";
 export { default as DebateSDGs } from "./debates/DebateSDGs";
 export { default as FormCheckBoxSDG } from "./common/FormCheckBoxSDG";
 export { default as FormComboboxTarget } from "./common/FormComboboxTarget";
+export { default as Pagination } from "./common/Pagination";
+export { default as DebateCommentResponse } from "./debates/DebateCommentResponse";

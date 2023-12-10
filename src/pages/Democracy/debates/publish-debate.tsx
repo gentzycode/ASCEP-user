@@ -15,10 +15,11 @@ import { useEffect, useState } from "react";
 import { CloseCircle } from "iconsax-react";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
+import { usePublishDebate } from "@/api/democracy/debates";
 
-interface StartDebateProps {}
-
-const StartDebate: React.FC<StartDebateProps> = () => {
+interface PublishDebateProps {}
+const PublishDebate: React.FC<PublishDebateProps> = () => {
+  const { mutateAsync: publishDebate, isLoading } = usePublishDebate();
   const [tagInput, setTagInput] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
   const [target, setTarget] = useState<number | null>(null);
@@ -33,6 +34,7 @@ const StartDebate: React.FC<StartDebateProps> = () => {
       tags: [],
     },
   });
+
   const {
     setValue,
     register,
@@ -43,7 +45,7 @@ const StartDebate: React.FC<StartDebateProps> = () => {
   } = form;
 
   async function onSubmit(values: z.infer<typeof startDebateSchema>) {
-    console.log(values);
+    await publishDebate({ ...values });
   }
 
   useEffect(() => {
@@ -259,6 +261,7 @@ const StartDebate: React.FC<StartDebateProps> = () => {
             <Button
               type="submit"
               className="w-full max-w-[400px] p-0 h-fit py-3"
+              isLoading={isLoading}
             >
               Start A Debate
             </Button>
@@ -269,4 +272,4 @@ const StartDebate: React.FC<StartDebateProps> = () => {
   );
 };
 
-export default StartDebate;
+export default PublishDebate;

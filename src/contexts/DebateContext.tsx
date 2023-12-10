@@ -8,6 +8,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { UseMutateFunction } from "react-query";
 import * as z from "zod";
 
 interface DebateContextType {
@@ -22,6 +23,16 @@ interface DebateContextType {
   setFilterOptions: React.Dispatch<
     React.SetStateAction<z.infer<typeof filterDebateSchema>>
   >;
+  getAllDebates: UseMutateFunction<
+    any,
+    unknown,
+    {
+      page: number;
+      perPage: number;
+      filter: z.infer<typeof filterDebateSchema>;
+    }
+  >;
+  perPage: number;
 }
 const initialFilter = {
   sdgs: [],
@@ -45,6 +56,8 @@ const DebateContext = createContext<DebateContextType>({
   filterByButton: () => {},
   filterOptions: initialFilter,
   setFilterOptions: () => {},
+  getAllDebates: () => {},
+  perPage: 0,
 });
 
 export const useDebateContext = () => useContext(DebateContext);
@@ -61,7 +74,7 @@ export default function DebateProvider({ children }: PropsWithChildren) {
   const [filterOptions, setFilterOptions] =
     useState<z.infer<typeof filterDebateSchema>>(initialFilter);
   const [page] = useState<number>(1);
-  const [perPage] = useState<number>(20);
+  const [perPage] = useState<number>(10);
 
   const getFiltersWithValues = () => {
     const entries = Object.entries(filterOptions);
@@ -130,6 +143,8 @@ export default function DebateProvider({ children }: PropsWithChildren) {
         filterByButton,
         filterOptions,
         setFilterOptions,
+        getAllDebates,
+        perPage,
       }}
     >
       {children}
