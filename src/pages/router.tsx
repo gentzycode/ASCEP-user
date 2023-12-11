@@ -1,11 +1,16 @@
-import { Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
 import axios from "axios";
 
-import routes, { responseRoutes, unauthenticatedRoutes } from "./routes";
+import routes, {
+  landingPages,
+  responseRoutes,
+  unauthenticatedRoutes,
+} from "./routes";
 import { AuthPagesLayout, MainLayout, ResponseLayout } from "@/layouts";
 import config from "@/utils/config";
 import { useToast } from "@/components/ui/use-toast";
 import useAutoLogout from "@/hooks/useAuthoLogout";
+import { ViewResponsePage } from "./Response";
 
 const Router = () => {
   const pageRoutes = routes.map(({ path, title, element }: RouterType) => {
@@ -21,6 +26,12 @@ const Router = () => {
   const authRoutes = unauthenticatedRoutes.map(
     ({ path, title, element }: RouterType) => {
       return <Route key={title} path={`/auth/${path}`} element={element} />;
+    }
+  );
+
+  const landingRoutes = landingPages.map(
+    ({ path, title, element }: RouterType) => {
+      return <Route key={title} path={`/home/${path}`} element={element} />;
     }
   );
 
@@ -76,15 +87,23 @@ const Router = () => {
 
   return (
     <Routes>
+      <Route path="/home" element={<Outlet />}>
+        {landingRoutes}
+      </Route>
       <Route path="/auth" element={<AuthPagesLayout />}>
         {authRoutes}
       </Route>
       <Route path="" element={<MainLayout />}>
         {pageRoutes}
+        <Route
+          path="response/view-response/1"
+          element={<ViewResponsePage />}
+        ></Route>
         <Route path="" element={<ResponseLayout />}>
           {responsePages}
         </Route>
       </Route>
+
       <Route path="*" element={<div>Route Not Found</div>} />
     </Routes>
   );

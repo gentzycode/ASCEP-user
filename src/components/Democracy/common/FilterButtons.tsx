@@ -1,42 +1,35 @@
-import { Button } from "../../ui/button";
 import { ToggleGroup, ToggleGroupItem } from "../../ui/toggle-group";
 
 interface FilterButtonsProps {
-  filterOptions: string[];
-  filterOption: string;
-  setFilterOption: React.Dispatch<React.SetStateAction<string>>;
+  filterButtonOptions: FilterButtonOptionsType[];
+  filterByButton?: (value: string) => void;
 }
 
 const FilterButtons: React.FC<FilterButtonsProps> = ({
-  filterOptions,
-  filterOption,
-  setFilterOption,
+  filterButtonOptions,
+  filterByButton,
 }) => {
   return (
     <ToggleGroup
       type="single"
-      defaultValue={filterOption}
+      defaultValue=""
       onValueChange={(value) => {
-        if (value) setFilterOption(value);
+        if (value) {
+          if (filterByButton) {
+            filterByButton(value);
+          }
+        }
       }}
       className="gap-4 mb-2 w-full md:w-fit justify-start flex-wrap"
     >
-      {filterOptions.map((option, index) => (
+      {filterButtonOptions.map((button) => (
         <ToggleGroupItem
-          value={option}
+          value={button.value}
           aria-label="Toggle bold"
-          key={index}
-          className="p-0"
+          key={button.value}
+          className="px-4 bg-[#fff] text-base-900 border-2 border-base-200 text-[14px] mx-0 !rounded-full [&[data-state='on']]:bg-base-900 [&[data-state='on']]:text-primary [&[data-state='on']]:border-0"
         >
-          <Button
-            className={`${
-              filterOption === option
-                ? "text-primary bg-base-900 hover:bg-dark"
-                : "bg-[#fff] text-base-900 border-2 border-base-200 "
-            }  h-fit text-[14px] mx-0 `}
-          >
-            {option}
-          </Button>
+          {button.label}
         </ToggleGroupItem>
       ))}
     </ToggleGroup>

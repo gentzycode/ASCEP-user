@@ -1,0 +1,11 @@
+export { default as NavBar } from "./NavBar";
+export { default as BannerSection } from "./BannerSection";
+export { default as AboutUsSection } from "./AboutUsSection";
+export { default as ServicesSection } from "./ServicesSection";
+export { default as CallToAction } from "./CallToAction";
+export { default as Faq } from "./Faq";
+export { default as Testimonials } from "./Testimonials";
+export { default as Footer } from "./Footer";
+export { default as ContactHeading } from "./ContactHeading";
+export { default as ContactInfo } from "./ContactInfo";
+export { default as ContactFormSection } from "./ContactFormSection";

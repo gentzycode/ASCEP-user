@@ -1,4 +1,4 @@
-import { CreatePostModal } from "@/components/Response";
+import { CreateReportModal } from "@/components/Response";
 import { Button } from "@/components/ui/button";
 import useDisclosure from "@/hooks/useDisclosure";
 import { FilterSquare } from "iconsax-react";
@@ -11,9 +11,11 @@ export default function ResponseLayout() {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  console.log(location);
+
   useEffect(() => {
     setSelectedPage(
-      responsePages?.filter((page) => page.path === location.pathname)[0].title
+      responsePages?.filter((page) => page.path === location.pathname)[0]?.title
     );
   }, []);
 
@@ -24,9 +26,9 @@ export default function ResponseLayout() {
 
         <div className="flex gap-4">
           <Button onClick={onOpen} size="xs" variant="pill">
-            Add new post
+            Add new report
           </Button>
-          <CreatePostModal isOpen={isOpen} onClose={onClose} />
+          <CreateReportModal isOpen={isOpen} onClose={onClose} />
           <Button size="xs" variant="pill">
             Post history
           </Button>

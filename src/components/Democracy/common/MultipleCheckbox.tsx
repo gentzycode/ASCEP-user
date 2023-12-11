@@ -31,8 +31,8 @@ const MultipleCheckbox = () => {
 
   return (
     <>
-      {items.map((item) => (
-        <div className="flex items-center gap-2">
+      {items.map((item, index) => (
+        <div className="flex items-center gap-2" key={index}>
           <Checkbox
           className="border-dark"
             onCheckedChange={(checked) => {

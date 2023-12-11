@@ -1,4 +1,5 @@
 import { FooterLinks } from "@/utils/NavigationData";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -6,7 +7,9 @@ const Footer = () => {
       <h1>ASCEP</h1>
       <div>
         {FooterLinks.map((link) => (
-          <a href={link.path}>{link.title}</a>
+          <Link to={link.path} key={link.title}>
+            {link.title}
+          </Link>
         ))}
       </div>
     </div>

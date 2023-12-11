@@ -1,6 +1,5 @@
 import { Navigate } from "react-router-dom";
 import { ForgotPasswordPage, LoginPage, OTPPage, SignupPage } from "./Auth";
-import Home from "./Home";
 import { MainPage } from "./Main";
 import { SettingsPage } from "./Settings";
 import {
@@ -9,16 +8,28 @@ import {
   InitiativesHomePage,
   ProposalsHomePage,
   SDGsHomePage,
-  StartDebatePage,
+  PublishDebatePage,
+  StartProposalPage,
 } from "./Democracy";
-import { ActivityPage, DataView, MapView } from "./Response";
+import { ActivityPage, DataView, MapView, ViewResponsePage } from "./Response";
+import DebateProvider from "@/contexts/DebateContext";
+import { ContactUs, LandingPage } from "./Landing";
+import ProposalProvider from "@/contexts/ProposalContext";
 
-const routes: RouterType[] = [
+export const landingPages: RouterType[] = [
   {
-    path: "/",
-    element: <Home />,
+    path: "",
+    element: <LandingPage />,
     title: "home",
   },
+  {
+    path: "/contact-us",
+    element: <ContactUs />,
+    title: "home",
+  },
+];
+
+const routes: RouterType[] = [
   {
     path: "/main",
     element: <MainPage />,
@@ -31,23 +42,36 @@ const routes: RouterType[] = [
   },
   {
     path: "/democracy/debates",
-    element: <DebatesHomePage />,
+    element: (
+      <DebateProvider>
+        <DebatesHomePage />
+      </DebateProvider>
+    ),
     title: "democracy-debates",
   },
   {
-    path: "/democracy/debates/:id",
+    path: "/democracy/debates/:debateId",
     element: <DebatesInfoPage />,
     title: "democracy-debate-info",
   },
   {
-    path: "/democracy/debates/start-debate",
-    element: <StartDebatePage />,
+    path: "/democracy/debates/publish-debate",
+    element: <PublishDebatePage />,
     title: "democracy-debate-start",
   },
   {
     path: "/democracy/proposals",
-    element: <ProposalsHomePage />,
+    element: (
+      <ProposalProvider>
+        <ProposalsHomePage />
+      </ProposalProvider>
+    ),
     title: "democracy-proposals",
+  },
+  {
+    path: "/democracy/proposals/start-proposal",
+    element: <StartProposalPage />,
+    title: "democracy-proposals-start",
   },
   {
     path: "/democracy/initiatives",
@@ -88,6 +112,11 @@ export const responseRoutes: RouterType[] = [
     element: <ActivityPage />,
     title: "Activity",
   },
+  // {
+  //   path: `/response/1`,
+  //   element: <ViewResponsePage />,
+  //   title: "View Response",
+  // },
 ];
 
 export const unauthenticatedRoutes: RouterType[] = [

@@ -21,10 +21,11 @@ import {
 import { Input, InputProps } from "../../ui/input";
 
 type FormInputProps<TFormValues extends FieldValues = FieldValues> = {
-  control: Control<TFormValues>;
+  control?: Control<TFormValues>;
   name: Path<TFormValues>;
   label?: string;
   placeholder?: string;
+  description?: string;
   errors?: Partial<DeepMap<TFormValues, FieldError>> | FieldErrors<TFormValues>;
 } & Omit<InputProps, "name">;
 
@@ -34,6 +35,7 @@ const FormInput = <TFormValues extends Record<string, unknown>>({
   name,
   placeholder,
   errors,
+  description,
   ...props
 }: FormInputProps<TFormValues>): JSX.Element => {
   const errorMessage = lodash.get(errors, name);
@@ -45,6 +47,7 @@ const FormInput = <TFormValues extends Record<string, unknown>>({
       render={({ field }) => (
         <FormItem className="flex-1">
           <FormLabel>{label}</FormLabel>
+          <p className="text-[12px] text-dark -tracking-[0.28px]">{description}</p>
           <FormControl>
             {/* @ts-ignore */}
             <Input

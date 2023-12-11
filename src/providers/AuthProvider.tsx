@@ -11,7 +11,7 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType>({
-  isLoggedIn: true,
+  isLoggedIn: false,
   email: "",
   token: "",
   setEmail: () => {},

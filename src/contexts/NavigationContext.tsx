@@ -1,6 +1,7 @@
 import { ReactNode, createContext, useContext, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+
 interface NavigationContextProps {
   openSidebar: boolean;
   setOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,10 +13,21 @@ interface NavigationContextProps {
   setActiveLink: React.Dispatch<React.SetStateAction<string>>;
   activeModule: string;
   setActiveModule: React.Dispatch<React.SetStateAction<string>>;
+  location: LocationParams;
 }
 const NavigationContext = createContext({} as NavigationContextProps);
 interface NavigationContextProviderProps {
   children: ReactNode;
+}
+
+2;
+
+export interface LocationParams {
+  pathname: string;
+  state: string;
+  search: string;
+  hash: string;
+  key: string;
 }
 
 const NavigationContextProvider = ({
@@ -29,7 +41,6 @@ const NavigationContextProvider = ({
   const [activeLink, setActiveLink] = useState<string>("");
 
   const location = useLocation();
-
   useEffect(() => {
     setActiveLink(location.pathname.split("/").slice(0, 3).join("/"));
     setActiveModule(location.pathname.split("/")[1]);
@@ -48,6 +59,7 @@ const NavigationContextProvider = ({
         setActiveLink,
         activeModule,
         setActiveModule,
+        location,
       }}
     >
       {children}

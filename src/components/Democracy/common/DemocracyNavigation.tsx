@@ -6,19 +6,19 @@ const DemocracyNavigation = () => {
   const { activeLink } = useNavigationContext();
 
   return (
-    <div className="hidden md:inline-flex justify-start gap-[33px] bg-[#fff] h-[70px] px-8 w-full">
+    <div className="hidden md:inline-flex justify-start gap-[5px] bg-[#fff]  w-max rounded-2xl">
       {DemocracyLinks.map((link: NavLinkType, index) => {
         return (
           <Link
             key={index}
             className={`${
               activeLink === link.path
-                ? "border-b-4 border-primary"
+                ? " bg-primary"
                 : "text-[#6B6B6B]"
-            }  py-[16px]`}
+            } flex h-fit items-center rounded-2xl`}
             to={link.path}
           >
-            <button className="inline-flex text-[14px] lg:text-[18px] duration-300 font-[500] gap-[14px] pb-2">
+            <button className="inline-flex text-[14px] xl:text-[18px] duration-300 font-[500] gap-[14px] h-fit my-auto px-4 py-3 ">
               {link.title}
             </button>
           </Link>

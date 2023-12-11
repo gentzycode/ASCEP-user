@@ -15,12 +15,12 @@ const InitiativesHomePage = () => {
   const [filterOption, setFilterOption] = useState<string>("Most active");
   const [view, setView] = useState<string>("card view");
   const [advanceSearch, setAdvanceSearch] = useState<boolean>(false);
-  const filterOptions = [
-    "Recent",
-    "Most Signed",
-    "Random",
-    "Signed",
-    "Publish",
+  const filterButtonOptions = [
+    { label: "Recent", value: "recent" },
+    { label: "Most Signed", value: "mostsigned" },
+    { label: "Random", value: "random" },
+    { label: "Signed", value: "signed" },
+    { label: "Publish", value: "publish" },
   ];
   const pageDescription =
     "Citizens' proposals are an opportunity for neighbours and collectivesto decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.";
@@ -32,7 +32,7 @@ const InitiativesHomePage = () => {
         {/* START OF LEFT SIDE */}
         <div className="flex-1">
           <AdvancedSearch
-            filterOptions={filterOptions}
+            filterButtonOptions={filterButtonOptions}
             setFilterOption={setFilterOption}
             filterOption={filterOption}
             setView={setView}
@@ -42,13 +42,13 @@ const InitiativesHomePage = () => {
           />
 
           {/* LIST VIEW */}
-          {view === "list view" && (
+          {/* {view === "list view" && (
             <div className="grid grid-cols-1 my-10 gap-10">
               {Initiatives_Data.map((initiative, index) => (
-                <ListViewCard title={initiative.title} key={index} />
+                <ListViewCard debate={} title={initiative.title} key={index} />
               ))}
             </div>
-          )}
+          )} */}
           {/* CARD VIEW */}
           {view === "card view" && (
             <div className="grid grid-cols-1 xl:grid-cols-2 my-10 gap-6">
