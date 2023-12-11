@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from "react-hook-form";
 
 import { Checkbox } from "@/components/ui/checkbox";
@@ -14,7 +15,7 @@ export default function ContactFormSection() {
     formState: { errors },
   } = form;
 
-  const submitForm = (e) => {
+  const submitForm = (e: any) => {
     console.log(e);
   };
   return (

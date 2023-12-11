@@ -4,8 +4,8 @@ import { RiTwitterXFill } from "react-icons/ri";
 
 export default function Footer() {
   return (
-    <div className="px-40 footer-pattern bg-black/50">
-      <div className="flex justify-between text-white border-b py-28 border-white/10">
+    <div className="px-40 footer-pattern bg-black/30">
+      <div className="flex justify-between py-24 text-white border-b border-white/10">
         <h3 className="text-3xl">ASCEP</h3>
 
         <div className="flex gap-28">
