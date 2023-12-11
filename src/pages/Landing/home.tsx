@@ -11,7 +11,7 @@ import {
 
 export default function LandingPage() {
   return (
-    <div className="w-full h-screen space-y-40 overflow-y-auto  bg-dark">
+    <div className="w-full h-screen space-y-40 overflow-y-auto bg-dark">
       <div className="relative ">
         <img
           className="absolute top-0 w-full"

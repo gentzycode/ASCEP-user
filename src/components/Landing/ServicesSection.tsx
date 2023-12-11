@@ -2,7 +2,7 @@ import { Button } from "../ui/button";
 
 export default function ServicesSection() {
   return (
-    <div className="grid grid-cols-10 px-[100px] gap-14">
+    <div id="services" className="grid grid-cols-10 px-[100px] gap-14">
       <div className="col-span-4 text-center space-y-[30px] flex-col flex justify-center">
         <div className="mb-2 text-lg text-center text-primary">
           OUR SERVICES
@@ -21,7 +21,7 @@ export default function ServicesSection() {
 
       <div className="bg-[#7878781A] rounded-[40px] p-12 flex flex-col col-span-6 justify-center items-center">
         <img
-          src="/images/landing/response-screenshot.png"
+          src="/public/images/landing/response-screenshot.png"
           className="h-[290px]  mb-8 "
           alt=""
         />

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 
 export default function BannerSection() {
@@ -14,7 +15,10 @@ export default function BannerSection() {
         </p>
 
         <div className="flex gap-8">
-          <Button className="w-[175px]">Get Started</Button>
+          <Link to="/auth/signup">
+            <Button className="w-[175px]">Get Started</Button>
+          </Link>
+
           <Button className="w-[175px]" variant="outline-primary">
             Learn more
           </Button>

@@ -2,6 +2,14 @@ import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 
 export default function NavBar() {
+  const scrollToSection = (sectionId: string) => {
+    const section = document.getElementById(sectionId);
+
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="flex py-8 justify-between items-center px-[100px]">
       <Link to="/home" className="flex items-center">
@@ -11,13 +19,12 @@ export default function NavBar() {
 
       <div className="flex items-center gap-8">
         {navLinks.map((link) => (
-          <Link
-            className="font-normal text-white"
-            to={link.link}
-            key={link.name}
+          <div
+            className="font-normal text-white cursor-pointer"
+            onClick={() => scrollToSection(link.link)}
           >
             {link.name}
-          </Link>
+          </div>
         ))}
 
         <Link to="/home/contact-us">
@@ -31,14 +38,14 @@ export default function NavBar() {
 const navLinks = [
   {
     name: "About us",
-    link: "#",
+    link: "about-us",
   },
   {
     name: "Services",
-    link: "#",
+    link: "services",
   },
   {
     name: "F.A.Q",
-    link: "#",
+    link: "faq",
   },
 ];

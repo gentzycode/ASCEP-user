@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 
 export default function CallToAction() {
@@ -10,10 +11,14 @@ export default function CallToAction() {
           </h3>
 
           <div className="flex gap-8">
-            <Button variant="outline-primary" className="w-[175px]">
-              Contact Us
-            </Button>
-            <Button className="w-[175px]">Get Started</Button>
+            <Link to="/home/contact-us">
+              <Button variant="outline-primary" className="w-[175px]">
+                Contact Us
+              </Button>
+            </Link>
+            <Link to="/auth/signup">
+              <Button className="w-[175px]">Get Started</Button>
+            </Link>
           </div>
         </div>
 
