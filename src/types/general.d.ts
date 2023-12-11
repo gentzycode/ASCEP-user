@@ -13,3 +13,8 @@ interface SdgTarget {
   description: string;
   sdgs_id: number;
 }
+
+interface SelectOption {
+  value: string;
+  label: string;
+}
