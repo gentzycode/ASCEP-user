@@ -4,7 +4,7 @@ export default function ResponseActivity() {
   return (
     <div className=" rounded-[40px] bg-white w-[288px] ">
       <img
-        src="/public/images/activity.png"
+        src="/images/activity.png"
         className="h-[147px] object-cover rounded-t-[20px]"
         alt=""
       />
