@@ -10,9 +10,11 @@ import {
   ProposalsHomePage,
   SDGsHomePage,
   PublishDebatePage,
+  StartProposalPage,
 } from "./Democracy";
 import { ActivityPage, DataView, MapView } from "./Response";
 import DebateProvider from "@/contexts/DebateContext";
+import ProposalProvider from "@/contexts/ProposalContext";
 
 const routes: RouterType[] = [
   {
@@ -51,8 +53,17 @@ const routes: RouterType[] = [
   },
   {
     path: "/democracy/proposals",
-    element: <ProposalsHomePage />,
+    element: (
+      <ProposalProvider>
+        <ProposalsHomePage />
+      </ProposalProvider>
+    ),
     title: "democracy-proposals",
+  },
+  {
+    path: "/democracy/proposals/start-proposal",
+    element: <StartProposalPage />,
+    title: "democracy-proposals-start",
   },
   {
     path: "/democracy/initiatives",

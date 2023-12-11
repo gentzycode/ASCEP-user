@@ -48,15 +48,6 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
           filterByButton={filterByButton}
         />
 
-        {/* PAGINATION */}
-        {fetchedDebatesData && (
-          <Pagination
-            meta={fetchedDebatesData?.meta}
-            onPageChange={getAllDebates}
-            filterOptions={filterOptions}
-            perPage={perPage}
-          />
-        )}
         {/* LIST VIEW */}
         {view === "list-view" && fetchedDebatesData && (
           <div className="grid grid-cols-1 my-10 gap-10 max-w-[700px]">
@@ -82,6 +73,16 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
               ))}
             </div>
           </div>
+        )}
+
+        {/* PAGINATION */}
+        {fetchedDebatesData && (
+          <Pagination
+            meta={fetchedDebatesData?.meta}
+            onPageChange={getAllDebates}
+            filterOptions={filterOptions}
+            perPage={perPage}
+          />
         )}
 
         {fetchingDebatesError && (
