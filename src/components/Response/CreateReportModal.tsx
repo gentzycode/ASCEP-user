@@ -6,31 +6,41 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "../ui/use-toast";
 import { Form } from "../ui/form";
-import { FormInput } from "../custom";
+import { FormInput, SDGMultiSelect } from "../custom";
 import { FaPlus } from "react-icons/fa";
-import { useGetAllCategories } from "@/api/category";
-import { useGetAllSDGs } from "@/api/sdg";
+// import { useGetAllCategories } from "@/api/category";
+// import { useGetAllSDGs } from "@/api/sdg";
 import { useNavigate } from "react-router-dom";
+import { ChangeEvent, useRef, useState } from "react";
 
 interface CreatePostModalProps {
   onClose: () => void;
   isOpen: boolean;
 }
 
+interface SelectedImage {
+  image: File;
+  byteArray: ArrayBuffer | string | null;
+}
+
 export default function CreateReportModal({
   isOpen,
   onClose,
 }: CreatePostModalProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [selectedImages, setSelectedImages] = useState<SelectedImage[]>([]);
+
   const form = useForm<z.infer<typeof createPostSchema>>({
     resolver: zodResolver(createPostSchema),
   });
 
   const navigate = useNavigate();
 
-  const { data: allSDGs } = useGetAllSDGs();
-  const { data: allCategories } = useGetAllCategories();
-  console.log(allSDGs);
-  console.log(allCategories);
+  // const { data: allSDGs } = useGetAllSDGs();
+  // const { data: allCategories } = useGetAllCategories();
+
+  // console.log(allSDGs);
+  // console.log(allCategories);
 
   const { toast } = useToast();
   const {
@@ -38,6 +48,8 @@ export default function CreateReportModal({
     handleSubmit,
     formState: { errors },
   } = form;
+
+  console.log(errors);
 
   function onSubmit(values: z.infer<typeof createPostSchema>) {
     console.log(values);
@@ -53,6 +65,23 @@ export default function CreateReportModal({
       navigate("/response/activity");
     }, 1000);
   }
+
+  const handleFileSelection = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files![0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setSelectedImages([
+          ...selectedImages,
+          { image: file, byteArray: reader.result },
+        ]);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
@@ -67,10 +96,30 @@ export default function CreateReportModal({
               <div className="flex items-center justify-between ">
                 <p className="text-subtle_text">Image</p>
 
-                <div className=" w-full max-w-[350px]">
-                  <Button className="w-14 " type="button">
+                <div className=" w-full max-w-[350px] flex gap-2">
+                  {selectedImages.map((image, i) => (
+                    <img
+                      key={i}
+                      src={image.byteArray as string}
+                      className="object-cover rounded-xl w-14 h-15"
+                      alt=""
+                    />
+                  ))}
+
+                  <Button
+                    onClick={() => inputRef.current?.click()}
+                    className="w-14 "
+                    type="button"
+                  >
                     <FaPlus />
                   </Button>
+                  <input
+                    onChange={handleFileSelection}
+                    className="hidden"
+                    ref={inputRef}
+                    type="file"
+                    accept="image/*"
+                  />
                 </div>
               </div>
               <div className="flex items-center justify-between ">
@@ -100,13 +149,19 @@ export default function CreateReportModal({
               <div className="flex items-center justify-between ">
                 <p className="text-subtle_text">Location</p>
                 <div className=" w-full max-w-[350px]">
-                  <FormInput
+                  {/* <FormInput
                     name="location"
                     label="Location"
                     control={control}
                     placeholder="Enter location"
                     type="password"
                     errors={errors}
+                  /> */}
+
+                  <SDGMultiSelect
+                  // // control={control}
+                  // name="location"
+                  // placeholder="Select SDGs"
                   />
                 </div>
               </div>
