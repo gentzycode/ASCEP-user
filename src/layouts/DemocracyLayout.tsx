@@ -16,7 +16,7 @@ const DemocracyLayout: React.FC<DemocracyLayoutProps> = ({ children }) => {
     navigate(-1);
   };
   const subpage = location.pathname.split("/")[3];
-  const page = location.pathname.split("/")[2];
+  // const page = location.pathname.split("/")[2];
 
   return (
     <div className=" p-6">
@@ -28,7 +28,7 @@ const DemocracyLayout: React.FC<DemocracyLayoutProps> = ({ children }) => {
             onClick={handleGoBack}
           >
             <ArrowLeft2 size="20" />
-            {page}
+            Go Back
           </Button>
         )}
         <div className="w-full">{children}</div>

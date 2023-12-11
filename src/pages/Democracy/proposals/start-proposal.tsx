@@ -8,6 +8,7 @@ import { startDebateSchema } from "@/schemas/DebateSchema";
 import {
   FormCheckBoxSDG,
   FormComboboxTarget,
+  FormImageInput,
   FormInput,
   TextEditor,
 } from "@/components/Democracy";
@@ -16,41 +17,49 @@ import { CloseCircle } from "iconsax-react";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { usePublishDebate } from "@/api/democracy/debates";
+import { startProposalSchema } from "@/schemas/ProposalSchema";
+import FormTextArea from "@/components/Democracy/common/FormTextArea";
 
-interface PublishDebateProps {}
-const PublishDebatePage: React.FC<PublishDebateProps> = () => {
+interface StartProposalPageProps {}
+const StartProposalPage: React.FC<StartProposalPageProps> = () => {
   const { mutateAsync: publishDebate, isLoading } = usePublishDebate();
   const [tagInput, setTagInput] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
   const [target, setTarget] = useState<number | null>(null);
   const [targets, setTargets] = useState<number[]>([]);
-  const form = useForm<z.infer<typeof startDebateSchema>>({
-    resolver: zodResolver(startDebateSchema),
+  const form = useForm<z.infer<typeof startProposalSchema>>({
+    resolver: zodResolver(startProposalSchema),
     defaultValues: {
       title: "",
-      description: "",
+      summary: "",
+      content: "",
+      external_video_url: "",
+      ward_id: undefined,
+      tags: [],
+      categories: [],
       sdgs: [],
       targets: [],
-      tags: [],
+      support_needed: undefined,
+      documents: undefined,
+      image: undefined,
     },
   });
 
   const {
     setValue,
-    register,
     control,
     handleSubmit,
     watch,
     formState: { errors },
   } = form;
 
-  async function onSubmit(values: z.infer<typeof startDebateSchema>) {
-    await publishDebate({ ...values });
+  async function onSubmit(values: z.infer<typeof startProposalSchema>) {
+    console.log(values);
   }
 
-  useEffect(() => {
-    register("description");
-  }, [register]);
+  //   useEffect(() => {
+  //     register("description");
+  //   }, [register]);
 
   useEffect(() => {
     if (target) {
@@ -66,9 +75,15 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
     setValue("tags", tags);
   }, [tags]);
 
+  //   const [image, setImage] = useState(null);
+  //   const [selectedImage, setSelectedImage] = (useState < File) | (null > []);
   const onEditorStateChange = (text: any) => {
-    setValue("description", text);
+    setValue("content", text);
   };
+
+  //   useEffect(() => {
+  //     setValue("image", image);
+  //   }, [image]);
 
   const addTopic = () => {
     if (tagInput && tagInput !== "") {
@@ -85,15 +100,14 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
   const removeTarget = (value: number) =>
     setTargets((targets) => targets.filter((target) => value !== target));
 
-  const editorContent = watch("description");
-
+  const editorContent = watch("content");
   return (
     <DemocracyLayout>
       <div className="flex flex-col gap-8 max-w-[800px]">
         {/* HEADING */}
         <div>
           <h1 className="text-[20px] md:text-[36px] text-dark">
-            Start a Debate
+            Start a Proposal
           </h1>
           <p className="text-[12px] md:text-[14px] text-subtle_text -tracking-[0.28px]">
             How do Debates Work?
@@ -134,16 +148,25 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-6"
           >
+            {/* TITLE */}
             <FormInput
               name="title"
-              label="Debate title"
+              label="Proposal title"
               control={control}
               errors={errors}
-              placeholder="Enter title of the debate "
+              placeholder="Enter title of the proposal "
             />
+            {/* SUMMARY */}
+            <FormTextArea
+              name="summary"
+              label="Proposal Summary ((Maximum of 200 characters))"
+              control={control}
+              errors={errors}
+            />
+            {/* PROPOSAL TEXT */}
             <TextEditor
-              name="description"
-              label="Initial Debate Text"
+              name="content"
+              label="Proposal Text"
               control={control}
               errors={errors}
               onChange={onEditorStateChange}
@@ -154,6 +177,18 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
             <h2 className="text-[20px] md:text-[24px] text-dark -tracking-[0.48px]">
               Optional Fields
             </h2>
+
+            {/* EXTERNAL VIDEO URL */}
+            <FormInput
+              name="external_video_url"
+              label="External video URL"
+              control={control}
+              errors={errors}
+              placeholder="You may add a link to YouTube or Vimeo"
+            />
+            {/* DESCRIPTIVE IMAGE */}
+            <FormImageInput name="image" control={control} />
+
             {/* TAGS */}
             <div>
               <div className="flex gap-2 items-end">
@@ -256,4 +291,4 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
   );
 };
 
-export default PublishDebatePage;
+export default StartProposalPage;
