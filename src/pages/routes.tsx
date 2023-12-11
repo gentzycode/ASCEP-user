@@ -1,6 +1,5 @@
 import { Navigate } from "react-router-dom";
 import { ForgotPasswordPage, LoginPage, OTPPage, SignupPage } from "./Auth";
-import Home from "./Home";
 import { MainPage } from "./Main";
 import { SettingsPage } from "./Settings";
 import {
@@ -14,14 +13,23 @@ import {
 } from "./Democracy";
 import { ActivityPage, DataView, MapView } from "./Response";
 import DebateProvider from "@/contexts/DebateContext";
+import { ContactUs, LandingPage } from "./Landing";
 import ProposalProvider from "@/contexts/ProposalContext";
 
-const routes: RouterType[] = [
+export const landingPages: RouterType[] = [
   {
-    path: "/",
-    element: <Home />,
+    path: "",
+    element: <LandingPage />,
     title: "home",
   },
+  {
+    path: "/contact-us",
+    element: <ContactUs />,
+    title: "home",
+  },
+];
+
+const routes: RouterType[] = [
   {
     path: "/main",
     element: <MainPage />,

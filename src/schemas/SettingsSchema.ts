@@ -24,7 +24,10 @@ export const changePasswordSchema = z
   );
 
 export const editProfileSchema = z.object({
-  fullName: z.string({ required_error: "Full name is required" }).min(3, {
+  firstname: z.string({ required_error: "Full name is required" }).min(3, {
+    message: "Full name must be at least 3 characters.",
+  }),
+  lastname: z.string({ required_error: "Full name is required" }).min(3, {
     message: "Full name must be at least 3 characters.",
   }),
 
@@ -34,7 +37,7 @@ export const editProfileSchema = z.object({
     .min(3, {
       message: "Email must be at least 3 characters.",
     }),
-  phone: z
+  mobile: z
     .string({ required_error: "Phone number is required" })
     .min(11, {
       message: "Phone number must be at 11 characters.",

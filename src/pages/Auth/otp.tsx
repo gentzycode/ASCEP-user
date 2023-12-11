@@ -48,7 +48,7 @@ export default function OTPPage() {
 
       <FormCard>
         <div className="space-y-7">
-          <CardBackBtn onClick={() => navigate("/auth/signup")} />
+          <CardBackBtn onClick={() => navigate(-1)} />
           <h2 className="text-[30px] text-center text-dark">Verify OTP</h2>
 
           <p className="font-medium text-center text-text">
@@ -64,22 +64,24 @@ export default function OTPPage() {
               />
             </div>
 
-            <div className="flex gap-1 text-sm font-bold text-dark">
-              {time > 0 ? (
-                <p>
-                  You can resend OTP in {minutes} min {remainingSeconds} sec
-                </p>
-              ) : (
-                <Button
-                  isLoading={resending}
-                  onClick={() => setEmail(state.email)}
-                  size="xs"
-                  type="button"
-                >
-                  Resend
-                </Button>
-              )}
-            </div>
+            {state.timeLimit > 0 && (
+              <div className="flex gap-1 text-sm font-bold text-dark">
+                {time > 0 ? (
+                  <p>
+                    You can resend OTP in {minutes} min {remainingSeconds} sec
+                  </p>
+                ) : (
+                  <Button
+                    isLoading={resending}
+                    onClick={() => setEmail(state.email)}
+                    size="xs"
+                    type="button"
+                  >
+                    Resend
+                  </Button>
+                )}
+              </div>
+            )}
 
             <Button isLoading={isLoading} type="submit" className="w-full">
               Get Started

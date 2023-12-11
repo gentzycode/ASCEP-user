@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 import baseUrl from "./baseUrl";
 import { loginSchema, signupSchema } from "@/schemas/AuthSchema";
 import { z } from "zod";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { useToast } from "@/components/ui/use-toast";
+import { useForgotPasswordContext } from "@/providers/ForgotPasswordProvider";
 
 export const useRegister = () => {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ export const useRegister = () => {
 
 export const useLogin = () => {
   const { login } = useAuthContext();
+  const navigate = useNavigate();
 
   return useMutation(
     (values: z.infer<typeof loginSchema>) => {
@@ -40,6 +42,9 @@ export const useLogin = () => {
     {
       onSuccess: (res) => {
         if (res.code === "VERIFY-EMAIL") {
+          navigate("/auth/otp", {
+            state: { email: res.data.email, timeLimit: res.data.timeLimit },
+          });
           //
         } else login(res.data);
       },
@@ -93,6 +98,88 @@ export const useResendOTP = (email: string | null) => {
       },
       enabled: !!email,
       retry: false,
+    }
+  );
+};
+
+export const useForgotPassword = (email: string | null) => {
+  const { next, setResetPasswordData, resetPasswordData } =
+    useForgotPasswordContext();
+
+  return useQuery(
+    ["forgot-password", email],
+    () => {
+      return axios
+        .get(`${baseUrl}/user/forgot-password/${email}`)
+        .then((res) => res.data);
+    },
+    {
+      onSuccess: () => {
+        if (email) {
+          setResetPasswordData({ ...resetPasswordData, email });
+          next();
+        }
+      },
+      enabled: !!email,
+      retry: false,
+    }
+  );
+};
+
+export const useResetPassword = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  return useMutation(
+    (values: ForgotPasswordCredentials) =>
+      axios
+        .post(`${baseUrl}/user/reset-password`, values)
+        .then((res) => res.data),
+    {
+      onSuccess: () => {
+        toast({
+          title: "Success!",
+          variant: "success",
+          description: `Password reset successful`,
+        });
+        navigate("/auth/login");
+      },
+    }
+  );
+};
+
+export const useGetUserProfile = () => {
+  return useQuery(
+    ["user-profile"],
+    (): Promise<UserData> => {
+      return axios
+        .get(`${baseUrl}/user/profile`)
+        .then((res) => res.data.data[0]);
+    },
+    {
+      retry: false,
+    }
+  );
+};
+
+export const useUpdateProfile = () => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  return useMutation(
+    (values: FormData) => {
+      return axios
+        .post(`${baseUrl}/user/update-profile`, values)
+        .then((res) => res.data);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("user-profile");
+        toast({
+          title: "Success!",
+          variant: "success",
+          description: `Profile update successful`,
+        });
+      },
     }
   );
 };

@@ -1,15 +1,19 @@
+import { useForgotPassword } from "@/api/auth";
 import { CardBackBtn, FormInput } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useForgotPasswordContext } from "@/providers/ForgotPasswordProvider";
 import { forgotPasswordSchema } from "@/schemas/AuthSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 export default function ForgotPassword() {
-  const { next } = useForgotPasswordContext();
+  const [email, setEmail] = useState<string | null>(null);
+
+  const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof forgotPasswordSchema>>({
     resolver: zodResolver(forgotPasswordSchema),
   });
@@ -19,11 +23,15 @@ export default function ForgotPassword() {
     handleSubmit,
   } = form;
 
+  const { isLoading, isSuccess, isError } = useForgotPassword(email);
+
+  useEffect(() => {
+    if (isSuccess || isError) setEmail(null);
+  }, [isSuccess, isError]);
+
   const onSubmit = (data: z.infer<typeof forgotPasswordSchema>) => {
-    console.log(data);
-    next();
+    setEmail(data.email);
   };
-  const navigate = useNavigate();
   return (
     <div className="space-y-7">
       <CardBackBtn onClick={() => navigate(-1)} />
@@ -43,7 +51,7 @@ export default function ForgotPassword() {
             errors={errors}
           />
 
-          <Button type="submit" className="w-full">
+          <Button isLoading={isLoading} type="submit" className="w-full">
             Continue
           </Button>
         </form>

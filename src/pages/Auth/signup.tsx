@@ -38,20 +38,20 @@ export default function SignupPage() {
 
           <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-[30px]">
-              {/* <FormInput
-                name="firstName"
+              <FormInput
+                name="firstname"
                 label="First Name"
                 control={control}
                 placeholder="First Name"
                 errors={errors}
               />
               <FormInput
-                name="lastName"
+                name="lastname"
                 label="Last Name"
                 control={control}
                 placeholder="Last Name"
                 errors={errors}
-              /> */}
+              />
               <FormInput
                 name="email"
                 label="Email"
