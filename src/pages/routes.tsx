@@ -10,7 +10,7 @@ import {
   SDGsHomePage,
   StartDebatePage,
 } from "./Democracy";
-import { ActivityPage, DataView, MapView } from "./Response";
+import { ActivityPage, DataView, MapView, ViewResponsePage } from "./Response";
 import DebateProvider from "@/contexts/DebateContext";
 import { ContactUs, LandingPage } from "./Landing";
 
@@ -101,6 +101,11 @@ export const responseRoutes: RouterType[] = [
     element: <ActivityPage />,
     title: "Activity",
   },
+  // {
+  //   path: `/response/1`,
+  //   element: <ViewResponsePage />,
+  //   title: "View Response",
+  // },
 ];
 
 export const unauthenticatedRoutes: RouterType[] = [

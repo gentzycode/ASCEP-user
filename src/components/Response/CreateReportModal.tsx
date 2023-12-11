@@ -8,19 +8,29 @@ import { useToast } from "../ui/use-toast";
 import { Form } from "../ui/form";
 import { FormInput } from "../custom";
 import { FaPlus } from "react-icons/fa";
+import { useGetAllCategories } from "@/api/category";
+import { useGetAllSDGs } from "@/api/sdg";
+import { useNavigate } from "react-router-dom";
 
 interface CreatePostModalProps {
   onClose: () => void;
   isOpen: boolean;
 }
 
-export default function CreatePostModal({
+export default function CreateReportModal({
   isOpen,
   onClose,
 }: CreatePostModalProps) {
   const form = useForm<z.infer<typeof createPostSchema>>({
     resolver: zodResolver(createPostSchema),
   });
+
+  const navigate = useNavigate();
+
+  const { data: allSDGs } = useGetAllSDGs();
+  const { data: allCategories } = useGetAllCategories();
+  console.log(allSDGs);
+  console.log(allCategories);
 
   const { toast } = useToast();
   const {
@@ -37,6 +47,11 @@ export default function CreatePostModal({
       description: "Password has been changed",
       variant: "success",
     });
+    onClose();
+
+    setTimeout(() => {
+      navigate("/response/activity");
+    }, 1000);
   }
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

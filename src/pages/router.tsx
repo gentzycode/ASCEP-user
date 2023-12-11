@@ -10,6 +10,7 @@ import { AuthPagesLayout, MainLayout, ResponseLayout } from "@/layouts";
 import config from "@/utils/config";
 import { useToast } from "@/components/ui/use-toast";
 import useAutoLogout from "@/hooks/useAuthoLogout";
+import { ViewResponsePage } from "./Response";
 
 const Router = () => {
   const pageRoutes = routes.map(({ path, title, element }: RouterType) => {
@@ -94,6 +95,10 @@ const Router = () => {
       </Route>
       <Route path="" element={<MainLayout />}>
         {pageRoutes}
+        <Route
+          path="response/view-response/1"
+          element={<ViewResponsePage />}
+        ></Route>
         <Route path="" element={<ResponseLayout />}>
           {responsePages}
         </Route>

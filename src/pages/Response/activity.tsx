@@ -1,10 +1,12 @@
 import { Location } from "iconsax-react";
+import { Link } from "react-router-dom";
 
 export default function ActivityPage() {
   return (
     <div className="space-y-1">
       {array.map((activity, i) => (
-        <div
+        <Link
+          to="/response/view-response/1"
           className={`bg-white hover:bg-[#FFF9F1] shadow-sm flex items-center justify-between py-[10px] px-[14px] ${
             i === 0
               ? "rounded-t-[20px]"
@@ -25,7 +27,7 @@ export default function ActivityPage() {
           </div>
 
           <p className="text-xs text-subtle_text">5 mins ago</p>
-        </div>
+        </Link>
       ))}
     </div>
   );
