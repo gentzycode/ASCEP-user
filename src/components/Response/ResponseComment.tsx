@@ -10,7 +10,7 @@ export default function ResponseComment() {
         <div className="flex items-center gap-8">
           <div className="flex items-center gap-2">
             <img
-              src="/public/images/profile-pic.png"
+              src="images/profile-pic.png"
               className="w-10 h-10 rounded-full"
               alt=""
             />
