@@ -16,10 +16,8 @@ const DebatesInfoPage: React.FC<DebatesInfoPageProps> = () => {
     data: debate,
     isError,
     error,
-    isSuccess,
     isLoading: isLoadingDebate,
   } = useGetDebateInfo(parseInt(debateId!));
-  console.log(debate);
 
   return (
     <DemocracyLayout>

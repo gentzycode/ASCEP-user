@@ -3,15 +3,13 @@ import {
   DebatesCardViewCard,
   ListViewCard,
   PagesHeroSection,
+  Pagination,
 } from "@/components/Democracy";
 import { IconWrapper } from "@/components/custom";
 import { Button } from "@/components/ui/button";
-// import { Checkbox } from "@/components/ui/checkbox";
-// import { useAppContext } from "@/contexts/AppContext";
 import { useDebateContext } from "@/contexts/DebateContext";
 import DemocracyLayout from "@/layouts/DemocracyLayout";
 import { debateFilterButtonOptions } from "@/utils/Democracy/Debates";
-// import { CategoriesAndTarget_Data } from "@/utils/Democracy/Mock_Data";
 import ROUTES from "@/utils/routesNames";
 import { Danger } from "iconsax-react";
 import { FaSpinner } from "react-icons/fa";
@@ -27,6 +25,9 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
     fetchedDebatesData,
     refetchDebates,
     filterByButton,
+    getAllDebates,
+    perPage,
+    filterOptions,
   } = useDebateContext();
   const pageDescription =
     "Citizens' proposals are an opportunity for neighbours and collectives to decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.";
@@ -35,7 +36,7 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
     <DemocracyLayout>
       {/* HEADING */}
       <PagesHeroSection title="debates" description={pageDescription} />
-      <Link to={ROUTES.START_DEBATE_ROUTE}>
+      <Link to={ROUTES.PUBLISH_DEBATE_ROUTE}>
         <Button className="w-[175px] mb-4">Start debate</Button>
       </Link>
       {/* ADVANCED SEARCH */}
@@ -46,9 +47,10 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
           view={view}
           filterByButton={filterByButton}
         />
+
         {/* LIST VIEW */}
         {view === "list-view" && fetchedDebatesData && (
-          <div className="grid grid-cols-1 my-10 gap-10">
+          <div className="grid grid-cols-1 my-10 gap-10 max-w-[700px]">
             {fetchedDebatesData.debates.map((debate: DebateType) => (
               <ListViewCard debate={debate} key={debate.id} />
             ))}
@@ -71,6 +73,16 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
               ))}
             </div>
           </div>
+        )}
+
+        {/* PAGINATION */}
+        {fetchedDebatesData && (
+          <Pagination
+            meta={fetchedDebatesData?.meta}
+            onPageChange={getAllDebates}
+            filterOptions={filterOptions}
+            perPage={perPage}
+          />
         )}
 
         {fetchingDebatesError && (

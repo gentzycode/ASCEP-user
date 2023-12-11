@@ -42,8 +42,17 @@ const TextEditor = <TFormValues extends Record<string, unknown>>({
   onChange,
   value,
 }: TextEditorProps<TFormValues>): JSX.Element => {
-  const errorMessage = lodash.get(errors, name);
-  const hasError = !!errors && errorMessage;
+  const toolbarOptions = [
+    ["bold", "italic", "underline", "strike"],
+    ["link"],
+    [{ color: ["#FFC334", "#292925"] }],
+    [{ font: ["Outfit"] }],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ header: [ 5, 6, false] }],
+  ];
+  const module = {
+    toolbar: toolbarOptions,
+  };
   return (
     <FormField
       control={control}
@@ -55,6 +64,7 @@ const TextEditor = <TFormValues extends Record<string, unknown>>({
             <ReactQuill
               theme="snow"
               value={value}
+              modules={module}
               onChange={onChange}
               className=" bg=[#C4C4C41F]  mb-10"
             />

@@ -6,7 +6,7 @@ const DemocracyNavigation = () => {
   const { activeLink } = useNavigationContext();
 
   return (
-    <div className="hidden md:inline-flex justify-start gap-[5px] bg-[#fff] p-3 w-max rounded-2xl">
+    <div className="hidden md:inline-flex justify-start gap-[5px] bg-[#fff]  w-max rounded-2xl">
       {DemocracyLinks.map((link: NavLinkType, index) => {
         return (
           <Link

@@ -11,7 +11,7 @@ import {
 import { UseMutateFunction } from "react-query";
 import * as z from "zod";
 
-interface DebateContextType {
+interface ProposalContextType {
   view: string;
   setView: React.Dispatch<React.SetStateAction<string>>;
   fetchingDebates: boolean;
@@ -46,7 +46,7 @@ const initialFilter = {
   newest: false,
   datetimeSpecific: "",
 };
-const DebateContext = createContext<DebateContextType>({
+const ProposalContext = createContext<ProposalContextType>({
   view: "",
   setView: () => {},
   fetchingDebates: false,
@@ -60,9 +60,9 @@ const DebateContext = createContext<DebateContextType>({
   perPage: 0,
 });
 
-export const useDebateContext = () => useContext(DebateContext);
+export const useProposalContext = () => useContext(ProposalContext);
 
-export default function DebateProvider({ children }: PropsWithChildren) {
+export default function ProposalProvider({ children }: PropsWithChildren) {
   const {
     mutate: getAllDebates,
     isLoading: fetchingDebates,
@@ -132,7 +132,7 @@ export default function DebateProvider({ children }: PropsWithChildren) {
     getAllDebates({ page, perPage, filter: {} });
   };
   return (
-    <DebateContext.Provider
+    <ProposalContext.Provider
       value={{
         view,
         setView,
@@ -148,6 +148,6 @@ export default function DebateProvider({ children }: PropsWithChildren) {
       }}
     >
       {children}
-    </DebateContext.Provider>
+    </ProposalContext.Provider>
   );
 }

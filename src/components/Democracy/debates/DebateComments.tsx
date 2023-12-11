@@ -10,14 +10,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
 import { useAuthContext } from "@/providers/AuthProvider";
-import { useGetDebateComments } from "@/api/democracy/debates";
+import {
+  useGetDebateComments,
+  usePublishComment,
+} from "@/api/democracy/debates";
 import { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
+import { commentSchema } from "@/schemas/DebateSchema";
 
 interface DebateCommentsCardProps {
   debate: DebateType;
 }
 const DebateComments: React.FC<DebateCommentsCardProps> = ({ debate }) => {
+  const { mutateAsync: publishComment, isLoading: isPublishingComment } =
+    usePublishComment();
   const { isLoggedIn } = useAuthContext();
   const [page] = useState(1);
   const { debateId } = useParams();
@@ -26,18 +32,13 @@ const DebateComments: React.FC<DebateCommentsCardProps> = ({ debate }) => {
     parseInt(debateId!),
     page
   );
-  const commentSchema = z.object({
-    comment: z
-      .string({ required_error: "comment text is required" })
-      .refine((data) => data.trim() !== "", {
-        message: "comment text cannot be empty",
-      }),
-  });
+
   const form = useForm<z.infer<typeof commentSchema>>({
     resolver: zodResolver(commentSchema),
     mode: "onChange",
     defaultValues: {
-      comment: "",
+      content: "",
+      debate_id: parseInt(debateId!),
     },
   });
   const {
@@ -48,81 +49,11 @@ const DebateComments: React.FC<DebateCommentsCardProps> = ({ debate }) => {
   } = form;
 
   async function onSubmit(values: z.infer<typeof commentSchema>) {
-    console.log(values);
-    reset();
+    await publishComment(values);
+    if (data) {
+      reset();
+    }
   }
-
-  const comments = [
-    {
-      content: "First comment",
-      id: 8,
-      user_id: 5,
-      author: {
-        username: "sonx24",
-        profile_picture:
-          "http://localhost:3333/uploads/profiles/1701110655_Screenshotfrom2023-11-2712-23-14.png",
-        id: 5,
-      },
-      responses: [],
-      likes: 0,
-      dislikes: 0,
-      likePercentage: 0,
-      dislikePercentage: 0,
-      userVoted: false,
-    },
-    {
-      content: "Second comment response",
-      id: 14,
-      user_id: 5,
-      author: {
-        username: "sonx24",
-        profile_picture:
-          "http://localhost:3333/uploads/profiles/1701110655_Screenshotfrom2023-11-2712-23-14.png",
-        id: 5,
-      },
-      responses: [],
-      likes: 0,
-      dislikes: 0,
-      likePercentage: 0,
-      dislikePercentage: 0,
-      userVoted: false,
-    },
-    {
-      content: "Second comment",
-      id: 9,
-      user_id: 5,
-      author: {
-        username: "sonx24",
-        profile_picture:
-          "http://localhost:3333/uploads/profiles/1701110655_Screenshotfrom2023-11-2712-23-14.png",
-        id: 5,
-      },
-      responses: [
-        {
-          response_id: 14,
-          comment_id: 9,
-          commentDetail: {
-            content: "Second comment response",
-            id: 14,
-            user_id: 5,
-            user: {
-              username: "sonx24",
-              profile_picture:
-                "http://localhost:3333/uploads/profiles/1701110655_Screenshotfrom2023-11-2712-23-14.png",
-              id: 5,
-            },
-          },
-        },
-      ],
-      likes: 0,
-      dislikes: 0,
-      likePercentage: 0,
-      dislikePercentage: 0,
-      userVoted: false,
-    },
-  ];
-
-  console.log("data comments", data);
 
   return (
     <>
@@ -158,11 +89,15 @@ const DebateComments: React.FC<DebateCommentsCardProps> = ({ debate }) => {
               <FormInput
                 label="Leave a comment"
                 control={control}
-                name="comment"
+                name="content"
                 errors={errors}
               />
 
-              <Button type="submit" className="w-fit">
+              <Button
+                type="submit"
+                className="w-fit"
+                isLoading={isPublishingComment}
+              >
                 Publish Comment
               </Button>
             </form>
@@ -170,21 +105,29 @@ const DebateComments: React.FC<DebateCommentsCardProps> = ({ debate }) => {
         </div>
       )}
 
-      <FilterButtons
-        filterButtonOptions={debateFilterButtonOptions}
-        filterByButton={() => {}}
-      />
-
-      {/* <div className="w-full flex justify-center">
+      {data?.comments.length !== 0 && (
+        <FilterButtons
+          filterButtonOptions={debateFilterButtonOptions}
+          filterByButton={() => {}}
+        />
+      )}
+      {data?.comments.length === 0 && (
+        <div>
+          <h1 className="text-dark text-[16px] md:text-[20px]">
+            This debate has no comments yet
+          </h1>
+        </div>
+      )}
+      <div className="w-full flex justify-center">
         {isLoadingComments && (
           <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
             <FaSpinner className="animate-spin text-[100px]" />
           </IconWrapper>
         )}
-      </div> */}
-      {comments && (
+      </div>
+      {data && (
         <>
-          {comments.map((comment) => (
+          {data.comments.map((comment: DebateCommentType) => (
             <DebateCommentCard comment={comment} key={comment.id} />
           ))}
         </>
