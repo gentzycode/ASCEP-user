@@ -12,12 +12,17 @@ import {
 } from "./Democracy";
 import { ActivityPage, DataView, MapView } from "./Response";
 import DebateProvider from "@/contexts/DebateContext";
-import LandingPage from "./Landing/home";
+import { ContactUs, LandingPage } from "./Landing";
 
 export const landingPages: RouterType[] = [
   {
     path: "",
     element: <LandingPage />,
+    title: "home",
+  },
+  {
+    path: "/contact-us",
+    element: <ContactUs />,
     title: "home",
   },
 ];

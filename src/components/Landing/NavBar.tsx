@@ -3,11 +3,11 @@ import { Button } from "../ui/button";
 
 export default function NavBar() {
   return (
-    <div className="flex py-8 justify-between  items-center px-[100px]">
-      <div className="flex items-center">
+    <div className="flex py-8 justify-between items-center px-[100px]">
+      <Link to="/home" className="flex items-center">
         <img src="/images/logopic.png" className="" alt="" />
         <p className="mb-4 text-xl font-bold text-white">ASCEP</p>
-      </div>
+      </Link>
 
       <div className="flex items-center gap-8">
         {navLinks.map((link) => (
@@ -20,7 +20,9 @@ export default function NavBar() {
           </Link>
         ))}
 
-        <Button className="w-[175px]">Contact</Button>
+        <Link to="/home/contact-us">
+          <Button className="w-[175px]">Contact</Button>
+        </Link>
       </div>
     </div>
   );

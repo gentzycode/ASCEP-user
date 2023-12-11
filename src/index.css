@@ -136,3 +136,7 @@
     linear-gradient(225deg, #fef7dc 0%, #ffe4db 34.9%, #e9f6fe 100%)
   );
 }
+
+.footer-pattern {
+  background-image: url(/images/landing/footer-pattern.svg);
+}
