@@ -4,3 +4,4 @@ export { default as CardBackBtn } from "./CardBackBtn";
 export { default as IconWrapper } from "./IconWrapper";
 export { default as PageLoader } from "./PageLoader";
 export { default as PageFetchError } from "./PageFetchError";
+export { default as CommentInput } from "./CommentInput";
