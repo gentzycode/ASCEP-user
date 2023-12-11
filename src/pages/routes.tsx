@@ -9,10 +9,12 @@ import {
   ProposalsHomePage,
   SDGsHomePage,
   PublishDebatePage,
+  StartProposalPage,
 } from "./Democracy";
 import { ActivityPage, DataView, MapView, ViewResponsePage } from "./Response";
 import DebateProvider from "@/contexts/DebateContext";
 import { ContactUs, LandingPage } from "./Landing";
+import ProposalProvider from "@/contexts/ProposalContext";
 
 export const landingPages: RouterType[] = [
   {
@@ -59,8 +61,17 @@ const routes: RouterType[] = [
   },
   {
     path: "/democracy/proposals",
-    element: <ProposalsHomePage />,
+    element: (
+      <ProposalProvider>
+        <ProposalsHomePage />
+      </ProposalProvider>
+    ),
     title: "democracy-proposals",
+  },
+  {
+    path: "/democracy/proposals/start-proposal",
+    element: <StartProposalPage />,
+    title: "democracy-proposals-start",
   },
   {
     path: "/democracy/initiatives",
