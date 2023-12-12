@@ -1,4 +1,4 @@
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes, Navigate } from "react-router-dom";
 import axios from "axios";
 
 import routes, {
@@ -103,6 +103,9 @@ const Router = () => {
           {responsePages}
         </Route>
       </Route>
+
+      {/* Redirect from base URL to /home */}
+      <Route path="/" element={<Navigate to="/home" replace />} />
 
       <Route path="*" element={<div>Route Not Found</div>} />
     </Routes>
