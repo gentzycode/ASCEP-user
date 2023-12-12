@@ -87,6 +87,9 @@ const Router = () => {
 
   return (
     <Routes>
+      {/* Redirect from base URL to /home */}
+      <Route path="/" element={<Navigate to="/home" replace />} />
+
       <Route path="/home" element={<Outlet />}>
         {landingRoutes}
       </Route>
@@ -103,9 +106,6 @@ const Router = () => {
           {responsePages}
         </Route>
       </Route>
-
-      {/* Redirect from base URL to /home */}
-      <Route path="/" element={<Navigate to="/home" replace />} />
 
       <Route path="*" element={<div>Route Not Found</div>} />
     </Routes>
