@@ -17,9 +17,16 @@ import {
 import { useAppContext } from "@/contexts/AppContext";
 import { IoClose } from "react-icons/io5";
 
-export default function SDGMultiSelect() {
+interface SDGMultiSelectProps {
+  selected: SDGData[];
+  setSelected: React.Dispatch<React.SetStateAction<SDGData[]>>;
+}
+
+export default function SDGMultiSelect({
+  selected,
+  setSelected,
+}: SDGMultiSelectProps) {
   const [open, setOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState<SDGData[]>([]);
   const [renderedItems, setRenderedItems] = React.useState<SDGData[]>([]);
 
   const { sdgData, fetchingSdgs } = useAppContext();
@@ -67,30 +74,36 @@ export default function SDGMultiSelect() {
         </PopoverTrigger>
         <PopoverContent className="p-0 ">
           <Command>
-            <CommandInput placeholder="Search framework..." />
-            <CommandEmpty>No framework found.</CommandEmpty>
+            <CommandInput placeholder="Search SDGs..." />
+            <CommandEmpty>No SDG found.</CommandEmpty>
             <CommandGroup>
-              {renderedItems.map((renderedItem) => (
-                <CommandItem
-                  key={renderedItem.id}
-                  value={JSON.stringify(renderedItem)}
-                  onSelect={(currentValue) => {
-                    handleSelect(currentValue);
-                    setOpen(false);
-                  }}
-                >
-                  {renderedItem.title}
-                </CommandItem>
-              ))}
+              {renderedItems?.length > 0 &&
+                renderedItems.map((renderedItem) => (
+                  <CommandItem
+                    key={renderedItem.id}
+                    value={JSON.stringify(renderedItem)}
+                    onSelect={(currentValue) => {
+                      handleSelect(currentValue);
+                      setOpen(false);
+                    }}
+                  >
+                    {renderedItem.title}
+                  </CommandItem>
+                ))}
             </CommandGroup>
           </Command>
         </PopoverContent>
       </Popover>
 
       <div className="flex gap-2 ">
-        {selected.map((item) => (
-          <SelectedSdg item={item} key={item.id} handleRemove={handleRemove} />
-        ))}
+        {selected?.length > 0 &&
+          selected.map((item) => (
+            <SelectedSdg
+              item={item}
+              key={item.id}
+              handleRemove={handleRemove}
+            />
+          ))}
       </div>
     </div>
   );

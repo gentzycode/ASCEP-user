@@ -29,3 +29,10 @@ interface WardsType {
   ward: string;
   ward_code: string;
 }
+
+interface CollectionData {
+  id: number;
+  name: string;
+  description: string;
+  type: string;
+}

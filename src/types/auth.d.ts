@@ -15,3 +15,8 @@ interface ForgotPasswordCredentials {
   email?: string;
   password?: string;
 }
+
+interface TwoFALoginPayload {
+  email: string;
+  token: string;
+}
