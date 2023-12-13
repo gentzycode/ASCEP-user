@@ -1,5 +1,11 @@
 import { Navigate } from "react-router-dom";
-import { ForgotPasswordPage, LoginPage, OTPPage, SignupPage } from "./Auth";
+import {
+  ForgotPasswordPage,
+  LoginPage,
+  OTPPage,
+  SignupPage,
+  TwoFALogin,
+} from "./Auth";
 import { MainPage } from "./Main";
 import { SettingsPage } from "./Settings";
 import {
@@ -11,7 +17,7 @@ import {
   PublishDebatePage,
   StartProposalPage,
 } from "./Democracy";
-import { ActivityPage, DataView, MapView, ViewResponsePage } from "./Response";
+import { ActivityPage, DataView, MapView } from "./Response";
 import DebateProvider from "@/contexts/DebateContext";
 import { ContactUs, LandingPage } from "./Landing";
 import ProposalProvider from "@/contexts/ProposalContext";
@@ -124,6 +130,11 @@ export const unauthenticatedRoutes: RouterType[] = [
     path: "signup",
     element: <SignupPage />,
     title: "signup",
+  },
+  {
+    path: "2fa-login",
+    element: <TwoFALogin />,
+    title: "2fa-login",
   },
   {
     path: "login",

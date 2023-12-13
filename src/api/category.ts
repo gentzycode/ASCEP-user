@@ -5,7 +5,7 @@ import axios from "axios";
 export const useGetAllCategories = () => {
   return useQuery(
     ["all-categories"],
-    (): Promise<UserData> => {
+    (): Promise<CollectionData[]> => {
       return axios.get(`${baseUrl}/category/all`).then((res) => res.data.data);
     },
     {

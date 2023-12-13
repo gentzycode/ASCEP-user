@@ -6,31 +6,37 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "../ui/use-toast";
 import { Form } from "../ui/form";
-import { FormInput } from "../custom";
+import { CategoriesMultiSelect, FormInput, SDGMultiSelect } from "../custom";
 import { FaPlus } from "react-icons/fa";
-import { useGetAllCategories } from "@/api/category";
-import { useGetAllSDGs } from "@/api/sdg";
 import { useNavigate } from "react-router-dom";
+import { ChangeEvent, useRef, useState } from "react";
+import { Gps } from "iconsax-react";
 
 interface CreatePostModalProps {
   onClose: () => void;
   isOpen: boolean;
+}
+interface SelectedImage {
+  image: File;
+  byteArray: ArrayBuffer | string | null;
 }
 
 export default function CreateReportModal({
   isOpen,
   onClose,
 }: CreatePostModalProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [selectedImages, setSelectedImages] = useState<SelectedImage[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<
+    CollectionData[]
+  >([]);
+  const [selectedSDGs, setSelectedSDGs] = useState<SDGData[]>([]);
+
   const form = useForm<z.infer<typeof createPostSchema>>({
     resolver: zodResolver(createPostSchema),
   });
 
   const navigate = useNavigate();
-
-  const { data: allSDGs } = useGetAllSDGs();
-  const { data: allCategories } = useGetAllCategories();
-  console.log(allSDGs);
-  console.log(allCategories);
 
   const { toast } = useToast();
   const {
@@ -53,13 +59,30 @@ export default function CreateReportModal({
       navigate("/response/activity");
     }, 1000);
   }
+
+  const handleFileSelection = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files![0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setSelectedImages([
+          ...selectedImages,
+          { image: file, byteArray: reader.result },
+        ]);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
         className="min-w-[700px]"
         style={{ borderRadius: 40, padding: 32 }}
       >
-        <h4 className="pb-3 border-b border-dark/10 ">Create a post</h4>
+        <h4 className="pb-3 border-b border-dark/10 ">Create a report</h4>
 
         <div className="pt-8 space-y-8">
           <Form {...form}>
@@ -67,10 +90,30 @@ export default function CreateReportModal({
               <div className="flex items-center justify-between ">
                 <p className="text-subtle_text">Image</p>
 
-                <div className=" w-full max-w-[350px]">
-                  <Button className="w-14 " type="button">
+                <div className=" w-full max-w-[350px] flex gap-2">
+                  {selectedImages.map((image, i) => (
+                    <img
+                      key={i}
+                      src={image.byteArray as string}
+                      className="object-cover rounded-xl w-14 h-14"
+                      alt=""
+                    />
+                  ))}
+
+                  <Button
+                    onClick={() => inputRef.current?.click()}
+                    className="w-14 "
+                    type="button"
+                  >
                     <FaPlus />
                   </Button>
+                  <input
+                    onChange={handleFileSelection}
+                    className="hidden"
+                    ref={inputRef}
+                    type="file"
+                    accept="image/*"
+                  />
                 </div>
               </div>
               <div className="flex items-center justify-between ">
@@ -88,15 +131,22 @@ export default function CreateReportModal({
               <div className="flex items-center justify-between ">
                 <p className="text-subtle_text">Category</p>
                 <div className=" w-full max-w-[350px]">
-                  <FormInput
-                    name="category"
-                    label="Category"
-                    control={control}
-                    placeholder="Enter category"
-                    errors={errors}
+                  <CategoriesMultiSelect
+                    selected={selectedCategories}
+                    setSelected={setSelectedCategories}
                   />
                 </div>
               </div>
+              <div className="flex items-center justify-between ">
+                <p className="text-subtle_text">Link to SDG (Optional)</p>
+                <div className=" w-full max-w-[350px]">
+                  <SDGMultiSelect
+                    selected={selectedSDGs}
+                    setSelected={setSelectedSDGs}
+                  />
+                </div>
+              </div>
+
               <div className="flex items-center justify-between ">
                 <p className="text-subtle_text">Location</p>
                 <div className=" w-full max-w-[350px]">
@@ -105,8 +155,8 @@ export default function CreateReportModal({
                     label="Location"
                     control={control}
                     placeholder="Enter location"
-                    type="password"
                     errors={errors}
+                    rightElement={<Gps size={24} color="#000" />}
                   />
                 </div>
               </div>
