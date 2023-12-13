@@ -6,3 +6,4 @@ export { default as PageLoader } from "./PageLoader";
 export { default as PageFetchError } from "./PageFetchError";
 export { default as CommentInput } from "./CommentInput";
 export { default as SDGMultiSelect } from "./SDGMultiSelect";
+export { default as CategoriesMultiSelect } from "./CategoriesMultiSelect";

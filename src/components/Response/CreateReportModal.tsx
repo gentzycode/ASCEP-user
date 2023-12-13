@@ -6,18 +6,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "../ui/use-toast";
 import { Form } from "../ui/form";
-import { FormInput, SDGMultiSelect } from "../custom";
+import { CategoriesMultiSelect, FormInput, SDGMultiSelect } from "../custom";
 import { FaPlus } from "react-icons/fa";
-// import { useGetAllCategories } from "@/api/category";
-// import { useGetAllSDGs } from "@/api/sdg";
 import { useNavigate } from "react-router-dom";
 import { ChangeEvent, useRef, useState } from "react";
+import { Gps } from "iconsax-react";
 
 interface CreatePostModalProps {
   onClose: () => void;
   isOpen: boolean;
 }
-
 interface SelectedImage {
   image: File;
   byteArray: ArrayBuffer | string | null;
@@ -29,6 +27,10 @@ export default function CreateReportModal({
 }: CreatePostModalProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [selectedImages, setSelectedImages] = useState<SelectedImage[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<
+    CollectionData[]
+  >([]);
+  const [selectedSDGs, setSelectedSDGs] = useState<SDGData[]>([]);
 
   const form = useForm<z.infer<typeof createPostSchema>>({
     resolver: zodResolver(createPostSchema),
@@ -36,20 +38,12 @@ export default function CreateReportModal({
 
   const navigate = useNavigate();
 
-  // const { data: allSDGs } = useGetAllSDGs();
-  // const { data: allCategories } = useGetAllCategories();
-
-  // console.log(allSDGs);
-  // console.log(allCategories);
-
   const { toast } = useToast();
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = form;
-
-  console.log(errors);
 
   function onSubmit(values: z.infer<typeof createPostSchema>) {
     console.log(values);
@@ -88,7 +82,7 @@ export default function CreateReportModal({
         className="min-w-[700px]"
         style={{ borderRadius: 40, padding: 32 }}
       >
-        <h4 className="pb-3 border-b border-dark/10 ">Create a post</h4>
+        <h4 className="pb-3 border-b border-dark/10 ">Create a report</h4>
 
         <div className="pt-8 space-y-8">
           <Form {...form}>
@@ -101,7 +95,7 @@ export default function CreateReportModal({
                     <img
                       key={i}
                       src={image.byteArray as string}
-                      className="object-cover rounded-xl w-14 h-15"
+                      className="object-cover rounded-xl w-14 h-14"
                       alt=""
                     />
                   ))}
@@ -137,31 +131,32 @@ export default function CreateReportModal({
               <div className="flex items-center justify-between ">
                 <p className="text-subtle_text">Category</p>
                 <div className=" w-full max-w-[350px]">
-                  <FormInput
-                    name="category"
-                    label="Category"
-                    control={control}
-                    placeholder="Enter category"
-                    errors={errors}
+                  <CategoriesMultiSelect
+                    selected={selectedCategories}
+                    setSelected={setSelectedCategories}
                   />
                 </div>
               </div>
               <div className="flex items-center justify-between ">
+                <p className="text-subtle_text">Link to SDG (Optional)</p>
+                <div className=" w-full max-w-[350px]">
+                  <SDGMultiSelect
+                    selected={selectedSDGs}
+                    setSelected={setSelectedSDGs}
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between ">
                 <p className="text-subtle_text">Location</p>
                 <div className=" w-full max-w-[350px]">
-                  {/* <FormInput
+                  <FormInput
                     name="location"
                     label="Location"
                     control={control}
                     placeholder="Enter location"
-                    type="password"
                     errors={errors}
-                  /> */}
-
-                  <SDGMultiSelect
-                  // // control={control}
-                  // name="location"
-                  // placeholder="Select SDGs"
+                    rightElement={<Gps size={24} color="#000" />}
                   />
                 </div>
               </div>

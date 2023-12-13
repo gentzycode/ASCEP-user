@@ -85,7 +85,7 @@ const FormInput = <TFormValues extends Record<string, unknown>>({
                 {...field}
               />
             </FormControl>
-            {(leftElement || props.type === "password") && (
+            {(rightElement || props.type === "password") && (
               <div className="absolute rounded-r-[20px] bg-[#f5f5f5] top-0 flex items-center h-full pr-4 pl-1 right-0 ">
                 {props.type === "password" ? (
                   <p

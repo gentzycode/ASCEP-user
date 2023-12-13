@@ -18,3 +18,10 @@ interface SelectOption {
   value: string;
   label: string;
 }
+
+interface CollectionData {
+  id: number;
+  name: string;
+  description: string;
+  type: string;
+}

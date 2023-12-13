@@ -1,9 +1,14 @@
-import React, { PropsWithChildren } from "react";
+import { ReactNode } from "react";
 
-export default function FormCard({ children }: PropsWithChildren) {
+interface FormCardProps {
+  children: ReactNode;
+  className?: string;
+}
+
+export default function FormCard({ children, className }: FormCardProps) {
   return (
     <div
-      className="p-[50px] bg-white rounded-[40px]"
+      className={"p-[50px] bg-white rounded-[40px] " + className}
       style={{
         width: "490px",
       }}
