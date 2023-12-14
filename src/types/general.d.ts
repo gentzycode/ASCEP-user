@@ -13,3 +13,15 @@ interface SdgTarget {
   description: string;
   sdgs_id: number;
 }
+
+interface SelectOption {
+  value: string;
+  label: string;
+}
+
+interface CollectionData {
+  id: number;
+  name: string;
+  description: string;
+  type: string;
+}
