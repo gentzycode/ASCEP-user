@@ -1,5 +1,6 @@
 import { useGetAllDebates } from "@/api/democracy/debates";
 import { filterDebateSchema } from "@/schemas/DebateSchema";
+import { filterSchema } from "@/schemas/GeneralSchema";
 import { debateFilterButtonOptions } from "@/utils/Democracy/Debates";
 import {
   PropsWithChildren,
@@ -16,12 +17,12 @@ interface DebateContextType {
   setView: React.Dispatch<React.SetStateAction<string>>;
   fetchingDebates: boolean;
   fetchingDebatesError: boolean;
-  fetchedDebatesData: DebateDataType | null;
+  fetchedDebatesData: DebateDataType | undefined;
   refetchDebates: () => void;
   filterByButton: (value: string) => void;
-  filterOptions: z.infer<typeof filterDebateSchema>;
+  filterOptions: z.infer<typeof filterSchema>;
   setFilterOptions: React.Dispatch<
-    React.SetStateAction<z.infer<typeof filterDebateSchema>>
+    React.SetStateAction<z.infer<typeof filterSchema>>
   >;
   getAllDebates: UseMutateFunction<
     any,
@@ -43,7 +44,7 @@ const initialFilter = {
   mostactive: false,
   text: "",
   highestrating: false,
-  newest: false,
+  newest: true,
   datetimeSpecific: "",
 };
 const DebateContext = createContext<DebateContextType>({
@@ -51,7 +52,7 @@ const DebateContext = createContext<DebateContextType>({
   setView: () => {},
   fetchingDebates: false,
   fetchingDebatesError: false,
-  fetchedDebatesData: null,
+  fetchedDebatesData: undefined,
   refetchDebates: () => {},
   filterByButton: () => {},
   filterOptions: initialFilter,
@@ -72,7 +73,7 @@ export default function DebateProvider({ children }: PropsWithChildren) {
 
   const [view, setView] = useState<string>("card-view");
   const [filterOptions, setFilterOptions] =
-    useState<z.infer<typeof filterDebateSchema>>(initialFilter);
+    useState<z.infer<typeof filterSchema>>(initialFilter);
   const [page] = useState<number>(1);
   const [perPage] = useState<number>(10);
 
@@ -116,20 +117,12 @@ export default function DebateProvider({ children }: PropsWithChildren) {
     }
   };
 
-  const fetchDebate = () => {
-    getAllDebates({ page, perPage, filter: getFiltersWithValues() });
-  };
-
   useEffect(() => {
     getAllDebates({ page, perPage, filter: getFiltersWithValues() });
-  }, []);
-
-  useEffect(() => {
-    fetchDebate();
   }, [filterOptions]);
 
   const refetchDebates = () => {
-    getAllDebates({ page, perPage, filter: {} });
+    getAllDebates({ page, perPage, filter: getFiltersWithValues() });
   };
   return (
     <DebateContext.Provider

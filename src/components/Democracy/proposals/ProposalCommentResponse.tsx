@@ -1,30 +1,35 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { AddSquare, CloseCircle, Flag, MinusSquare } from "iconsax-react";
+import {
+  AddSquare,
+  CloseCircle,
+  Flag,
+  MinusSquare,
+} from "iconsax-react";
 import { useState } from "react";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
-import { debateCommentSchema } from "@/schemas/DebateSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { usePublishDebateComment } from "@/api/democracy/debates";
 import { FormInput } from "..";
 import { IconWrapper } from "@/components/custom";
 import { useClickAway } from "@uidotdev/usehooks";
+import { proposalCommentSchema } from "@/schemas/ProposalSchema";
+import { usePublishProposalComment } from "@/api/democracy/proposals";
 
-interface DebateCommentResponseProps {
+interface ProposalCommentResponseProps {
   response: CommentResponseType;
   paddingLeft: number;
 }
-const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
+const ProposalCommentResponse: React.FC<ProposalCommentResponseProps> = ({
   response,
   paddingLeft,
 }) => {
   const { mutateAsync: publishResponse, isLoading: isPublishingComment } =
-    usePublishDebateComment();
-  const { debateId } = useParams();
+    usePublishProposalComment();
+  const { proposalId } = useParams();
   const [showResponse, setShowResponse] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
   const ref = useClickAway<HTMLDivElement>(() => {
@@ -33,12 +38,12 @@ const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
       setShowResponse(false);
     }, 500);
   });
-  const form = useForm<z.infer<typeof debateCommentSchema>>({
-    resolver: zodResolver(debateCommentSchema),
+  const form = useForm<z.infer<typeof proposalCommentSchema>>({
+    resolver: zodResolver(proposalCommentSchema),
     mode: "onChange",
     defaultValues: {
       content: "",
-      debate_id: parseInt(debateId!),
+      proposal_id: parseInt(proposalId!),
       comment_reference: response.response_id,
     },
   });
@@ -49,7 +54,7 @@ const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
     formState: { errors },
   } = form;
 
-  async function onSubmit(values: z.infer<typeof debateCommentSchema>) {
+  async function onSubmit(values: z.infer<typeof proposalCommentSchema>) {
     await publishResponse(values);
     closeResponse();
   }
@@ -83,7 +88,6 @@ const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
             <h2 className="text-dark text-[14px] -ml-4">
               {response.commentDetail.user.username}
             </h2>
-            {/* <p className="text-[12px] text-base-400 my-3 ">{formattedDate(response.commentDetail.)}</p> */}
           </div>
           <p className=" pb-2 text-base-500">
             {response.commentDetail.content}
@@ -142,22 +146,6 @@ const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
                 Block Author
               </Button>
             </div>
-
-            {/* <div className="flex justify-start items-center  gap-2 pt-4">
-              <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
-                13 Votes
-              </Button>
-              <Separator
-                orientation="vertical"
-                className="h-5  text-dark bg-base-500"
-              />
-              <Button className="text-[#31D0AA] gap-1 bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
-                <Like1 variant="Bold" /> <span>10</span>
-              </Button>
-              <Button className="text-[#E43F40] gap-1 bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
-                <Dislike variant="Bold" /> <span>3</span>
-              </Button>
-            </div> */}
           </div>
 
           {/* REPLY INPUT */}
@@ -203,7 +191,7 @@ const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
           } duration-300`}
         >
           {response?.commentDetail?.responses?.map((response) => (
-            <DebateCommentResponse
+            <ProposalCommentResponse
               key={response.response_id}
               response={response}
               paddingLeft={paddingLeft + 20}
@@ -215,4 +203,4 @@ const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
   );
 };
 
-export default DebateCommentResponse;
+export default ProposalCommentResponse;

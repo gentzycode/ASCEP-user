@@ -4,7 +4,7 @@ import { Button } from "../../ui/button";
 import { Link } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
 import { formattedDate } from "@/utils/helper";
-import { DebateSDGs } from "..";
+import { DebateSDGs, SDGCard } from "..";
 
 interface DebatesCardViewCardProps {
   debate: DebateType;
@@ -30,7 +30,7 @@ const DebatesCardViewCard: React.FC<DebatesCardViewCardProps> = ({
           {/* SDGs */}
           <div className="my-6 flex gap-[4px]">
             {debate.debateSDGs.map((SDGs) => (
-              <DebateSDGs SDGs={SDGs} key={SDGs.sdgs_id} />
+              <SDGCard SDGs={SDGs.sdgs} key={SDGs.sdgs_id} />
             ))}
           </div>
           {/* TARGETS */}

@@ -13,23 +13,28 @@ import {
 import { useState } from "react";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
-import { commentSchema } from "@/schemas/DebateSchema";
+import { debateCommentSchema } from "@/schemas/DebateSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { usePublishComment } from "@/api/democracy/debates";
-import { DebateCommentResponse, FormInput } from "..";
+import {
+  usePublishDebateComment,
+  useVoteDebateComment,
+} from "@/api/democracy/debates";
+import { CommentCard, DebateCommentResponse, FormInput } from "..";
 import { IconWrapper } from "@/components/custom";
 import { useClickAway } from "@uidotdev/usehooks";
 
 interface DebateCommentCardProps {
-  comment: DebateCommentType;
+  comment: CommentType;
 }
 const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
   const [dynamicPadding] = useState(24);
 
   const { mutateAsync: publishResponse, isLoading: isPublishingComment } =
-    usePublishComment();
+    usePublishDebateComment();
+  const { mutate: voteComment, isLoading: isVotingComment } =
+    useVoteDebateComment();
   const { debateId } = useParams();
   const [showResponse, setShowResponse] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
@@ -39,8 +44,8 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
       setShowResponse(false);
     }, 500);
   });
-  const form = useForm<z.infer<typeof commentSchema>>({
-    resolver: zodResolver(commentSchema),
+  const form = useForm<z.infer<typeof debateCommentSchema>>({
+    resolver: zodResolver(debateCommentSchema),
     mode: "onChange",
     defaultValues: {
       content: "",
@@ -55,7 +60,7 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
     formState: { errors },
   } = form;
 
-  async function onSubmit(values: z.infer<typeof commentSchema>) {
+  async function onSubmit(values: z.infer<typeof debateCommentSchema>) {
     await publishResponse(values);
     closeResponse();
   }

@@ -12,13 +12,18 @@ const FilterButtons: React.FC<FilterButtonsProps> = ({
   return (
     <ToggleGroup
       type="single"
-      defaultValue=""
+      defaultValue="newest"
       onValueChange={(value) => {
         if (value) {
           if (filterByButton) {
             filterByButton(value);
           }
-        }
+        } 
+        // else {
+        //   if (filterByButton) {
+        //     filterByButton("newest");
+        //   }
+        // }
       }}
       className="gap-4 mb-2 w-full md:w-fit justify-start flex-wrap"
     >

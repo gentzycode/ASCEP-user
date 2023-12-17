@@ -57,7 +57,7 @@ const FormCheckBoxSDG = <TFormValues extends Record<string, unknown>>({
                         >
                           <Checkbox
                             checked={
-                              (field.value as number[]).includes(sdg.id) ??
+                              (field.value as number[])?.includes(sdg.id) ??
                               false
                             }
                             onCheckedChange={(checked) => {

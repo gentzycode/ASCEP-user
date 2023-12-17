@@ -21,37 +21,38 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useAppContext } from "@/contexts/AppContext";
+import React from "react";
 
-type FormInputProps<TFormValues extends FieldValues = FieldValues> = {
+type FormSelectWardProps<TFormValues extends FieldValues = FieldValues> = {
   control?: Control<TFormValues>;
   name: Path<TFormValues>;
 } & Omit<InputProps, "name">;
 
-const FormSelectSDG = <TFormValues extends Record<string, unknown>>({
+const FormSelectWard = <TFormValues extends Record<string, unknown>>({
   control,
   name,
-}: FormInputProps<TFormValues>): JSX.Element => {
-  const { sdgData } = useAppContext();
+}: FormSelectWardProps<TFormValues>): JSX.Element => {
+  const { wards } = useAppContext();
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex-1">
-          <FormLabel>By SDGs</FormLabel>
+        <FormItem className="flex-1 relative">
+          <FormLabel>Wards</FormLabel>
           <FormControl>
             <Select
               {...field}
-              onValueChange={(value) => field.onChange(value)}
+              onValueChange={(value: number) => field.onChange(Number(value))}
               value={field.value && Number(field.value)}
             >
               <SelectTrigger className="rounded-full bg-transparent h-12 border-subtle_text text-[12px] text-subtle_text focus:ring-0 focus:ring-offset-0">
-                <SelectValue placeholder="Select a goal" />
+                <SelectValue placeholder="Select a ward" />
               </SelectTrigger>
               <SelectContent>
-                {sdgData?.map((sdg) => (
-                  <SelectItem value={sdg.id} key={sdg.id}>
-                    {sdg.title}
+                {wards?.map((ward) => (
+                  <SelectItem value={ward.id} key={ward.id}>
+                    {ward.ward}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -64,4 +65,4 @@ const FormSelectSDG = <TFormValues extends Record<string, unknown>>({
   );
 };
 
-export default FormSelectSDG;
+export default React.memo(FormSelectWard);

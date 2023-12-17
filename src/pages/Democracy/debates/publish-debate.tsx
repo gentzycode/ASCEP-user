@@ -22,8 +22,8 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
   const { mutateAsync: publishDebate, isLoading } = usePublishDebate();
   const [tagInput, setTagInput] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
-  const [target, setTarget] = useState<number | null>(null);
-  const [targets, setTargets] = useState<number[]>([]);
+  const [target, setTarget] = useState<SDGTarget>();
+  const [targets, setTargets] = useState<SDGTarget[]>([]);
   const form = useForm<z.infer<typeof startDebateSchema>>({
     resolver: zodResolver(startDebateSchema),
     defaultValues: {
@@ -54,12 +54,15 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
 
   useEffect(() => {
     if (target) {
-      setTargets((targets) => [...targets, target]);
+      if (!targets.includes(target)) {
+        setTargets((targets) => [...targets, target]);
+      }
     }
   }, [target]);
 
   useEffect(() => {
-    setValue("targets", targets);
+    const IDs = targets.map((target) => target.id);
+    setValue("targets", IDs);
   }, [targets]);
 
   useEffect(() => {
@@ -70,7 +73,7 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
     setValue("description", text);
   };
 
-  const addTopic = () => {
+  const addTag = () => {
     if (tagInput && tagInput !== "") {
       if (!tags.includes(tagInput)) {
         setTags((tag) => [...tag, tagInput]);
@@ -79,11 +82,11 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
     }
   };
 
-  const removeTopic = (value: string) =>
+  const removeTag = (value: string) =>
     setTags((tags) => tags.filter((tag) => value !== tag));
 
   const removeTarget = (value: number) =>
-    setTargets((targets) => targets.filter((target) => value !== target));
+    setTargets((targets) => targets.filter((target) => value !== target.id));
 
   const editorContent = watch("description");
 
@@ -167,7 +170,7 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
                 <Button
                   className="rounded-md w-fit h-fit"
                   type="button"
-                  onClick={addTopic}
+                  onClick={addTag}
                 >
                   Add tag
                 </Button>
@@ -185,7 +188,7 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
                         <span>{tag}</span>
                         <CloseCircle
                           size={18}
-                          onClick={() => removeTopic(tag)}
+                          onClick={() => removeTag(tag)}
                           className="cursor-pointer"
                           variant="Bold"
                         />
@@ -227,12 +230,12 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
                       <Button
                         type="button"
                         className=" w-fit h-fit rounded-md bg-dark text-light hover:bg-dark flex justify-between items-center cursor-auto text-[14px] "
-                        key={index}
+                        key={target.id}
                       >
-                        <span>{target}</span>
+                        Target <span>{target.code}</span>
                         <CloseCircle
                           size={18}
-                          onClick={() => removeTarget(target)}
+                          onClick={() => removeTarget(target.id)}
                           className="cursor-pointer"
                           variant="Bold"
                         />

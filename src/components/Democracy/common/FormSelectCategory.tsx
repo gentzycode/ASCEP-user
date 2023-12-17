@@ -17,15 +17,15 @@ import { useAppContext } from "@/contexts/AppContext";
 import { useState } from "react";
 
 interface FormComboboxTargetProps {
-  setTarget: React.Dispatch<React.SetStateAction<SDGTarget | undefined>>;
+  setCategory: React.Dispatch<React.SetStateAction<CategoryType | undefined>>;
 }
 
 const FormComboboxTarget: React.FC<FormComboboxTargetProps> = ({
-  setTarget,
+  setCategory,
 }) => {
   const [open, setOpen] = useState(false);
   const [value] = useState<number | string>();
-  const { targets } = useAppContext();
+  const { categories } = useAppContext();
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -36,30 +36,30 @@ const FormComboboxTarget: React.FC<FormComboboxTargetProps> = ({
           className="w-full bg-[#C4C4C41F] hover:bg-[#C4C4C41F]  justify-between text-dark rounded-full"
         >
           {value
-            ? targets.find((target) => target.code === value)?.code
-            : "Select target..."}
+            ? categories.find((category) => category.id === value)?.name
+            : "Select categories..."}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full p-0">
         <Command>
-          <CommandInput placeholder="Search target..." className="h-9" />
-          <CommandEmpty>No target found.</CommandEmpty>
+          <CommandInput placeholder="Search categories..." className="h-9" />
+          <CommandEmpty>No Category found.</CommandEmpty>
           <CommandGroup>
-            {targets.map((target) => (
+            {categories.map((category) => (
               <CommandItem
-                key={target.id}
-                value={target.id}
+                key={category.id}
+                value={category.id}
                 onSelect={() => {
                   setOpen(false);
-                  setTarget(target);
+                  setCategory(category);
                 }}
                 className="w-full text-dark text-[14px]"
               >
-                {target.description}
+                {category.name}
                 <CheckIcon
                   className={cn(
                     "ml-auto h-4 w-4",
-                    value === target.code ? "opacity-100" : "opacity-0"
+                    value === category.id ? "opacity-100" : "opacity-0"
                   )}
                 />
               </CommandItem>
