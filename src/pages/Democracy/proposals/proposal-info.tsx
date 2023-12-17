@@ -1,7 +1,7 @@
-import { useGetDebateInfo } from "@/api/democracy/debates";
+import { useGetProposalInfo } from "@/api/democracy/proposals";
 import {
-  DebateComments,
-  DebateInfo,
+  ProposalComments,
+  ProposalInfo,
   RelatedDebates,
 } from "@/components/Democracy";
 import { IconWrapper } from "@/components/custom";
@@ -11,24 +11,25 @@ import { useRef } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 
-interface DebatesInfoPageProps {}
-const DebatesInfoPage: React.FC<DebatesInfoPageProps> = () => {
-  const { debateId } = useParams();
+interface ProposalInfoPageProps {}
+const ProposalInfoPage: React.FC<ProposalInfoPageProps> = () => {
+  const { proposalId } = useParams();
   const {
-    data: debate,
+    data: proposal,
+    isLoading: isLoadingProposal,
     isError,
-    isLoading: isLoadingDebate,
-  } = useGetDebateInfo(parseInt(debateId!));
+  } = useGetProposalInfo(parseInt(proposalId!));
 
   const commentsSectionRef = useRef<HTMLDivElement | null>(null);
   const scrollToComments = () => {
     commentsSectionRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
   return (
     <DemocracyLayout>
       {/* LOADING */}
-      <div className="w-full flex justify-center">
-        {isLoadingDebate && (
+      <div className="w-full flex justify-center ">
+        {isLoadingProposal && (
           <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
             <FaSpinner className="animate-spin text-[100px]" />
           </IconWrapper>
@@ -41,37 +42,40 @@ const DebatesInfoPage: React.FC<DebatesInfoPageProps> = () => {
             <IconWrapper className="text-primary rounded-full">
               <Danger size="32" />
             </IconWrapper>
-            <p className="text-[16px]">No Debate Found</p>
+            <p className="text-[16px]">No Proposal Found</p>
           </div>
         </div>
       )}
-      <>
-        {/* DEBATE INFO */}
-        {debate && (
-          <div>
-            <DebateInfo debate={debate} scrollToComments={scrollToComments} />
-          </div>
-        )}
-        {/* RELATED CONTENT */}
-        <div className="my-10 w-full max-w-[700px]">
-          <RelatedDebates />
+      {/* PROPOSAL INFO */}
+      {proposal && (
+        <div>
+          <ProposalInfo
+            scrollToComments={scrollToComments}
+            proposal={proposal}
+          />
         </div>
-        {/*COMMENTS */}
-        <div
-          className="my-10 w-full max-w-[700px]"
-          id="comments"
-          ref={commentsSectionRef}
-        >
-          <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
-            Comments
-          </h2>
+      )}
 
-          <div className="flex gap-10 flex-col mt-10">
-            {debate && <DebateComments />}
-          </div>
+      {/* RELATED CONTENT */}
+      <div className="my-10 w-full max-w-[700px]">
+        <RelatedDebates />
+      </div>
+
+      {/*COMMENTS */}
+      <div
+        className="my-10 w-full max-w-[700px]"
+        id="comments"
+        ref={commentsSectionRef}
+      >
+        <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
+          Comments
+        </h2>
+        <div className="flex gap-10 flex-col mt-10">
+          {proposal && <ProposalComments />}
         </div>
-      </>
+      </div>
     </DemocracyLayout>
   );
 };
-export default DebatesInfoPage;
+
+export default ProposalInfoPage;

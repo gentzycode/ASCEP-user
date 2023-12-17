@@ -16,10 +16,9 @@ const DemocracyLayout: React.FC<DemocracyLayoutProps> = ({ children }) => {
     navigate(-1);
   };
   const subpage = location.pathname.split("/")[3];
-  // const page = location.pathname.split("/")[2];
 
   return (
-    <div className=" p-6">
+    <div className=" p-3 min-[600px]:p-6 md:p-8 :">
       <DemocracyNavigation />
       <div className="bg-light pt-[40px] pb-10 ">
         {subpage && (
@@ -31,7 +30,7 @@ const DemocracyLayout: React.FC<DemocracyLayoutProps> = ({ children }) => {
             Go Back
           </Button>
         )}
-        <div className="w-full">{children}</div>
+        <div className="w-full min-h-[70vh]">{children}</div>
       </div>
     </div>
   );

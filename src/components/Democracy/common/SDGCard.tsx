@@ -1,23 +1,27 @@
 import { Checkbox } from "@/components/ui/checkbox";
 
-interface DebateSDGsProps {
-  SDGs: DebateSDGsType;
+interface SDGCardProps {
+  SDGs: {
+    title: string;
+    banner: string;
+    id: number;
+  };
 }
 
-const DebateSDGs: React.FC<DebateSDGsProps> = ({ SDGs }) => {
+const SDGCard: React.FC<SDGCardProps> = ({ SDGs }) => {
   return (
     <div
       className="h-12 p-0 flex justify-start relative overflow-hidden rounded-lg"
-      key={SDGs.sdgs_id}
+      key={SDGs.id}
     >
       <Checkbox
         className="border-dark absolute top-0 left-0 w-full h-full border-transparent
                 opacity-60 checked:bg-primary appearance-none rounded-lg 
               "
       />
-      <img src={SDGs.sdgs.banner} alt={SDGs.sdgs.title} />
+      <img src={SDGs.banner} alt={SDGs.title} />
     </div>
   );
 };
 
-export default DebateSDGs;
+export default SDGCard;
