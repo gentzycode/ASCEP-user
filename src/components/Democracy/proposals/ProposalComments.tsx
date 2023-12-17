@@ -3,6 +3,7 @@ import {
   DebateCommentCard,
   FilterButtons,
   FormInput,
+  ProposalCommentCard,
 } from "..";
 import { debateCommentFilterButtonOptions } from "@/utils/Democracy/Debates";
 import { IconWrapper } from "@/components/custom";
@@ -15,36 +16,38 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
 import { useAuthContext } from "@/providers/AuthProvider";
-import {
-  useGetDebateComments,
-  usePublishDebateComment,
-} from "@/api/democracy/debates";
 import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { debateCommentSchema } from "@/schemas/DebateSchema";
+import {
+  useGetProposalComments,
+  usePublishProposalComment,
+} from "@/api/democracy/proposals";
+import { proposalCommentSchema } from "@/schemas/ProposalSchema";
 
-interface DebateCommentsCardProps {}
-const DebateComments: React.FC<DebateCommentsCardProps> = () => {
-  const { mutateAsync: publishComment, isLoading: isPublishingComment } =
-    usePublishDebateComment();
+interface ProposalCommentsCardProps {}
+const ProposalComments: React.FC<ProposalCommentsCardProps> = () => {
   const { isLoggedIn } = useAuthContext();
+  const { proposalId } = useParams();
+
+  const { mutateAsync: publishComment, isLoading: isPublishingComment } =
+    usePublishProposalComment();
+
   const [page, setPage] = useState(1);
-  const { debateId } = useParams();
   const [filter, setFilter] = useState("newest");
 
   const {
     data: commentsData,
     isLoading: isLoadingComments,
-    refetch,
     isFetching: isFetchingComments,
-  } = useGetDebateComments(parseInt(debateId!), page, filter);
+    refetch: refetchComments,
+  } = useGetProposalComments(parseInt(proposalId!), page, filter);
 
-  const form = useForm<z.infer<typeof debateCommentSchema>>({
-    resolver: zodResolver(debateCommentSchema),
+  const form = useForm<z.infer<typeof proposalCommentSchema>>({
+    resolver: zodResolver(proposalCommentSchema),
     mode: "onChange",
     defaultValues: {
       content: "",
-      debate_id: parseInt(debateId!),
+      proposal_id: parseInt(proposalId!),
     },
   });
   const {
@@ -54,14 +57,14 @@ const DebateComments: React.FC<DebateCommentsCardProps> = () => {
     formState: { errors },
   } = form;
 
-  async function onSubmit(values: z.infer<typeof debateCommentSchema>) {
+  async function onSubmit(values: z.infer<typeof proposalCommentSchema>) {
     await publishComment(values);
     if (commentsData) {
       reset();
     }
   }
   useEffect(() => {
-    refetch();
+    refetchComments();
   }, [page, filter]);
   return (
     <>
@@ -129,7 +132,6 @@ const DebateComments: React.FC<DebateCommentsCardProps> = () => {
           </h1>
         </div>
       )}
-
       {isLoadingComments && (
         <div className="w-full flex justify-center">
           <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
@@ -137,16 +139,17 @@ const DebateComments: React.FC<DebateCommentsCardProps> = () => {
           </IconWrapper>
         </div>
       )}
+
       {commentsData && commentsData.comments.length > 0 && (
         <div
           className={`${
             isFetchingComments
               ? "opacity-50 pointer-events-none"
-              : "opacity-100 "
+              : "opacity-100"
           } flex flex-col gap-6`}
         >
           {commentsData.comments.map((comment: CommentType) => (
-            <DebateCommentCard comment={comment} key={comment.id} />
+            <ProposalCommentCard comment={comment} key={comment.id} />
           ))}
 
           <CommentsPagination
@@ -158,4 +161,4 @@ const DebateComments: React.FC<DebateCommentsCardProps> = () => {
     </>
   );
 };
-export default DebateComments;
+export default ProposalComments;

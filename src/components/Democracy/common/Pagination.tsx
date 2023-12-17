@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { filterDebateSchema } from "@/schemas/DebateSchema";
+import { filterSchema } from "@/schemas/GeneralSchema";
 import { UseMutateFunction } from "react-query";
 import * as z from "zod";
 interface PaginationProps {
-  meta?: DebateMetaDataType;
+  meta?: MetaDataType;
   onPageChange: UseMutateFunction<
     any,
     unknown,
@@ -14,7 +15,7 @@ interface PaginationProps {
     }
   >;
   perPage: number;
-  filterOptions: z.infer<typeof filterDebateSchema>;
+  filterOptions: z.infer<typeof filterSchema>;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
@@ -24,7 +25,7 @@ const Pagination: React.FC<PaginationProps> = ({
   filterOptions,
 }) => {
   const { current_page, last_page, next_page_url, previous_page_url } =
-    meta as DebateMetaDataType;
+    meta as MetaDataType;
 
   const getFiltersWithValues = () => {
     const entries = Object.entries(filterOptions);

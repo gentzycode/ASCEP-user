@@ -2,54 +2,47 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { formattedDate } from "@/utils/helper";
-import {
-  AddSquare,
-  CloseCircle,
-  Dislike,
-  Flag,
-  Like1,
-  MinusSquare,
-} from "iconsax-react";
+import { CloseCircle } from "iconsax-react";
 import { useState } from "react";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
-import { debateCommentSchema } from "@/schemas/DebateSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import {
-  usePublishDebateComment,
-  useVoteDebateComment,
-} from "@/api/democracy/debates";
-import { CommentCard, DebateCommentResponse, FormInput } from "..";
+import { CommentCard, FormInput, ProposalCommentResponse } from "..";
 import { IconWrapper } from "@/components/custom";
 import { useClickAway } from "@uidotdev/usehooks";
+import { usePublishProposalComment, useVoteProposalComment } from "@/api/democracy/proposals";
+import { proposalCommentSchema } from "@/schemas/ProposalSchema";
 
-interface DebateCommentCardProps {
+interface ProposalCommentCardProps {
   comment: CommentType;
 }
-const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
+const ProposalCommentCard: React.FC<ProposalCommentCardProps> = ({
+  comment,
+}) => {
   const [dynamicPadding] = useState(24);
-
-  const { mutateAsync: publishResponse, isLoading: isPublishingComment } =
-    usePublishDebateComment();
-  const { mutate: voteComment, isLoading: isVotingComment } =
-    useVoteDebateComment();
-  const { debateId } = useParams();
+  const { proposalId } = useParams();
   const [showResponse, setShowResponse] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
+
+  const { mutateAsync: publishResponse, isLoading: isPublishingComment } =
+    usePublishProposalComment();
+  const { mutate: voteComment, isLoading: isVotingComment } =
+    useVoteProposalComment();
+
   const ref = useClickAway<HTMLDivElement>(() => {
     setTimeout(() => {
       setIsReplying(false);
       setShowResponse(false);
     }, 500);
   });
-  const form = useForm<z.infer<typeof debateCommentSchema>>({
-    resolver: zodResolver(debateCommentSchema),
+  const form = useForm<z.infer<typeof proposalCommentSchema>>({
+    resolver: zodResolver(proposalCommentSchema),
     mode: "onChange",
     defaultValues: {
       content: "",
-      debate_id: parseInt(debateId!),
+      proposal_id: parseInt(proposalId!),
       comment_reference: comment.id,
     },
   });
@@ -60,7 +53,7 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
     formState: { errors },
   } = form;
 
-  async function onSubmit(values: z.infer<typeof debateCommentSchema>) {
+  async function onSubmit(values: z.infer<typeof proposalCommentSchema>) {
     await publishResponse(values);
     closeResponse();
   }
@@ -129,7 +122,7 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
         } duration-300`}
       >
         {comment.responses.map((response) => (
-          <DebateCommentResponse
+          <ProposalCommentResponse
             key={response.response_id}
             response={response}
             paddingLeft={dynamicPadding + 20}
@@ -139,4 +132,4 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
     </div>
   );
 };
-export default DebateCommentCard;
+export default ProposalCommentCard;

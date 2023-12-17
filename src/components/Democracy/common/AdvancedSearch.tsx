@@ -11,27 +11,19 @@ import { useState } from "react";
 import { Form, FormLabel } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { useDebateContext } from "@/contexts/DebateContext";
 import { format } from "date-fns";
+import { filterSchema } from "@/schemas/GeneralSchema";
+import * as z from "zod";
 
-export const filterSchema = z.object({
-  sdgs: z.array(z.number()).optional(),
-  specificSDG: z.string().optional(),
-  specificTarget: z.number().optional(),
-  targets: z.array(z.number()).optional(),
-  tags: z.array(z.string()).optional(),
-  mostactive: z.boolean().optional(),
-  text: z.string().optional(),
-  highestrating: z.boolean().optional(),
-  newest: z.boolean().optional(),
-  datetimeSpecific: z.string().optional(),
-});
 interface AdvancedSearchProps {
   filterButtonOptions: FilterButtonOptionsType[];
   view: string;
   setView: React.Dispatch<React.SetStateAction<string>>;
   filterByButton: (value: string) => void;
+  filterOptions: z.infer<typeof filterSchema>;
+  setFilterOptions: React.Dispatch<
+    React.SetStateAction<z.infer<typeof filterSchema>>
+  >;
 }
 
 const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
@@ -39,8 +31,9 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
   view,
   setView,
   filterByButton,
+  setFilterOptions,
+  filterOptions,
 }) => {
-  const { setFilterOptions, filterOptions } = useDebateContext();
   const [advanceSearch, setAdvanceSearch] = useState(false);
 
   const form = useForm<z.infer<typeof filterSchema>>({

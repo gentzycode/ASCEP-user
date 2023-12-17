@@ -28,6 +28,7 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
     getAllDebates,
     perPage,
     filterOptions,
+    setFilterOptions,
   } = useDebateContext();
   const pageDescription =
     "Citizens' proposals are an opportunity for neighbours and collectives to decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.";
@@ -46,13 +47,19 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
           setView={setView}
           view={view}
           filterByButton={filterByButton}
+          filterOptions={filterOptions}
+          setFilterOptions={setFilterOptions}
         />
 
         {/* LIST VIEW */}
         {view === "list-view" && fetchedDebatesData && (
           <div className="grid grid-cols-1 my-10 gap-10 max-w-[700px]">
             {fetchedDebatesData.debates.map((debate: DebateType) => (
-              <ListViewCard debate={debate} key={debate.id} />
+              <ListViewCard
+                title={debate.title}
+                route={ROUTES.DEBATE_INFO_ROUTE(debate.id)}
+                key={debate.id}
+              />
             ))}
           </div>
         )}
