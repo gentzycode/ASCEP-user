@@ -33,7 +33,7 @@ export default function LoginPage() {
         <div className="space-y-7 mb-7">
           <h2 className="text-[30px] text-center text-dark">Welcome back 😊</h2>
           <p className="font-medium text-center text-text">
-            Hey, 👋🏼 Enter your deyails below to login to your account
+            Hey, 👋🏼 Enter your details below to login to your account
           </p>
         </div>
         <Form {...form}>

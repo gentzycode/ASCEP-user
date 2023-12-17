@@ -60,9 +60,9 @@ const Router = () => {
         if (error?.response?.status === 401) {
           // SIGNOUT LOGIC
         } else {
-          if (error?.response?.status === 401) {
+          if (error?.response?.status === 500) {
             toast({
-              title: "Error!",
+              title: "Sorry!",
               description: "An error occurred on the server",
               variant: "error",
             });

@@ -11,8 +11,6 @@ export default function ResponseLayout() {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  console.log(location);
-
   useEffect(() => {
     setSelectedPage(
       responsePages?.filter((page) => page.path === location.pathname)[0]?.title

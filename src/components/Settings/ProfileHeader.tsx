@@ -37,7 +37,9 @@ export default function ProfileHeader() {
         </div>
 
         <div className="pb-12">
-          <p className="text-3xl font-bold text-text">Dexter Olaniyi</p>
+          <p className="text-3xl font-bold text-text">
+            {data?.firstname} {data?.lastname}
+          </p>
           <p className="text-sm text-subtle_text">{data?.email}</p>
         </div>
       </div>
