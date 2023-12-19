@@ -8,6 +8,7 @@ export { default as ProposalsHomePage } from "./proposals/proposals";
 export { default as StartProposalPage } from "./proposals/start-proposal";
 export { default as ProposalInfoPage } from "./proposals/proposal-info";
 export { default as ProposalCommuntityHomePage } from "./proposals/proposal-community";
+export { default as ProposalTopicInfoPage } from "./proposals/proposal-topic-info";
 //INITIATIVES
 export { default as InitiativesHomePage } from "./initiatives/initiatives";
 export { default as SDGsHomePage } from "./SDGs/SDGs";

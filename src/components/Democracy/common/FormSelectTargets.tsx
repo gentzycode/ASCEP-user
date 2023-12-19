@@ -24,8 +24,9 @@ const FormComboboxTarget: React.FC<FormComboboxTargetProps> = ({
   setTarget,
 }) => {
   const [open, setOpen] = useState(false);
-  const [value] = useState<number | string>();
+  const [value, setValue] = useState<string>();
   const { targets } = useAppContext();
+  console.log(targets);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -33,10 +34,13 @@ const FormComboboxTarget: React.FC<FormComboboxTargetProps> = ({
         <Button
           role="combobox"
           aria-expanded={open}
-          className="w-full bg-[#C4C4C41F] hover:bg-[#C4C4C41F]  justify-between text-dark rounded-full"
+          className="w-full bg-[#C4C4C41F] hover:bg-[#C4C4C41F]  justify-between text-text rounded-full"
         >
           {value
-            ? targets.find((target) => target.code === value)?.code
+            ? targets.find(
+                (target) =>
+                  target.description.toLowerCase() == value?.toLowerCase()
+              )?.description
             : "Select target..."}
         </Button>
       </PopoverTrigger>
@@ -49,9 +53,10 @@ const FormComboboxTarget: React.FC<FormComboboxTargetProps> = ({
               <CommandItem
                 key={target.id}
                 value={target.id}
-                onSelect={() => {
+                onSelect={(currentValue) => {
                   setOpen(false);
                   setTarget(target);
+                  setValue(currentValue === value ? "" : String(currentValue));
                 }}
                 className="w-full text-dark text-[14px]"
               >
@@ -59,7 +64,9 @@ const FormComboboxTarget: React.FC<FormComboboxTargetProps> = ({
                 <CheckIcon
                   className={cn(
                     "ml-auto h-4 w-4",
-                    value === target.code ? "opacity-100" : "opacity-0"
+                    value?.toLowerCase() === target.description.toLowerCase()
+                      ? "opacity-100"
+                      : "opacity-0"
                   )}
                 />
               </CommandItem>

@@ -12,28 +12,29 @@ const MAX_DOCUMENT_COUNT = 3;
 const ACCEPTED_DOCUMENT_MIME_TYPES = ["application/pdf"];
 
 export const startProposalSchema = z.object({
-    title: z.string({ required_error: "Debate title is required" })
-        .min(3, {
-            message: "Debate title must be at least 3 characters.",
-        })
-        .optional(),
+    title: z.string({ required_error: "Please enter a title for your proposal" })
+        .refine((value) => value.trim() !== "", {
+            message: "Please enter a title for your proposal",
+        }),
     summary: z.string({ required_error: "Proposal summary is required" })
         .max(200, {
             message: "Proposal summary must be maximum of 200 characters.",
-        })
-        .optional(),
-    content: z.string({ required_error: "Proposal description is required" })
-        .min(20, {
-            message: "Proposal description must be at least 20 characters.",
-        })
-        .optional(),
+        }).refine((value) => value.trim() !== "", {
+            message: "Please enter a summary of your proposal",
+        }),
+    content: z.string({ required_error: "Proposal text is required" })
+        .min(200, {
+            message: "Proposal text must be at least 200 characters.",
+        }).refine((value) => value.trim() !== "", {
+            message: "Proposal text is required",
+        }),
     external_video_url: z.string().optional(),
-    ward_id: z.number().optional(),
+    ward_id: z.number({ required_error: "Please select a ward" }),
     tags: z.array(z.string()).optional(),
     categories: z.array(z.number()).optional(),
     sdgs: z.array(z.number()).optional(),
     targets: z.array(z.number()).optional(),
-    support_needed: z.number({ required_error: "Support needed is required" }),
+    support_needed: z.number({ required_error: "Support needed is required" }).min(1000, "minimum of 1000 support is needed").positive(),
     documents: z
         .array(z.any())
         .refine((files) => {
@@ -48,7 +49,8 @@ export const startProposalSchema = z.object({
                     (file) => ACCEPTED_DOCUMENT_MIME_TYPES.includes(file?.type)
                 ),
             "Only PDF files are supported for documents."
-        ).optional(),
+        )
+        .optional(),
     image: z
         .any()
         .refine((files) => {

@@ -18,30 +18,33 @@ import useDisclosure from "@/hooks/useDisclosure";
 import DemocracyLayout from "@/layouts/DemocracyLayout";
 import { proposalTopicFilterButtonOptions } from "@/utils/Democracy/Proposals";
 import { formattedDate } from "@/utils/helper";
-import { Messages1 } from "iconsax-react";
+import { Danger, Messages1 } from "iconsax-react";
 import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const ProposalCommuntityHomePage = () => {
-  const location = useLocation();
   const { proposalId } = useParams();
-  const { proposal } = location.state as { proposal: ProposalType };
-  const { isOpen: isModalOpen, onClose, onOpen, toggle } = useDisclosure();
+  const { isOpen: isModalOpen, onClose, onOpen } = useDisclosure();
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState("newest");
-  // const { data: proposal } = useGetProposalInfo(parseInt(proposalId!));
+  const { data: proposal, isError: noProposalError } = useGetProposalInfo(
+    parseInt(proposalId!)
+  );
   const {
-    refetch,
+    refetch: refetchProposalTopics,
     data: proposalTopicData,
     isLoading: isLoadingProposalTopics,
     isFetching: isFetchingProposalTopics,
   } = useGetAllProposalTopics(page, parseInt(proposalId!), filter);
-  const { isLoading: isLoadingMembers, data: communityMembers } =
-    useGetProposalCommunityMembers(parseInt(proposalId!));
+  const {
+    isLoading: isLoadingMembers,
+    data: communityMembers,
+    refetch: refetchCommunityMembers,
+  } = useGetProposalCommunityMembers(parseInt(proposalId!));
 
   useEffect(() => {
-    refetch();
+    refetchProposalTopics();
   }, [page, filter]);
 
   return (
@@ -49,6 +52,18 @@ const ProposalCommuntityHomePage = () => {
       <h4 className="text-xl md:text-2xl text-primary font-semibold">
         Proposal community
       </h4>
+      {/* ERROR */}
+      {noProposalError && (
+        <div className="flex items-center flex-wrap justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10 my-10">
+          <div className="flex justify-start items-center gap-1">
+            <IconWrapper className="text-primary rounded-full">
+              <Danger size="32" />
+            </IconWrapper>
+            <p className="text-[16px]">No proposal found</p>
+          </div>
+        </div>
+      )}
+      {/* PROPOSAL INFO */}
       {proposal && (
         <div>
           <div className="mt-10">
@@ -100,10 +115,12 @@ const ProposalCommuntityHomePage = () => {
       )}
 
       {/* FILTER BUTTONS */}
-      <FilterButtons
-        filterButtonOptions={proposalTopicFilterButtonOptions}
-        filterByButton={async (value) => await setFilter(value)}
-      />
+      {communityMembers?.length !== 0 && (
+        <FilterButtons
+          filterButtonOptions={proposalTopicFilterButtonOptions}
+          filterByButton={async (value) => await setFilter(value)}
+        />
+      )}
       {isLoadingProposalTopics && (
         <div className="w-full flex justify-center">
           <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
@@ -111,8 +128,9 @@ const ProposalCommuntityHomePage = () => {
           </IconWrapper>
         </div>
       )}
+
       {/* TOPICS */}
-      {proposalTopicData && (
+      {proposalTopicData?.data && proposalTopicData?.data.length > 0 ? (
         <div
           className={`${
             isFetchingProposalTopics
@@ -124,10 +142,14 @@ const ProposalCommuntityHomePage = () => {
             <ProposalTopicCard key={topic.id} topic={topic} />
           ))}
         </div>
+      ) : (
+        <h1 className="text-xl">
+          No topics created, Create the first community topic
+        </h1>
       )}
 
       {/* PAGINATION */}
-      {proposalTopicData && (
+      {proposalTopicData?.meta && proposalTopicData.data.length > 0 && (
         <CommentsPagination
           onPageChange={(page: number) => setPage(page)}
           meta={proposalTopicData?.meta}
@@ -138,11 +160,15 @@ const ProposalCommuntityHomePage = () => {
         Participant ({communityMembers?.length})
       </h2>
 
-      {communityMembers && (
+      {communityMembers && communityMembers?.length > 0 ? (
         <div className="flex flex-wrap gap-3">
           {communityMembers.map((member) => (
             <ProposalParticipantCard key={member.user_id} member={member} />
           ))}
+        </div>
+      ) : (
+        <div>
+          <h1 className="text-xl">No participant in this community</h1>
         </div>
       )}
       {/* CREATE TOPIC */}

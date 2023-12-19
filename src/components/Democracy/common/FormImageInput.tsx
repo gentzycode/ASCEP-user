@@ -14,7 +14,7 @@ import {
 import { FormControl, FormField, FormMessage, FormItem } from "../../ui/form";
 import { InputProps } from "../../ui/input";
 import { Button } from "@/components/ui/button";
-import { GalleryAdd } from "iconsax-react";
+import { CloseCircle, GalleryAdd } from "iconsax-react";
 
 type FormImageInputProps<TFormValues extends FieldValues = FieldValues> = {
   control?: Control<TFormValues>;
@@ -24,6 +24,7 @@ type FormImageInputProps<TFormValues extends FieldValues = FieldValues> = {
   description?: string;
   errors?: Partial<DeepMap<TFormValues, FieldError>> | FieldErrors<TFormValues>;
   setSelectedImage: React.Dispatch<React.SetStateAction<File | null>>;
+  selectedImage: File | null;
 } & Omit<InputProps, "name">;
 
 const FormImageInput = <TFormValues extends Record<string, unknown>>({
@@ -34,10 +35,11 @@ const FormImageInput = <TFormValues extends Record<string, unknown>>({
   errors,
   description,
   setSelectedImage,
+  selectedImage,
   ...props
 }: FormImageInputProps<TFormValues>): JSX.Element => {
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <FormField
         control={control}
         name={name}
@@ -61,6 +63,7 @@ const FormImageInput = <TFormValues extends Record<string, unknown>>({
                   }}
                   ref={field.ref}
                   {...props}
+                  key={selectedImage ? selectedImage.name : "fileInput"}
                 />
                 <label
                   htmlFor="fileInput"
@@ -77,39 +80,29 @@ const FormImageInput = <TFormValues extends Record<string, unknown>>({
           </FormItem>
         )}
       />
-    </>
+      {/* IMAGE PREVIEW */}
+      {selectedImage && (
+        <div className="w-[150px]">
+          <p className="text-base my-1">Image preview</p>
+          <div className="relative h-[150px] w-[150px]">
+            <img
+              src={URL.createObjectURL(selectedImage)}
+              alt="Selected"
+              className="absolute top-0 left-0 w-full h-full object-cover"
+            />
+            <CloseCircle
+              className="absolute top-1 right-0 text-primary p-0 h-fit w-fit cursor-pointer"
+              size={24}
+              onClick={() => {
+                setSelectedImage(null);
+              }}
+              variant="Bold"
+            />
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
 export default FormImageInput;
-
-{
-  /* <FormField
-  control={control}
-  name={name}
-  render={({ field }) => (
-    <FormItem className="flex-1">
-      <FormLabel>{label}</FormLabel>
-      <p className="text-[12px] text-dark -tracking-[0.28px]">
-        {description}
-      </p>
-      <FormControl>
-        <Input
-          placeholder={placeholder}
-          {...field}
-          className={`focus-visible:ring-1 bg-[#C4C4C41F] ${
-            hasError
-            ? "focus-visible:ring-red-500"
-              : "focus-visible:ring-primary"
-          } focus-visible:ring-offset-1 h-12 rounded-full px-8`}
-          {...props}
-        />
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/> */
-}
-{
-  /* @ts-ignore */
-}

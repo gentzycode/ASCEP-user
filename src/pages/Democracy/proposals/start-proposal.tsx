@@ -6,7 +6,6 @@ import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   FormCheckBoxSDG,
-  FormComboboxTarget,
   FormDocumentInput,
   FormImageInput,
   FormInput,
@@ -15,32 +14,27 @@ import {
   TextEditor,
 } from "@/components/Democracy";
 import { useEffect, useState } from "react";
-import { CloseCircle } from "iconsax-react";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { startProposalSchema } from "@/schemas/ProposalSchema";
 import FormTextArea from "@/components/Democracy/common/FormTextArea";
-import PdfPreview from "@/components/Democracy/common/PreviewPDF";
-import { IconWrapper } from "@/components/custom";
-import { useAppContext } from "@/contexts/AppContext";
 import { usePublishProposal } from "@/api/democracy/proposals";
+import TargetsMultiSelect from "@/components/custom/TargetsMultiSelect";
+import { IoClose } from "react-icons/io5";
 
 interface StartProposalPageProps {}
 const StartProposalPage: React.FC<StartProposalPageProps> = () => {
-  const {} = useAppContext();
   const { mutateAsync: publishProposal, isLoading } = usePublishProposal();
   const [tagInput, setTagInput] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
-  const [target, setTarget] = useState<SDGTarget>();
   const [targets, setTargets] = useState<SDGTarget[]>([]);
-  const [category, setCategory] = useState<CategoryType>();
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [selectedDocuments, setSelectedDocuments] = useState<File[]>([]);
   const form = useForm<z.infer<typeof startProposalSchema>>({
     resolver: zodResolver(startProposalSchema),
     defaultValues: {
-      title: "",
+      title: undefined,
       summary: "",
       content: "",
       external_video_url: "",
@@ -66,7 +60,6 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
   } = form;
 
   async function onSubmit(values: z.infer<typeof startProposalSchema>) {
-    console.log(values);
     const formData = new FormData();
     formData.append("title", values.title!);
     formData.append("summary", values.summary!);
@@ -108,19 +101,6 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
   }
 
   useEffect(() => {
-    if (target) {
-      if (!targets.includes(target)) {
-        setTargets((targets) => [...targets, target]);
-      }
-    }
-  }, [target]);
-  useEffect(() => {
-    if (category) {
-      setCategories((categories) => [...categories, category]);
-    }
-  }, [category]);
-
-  useEffect(() => {
     const IDs = targets.map((target) => target.id);
     setValue("targets", IDs);
   }, [targets]);
@@ -136,10 +116,12 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
 
   const onEditorStateChange = (text: any) => {
     setValue("content", text);
+    trigger("content");
   };
 
   useEffect(() => {
     setValue("documents", selectedDocuments);
+    trigger("documents");
   }, [selectedDocuments]);
 
   const addTag = () => {
@@ -153,13 +135,6 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
 
   const removeTag = (value: string) =>
     setTags((tags) => tags.filter((tag) => value !== tag));
-
-  const removeTarget = (value: number) =>
-    setTargets((targets) => targets.filter((target) => value !== target.id));
-  const removeCategory = (value: number) =>
-    setCategories((categories) =>
-      categories.filter((category) => value !== category.id)
-    );
 
   const editorContent = watch("content");
 
@@ -208,7 +183,7 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
           </h2>
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-12"
+            className="flex flex-col gap-10"
           >
             {/* TITLE */}
             <FormInput
@@ -221,7 +196,7 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
             {/* SUMMARY */}
             <FormTextArea
               name="summary"
-              label="Proposal Summary ((Maximum of 200 characters))"
+              label="Proposal summary (maximum of 200 characters)"
               control={control}
               errors={errors}
             />
@@ -234,7 +209,27 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
               onChange={onEditorStateChange}
               value={editorContent}
             />
-
+            {/* WARD */}
+            <FormSelectWard
+              /* @ts-ignore */
+              control={control}
+              /* @ts-ignore */
+              errors={errors}
+              name="ward_id"
+              label="Ward"
+            />
+            {/* SUPPORTS */}
+            <FormInput
+              name="support_needed"
+              control={control}
+              errors={errors}
+              label="Support needed"
+              type="number"
+              min={1}
+              onChange={(e) => {
+                setValue("support_needed", Number(e.target.value));
+              }}
+            />
             {/* OPTIONAL FIELDS */}
             <h2 className="text-[20px] md:text-[24px] text-dark -tracking-[0.48px]">
               Optional Fields
@@ -249,89 +244,39 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
               placeholder="You may add a link to YouTube or Vimeo"
             />
             {/* DESCRIPTIVE IMAGE */}
-            <div className="flex flex-col gap-4">
-              <FormImageInput
-                name="image"
-                control={control}
-                description="You can upload one image of following content types: jpg, up to 1 MB."
-                setSelectedImage={setSelectedImage}
-              />
-              {/* IMAGE PREVIEW */}
-              {selectedImage && (
-                <div className="w-[150px]">
-                  <p>Image preview</p>
-                  <div className="relative h-[150px] w-[150px]">
-                    <img
-                      // src={URL.createObjectURL(selectedImage[0])}
-                      src={URL.createObjectURL(selectedImage)}
-                      alt="Selected"
-                    />
-                    <IconWrapper
-                      onClick={() => {
-                        setSelectedImage(null);
-                        setValue("image", undefined);
-                      }}
-                      className="absolute top-0 right-0 text-dark bg-primary p-0 h-fit w-fit cursor-pointer"
-                    >
-                      <CloseCircle size={20} />
-                    </IconWrapper>
-                  </div>
-                </div>
-              )}
-            </div>
+            <FormImageInput
+              name="image"
+              control={control}
+              description="You can upload one image of following content types: jpg, up to 1 MB."
+              setSelectedImage={setSelectedImage}
+              selectedImage={selectedImage}
+            />
 
             {/* DOCUMENT  */}
-            <div className="flex flex-col gap-4">
-              <FormDocumentInput
-                name="documents"
-                control={control}
-                description="You can upload up to a maximum of 3 documents of following content types: pdf, up to 3 MB per file."
-                onChange={async (e) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    if (selectedDocuments.length === 3) {
-                      setError("documents", {
-                        type: "manual",
-                        message: "You can only upload 3 documents",
-                      });
-                    } else {
-                      setSelectedDocuments((selectedDocuments) => [
-                        ...selectedDocuments,
-                        file,
-                      ]);
-                    }
+            <FormDocumentInput
+              name="documents"
+              control={control}
+              errors={errors}
+              description="You can upload up to a maximum of 3 documents of following content types: pdf, up to 3 MB per file."
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  if (selectedDocuments.length === 3) {
+                    setError("documents", {
+                      type: "manual",
+                      message: "You can only upload 3 documents",
+                    });
+                  } else {
+                    setSelectedDocuments((selectedDocuments) => [
+                      ...selectedDocuments,
+                      file,
+                    ]);
                   }
-                }}
-              />
-              {/* DOC PREVIEW */}
-              {selectedDocuments.length > 0 && (
-                <>
-                  <p>Document preview</p>
-                  <div className="flex justify-start items-center gap-3 flex-wrap">
-                    {selectedDocuments.map((doc, index) => (
-                      <div className="w-[200px] h-[200px] relative" key={index}>
-                        <PdfPreview file={doc} />
-                        <IconWrapper
-                          onClick={() => {
-                            setSelectedDocuments((selectedDocuments) =>
-                              selectedDocuments.filter((docu) => docu !== doc)
-                            );
-                            trigger("documents");
-                          }}
-                          className="absolute top-0 right-0 text-dark bg-primary p-0 h-fit w-fit cursor-pointer"
-                        >
-                          <CloseCircle size={20} />
-                        </IconWrapper>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
-
-            {/* WARD */}
-            {/* @ts-ignore */}
-            <FormSelectWard control={control} name="ward_id" />
+                }
+              }}
+              setSelectedDocuments={setSelectedDocuments}
+              selectedDocuments={selectedDocuments}
+            />
 
             {/* MAP */}
             <div>
@@ -364,19 +309,13 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
                   <h5>Tags</h5>
                   <div className="flex gap-2 flex-wrap">
                     {tags.map((tag, index) => (
-                      <Button
-                        type="button"
-                        className=" w-fit h-fit rounded-md bg-dark text-light hover:bg-dark flex justify-between items-center cursor-auto text-[14px] "
-                        key={index}
-                      >
+                      <div className="top-0 left-0 z-10 flex h-full gap-1 p-1 px-2 text-xs text-white transition-all duration-300 ease-in-out rounded-lg bg-dark w-fit" key={index}>
                         <span>{tag}</span>
-                        <CloseCircle
-                          size={18}
+                        <IoClose
                           onClick={() => removeTag(tag)}
-                          className="cursor-pointer"
-                          variant="Bold"
+                          className="text-base cursor-pointer"
                         />
-                      </Button>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -404,68 +343,10 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
             </div>
 
             {/* TARGETS */}
-            <div>
-              <FormComboboxTarget setTarget={setTarget} />
-
-              {targets.length > 0 && (
-                <div className="my-4">
-                  <h5>Targets</h5>
-                  <div className="flex gap-2 flex-wrap">
-                    {targets.map((target, index) => (
-                      <Button
-                        type="button"
-                        className=" w-fit h-fit rounded-md bg-dark text-light hover:bg-dark flex justify-between items-center cursor-auto text-[14px] "
-                        key={index}
-                      >
-                        Target <span>{target.code}</span>
-                        <CloseCircle
-                          size={18}
-                          onClick={() => removeTarget(target.id)}
-                          className="cursor-pointer"
-                          variant="Bold"
-                        />
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-            {/* CATEGORY */}
-            <div>
-              <FormSelectCategory setCategory={setCategory} />
-
-              {categories.length > 0 && (
-                <div className="my-4">
-                  <h5>Categories</h5>
-                  <div className="flex gap-2 flex-wrap">
-                    {categories.map((category) => (
-                      <Button
-                        type="button"
-                        className=" w-fit h-fit rounded-md bg-dark text-light hover:bg-dark flex justify-between items-center cursor-auto text-[14px] "
-                        key={category.id}
-                      >
-                        <span>{category.name}</span>
-                        <CloseCircle
-                          size={18}
-                          onClick={() => removeCategory(category.id)}
-                          className="cursor-pointer"
-                          variant="Bold"
-                        />
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-            {/* SUPPORTS */}
-            <FormInput
-              name="support_needed"
-              control={control}
-              label="Support needed"
-              type="number"
-              onChange={(e) => {
-                setValue("support_needed", Number(e.target.value));
-              }}
+            <TargetsMultiSelect selected={targets} setSelected={setTargets} />
+            <FormSelectCategory
+              setSelected={setCategories}
+              selected={categories}
             />
             <Button
               type="submit"
