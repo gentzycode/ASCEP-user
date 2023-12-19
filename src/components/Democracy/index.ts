@@ -13,7 +13,7 @@ export { default as TextEditor } from "./common/TextEditor";
 export { default as FormSelectSDG } from "./common/FormSelectSDG";
 export { default as FormSelectTarget } from "./common/FormSelectTarget";
 export { default as FormCheckBoxSDG } from "./common/FormCheckBoxSDG";
-export { default as FormComboboxTarget } from "./common/FormComboboxTarget";
+export { default as FormComboboxTarget } from "./common/FormSelectTargets";
 export { default as Pagination } from "./common/Pagination";
 export { default as FormImageInput } from "./common/FormImageInput";
 export { default as FormDocumentInput } from "./common/FormDocumentInput";

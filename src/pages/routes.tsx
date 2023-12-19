@@ -19,6 +19,7 @@ import {
   EditDebatePage,
   ProposalInfoPage,
   ProposalCommuntityHomePage,
+  ProposalTopicInfoPage,
 } from "./Democracy";
 import { ActivityPage, DataView, MapView } from "./Response";
 import DebateProvider from "@/contexts/DebateContext";
@@ -99,6 +100,11 @@ const routes: RouterType[] = [
   {
     path: "/democracy/proposals/community/:proposalId",
     element: <ProposalCommuntityHomePage />,
+    title: "democracy-proposals-community",
+  },
+  {
+    path: "/democracy/proposals/community/topic/:topicId",
+    element: <ProposalTopicInfoPage />,
     title: "democracy-proposals-community",
   },
   {
