@@ -10,6 +10,7 @@ export const useGetAllCategories = () => {
     },
     {
       retry: false,
+      refetchOnWindowFocus: false
     }
   );
 };

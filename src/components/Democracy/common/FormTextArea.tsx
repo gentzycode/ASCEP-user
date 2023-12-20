@@ -15,7 +15,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "../../ui/form";
 import { InputProps } from "../../ui/input";
@@ -45,22 +44,22 @@ const FormTextArea = <TFormValues extends Record<string, unknown>>({
       name={name}
       render={({ field }) => (
         <FormItem className="flex-1">
-          <FormLabel>{label}</FormLabel>
+          <h3 className="text-sm md:text-base text-text">{label}</h3>
           <FormControl>
             {/* @ts-ignore */}
             <Textarea
               placeholder={placeholder}
-              className={`resize-none focus-visible:ring-1 bg-[#C4C4C41F] ${
+              className={`focus-visible:ring-1 bg-[#C4C4C41F] ${
                 hasError
                   ? "focus-visible:ring-red-500"
                   : "focus-visible:ring-primary"
-              } `}
+              } focus-visible:ring-offset-2 border-transparent`}
               {...field}
               {...props}
               rows={4}
             />
           </FormControl>
-          <FormMessage />
+          <FormMessage className="text-xs md:text-sm" />
         </FormItem>
       )}
     />

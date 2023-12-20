@@ -54,6 +54,10 @@
   .tesimonial-pagination {
     @apply rounded-full flex justify-center items-center hover:bg-primary hover:text-dark w-[56px] h-[56px] text-primary border-2 border-primary transition-all duration-300 ease-in-out;
   }
+  ol,
+  ul {
+    @apply list-decimal list-inside;
+  }
 }
 
 /* TEXT EDITOR */
@@ -65,7 +69,6 @@
 .custom-scrollbar::-webkit-scrollbar {
   width: 12px;
   height: 6px;
-  /* height: 4px; */
 }
 
 /* Style the scrollbar handle */

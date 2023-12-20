@@ -11,15 +11,10 @@ import {
   Path,
 } from "react-hook-form";
 
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../../ui/form";
-import { Input, InputProps } from "../../ui/input";
+import { FormControl, FormField, FormMessage, FormItem } from "../../ui/form";
+import { InputProps } from "../../ui/input";
 import { Button } from "@/components/ui/button";
+import { CloseCircle, GalleryAdd } from "iconsax-react";
 
 type FormImageInputProps<TFormValues extends FieldValues = FieldValues> = {
   control?: Control<TFormValues>;
@@ -28,6 +23,8 @@ type FormImageInputProps<TFormValues extends FieldValues = FieldValues> = {
   placeholder?: string;
   description?: string;
   errors?: Partial<DeepMap<TFormValues, FieldError>> | FieldErrors<TFormValues>;
+  setSelectedImage: React.Dispatch<React.SetStateAction<File | null>>;
+  selectedImage: File | null;
 } & Omit<InputProps, "name">;
 
 const FormImageInput = <TFormValues extends Record<string, unknown>>({
@@ -37,19 +34,23 @@ const FormImageInput = <TFormValues extends Record<string, unknown>>({
   placeholder,
   errors,
   description,
+  setSelectedImage,
+  selectedImage,
   ...props
 }: FormImageInputProps<TFormValues>): JSX.Element => {
-  const errorMessage = lodash.get(errors, name);
-  const hasError = !!errors && errorMessage;
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <FormField
         control={control}
         name={name}
         render={({ field }) => (
           <FormItem>
+            <p className="text-dark text-[14px]">{description}</p>
             <FormControl>
-              <Button type="button">
+              <Button
+                type="button"
+                className="w-full max-w-[300px] p-0 flex justify-center items-center"
+              >
                 <input
                   type="file"
                   className="hidden"
@@ -57,52 +58,51 @@ const FormImageInput = <TFormValues extends Record<string, unknown>>({
                   onBlur={field.onBlur}
                   name={field.name}
                   onChange={(e) => {
-                    field.onChange(e.target.files);
+                    field.onChange(e.target.files?.[0]);
+                    setSelectedImage(e.target.files?.[0] ?? null);
                   }}
                   ref={field.ref}
+                  {...props}
+                  key={selectedImage ? selectedImage.name : "fileInput"}
                 />
                 <label
                   htmlFor="fileInput"
-                  className="bg-blue-500 hover:bg-blue-600 text-neutral-90  rounded-md cursor-pointer inline-flex items-center"
+                  className="flex gap-2 items-center justify-center cursor-pointer w-full h-full"
                 >
-                  <span className="whitespace-nowrap">choose your image</span>
+                  <GalleryAdd variant="Bold" size={30} />
+                  <span className="whitespace-nowrap capitalize">
+                    Add image
+                  </span>
                 </label>
               </Button>
             </FormControl>
-            {/* <FormDescription>This is your public display email.</FormDescription> */}
             <FormMessage />
           </FormItem>
         )}
       />
-    </>
+      {/* IMAGE PREVIEW */}
+      {selectedImage && (
+        <div className="w-[150px]">
+          <p className="text-base my-1">Image preview</p>
+          <div className="relative h-[150px] w-[150px]">
+            <img
+              src={URL.createObjectURL(selectedImage)}
+              alt="Selected"
+              className="absolute top-0 left-0 w-full h-full object-cover"
+            />
+            <CloseCircle
+              className="absolute top-1 right-0 text-primary p-0 h-fit w-fit cursor-pointer"
+              size={24}
+              onClick={() => {
+                setSelectedImage(null);
+              }}
+              variant="Bold"
+            />
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
 export default FormImageInput;
-
-{/* <FormField
-  control={control}
-  name={name}
-  render={({ field }) => (
-    <FormItem className="flex-1">
-      <FormLabel>{label}</FormLabel>
-      <p className="text-[12px] text-dark -tracking-[0.28px]">
-        {description}
-      </p>
-      <FormControl>
-        <Input
-          placeholder={placeholder}
-          {...field}
-          className={`focus-visible:ring-1 bg-[#C4C4C41F] ${
-            hasError
-            ? "focus-visible:ring-red-500"
-              : "focus-visible:ring-primary"
-          } focus-visible:ring-offset-1 h-12 rounded-full px-8`}
-          {...props}
-        />
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/> */}
-            {/* @ts-ignore */}

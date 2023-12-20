@@ -9,10 +9,10 @@ export const startDebateSchema = z.object({
     tags: z.array(z.string()).optional(),
     sdgs: z.array(z.number()).optional(),
     targets: z.array(z.number()).optional(),
-
+    id: z.number().optional()
 });
 
-export const commentSchema = z.object({
+export const debateCommentSchema = z.object({
     content: z
         .string({ required_error: "comment text is required" })
         .refine((data) => data.trim() !== "", {
@@ -23,6 +23,23 @@ export const commentSchema = z.object({
     comment_reference: z
         .number().optional()
 });
+
+export const voteDebateSchema = z.object({
+    type: z
+        .string({ required_error: "vote type is required" }),
+
+    debate_id: z
+        .number({ required_error: "debate id is required" }),
+});
+
+export const voteDebateCommentSchema = z.object({
+    type: z
+        .string({ required_error: "vote type is required" }),
+
+    comment_id: z
+        .number({ required_error: "debate id is required" }),
+});
+
 export const filterDebateSchema = z.object({
     sdgs: z.array(z.number()).optional(),
     specificSDG: z.number().optional(),

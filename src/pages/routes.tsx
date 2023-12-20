@@ -10,12 +10,16 @@ import { MainPage } from "./Main";
 import { SettingsPage } from "./Settings";
 import {
   DebatesHomePage,
-  DebatesInfoPage,
+  DebateInfoPage,
   InitiativesHomePage,
   ProposalsHomePage,
   SDGsHomePage,
   PublishDebatePage,
   StartProposalPage,
+  EditDebatePage,
+  ProposalInfoPage,
+  ProposalCommuntityHomePage,
+  ProposalTopicInfoPage,
 } from "./Democracy";
 import { ActivityPage, DataView, MapView } from "./Response";
 import DebateProvider from "@/contexts/DebateContext";
@@ -57,12 +61,21 @@ const routes: RouterType[] = [
   },
   {
     path: "/democracy/debates/:debateId",
-    element: <DebatesInfoPage />,
+    element: <DebateInfoPage />,
     title: "democracy-debate-info",
   },
   {
     path: "/democracy/debates/publish-debate",
     element: <PublishDebatePage />,
+    title: "democracy-debate-start",
+  },
+  {
+    path: "/democracy/debates/edit-debate/:debateId",
+    element: (
+      <DebateProvider>
+        <EditDebatePage />
+      </DebateProvider>
+    ),
     title: "democracy-debate-start",
   },
   {
@@ -75,9 +88,24 @@ const routes: RouterType[] = [
     title: "democracy-proposals",
   },
   {
+    path: "/democracy/proposals/:proposalId",
+    element: <ProposalInfoPage />,
+    title: "democracy-proposal-info",
+  },
+  {
     path: "/democracy/proposals/start-proposal",
     element: <StartProposalPage />,
     title: "democracy-proposals-start",
+  },
+  {
+    path: "/democracy/proposals/community/:proposalId",
+    element: <ProposalCommuntityHomePage />,
+    title: "democracy-proposals-community",
+  },
+  {
+    path: "/democracy/proposals/community/topic/:topicId",
+    element: <ProposalTopicInfoPage />,
+    title: "democracy-proposals-community",
   },
   {
     path: "/democracy/initiatives",

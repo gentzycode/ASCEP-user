@@ -1,10 +1,10 @@
-interface ProposalType {
-    title: string
-    date: string
-    content: string
-    tags: string[]
-    percentage: number
-}
+// interface ProposalType {
+//     title: string
+//     date: string
+//     content: string
+//     tags: string[]
+//     percentage: number
+// }
 interface InitiativeType {
     user: string
     email: string
@@ -35,6 +35,8 @@ interface DebateAuthorType {
     id: number
     username: string
     profile_picture: string | null
+    firstname?: string
+    lastname?: string
 }
 interface DebateTagType {
     id: number
@@ -49,6 +51,7 @@ interface DebateTargetType {
         id: number
     }
 }
+
 interface DebateSDGsType {
     sdgs_id: number
     debate_id: number
@@ -59,7 +62,7 @@ interface DebateSDGsType {
     }
 }
 
-interface DebateMetaDataType {
+interface MetaDataType {
     total: number
     per_page: number
     current_page: number
@@ -70,36 +73,10 @@ interface DebateMetaDataType {
     next_page_url: string | null
     previous_page_url: string | null
 }
+
 interface DebateDataType {
-    meta: DebateMetaDataType
+    meta: MetaDataType
     debates: DebateType[]
-}
-
-
-interface DebateCommentResponseType {
-    response_id: number
-    comment_id: number
-    commentDetail: {
-        content
-        id: number
-        user_id: number
-        user: DebateAuthorType
-        responses: DebateCommentResponseType[]
-    }
-}
-
-interface DebateCommentType {
-    content: string
-    id: number
-    user_id: number
-    author: DebateAuthorType
-    responses: DebateCommentResponseType[]
-    likes: number
-    dislikes: number
-    likePercentage: number
-    dislikePercentage: number
-    userVoted: boolean
-    createdAt: string
 }
 interface DebateType {
     id: number
@@ -119,8 +96,36 @@ interface DebateType {
     dislikes: number
     likePercentage: number
     dislikePercentage: number
-    userVoted: boolean
+    userVoted: {
+        reaction: boolean
+        reactionType: string
+    }
 }
+
+interface CommentResponseType {
+    response_id: number
+    comment_id: number
+    commentDetail: {
+        content
+        id: number
+        user_id: number
+        user: DebateAuthorType
+        responses: DebateCommentResponseType[]
+    }
+}
+
+
+//vote debate
+interface DebateVoteDataType {
+    status: string
+    message: string
+    data: {
+
+        total: number
+        type: string
+    }
+}
+
 
 //SDGs
 interface SDGTarget {
@@ -144,8 +149,6 @@ interface SDGsType {
     sdgTarget: SDGTarget[]
 }
 
-
-
 type RequestStatustType = "error" | "idle" | "loading" | "success"
 
 interface ResponseDataType {
@@ -153,3 +156,143 @@ interface ResponseDataType {
     message: string;
     data?: any;
 };
+
+// PROPOSALS
+interface ProposalDataType {
+    meta: MetaDataType
+    proposals: ProposalType[]
+}
+interface ProposalType {
+    id: number
+    user_id: number
+    title: string
+    content: string
+    status: string
+    updatedAt: string
+    createdAt: string
+    summary: string
+    descriptive_image: string
+    support_needed: number
+    ward_id: number
+    external_video_url: string
+    total_support_cache: number
+    total_comments_cache: number
+    proposalTag: ProposalTagType[]
+    proposalCategory: ProposalCategoryType[]
+    proposalTarget: ProposalTargetType[]
+    proposalSDGs: ProposalSDGType[]
+    author: ProposalAuthorType
+    supportGotten: number
+    supportNeeded: number
+    supportPercentage: number
+    userSupported: boolean
+    proposal_code: string
+}
+interface ProposalTargetType {
+    target_id: number
+    proposal_id: number
+    targetInfo: {
+        code: string
+        id: number
+    }
+}
+interface ProposalAuthorType {
+    id: number
+    username: string
+    profile_picture: string
+}
+interface ProposalSDGType {
+    sdgs_id: number
+    proposal_id: number
+    sdgs: {
+        title: string
+        banner: string
+        id: number
+    }
+}
+interface ProposalCategoryType {
+    category_id: number
+    proposal_id: number
+    categoryDetail: {
+        name: string
+        id: number
+    }
+}
+interface ProposalTagType {
+    id: number
+    tag_name: string
+    proposal_id: number
+}
+
+// PROPOSAL TOPICS
+interface ProposalTopicDataType {
+    meta: MetaDataType
+    data: ProposalTopicType[]
+}
+
+interface ProposalTopicType {
+    id: number
+    proposal_id: number
+    user_id: number
+    title: string
+    content: string
+    total_vote_cache: number
+    total_comment_cache: number
+    updated_at: string
+    created_at: string
+    creator: {
+        firstname: string
+        lastname: string
+        username: string
+        profile_picture: string
+        id: number
+    }
+    proposal: {
+        title: string
+        user_id: number
+        id: number
+    }
+}
+interface ProposalCommunityMemberType {
+    user_id: number
+    creator: {
+        profile_picture: string
+        firstname: string
+        lastname: string
+        id: number
+    }
+}
+
+
+//COMMENT
+interface CommentDataType {
+    meta: CommentMetaDataType
+    comments: CommentType[]
+}
+interface CommentMetaDataType {
+    total: number
+    per_page: number
+    current_page: number
+    last_page: number
+    first_page: number
+    first_page_url: string | null
+    last_page_url: string | null
+    next_page_url: string | null
+    previous_page_url: string | null
+}
+interface CommentType {
+    content: string
+    id: number
+    user_id: number
+    author: DebateAuthorType
+    responses: DebateCommentResponseType[]
+    likes: number
+    dislikes: number
+    likePercentage: number
+    dislikePercentage: number
+    userVoted: {
+        reaction: boolean
+        reactionType: string
+    }
+    createdAt: string
+}

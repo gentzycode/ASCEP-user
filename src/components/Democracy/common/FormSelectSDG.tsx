@@ -49,7 +49,6 @@ const FormSelectSDG = <TFormValues extends Record<string, unknown>>({
                 <SelectValue placeholder="Select a goal" />
               </SelectTrigger>
               <SelectContent>
-                {/* <SelectItem value="0" /> */}
                 {sdgData?.map((sdg) => (
                   <SelectItem value={sdg.id} key={sdg.id}>
                     {sdg.title}
