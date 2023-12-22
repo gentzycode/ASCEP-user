@@ -4,9 +4,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { getProposalSchema, proposalCommentSchema, proposalTopicSchema, voteProposalCommentSchema } from "@/schemas/ProposalSchema";
+import { getProposalSchema, proposalCommentSchema, proposalTopicCommentSchema, proposalTopicSchema, voteProposalCommentSchema } from "@/schemas/ProposalSchema";
 import axios from "axios";
-import { GET_ALL_PROPOSALS_ENDPOINT, GET_ALL_PROPOSAL_TOPICS_ENDPOINT, GET_PROPOSAL_COMMENTS_ENDPOINT, GET_PROPOSAL_COMMUNITY_MEMBERS_ENDPOINT, GET_PROPOSAL_INFO_ENDPOINT, PUBLISH_PROPOSALS_ENDPOINT, PUBLISH_PROPOSAL_COMMENT_ENDPOINT, PUBLISH_PROPOSAL_TOPIC_ENDPOINT, SUPPORT_PROPOSAL_ENDPOINT, VOTE_PROPOSAL_COMMENT_ENDPOINT } from ".";
+import { GET_ALL_PROPOSALS_ENDPOINT, GET_ALL_PROPOSAL_TOPICS_ENDPOINT, GET_PROPOSAL_COMMENTS_ENDPOINT, GET_PROPOSAL_COMMUNITY_MEMBERS_ENDPOINT, GET_PROPOSAL_INFO_ENDPOINT, GET_PROPOSAL_TOPIC_COMMENTS_ENDPOINT, GET_PROPOSAL_TOPIC_INFO_ENDPOINT, PUBLISH_PROPOSALS_ENDPOINT, PUBLISH_PROPOSAL_COMMENT_ENDPOINT, PUBLISH_PROPOSAL_TOPIC_COMMENT_ENDPOINT, PUBLISH_PROPOSAL_TOPIC_ENDPOINT, SUPPORT_PROPOSAL_ENDPOINT, VOTE_PROPOSAL_COMMENT_ENDPOINT } from ".";
 
 
 // PUBLISH PROPOSAL
@@ -44,9 +44,9 @@ export const usePublishProposalComment = () => {
                 .post(PUBLISH_PROPOSAL_COMMENT_ENDPOINT, { ...values }, { headers: configOptions() })
                 .then((res) => res.data as ResponseDataType);
         }, {
-        onSuccess: (res) => {
+        onSuccess: (res, variables) => {
             queryClient.invalidateQueries("proposal-comments")
-            queryClient.invalidateQueries("proposal-info")
+            queryClient.invalidateQueries({ queryKey: ["proposal-info", variables.proposal_id] })
             toast({
                 title: "Success!",
                 variant: "success",
@@ -193,6 +193,61 @@ export const useGetAllProposalTopics = (page: number, proposalId: number, filter
         }
     );
 
+};
+// get proposal topic info
+export const useGetProposalTopicInfo = (topicId: number | string) => {
+    return useQuery(
+        ["get-proposal-topic-info", topicId],
+        (): Promise<ProposalTopicType> => {
+            return axios
+                .get(GET_PROPOSAL_TOPIC_INFO_ENDPOINT(topicId))
+                .then((res) => res.data.data[0]);
+        },
+        {
+            retry: false,
+            refetchOnWindowFocus: false,
+
+        }
+    );
+
+};
+
+// publish proposal topic comment
+export const usePublishProposalTopicComment = () => {
+    const queryClient = useQueryClient()
+    const { toast } = useToast();
+    return useMutation(
+        (values: z.infer<typeof proposalTopicCommentSchema>): Promise<ResponseDataType> => {
+            return axios
+                .post(PUBLISH_PROPOSAL_TOPIC_COMMENT_ENDPOINT, { ...values }, { headers: configOptions() })
+                .then((res) => res.data);
+        }, {
+        onSuccess: (res) => {
+            queryClient.invalidateQueries("proposal-topic-comments")
+            queryClient.invalidateQueries("get-proposal-topic-info")
+            toast({
+                title: "Success!",
+                variant: "success",
+                description: res.message
+            })
+        }
+    }
+    );
+}
+// get proposal topic comments
+export const useGetProposalTopicComments = (topicId: number, page: number, filter?: string) => {
+    return useQuery(
+        {
+            queryKey: ["proposal-topic-comments"],
+            queryFn: (): Promise<CommentDataType> => {
+                return axios
+                    .get(GET_PROPOSAL_TOPIC_COMMENTS_ENDPOINT(topicId, page, filter))
+                    .then((res) => res.data.data);
+            },
+            staleTime: 0,
+            refetchOnWindowFocus: false,
+        },
+    );
 };
 // get all proposal community members
 export const useGetProposalCommunityMembers = (proposalId: number) => {

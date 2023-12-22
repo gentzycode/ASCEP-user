@@ -18,12 +18,15 @@ export const GET_PROPOSAL_INFO_ENDPOINT = (proposalId: number) => baseUrl + `/pr
 export const GET_PROPOSAL_COMMENTS_ENDPOINT = (proposalId: number, page: number, filter?: string) => baseUrl + `/proposal/comments?page=${page}&perPage=${perPage}&filter=${filter}&proposal=${proposalId}`
 export const VOTE_PROPOSAL_COMMENT_ENDPOINT = (type: string, comment_id: number) => baseUrl + `/proposal/vote-comment/${type}/${comment_id}`
 export const SUPPORT_PROPOSAL_ENDPOINT = (proposalId: number) => baseUrl + `/proposal/support/${proposalId}`
+
 // PROPOSAL COMMUNITY
 export const PUBLISH_PROPOSAL_TOPIC_ENDPOINT = baseUrl + "/proposal/topic/compose"
-
 export const GET_ALL_PROPOSAL_TOPICS_ENDPOINT = (page: number, proposalId: number, filter: string) => baseUrl + `/proposal/topic/all?page=${page}&perPage=${perPage}&proposal=${proposalId}&filter=${filter}`
-
 export const GET_PROPOSAL_COMMUNITY_MEMBERS_ENDPOINT = (proposalId: number) => baseUrl + `/proposal/community/${proposalId}`
+export const GET_PROPOSAL_TOPIC_INFO_ENDPOINT = (topicId: number | string) => baseUrl + `/proposal/topic/info/${topicId}`
+export const GET_PROPOSAL_TOPIC_COMMENTS_ENDPOINT = (topicId: number, page: number, filter?: string) => baseUrl + `/proposal/topic/comments?page=${page}&perPage=${perPage}&filter=${filter}&proposalTopic=${topicId}`
+export const PUBLISH_PROPOSAL_TOPIC_COMMENT_ENDPOINT = baseUrl + "/proposal/topic/comment"
+
 
 //SDG
 export const GET_ALL_SDGs_ENDPOINT = baseUrl + "/sdg/all"

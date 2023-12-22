@@ -6,28 +6,29 @@ import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { CommentCard, FormInput, ProposalCommentResponse } from "..";
+import { CommentCard, FormInput, ProposalTopicCommentResponse } from "..";
 import { IconWrapper } from "@/components/custom";
 import { useClickAway } from "@uidotdev/usehooks";
 import {
-  usePublishProposalComment,
+  usePublishProposalTopicComment,
   useVoteProposalComment,
 } from "@/api/democracy/proposals";
-import { proposalCommentSchema } from "@/schemas/ProposalSchema";
+import { proposalTopicCommentSchema } from "@/schemas/ProposalSchema";
 
-interface ProposalCommentCardProps {
+interface ProposalTopicCommentCardProps {
   comment: CommentType;
 }
-const ProposalCommentCard: React.FC<ProposalCommentCardProps> = ({
+const ProposalTopicCommentCard: React.FC<ProposalTopicCommentCardProps> = ({
   comment,
 }) => {
   const [dynamicPadding] = useState(24);
-  const { proposalId } = useParams();
+  const { topicId } = useParams();
   const [showResponse, setShowResponse] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
 
   const { mutateAsync: publishResponse, isLoading: isPublishingComment } =
-    usePublishProposalComment();
+    usePublishProposalTopicComment();
+
   const { mutate: voteComment, isLoading: isVotingComment } =
     useVoteProposalComment();
 
@@ -37,15 +38,17 @@ const ProposalCommentCard: React.FC<ProposalCommentCardProps> = ({
       setShowResponse(false);
     }, 500);
   });
-  const form = useForm<z.infer<typeof proposalCommentSchema>>({
-    resolver: zodResolver(proposalCommentSchema),
+
+  const form = useForm<z.infer<typeof proposalTopicCommentSchema>>({
+    resolver: zodResolver(proposalTopicCommentSchema),
     mode: "onChange",
     defaultValues: {
       content: "",
-      proposal_id: parseInt(proposalId!),
+      proposal_topic_id: parseInt(topicId!),
       comment_reference: comment.id,
     },
   });
+  
   const {
     control,
     handleSubmit,
@@ -53,7 +56,7 @@ const ProposalCommentCard: React.FC<ProposalCommentCardProps> = ({
     formState: { errors },
   } = form;
 
-  async function onSubmit(values: z.infer<typeof proposalCommentSchema>) {
+  async function onSubmit(values: z.infer<typeof proposalTopicCommentSchema>) {
     await publishResponse(values);
     closeResponse();
   }
@@ -122,7 +125,7 @@ const ProposalCommentCard: React.FC<ProposalCommentCardProps> = ({
         } duration-300`}
       >
         {comment.responses.map((response) => (
-          <ProposalCommentResponse
+          <ProposalTopicCommentResponse
             key={response.response_id}
             response={response}
             paddingLeft={dynamicPadding + 20}
@@ -132,4 +135,4 @@ const ProposalCommentCard: React.FC<ProposalCommentCardProps> = ({
     </div>
   );
 };
-export default ProposalCommentCard;
+export default ProposalTopicCommentCard;

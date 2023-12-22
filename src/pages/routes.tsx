@@ -20,6 +20,8 @@ import {
   ProposalInfoPage,
   ProposalCommuntityHomePage,
   ProposalTopicInfoPage,
+  SdgDetailsPage,
+  StartInitiativePage,
 } from "./Democracy";
 import { ActivityPage, DataView, MapView } from "./Response";
 import DebateProvider from "@/contexts/DebateContext";
@@ -46,6 +48,19 @@ const routes: RouterType[] = [
     title: "main",
   },
   {
+    path: "/response",
+    element: <Navigate to="/response/map-view" />,
+    title: "response",
+  },
+  {
+    path: "/settings",
+    element: <SettingsPage />,
+    title: "ssettings",
+  },
+];
+
+export const democracyRoutes: RouterType[] = [
+  {
     path: "/democracy",
     element: <Navigate to="/democracy/debates" />,
     title: "democracy",
@@ -71,11 +86,7 @@ const routes: RouterType[] = [
   },
   {
     path: "/democracy/debates/edit-debate/:debateId",
-    element: (
-      <DebateProvider>
-        <EditDebatePage />
-      </DebateProvider>
-    ),
+    element: <EditDebatePage />,
     title: "democracy-debate-start",
   },
   {
@@ -113,20 +124,19 @@ const routes: RouterType[] = [
     title: "democracy-initiatives",
   },
   {
+    path: "/democracy/initiatives/start-initiative",
+    element: <StartInitiativePage />,
+    title: "democracy-initiatives-start",
+  },
+  {
     path: "/democracy/sdg",
     element: <SDGsHomePage />,
     title: "democracy-SDGs",
   },
   {
-    path: "/response",
-    element: <Navigate to="/response/map-view" />,
-    title: "response",
-  },
-
-  {
-    path: "/settings",
-    element: <SettingsPage />,
-    title: "ssettings",
+    path: "/democracy/sdg/details",
+    element: <SdgDetailsPage />,
+    title: "democracy-SDGs-details",
   },
 ];
 
