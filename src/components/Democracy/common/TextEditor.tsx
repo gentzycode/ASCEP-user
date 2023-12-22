@@ -15,13 +15,7 @@ import {
   Path,
 } from "react-hook-form";
 
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../../ui/form";
+import { FormControl, FormField, FormItem, FormMessage } from "../../ui/form";
 import { InputProps } from "../../ui/input";
 
 type TextEditorProps<TFormValues extends FieldValues = FieldValues> = {
@@ -48,25 +42,31 @@ const TextEditor = <TFormValues extends Record<string, unknown>>({
     [{ color: ["#FFC334", "#292925"] }],
     [{ font: ["Outfit"] }],
     [{ list: "ordered" }, { list: "bullet" }],
-    [{ header: [ 5, 6, false] }],
+    [{ header: [5, 6, false] }],
   ];
   const module = {
     toolbar: toolbarOptions,
   };
+  const errorMessage = lodash.get(errors, name);
+  const hasError = !!errors && errorMessage;
   return (
     <FormField
       control={control}
       name={name}
       render={() => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <h3 className="text-sm md:text-base text-text">{label}</h3>
           <FormControl>
             <ReactQuill
               theme="snow"
               value={value}
               modules={module}
               onChange={onChange}
-              className=" bg=[#C4C4C41F]  mb-10"
+              className={`focus-visible:ring-1 bg-[#C4C4C41F] ${
+                hasError
+                  ? "focus-visible:ring-red-500"
+                  : "focus-visible:ring-primary"
+              } focus-visible:ring-offset-2 text-sm md:text-base`}
             />
           </FormControl>
           <FormMessage />

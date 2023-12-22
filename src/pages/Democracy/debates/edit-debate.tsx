@@ -1,4 +1,3 @@
-import DemocracyLayout from "@/layouts/DemocracyLayout";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
@@ -7,18 +6,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { startDebateSchema } from "@/schemas/DebateSchema";
 import {
   FormCheckBoxSDG,
-  FormComboboxTarget,
   FormInput,
+  FormTags,
   TextEditor,
 } from "@/components/Democracy";
 import { useEffect, useState } from "react";
-import { CloseCircle, Danger } from "iconsax-react";
+import { Danger } from "iconsax-react";
 import { Link, useParams } from "react-router-dom";
-import { Input } from "@/components/ui/input";
 import { useGetDebateInfo, usePublishDebate } from "@/api/democracy/debates";
 import { IconWrapper } from "@/components/custom";
 import { FaSpinner } from "react-icons/fa";
 import { useAppContext } from "@/contexts/AppContext";
+import TargetsMultiSelect from "@/components/custom/TargetsMultiSelect";
 
 interface EditDebatePageProps {}
 const EditDebatePage: React.FC<EditDebatePageProps> = () => {
@@ -28,13 +27,9 @@ const EditDebatePage: React.FC<EditDebatePageProps> = () => {
 
   const { mutateAsync: publishDebate, isLoading: isLoadingDebate } =
     usePublishDebate();
-
-  const [tagInput, setTagInput] = useState<string>("");
   const [tags, setTags] = useState<string[]>(
     debate?.debateTag.map((tag) => tag.tag_name) ?? []
   );
-
-  const [target, setTarget] = useState<SDGTarget>();
   const [targets, setTargets] = useState<SDGTarget[]>([]);
 
   const form = useForm<z.infer<typeof startDebateSchema>>({
@@ -67,14 +62,6 @@ const EditDebatePage: React.FC<EditDebatePageProps> = () => {
   }, [register]);
 
   useEffect(() => {
-    if (target) {
-      if (!targets.includes(target)) {
-        setTargets((targets) => [...targets, target]);
-      }
-    }
-  }, [target]);
-
-  useEffect(() => {
     const IDs = targets.map((target) => target.id);
     setValue("targets", IDs);
   }, [targets]);
@@ -87,23 +74,9 @@ const EditDebatePage: React.FC<EditDebatePageProps> = () => {
     setValue("description", text);
   };
 
-  const addTag = () => {
-    if (tagInput && tagInput !== "") {
-      if (!tags.includes(tagInput)) {
-        setTags((tag) => [...tag, tagInput]);
-        setTagInput("");
-      }
-    }
-  };
-
-  const removeTag = (value: string) =>
-    setTags((tags) => tags.filter((tag) => value !== tag));
-
-  const removeTarget = (value: number) =>
-    setTargets((targets) => targets.filter((target) => value !== target.id));
   const editorContent = watch("description");
 
-  const targ = () => {
+  const getTargets = () => {
     const newArray = debate?.debateTarget
       .map(({ targetInfo }) => {
         const matchingObject = allTargets.find(
@@ -111,18 +84,18 @@ const EditDebatePage: React.FC<EditDebatePageProps> = () => {
         );
         return matchingObject || null;
       })
-      .filter(Boolean);
+      .filter(Boolean) as SDGTarget[];
     if (newArray) {
       setTargets(newArray);
     }
   };
 
   useEffect(() => {
-    targ();
+    getTargets();
   }, []);
 
   return (
-    <DemocracyLayout>
+    <>
       {isLoadingDebate && (
         <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
           <FaSpinner className="animate-spin text-[100px]" />
@@ -205,47 +178,7 @@ const EditDebatePage: React.FC<EditDebatePageProps> = () => {
                 Optional Fields
               </h2>
               {/* TAGS */}
-              <div>
-                <div className="flex gap-2 items-end">
-                  <Input
-                    onChange={(e) => setTagInput(e.target.value)}
-                    value={tagInput}
-                    className="h-12 text-dark focus-visible:ring-primary focus-visible:ring-offset-0 rounded-full  focus-visible:ring-1 bg-[#C4C4C41F]"
-                    placeholder="Enter the tag name you would like to use"
-                  />
-
-                  <Button
-                    className="w-fit h-fit rounded-md"
-                    type="button"
-                    onClick={addTag}
-                  >
-                    Add tag
-                  </Button>
-                </div>
-                {tags.length > 0 && (
-                  <div className="my-4">
-                    <h5>Tags</h5>
-                    <div className="flex gap-2 flex-wrap">
-                      {tags.map((tag, index) => (
-                        <Button
-                          type="button"
-                          className=" w-fit h-fit rounded-md bg-dark text-light hover:bg-dark flex justify-between items-center cursor-auto text-[14px] "
-                          key={index}
-                        >
-                          <span>{tag}</span>
-                          <CloseCircle
-                            size={18}
-                            onClick={() => removeTag(tag)}
-                            className="cursor-pointer"
-                            variant="Bold"
-                          />
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
+              <FormTags tags={tags} setTags={setTags} />
               {/* SDGs */}
               <div>
                 <h5 className="text-[16px] md:text-[18px] text-dark -tracking-[0.36px] ">
@@ -266,32 +199,7 @@ const EditDebatePage: React.FC<EditDebatePageProps> = () => {
                 </p>
               </div>
               {/* TARGETS */}
-              <div>
-                <FormComboboxTarget setTarget={setTarget} />
-
-                {targets.length > 0 && (
-                  <div className="my-4">
-                    <h5>Targets</h5>
-                    <div className="flex gap-2 flex-wrap">
-                      {targets.map((target) => (
-                        <Button
-                          type="button"
-                          className=" w-fit h-fit rounded-md bg-dark text-light hover:bg-dark flex justify-between items-center cursor-auto text-[14px] "
-                          key={target.id}
-                        >
-                          Target <span>{target.code}</span>
-                          <CloseCircle
-                            size={18}
-                            onClick={() => removeTarget(target.id)}
-                            className="cursor-pointer"
-                            variant="Bold"
-                          />
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
+              <TargetsMultiSelect setSelected={setTargets} selected={targets} />
               <Button
                 type="submit"
                 className="w-full max-w-[400px] p-0 h-fit py-3"
@@ -303,7 +211,7 @@ const EditDebatePage: React.FC<EditDebatePageProps> = () => {
           </Form>
         </div>
       )}
-    </DemocracyLayout>
+    </>
   );
 };
 

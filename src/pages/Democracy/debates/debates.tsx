@@ -8,7 +8,6 @@ import {
 import { IconWrapper } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { useDebateContext } from "@/contexts/DebateContext";
-import DemocracyLayout from "@/layouts/DemocracyLayout";
 import { debateFilterButtonOptions } from "@/utils/Democracy/Debates";
 import ROUTES from "@/utils/routesNames";
 import { Danger } from "iconsax-react";
@@ -34,7 +33,7 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
     "Citizens' proposals are an opportunity for neighbours and collectives to decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.";
 
   return (
-    <DemocracyLayout>
+    <>
       {/* HEADING */}
       <PagesHeroSection title="debates" description={pageDescription} />
       <Link to={ROUTES.PUBLISH_DEBATE_ROUTE}>
@@ -106,7 +105,7 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
           </div>
         )}
       </div>
-    </DemocracyLayout>
+    </>
   );
 };
 export default DebatesHomePage;

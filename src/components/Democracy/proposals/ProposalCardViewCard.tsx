@@ -1,7 +1,7 @@
 import { Messages1 } from "iconsax-react";
 import { Button } from "../../ui/button";
 import { formattedDate } from "@/utils/helper";
-import { SDGCard } from "..";
+import { SDGCard, TagDisplay, TargetDisplay } from "..";
 import { Link } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
 
@@ -27,7 +27,9 @@ const ProposalCardViewCard: React.FC<ProposalCardViewCardProps> = ({
         <div className="p-8">
           <div>
             <Link to={ROUTES.PROPOSAL_INFO_ROUTE(proposal.id)}>
-              <h1 className="text-[20px] text-dark hover:underline">{proposal.title}</h1>
+              <h1 className="text-[20px] text-dark hover:underline">
+                {proposal.title}
+              </h1>
             </Link>
             <p className="text-[12px] text-base-400 my-3 ">
               {formattedDate(proposal.createdAt)}
@@ -36,27 +38,28 @@ const ProposalCardViewCard: React.FC<ProposalCardViewCardProps> = ({
               <div dangerouslySetInnerHTML={{ __html: proposal.content }} />
             </div>
           </div>
-
+          {/* SDG */}
           <div className="my-6 flex gap-[4px]">
             {proposal.proposalSDGs.map((SDGs: ProposalSDGType) => (
-              <SDGCard SDGs={SDGs.sdgs} key={SDGs.sdgs_id} />
+              <SDGCard SDG={SDGs.sdgs} key={SDGs.sdgs_id} />
             ))}
           </div>
+          {/* TARGETS */}
+          <div className="flex gap-[8px] flex-wrap my-3">
+            {proposal.proposalTarget.map((target) => (
+              <TargetDisplay target={target} key={target.target_id} />
+            ))}
+          </div>
+          {/* TAGS */}
           <div className="flex gap-[8px] flex-wrap">
             {proposal.proposalTag.map((tag) => (
-              <Button
-                key={tag.id}
-                className="h-fit text-[12px] text-dark bg-light_grey px-[20px]"
-              >
-                {tag.tag_name}
-              </Button>
+              <TagDisplay tag={tag.tag_name} key={tag.id} />
             ))}
           </div>
         </div>
       </div>
 
-      <div className="bg-[#FFFFFF] shadow-xl flex justify-center items-center  rounded-xl px-4 gap-4 py-3 "
-      >
+      <div className="bg-[#FFFFFF] shadow-xl flex justify-center items-center  rounded-xl px-4 gap-4 py-3 ">
         <Button
           className={`${
             proposal.supportGotten < 40
@@ -70,12 +73,16 @@ const ProposalCardViewCard: React.FC<ProposalCardViewCardProps> = ({
               : proposal.supportGotten > 40 && proposal.supportGotten < 70
               ? "text-[#DDA63A]"
               : "text-[#4C9F38]"
-          } w-[74px] h-[74px] hover:bg-inherit `}
+          } w-[74px] h-[74px] disabled:opacity-100`}
+          disabled
         >
           {proposal.supportGotten}%
         </Button>
         <div className="flex flex-col gap-2">
-          <Button className="h-fit text-[12px] bg-dark text-light">
+          <Button
+            className="h-fit text-[12px] bg-dark text-light disabled:opacity-100"
+            disabled
+          >
             <Messages1 size="25" />
             <span>{proposal.supportNeeded} support needed</span>
           </Button>

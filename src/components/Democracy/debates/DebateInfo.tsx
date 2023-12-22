@@ -14,7 +14,7 @@ import {
   Whatsapp,
 } from "iconsax-react";
 import { Link } from "react-router-dom";
-import { SDGCard } from "..";
+import { SDGCard, TagDisplay, TargetDisplay } from "..";
 import { useVoteDebate } from "@/api/democracy/debates";
 import ROUTES from "@/utils/routesNames";
 
@@ -74,7 +74,7 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
         {debateSDGs.length > 0 && (
           <div className="flex gap-2 flex-wrap">
             {debate.debateSDGs.map((SDGs) => (
-              <SDGCard SDGs={SDGs.sdgs} key={SDGs.sdgs_id} />
+              <SDGCard SDG={SDGs.sdgs} key={SDGs.sdgs_id} />
             ))}
           </div>
         )}
@@ -83,12 +83,7 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
         {debateTarget.length > 0 && (
           <div className="flex gap-[8px] flex-wrap">
             {debate.debateTarget.map((target) => (
-              <Button
-                key={target.target_id}
-                className="h-fit text-[12px] text-dark bg-light_grey px-[25px]"
-              >
-                Traget {target.targetInfo.code}
-              </Button>
+              <TargetDisplay target={target} key={target.target_id} />
             ))}
           </div>
         )}
@@ -97,12 +92,7 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
         {debateTag.length > 0 && (
           <div className="flex gap-[8px] flex-wrap">
             {debate.debateTag.map((tag) => (
-              <Button
-                key={tag.id}
-                className="h-fit text-[12px] text-dark bg-light_grey px-[20px]"
-              >
-                {tag.tag_name}
-              </Button>
+              <TagDisplay tag={tag.tag_name} key={tag.id} />
             ))}
           </div>
         )}

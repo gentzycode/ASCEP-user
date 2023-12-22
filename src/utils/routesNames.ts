@@ -12,9 +12,13 @@ const ROUTES = {
     START_PROPOSAL_ROUTE: "/democracy/proposals/start-proposal",
     PROPOSAL_INFO_ROUTE: (id: number) => `/democracy/proposals/${id}`,
     PROPOSAL_COMMUNITY_ROUTE: (id: number) => `/democracy/proposals/community/${id}`,
+    PROPOSAL_TOPIC_INFO_ROUTE: (id: number) => `/democracy/proposals/community/topic/${id}`,
     //INITIATIVES
     INITIATIVES_HOME_ROUTE: "/democracy/initiatives",
+    START_INITIATIVE_ROUTE: "/democracy/initiatives/start-initiative",
+    // SDG
     SDGs_HOME_ROUTE: "/democracy/sdg",
+    SDGs_DETAILS_ROUTE: "/democracy/sdg/details",
 }
 
 export default ROUTES

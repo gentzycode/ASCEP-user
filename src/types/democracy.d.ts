@@ -1,10 +1,3 @@
-// interface ProposalType {
-//     title: string
-//     date: string
-//     content: string
-//     tags: string[]
-//     percentage: number
-// }
 interface InitiativeType {
     user: string
     email: string
@@ -28,8 +21,6 @@ interface FilterButtonOptionsType {
     value: string;
 }
 
-
-
 // DEBATES
 interface DebateAuthorType {
     id: number
@@ -43,7 +34,7 @@ interface DebateTagType {
     tag_name: string
     debate_id: number
 }
-interface DebateTargetType {
+interface TargetType {
     target_id: number
     debate_id: number
     targetInfo: {
@@ -90,7 +81,7 @@ interface DebateType {
     createdAt: string
     debateTag: DebateTagType[]
     author: DebateAuthorType
-    debateTarget: DebateTargetType[]
+    debateTarget: TargetType[]
     debateSDGs: DebateSDGsType[]
     likes: number
     dislikes: number
@@ -179,7 +170,7 @@ interface ProposalType {
     total_comments_cache: number
     proposalTag: ProposalTagType[]
     proposalCategory: ProposalCategoryType[]
-    proposalTarget: ProposalTargetType[]
+    proposalTarget: TargetType[]
     proposalSDGs: ProposalSDGType[]
     author: ProposalAuthorType
     supportGotten: number
@@ -187,15 +178,12 @@ interface ProposalType {
     supportPercentage: number
     userSupported: boolean
     proposal_code: string
+    proposalDocuments: {
+        document_url: string
+        proposal_id: number
+    }[]
 }
-interface ProposalTargetType {
-    target_id: number
-    proposal_id: number
-    targetInfo: {
-        code: string
-        id: number
-    }
-}
+
 interface ProposalAuthorType {
     id: number
     username: string

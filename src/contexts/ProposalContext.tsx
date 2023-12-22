@@ -122,7 +122,7 @@ export default function ProposalProvider({ children }: PropsWithChildren) {
   }, [filterOptions]);
 
   const refetchProposals = () => {
-    getAllProposals({ page, perPage, filter: {} });
+    getAllProposals({ page, perPage, filter: { newest: true } });
   };
   return (
     <ProposalContext.Provider

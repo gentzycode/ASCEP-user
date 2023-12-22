@@ -1,9 +1,9 @@
 import * as z from "zod";
 export const startDebateSchema = z.object({
-    title: z.string({ required_error: "Debate title is required" }).min(3, {
-        message: "Debate title must be at least 3 characters.",
+    title: z.string({ required_error: "Please enter a title for your debate" }).refine((value) => value.trim() !== "", {
+        message: "Please enter a title for your debate",
     }),
-    description: z.string({ required_error: "Debate description is required" }).min(20, {
+    description: z.string({ required_error: "Please entern the description of your debate" }).min(20, {
         message: "Debate description must be at least 20 characters.",
     }),
     tags: z.array(z.string()).optional(),

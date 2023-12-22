@@ -16,6 +16,7 @@ import { useAppContext } from "@/contexts/AppContext";
 import { InputProps } from "../../ui/input";
 import { IconWrapper } from "@/components/custom";
 import { FaSpinner } from "react-icons/fa";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type FormInputProps<TFormValues extends FieldValues = FieldValues> = {
   control: Control<TFormValues>;
@@ -33,9 +34,14 @@ const FormCheckBoxSDG = <TFormValues extends Record<string, unknown>>({
   return (
     <>
       {fetchingSdgs && (
-        <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
-          <FaSpinner className="animate-spin text-[100px]" />
-        </IconWrapper>
+        <div className="flex items-center gap-2">
+          <Skeleton className="!bg-clip-content bg-transparent">
+            <p className="text-text">Loading SDGs</p>
+          </Skeleton>
+          <IconWrapper className=" text-primary bg-transparent my-10 w-fit h-fit rounded-full">
+            <FaSpinner className="animate-spin text-[30px]" />
+          </IconWrapper>
+        </div>
       )}
       <FormField
         control={control}
@@ -52,7 +58,7 @@ const FormCheckBoxSDG = <TFormValues extends Record<string, unknown>>({
                     <FormItem key={sdg.id} className=" w-fit !m-0 p-0 h-fit">
                       <FormControl>
                         <div
-                          className="h-16 p-0 flex justify-start relative overflow-hidden rounded-md "
+                          className="h-14 p-0 flex justify-start relative overflow-hidden rounded-md "
                           key={sdg.id}
                         >
                           <Checkbox
@@ -75,8 +81,7 @@ const FormCheckBoxSDG = <TFormValues extends Record<string, unknown>>({
                                       : []
                                   );
                             }}
-                            className="border-dark absolute top-0 left-0 w-full h-full border-transparent  
-                          opacity-60 checked:bg-primary appearance-none rounded-lg
+                            className="absolute top-0 left-0 w-full h-full !appearance-none !text-dark !bg-transparent
                         "
                           />
                           <img src={sdg.banner} alt={sdg.title} />

@@ -122,7 +122,7 @@ export default function DebateProvider({ children }: PropsWithChildren) {
   }, [filterOptions]);
 
   const refetchDebates = () => {
-    getAllDebates({ page, perPage, filter: getFiltersWithValues() });
+    getAllDebates({ page, perPage, filter: { newest: true } });
   };
   return (
     <DebateContext.Provider

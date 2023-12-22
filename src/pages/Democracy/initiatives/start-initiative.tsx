@@ -7,6 +7,7 @@ import { startDebateSchema } from "@/schemas/DebateSchema";
 import {
   FormCheckBoxSDG,
   FormInput,
+  FormSelectWard,
   FormTags,
   TextEditor,
 } from "@/components/Democracy";
@@ -15,8 +16,8 @@ import { Link } from "react-router-dom";
 import { usePublishDebate } from "@/api/democracy/debates";
 import TargetsMultiSelect from "@/components/custom/TargetsMultiSelect";
 
-interface PublishDebateProps {}
-const PublishDebatePage: React.FC<PublishDebateProps> = () => {
+interface StartInitiativePageProps {}
+const StartInitiativePage: React.FC<StartInitiativePageProps> = () => {
   const { mutateAsync: publishDebate, isLoading } = usePublishDebate();
   const [tags, setTags] = useState<string[]>([]);
   const [targets, setTargets] = useState<SDGTarget[]>([]);
@@ -69,10 +70,10 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
         {/* HEADING */}
         <div>
           <h1 className="text-[20px] md:text-[36px] text-dark">
-            Start a Debate
+            Start an Initiative
           </h1>
           <p className="text-[12px] md:text-[14px] text-subtle_text -tracking-[0.28px]">
-            How do Debates Work?
+            How do Initiative Work?
           </p>
         </div>
         {/* RECOMMENDATIONS */}
@@ -82,20 +83,15 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
           </h2>
           <ul className="list-disc list-inside pl-3 text-subtle_text flex flex-col gap-4">
             <li className="text-[14px] md:text-[16px] -tracking-[0.32px]">
-              Do not use capital letters for the debate title or for whole
-              sentences. On the internet, this is considered shouting. And
-              nobody likes being shouted at.
+              Review the content of your initiative. Is your title easy to
+              understand? Is the objective of your initiative clear?
             </li>
             <li className="text-[14px] md:text-[16px] -tracking-[0.32px]">
-              Any debate or comment suggesting illegal action will be deleted,
-              as well as those intending to sabotage the debate spaces. Anything
-              else is allowed.
+              You have to choose the type of signature. In-person, online or a
+              combination of both
             </li>
             <li className="text-[14px] md:text-[16px] -tracking-[0.32px] ">
-              Ruthless criticism is very welcome. This is a space for
-              reflection. But we recommend that you stick to elegance and
-              intelligence. The world is a better place with these virtues in
-              it.
+              Which is the geographic scope of the initiative
             </li>
           </ul>
         </div>
@@ -112,24 +108,44 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
           >
             <FormInput
               name="title"
-              label="Debate title"
+              label="Initiative title"
               control={control}
               errors={errors}
-              placeholder="Enter title of the debate "
+              placeholder="Enter title of the initiative "
             />
             <TextEditor
               name="description"
-              label="Initial Debate Text"
+              label="Initiative  Text"
               control={control}
               errors={errors}
               onChange={onEditorStateChange}
               value={editorContent}
+            />
+            <FormSelectWard name="ward" label="Ward" />
+            <FormInput
+              name="author"
+              label="Author"
+              control={control}
+              errors={errors}
+            />
+            <FormInput
+              name="meeting-link"
+              label="Meeting Link"
+              control={control}
+              errors={errors}
             />
 
             {/* OPTIONAL FIELDS */}
             <h2 className="text-[20px] md:text-[24px] text-dark -tracking-[0.48px]">
               Optional Fields
             </h2>
+            {/* MAP */}
+            <div>
+              <h4 className="text-[14px] text-dark ">Map location</h4>
+              <p className="text-subtle_text text-[14px]">
+                Navigate the map to the location and place the marker
+              </p>
+            </div>
             {/* TAGS */}
             <FormTags setTags={setTags} tags={tags} />
             {/* SDGs */}
@@ -157,8 +173,9 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
               type="submit"
               className="w-full max-w-[400px] p-0 h-fit py-3"
               isLoading={isLoading}
+              disabled={isLoading}
             >
-              Start A Debate
+              Start an Initiative
             </Button>
           </form>
         </Form>
@@ -167,4 +184,4 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
   );
 };
 
-export default PublishDebatePage;
+export default StartInitiativePage;

@@ -4,7 +4,7 @@ import { Button } from "../../ui/button";
 import { Link } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
 import { formattedDate } from "@/utils/helper";
-import { DebateSDGs, SDGCard } from "..";
+import { SDGCard, TagDisplay, TargetDisplay } from "..";
 
 interface DebatesCardViewCardProps {
   debate: DebateType;
@@ -30,29 +30,19 @@ const DebatesCardViewCard: React.FC<DebatesCardViewCardProps> = ({
           {/* SDGs */}
           <div className="my-6 flex gap-[4px]">
             {debate.debateSDGs.map((SDGs) => (
-              <SDGCard SDGs={SDGs.sdgs} key={SDGs.sdgs_id} />
+              <SDGCard SDG={SDGs.sdgs} key={SDGs.sdgs_id} />
             ))}
           </div>
           {/* TARGETS */}
           <div className="flex gap-[8px] flex-wrap my-3">
-            {debate.debateTarget.map((target, index) => (
-              <Button
-                key={index}
-                className="h-fit text-[12px] text-dark bg-light_grey px-[20px]"
-              >
-                Target {target.targetInfo.code}
-              </Button>
+            {debate.debateTarget.map((target) => (
+              <TargetDisplay target={target} key={target.target_id} />
             ))}
           </div>
           {/* TAGS */}
           <div className="flex gap-[8px] flex-wrap">
-            {debate.debateTag.map((tag, index) => (
-              <Button
-                key={index}
-                className="h-fit text-[12px] text-dark bg-light_grey px-[20px]"
-              >
-                {tag.tag_name}
-              </Button>
+            {debate.debateTag.map((tag) => (
+              <TagDisplay tag={tag.tag_name} key={tag.id} />
             ))}
           </div>
         </div>
