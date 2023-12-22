@@ -10,10 +10,8 @@ export { default as DebateComments } from "./debates/DebateComments";
 export { default as DebateCommentCard } from "./debates/DebateCommentCard";
 export { default as FormInput } from "./common/FormInput";
 export { default as TextEditor } from "./common/TextEditor";
-export { default as FormSelectSDG } from "./common/FormSelectSDG";
 export { default as FormSelectTarget } from "./common/FormSelectTarget";
 export { default as FormCheckBoxSDG } from "./common/FormCheckBoxSDG";
-export { default as FormComboboxTarget } from "./common/FormSelectTargets";
 export { default as Pagination } from "./common/Pagination";
 export { default as FormImageInput } from "./common/FormImageInput";
 export { default as FormDocumentInput } from "./common/FormDocumentInput";
@@ -22,6 +20,10 @@ export { default as FormSelectWard } from "./common/FormSelectWard";
 export { default as SDGCard } from "./common/SDGCard";
 export { default as FormSelectCategory } from "./common/FormSelectCategory";
 export { default as CommentCard } from "./common/CommentCard";
+export { default as FormTags } from "./common/FormTags";
+export { default as TargetDisplay } from "./common/TargetDisplay";
+export { default as TagDisplay } from "./common/TagDisplay";
+export { default as DisplayDocuments } from "./common/DisplayDocuments";
 
 // DEBATES
 export { default as DebatesCardViewCard } from "./debates/DebatesCardViewCard";
@@ -38,6 +40,9 @@ export { default as ProposalCommentResponse } from "./proposals/ProposalCommentR
 export { default as CreateTopicModal } from "./proposals/CreateTopicModal";
 export { default as ProposalParticipantCard } from "./proposals/ProposalParticipantCard";
 export { default as ProposalTopicCard } from "./proposals/ProposalTopicCard";
+export { default as ProposalTopicComments } from "./proposals/ProposalTopicComments";
+export { default as ProposalTopicCommentResponse } from "./proposals/ProposalTopicCommentResponse";
+export { default as ProposalTopicCommentCard } from "./proposals/ProposalTopicCommentCard";
 
 //INITIATIVES
 export { default as InitiativesCardViewCard } from "./initiatives/InitiativesCardViewCard";

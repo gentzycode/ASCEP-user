@@ -2,6 +2,7 @@ import { Outlet, Route, Routes } from "react-router-dom";
 import axios from "axios";
 
 import routes, {
+  democracyRoutes,
   landingPages,
   responseRoutes,
   unauthenticatedRoutes,
@@ -11,6 +12,7 @@ import config from "@/utils/config";
 import { useToast } from "@/components/ui/use-toast";
 import useAutoLogout from "@/hooks/useAuthoLogout";
 import { ViewResponsePage } from "./Response";
+import DemocracyLayout from "@/layouts/DemocracyLayout";
 
 const Router = () => {
   const pageRoutes = routes.map(({ path, title, element }: RouterType) => {
@@ -18,6 +20,11 @@ const Router = () => {
   });
 
   const responsePages = responseRoutes.map(
+    ({ path, title, element }: RouterType) => {
+      return <Route key={title} path={`/${path}`} element={element} />;
+    }
+  );
+  const democracyPages = democracyRoutes.map(
     ({ path, title, element }: RouterType) => {
       return <Route key={title} path={`/${path}`} element={element} />;
     }
@@ -101,6 +108,9 @@ const Router = () => {
         ></Route>
         <Route path="" element={<ResponseLayout />}>
           {responsePages}
+        </Route>
+        <Route path="" element={<DemocracyLayout />}>
+          {democracyPages}
         </Route>
       </Route>
 

@@ -13,7 +13,7 @@ import {
   Whatsapp,
 } from "iconsax-react";
 import { Link } from "react-router-dom";
-import { SDGCard } from "..";
+import { SDGCard, TagDisplay, TargetDisplay } from "..";
 import ROUTES from "@/utils/routesNames";
 import { useEffect, useState } from "react";
 import { useSupportProposal } from "@/api/democracy/proposals";
@@ -141,7 +141,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
         {proposal.proposalSDGs.length > 0 && (
           <div className="flex gap-2 flex-wrap">
             {proposal.proposalSDGs.map((SDGs) => (
-              <SDGCard SDGs={SDGs.sdgs} key={SDGs.sdgs_id} />
+              <SDGCard SDG={SDGs.sdgs} key={SDGs.sdgs_id} />
             ))}
           </div>
         )}
@@ -150,13 +150,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
         {proposal.proposalTarget.length > 0 && (
           <div className="flex gap-[8px] flex-wrap">
             {proposal.proposalTarget.map((target) => (
-              <Button
-                key={target.target_id}
-                className="h-fit text-[12px] text-dark bg-light_grey px-[25px] disabled:opacity-100"
-                disabled
-              >
-                Traget {target.targetInfo.code}
-              </Button>
+              <TargetDisplay target={target} key={target.target_id} />
             ))}
           </div>
         )}
@@ -165,13 +159,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
         {proposal.proposalTag.length > 0 && (
           <div className="flex gap-[8px] flex-wrap">
             {proposal.proposalTag.map((tag) => (
-              <Button
-                key={tag.id}
-                className="h-fit text-[12px] text-dark bg-light_grey px-[20px] disabled:opacity-100"
-                disabled
-              >
-                {tag.tag_name}
-              </Button>
+              <TagDisplay tag={tag.tag_name} key={tag.id} />
             ))}
           </div>
         )}
@@ -237,7 +225,8 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
                   : proposal.supportGotten > 40 && proposal.supportGotten < 70
                   ? "text-[#DDA63A]"
                   : "text-[#4C9F38]"
-              } w-[74px] h-[74px] hover:bg-inherit `}
+              } w-[74px] h-[74px] disabled:opacity-100 `}
+              disabled
             >
               {proposal.supportGotten}%
             </Button>

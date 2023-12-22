@@ -27,7 +27,7 @@ const ProposalTopicCard: React.FC<ProposalTopicCardProps> = ({ topic }) => {
           <h5 className="text-sm text-subtle_text -ml-4">Participant</h5>
         </div>
         <p className="text-[12px] text-base-400">{formattedDate(created_at)}</p>
-        <div className="flex items-center gap-3 rounded-[10px] px-3 py-1 text-white bg-dark text-xs w-fit ">
+        <div className="flex items-center gap-2 rounded-[10px] px-3 py-1 text-white bg-dark text-xs w-fit ">
           <Messages1 size={20} />
           {total_comment_cache} Comments
         </div>

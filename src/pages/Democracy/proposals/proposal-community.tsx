@@ -15,7 +15,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import useDisclosure from "@/hooks/useDisclosure";
-import DemocracyLayout from "@/layouts/DemocracyLayout";
 import { proposalTopicFilterButtonOptions } from "@/utils/Democracy/Proposals";
 import { formattedDate } from "@/utils/helper";
 import { Danger, Messages1 } from "iconsax-react";
@@ -31,30 +30,30 @@ const ProposalCommuntityHomePage = () => {
   const { data: proposal, isError: noProposalError } = useGetProposalInfo(
     parseInt(proposalId!)
   );
+
   const {
     refetch: refetchProposalTopics,
     data: proposalTopicData,
     isLoading: isLoadingProposalTopics,
     isFetching: isFetchingProposalTopics,
   } = useGetAllProposalTopics(page, parseInt(proposalId!), filter);
-  const {
-    isLoading: isLoadingMembers,
-    data: communityMembers,
-    refetch: refetchCommunityMembers,
-  } = useGetProposalCommunityMembers(parseInt(proposalId!));
+
+  const { data: communityMembers } = useGetProposalCommunityMembers(
+    parseInt(proposalId!)
+  );
 
   useEffect(() => {
     refetchProposalTopics();
   }, [page, filter]);
 
   return (
-    <DemocracyLayout>
-      <h4 className="text-xl md:text-2xl text-primary font-semibold">
+    <>
+      <h4 className="text-xl md:text-2xl text-primary font-semibold mb-10">
         Proposal community
       </h4>
       {/* ERROR */}
       {noProposalError && (
-        <div className="flex items-center flex-wrap justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10 my-10">
+        <div className="flex items-center flex-wrap justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10">
           <div className="flex justify-start items-center gap-1">
             <IconWrapper className="text-primary rounded-full">
               <Danger size="32" />
@@ -114,6 +113,8 @@ const ProposalCommuntityHomePage = () => {
         </div>
       )}
 
+      {/* *********************************************************************** PROPOSAL TOPICS ********************************************************************************/}
+
       {/* FILTER BUTTONS */}
       {communityMembers?.length !== 0 && (
         <FilterButtons
@@ -123,14 +124,14 @@ const ProposalCommuntityHomePage = () => {
       )}
       {isLoadingProposalTopics && (
         <div className="w-full flex justify-center">
-          <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
-            <FaSpinner className="animate-spin text-[100px]" />
+          <IconWrapper className=" text-primary bg-transparent my-10 w-fit h-full rounded-full">
+            <FaSpinner className="animate-spin text-[50px]" />
           </IconWrapper>
         </div>
       )}
 
       {/* TOPICS */}
-      {proposalTopicData?.data && proposalTopicData?.data.length > 0 ? (
+      {proposalTopicData?.data && proposalTopicData?.data.length > 0 && (
         <div
           className={`${
             isFetchingProposalTopics
@@ -142,7 +143,8 @@ const ProposalCommuntityHomePage = () => {
             <ProposalTopicCard key={topic.id} topic={topic} />
           ))}
         </div>
-      ) : (
+      )}
+      {proposalTopicData?.data.length === 0 && !noProposalError && (
         <h1 className="text-xl">
           No topics created, Create the first community topic
         </h1>
@@ -180,7 +182,7 @@ const ProposalCommuntityHomePage = () => {
           propsalId={proposal.id}
         />
       )}
-    </DemocracyLayout>
+    </>
   );
 };
 

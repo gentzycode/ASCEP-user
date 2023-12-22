@@ -5,7 +5,6 @@ import {
   RelatedDebates,
 } from "@/components/Democracy";
 import { IconWrapper } from "@/components/custom";
-import DemocracyLayout from "@/layouts/DemocracyLayout";
 import { Danger } from "iconsax-react";
 import { useRef } from "react";
 import { FaSpinner } from "react-icons/fa";
@@ -25,7 +24,7 @@ const DebatesInfoPage: React.FC<DebatesInfoPageProps> = () => {
     commentsSectionRef.current?.scrollIntoView({ behavior: "smooth" });
   };
   return (
-    <DemocracyLayout>
+    <>
       {/* LOADING */}
       <div className="w-full flex justify-center">
         {isLoadingDebate && (
@@ -34,6 +33,7 @@ const DebatesInfoPage: React.FC<DebatesInfoPageProps> = () => {
           </IconWrapper>
         )}
       </div>
+
       {/* ERROR */}
       {isError && (
         <div className="flex items-center flex-wrap justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10 my-10">
@@ -45,33 +45,34 @@ const DebatesInfoPage: React.FC<DebatesInfoPageProps> = () => {
           </div>
         </div>
       )}
-      <>
-        {/* DEBATE INFO */}
-        {debate && (
-          <div>
-            <DebateInfo debate={debate} scrollToComments={scrollToComments} />
-          </div>
-        )}
-        {/* RELATED CONTENT */}
-        <div className="my-10 w-full max-w-[700px]">
-          <RelatedDebates />
-        </div>
-        {/*COMMENTS */}
-        <div
-          className="my-10 w-full max-w-[700px]"
-          id="comments"
-          ref={commentsSectionRef}
-        >
-          <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
-            Comments
-          </h2>
 
-          <div className="flex gap-10 flex-col mt-10">
-            {debate && <DebateComments />}
-          </div>
+      {/* DEBATE INFO */}
+      {debate && (
+        <div className="pt-10">
+          <DebateInfo debate={debate} scrollToComments={scrollToComments} />
         </div>
-      </>
-    </DemocracyLayout>
+      )}
+
+      {/* RELATED CONTENT */}
+      {/* <div className="my-10 w-full max-w-[700px]">
+          <RelatedDebates />
+        </div> */}
+        
+      {/*COMMENTS */}
+      <div
+        className="my-10 w-full max-w-[700px]"
+        id="comments"
+        ref={commentsSectionRef}
+      >
+        <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
+          Comments
+        </h2>
+
+        <div className="flex gap-10 flex-col mt-10">
+          {debate && <DebateComments />}
+        </div>
+      </div>
+    </>
   );
 };
 export default DebatesInfoPage;

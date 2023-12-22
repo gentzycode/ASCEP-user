@@ -29,7 +29,6 @@ export default function TargetsMultiSelect({
   const [open, setOpen] = React.useState(false);
   const [renderedItems, setRenderedItems] = React.useState<SDGTarget[]>([]);
   const { isLoading: fetchingSdgs, data: sdgData, isSuccess } = useGetAllSDGs();
-  const [targets, setTargets] = React.useState<SDGTarget[]>([]);
 
   React.useEffect(() => {
     if (isSuccess) {
@@ -39,15 +38,19 @@ export default function TargetsMultiSelect({
           newTargets.push(...sdg.sdgTarget);
         });
       }
-      setTargets(newTargets);
+      setRenderedItems(newTargets);
     }
   }, [isSuccess, sdgData]);
 
   React.useEffect(() => {
-    if (selected.length === 0 && !!targets) {
-      setRenderedItems(targets);
+    // While editing remove already selected target from the rendered list
+    if (selected.length > 0) {
+      const filteredRenderedItems = renderedItems.filter(
+        (item) => !selected.some((selectedItem) => selectedItem.id === item.id)
+      );
+      setRenderedItems(filteredRenderedItems);
     }
-  }, [targets, selected]);
+  }, [selected]);
 
   const handleSelect = (collectionJson: string) => {
     const collection = JSON.parse(collectionJson);
@@ -127,7 +130,7 @@ interface SelectedTargetsProps {
 
 const SelectedTargets = ({ item, handleRemove }: SelectedTargetsProps) => {
   return (
-    <div className="top-0 left-0 z-10 flex h-full gap-1 p-1 px-2 text-xs text-white transition-all duration-300 ease-in-out rounded-lg bg-dark w-fit">
+    <div className="top-0 left-0 flex h-full gap-1 p-1 px-2 text-xs text-white transition-all duration-300 ease-in-out rounded-lg bg-dark w-fit">
       {item.description}
 
       <IoClose

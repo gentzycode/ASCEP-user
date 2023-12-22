@@ -14,10 +14,10 @@ export const usePublishDebate = () => {
     const { toast } = useToast();
     const navigate = useNavigate();
     return useMutation(
-        (values: z.infer<typeof startDebateSchema>) => {
+        (values: z.infer<typeof startDebateSchema>): Promise<ResponseDataType> => {
             return axios
                 .post(PUBLISH_DEBATES_ENDPOINT, { ...values }, { headers: configOptions() })
-                .then((res) => res.data as ResponseDataType);
+                .then((res) => res.data);
         }, {
         onSuccess: (res, variables) => {
             toast({
@@ -25,7 +25,11 @@ export const usePublishDebate = () => {
                 variant: "success",
                 description: res.message
             })
-            navigate(ROUTES.DEBATE_INFO_ROUTE(variables.id!))
+            if (variables.id) {
+                navigate(ROUTES.DEBATE_INFO_ROUTE(variables.id), { replace: true })
+            } else {
+                navigate(ROUTES.DEBATES_HOME_ROUTE, { replace: true })
+            }
         }
     }
     );
@@ -36,10 +40,10 @@ export const usePublishDebateComment = () => {
     const queryClient = useQueryClient()
     const { toast } = useToast();
     return useMutation(
-        (values: z.infer<typeof debateCommentSchema>) => {
+        (values: z.infer<typeof debateCommentSchema>): Promise<ResponseDataType> => {
             return axios
                 .post(PUBLISH_COMMENT_ENDPOINT, { ...values }, { headers: configOptions() })
-                .then((res) => res.data as ResponseDataType);
+                .then((res) => res.data);
         }, {
         onSuccess: (res) => {
             queryClient.invalidateQueries("debate-comments")
@@ -64,7 +68,6 @@ export const useGetAllDebates = () => {
                 .then((res) => res.data.data);
         }
     );
-
 };
 
 // GET DEBATE INFO

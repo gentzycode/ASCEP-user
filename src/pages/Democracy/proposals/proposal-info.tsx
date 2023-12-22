@@ -1,11 +1,11 @@
 import { useGetProposalInfo } from "@/api/democracy/proposals";
 import {
+  DisplayDocuments,
   ProposalComments,
   ProposalInfo,
   RelatedDebates,
 } from "@/components/Democracy";
 import { IconWrapper } from "@/components/custom";
-import DemocracyLayout from "@/layouts/DemocracyLayout";
 import { Danger } from "iconsax-react";
 import { useRef } from "react";
 import { FaSpinner } from "react-icons/fa";
@@ -26,7 +26,7 @@ const ProposalInfoPage: React.FC<ProposalInfoPageProps> = () => {
   };
 
   return (
-    <DemocracyLayout>
+    <>
       {/* LOADING */}
       <div className="w-full flex justify-center ">
         {isLoadingProposal && (
@@ -56,9 +56,25 @@ const ProposalInfoPage: React.FC<ProposalInfoPageProps> = () => {
         </div>
       )}
 
-      {/* RELATED CONTENT */}
-      <div className="my-10 w-full max-w-[700px]">
+      {/* ***********************************RELATED CONTENT***************************************** */}
+      {/* <div className="my-10 w-full max-w-[700px]">
         <RelatedDebates />
+      </div> */}
+
+      {/* DOCUMENTS */}
+      <div className="pt-10">
+        {proposal?.proposalDocuments.length !== 0 && (
+          <>
+            <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit mb-8">
+              Documents ({proposal?.proposalDocuments.length})
+            </h2>
+            <div className="flex gap-4 flex-wrap">
+              {proposal?.proposalDocuments.map((doc) => (
+                <DisplayDocuments doc={doc} />
+              ))}
+            </div>
+          </>
+        )}
       </div>
 
       {/*COMMENTS */}
@@ -74,7 +90,7 @@ const ProposalInfoPage: React.FC<ProposalInfoPageProps> = () => {
           {proposal && <ProposalComments />}
         </div>
       </div>
-    </DemocracyLayout>
+    </>
   );
 };
 

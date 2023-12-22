@@ -2,7 +2,7 @@ import {
   CommentsPagination,
   FilterButtons,
   FormInput,
-  ProposalCommentCard,
+  ProposalTopicCommentCard,
 } from "..";
 import { debateCommentFilterButtonOptions } from "@/utils/Democracy/Debates";
 import { IconWrapper } from "@/components/custom";
@@ -18,18 +18,18 @@ import { useAuthContext } from "@/providers/AuthProvider";
 import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import {
-  useGetProposalComments,
-  usePublishProposalComment,
+  useGetProposalTopicComments,
+  usePublishProposalTopicComment,
 } from "@/api/democracy/proposals";
-import { proposalCommentSchema } from "@/schemas/ProposalSchema";
+import { proposalTopicCommentSchema } from "@/schemas/ProposalSchema";
 
 interface ProposalCommentsCardProps {}
 const ProposalComments: React.FC<ProposalCommentsCardProps> = () => {
   const { isLoggedIn } = useAuthContext();
-  const { proposalId } = useParams();
+  const { topicId } = useParams();
 
   const { mutateAsync: publishComment, isLoading: isPublishingComment } =
-    usePublishProposalComment();
+    usePublishProposalTopicComment();
 
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState("newest");
@@ -39,14 +39,14 @@ const ProposalComments: React.FC<ProposalCommentsCardProps> = () => {
     isLoading: isLoadingComments,
     isFetching: isFetchingComments,
     refetch: refetchComments,
-  } = useGetProposalComments(parseInt(proposalId!), page, filter);
+  } = useGetProposalTopicComments(parseInt(topicId!), page, filter);
 
-  const form = useForm<z.infer<typeof proposalCommentSchema>>({
-    resolver: zodResolver(proposalCommentSchema),
+  const form = useForm<z.infer<typeof proposalTopicCommentSchema>>({
+    resolver: zodResolver(proposalTopicCommentSchema),
     mode: "onChange",
     defaultValues: {
       content: "",
-      proposal_id: parseInt(proposalId!),
+      proposal_topic_id: parseInt(topicId!),
     },
   });
   const {
@@ -56,7 +56,7 @@ const ProposalComments: React.FC<ProposalCommentsCardProps> = () => {
     formState: { errors },
   } = form;
 
-  async function onSubmit(values: z.infer<typeof proposalCommentSchema>) {
+  async function onSubmit(values: z.infer<typeof proposalTopicCommentSchema>) {
     await publishComment(values);
     if (commentsData) {
       reset();
@@ -127,7 +127,7 @@ const ProposalComments: React.FC<ProposalCommentsCardProps> = () => {
       {commentsData?.comments?.length === 0 && (
         <div>
           <h1 className="text-dark text-[16px] md:text-[20px]">
-            This proposal has no comments
+            This topic has no comments
           </h1>
         </div>
       )}
@@ -148,7 +148,7 @@ const ProposalComments: React.FC<ProposalCommentsCardProps> = () => {
           } flex flex-col gap-6`}
         >
           {commentsData.comments.map((comment: CommentType) => (
-            <ProposalCommentCard comment={comment} key={comment.id} />
+            <ProposalTopicCommentCard comment={comment} key={comment.id} />
           ))}
 
           <CommentsPagination

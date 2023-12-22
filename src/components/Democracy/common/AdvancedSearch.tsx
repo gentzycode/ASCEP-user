@@ -74,8 +74,6 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
 
   async function onSubmit(values: z.infer<typeof filterSchema>) {
     const filteredObject = getFiltersWithValues(filterOptions);
-    console.log("filteredObject", filteredObject);
-
     let formattedDate;
     let numericFilterOptions;
 
@@ -126,7 +124,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
             onClick={() => {
               reset();
               setAdvanceSearch(!advanceSearch);
-              setFilterOptions({});
+              setFilterOptions({ newest: true });
             }}
           >
             Reset Search
@@ -177,40 +175,11 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
                 type="date"
               />
             </div>
-            {/* SDG */}
-            {/* <div className="col-span-1">
-              <FormSelectSDG name="specificSDG" control={control} />
-            </div> */}
             {/* Target */}
             <div className="col-span-1">
               <FormSelectTarget name="specificTarget" control={control} />
             </div>
-
-            {/* <div className="flex flex-wrap col-span-3 gap-[15px] justify-stretch">
-              {sdgData?.map((sdg) => (
-                <div
-                  className="h-14 p-0 flex justify-start relative overflow-hidden rounded-md"
-                  key={sdg.id}
-                >
-                  <Checkbox
-                    className="border-dark absolute top-0 left-0 w-full h-full border-transparent  
-                        opacity-60 checked:bg-primary appearance-none rounded-lg
-                      "
-                    // onCheckedChange={(checked) => {
-                    //   return checked
-                    //     ? setSdg((values) => [...values, { ...item }])
-                    //     : setSdg((values) => {
-                    //         return values.filter(
-                    //           (value) => value.id !== item.id
-                    //         );
-                    //       });
-                    // }}
-                    name="sdgs"
-                  />
-                  <img src={sdg.banner} alt={sdg.title} />
-                </div>
-              ))}
-            </div> */}
+            {/* SDG */}
             <div className="col-span-3 flex flex-col">
               <FormLabel className="mb-2">Select SDGs</FormLabel>
               <FormCheckBoxSDG control={control} name="sdgs" />

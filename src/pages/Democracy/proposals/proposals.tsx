@@ -8,7 +8,6 @@ import {
 import { IconWrapper } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { useProposalContext } from "@/contexts/ProposalContext";
-import DemocracyLayout from "@/layouts/DemocracyLayout";
 import { proposalFilterButtonOptions } from "@/utils/Democracy/Proposals";
 import ROUTES from "@/utils/routesNames";
 import { Danger } from "iconsax-react";
@@ -34,7 +33,7 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
     "Citizens' proposals are an opportunity for neighbours and collectivesto decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.";
 
   return (
-    <DemocracyLayout>
+    <>
       {/* HEADING */}
       <PagesHeroSection title="proposals" description={pageDescription} />
       <Link to={ROUTES.START_PROPOSAL_ROUTE}>
@@ -104,7 +103,7 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
           </div>
         )}
       </div>
-    </DemocracyLayout>
+    </>
   );
 };
 export default ProposalsHomePage;
