@@ -1,6 +1,7 @@
 import {
   AdvancedSearch,
   DebatesCardViewCard,
+  FetchingError,
   ListViewCard,
   PagesHeroSection,
   Pagination,
@@ -10,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { useDebateContext } from "@/contexts/DebateContext";
 import { debateFilterButtonOptions } from "@/utils/Democracy/Debates";
 import ROUTES from "@/utils/routesNames";
-import { Danger } from "iconsax-react";
 import { FaSpinner } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
@@ -50,6 +50,14 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
           setFilterOptions={setFilterOptions}
         />
 
+        {fetchingDebatesError && !fetchingDebates && (
+          <FetchingError
+            message="Error fetching Debates"
+            refetching={fetchingDebates}
+            retryFunction={() => refetchDebates()}
+          />
+        )}
+
         {/* LIST VIEW */}
         {view === "list-view" && fetchedDebatesData && (
           <div className="grid grid-cols-1 my-10 gap-10 max-w-[700px]">
@@ -63,7 +71,6 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
           </div>
         )}
 
-        {/* CARD VIEW */}
         {fetchingDebates && (
           <div className="w-full flex justify-center">
             <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
@@ -71,6 +78,8 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
             </IconWrapper>
           </div>
         )}
+
+        {/* CARD VIEW */}
         {view === "card-view" && fetchedDebatesData && (
           <div className="w-full flex justify-start">
             <div className="grid grid-col-1 lg:grid-cols-2  justify-start my-10 gap-10">
@@ -89,20 +98,6 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
             filterOptions={filterOptions}
             perPage={perPage}
           />
-        )}
-
-        {fetchingDebatesError && (
-          <div className="flex items-center flex-wrap justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10 my-10">
-            <div className="flex justify-start items-center gap-1">
-              <IconWrapper className="text-primary rounded-full">
-                <Danger size="32" />
-              </IconWrapper>
-              <p className="text-[16px]">Error fetching debates</p>
-            </div>
-            <Button className="w-fit h-fit" onClick={refetchDebates}>
-              Retry
-            </Button>
-          </div>
         )}
       </div>
     </>

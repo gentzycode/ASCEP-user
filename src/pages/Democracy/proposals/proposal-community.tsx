@@ -6,7 +6,9 @@ import {
 import {
   CommentsPagination,
   CreateTopicModal,
+  FetchingError,
   FilterButtons,
+  NotFound,
   ProposalParticipantCard,
   ProposalTopicCard,
 } from "@/components/Democracy";
@@ -17,19 +19,24 @@ import { Separator } from "@/components/ui/separator";
 import useDisclosure from "@/hooks/useDisclosure";
 import { proposalTopicFilterButtonOptions } from "@/utils/Democracy/Proposals";
 import { formattedDate } from "@/utils/helper";
-import { Danger, Messages1 } from "iconsax-react";
+import { Messages1 } from "iconsax-react";
 import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 
 const ProposalCommuntityHomePage = () => {
   const { proposalId } = useParams();
+
   const { isOpen: isModalOpen, onClose, onOpen } = useDisclosure();
+
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState("newest");
-  const { data: proposal, isError: noProposalError } = useGetProposalInfo(
-    parseInt(proposalId!)
-  );
+
+  const {
+    data: proposal,
+    isError: noProposalError,
+    isLoading: isLoadingProposal,
+  } = useGetProposalInfo(parseInt(proposalId!));
 
   const {
     refetch: refetchProposalTopics,
@@ -52,16 +59,8 @@ const ProposalCommuntityHomePage = () => {
         Proposal community
       </h4>
       {/* ERROR */}
-      {noProposalError && (
-        <div className="flex items-center flex-wrap justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10">
-          <div className="flex justify-start items-center gap-1">
-            <IconWrapper className="text-primary rounded-full">
-              <Danger size="32" />
-            </IconWrapper>
-            <p className="text-[16px]">No proposal found</p>
-          </div>
-        </div>
-      )}
+      {noProposalError && <NotFound message="No proposal found" />}
+
       {/* PROPOSAL INFO */}
       {proposal && (
         <div>
@@ -115,13 +114,23 @@ const ProposalCommuntityHomePage = () => {
 
       {/* *********************************************************************** PROPOSAL TOPICS ********************************************************************************/}
 
+      {isLoadingProposal && (
+        <div className="w-full flex justify-center">
+          <IconWrapper className=" text-primary bg-transparent my-10 w-fit h-full rounded-full">
+            <FaSpinner className="animate-spin text-[50px]" />
+          </IconWrapper>
+        </div>
+      )}
+
       {/* FILTER BUTTONS */}
       {communityMembers?.length !== 0 && (
         <FilterButtons
           filterButtonOptions={proposalTopicFilterButtonOptions}
-          filterByButton={async (value) => await setFilter(value)}
+          filterByButton={(value) => setFilter(value)}
         />
       )}
+
+      {/* LOADING TOPICS */}
       {isLoadingProposalTopics && (
         <div className="w-full flex justify-center">
           <IconWrapper className=" text-primary bg-transparent my-10 w-fit h-full rounded-full">
@@ -144,6 +153,7 @@ const ProposalCommuntityHomePage = () => {
           ))}
         </div>
       )}
+
       {proposalTopicData?.data.length === 0 && !noProposalError && (
         <h1 className="text-xl">
           No topics created, Create the first community topic

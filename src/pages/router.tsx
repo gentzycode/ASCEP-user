@@ -13,6 +13,7 @@ import { useToast } from "@/components/ui/use-toast";
 import useAutoLogout from "@/hooks/useAuthoLogout";
 import { ViewResponsePage } from "./Response";
 import DemocracyLayout from "@/layouts/DemocracyLayout";
+import SmoothScroll from "@/components/custom/ScrollToTop";
 
 const Router = () => {
   const pageRoutes = routes.map(({ path, title, element }: RouterType) => {
@@ -93,29 +94,31 @@ const Router = () => {
   // }, []);
 
   return (
-    <Routes>
-      <Route path="/home" element={<Outlet />}>
-        {landingRoutes}
-      </Route>
-      <Route path="/auth" element={<AuthPagesLayout />}>
-        {authRoutes}
-      </Route>
-      <Route path="" element={<MainLayout />}>
-        {pageRoutes}
-        <Route
-          path="response/view-response/1"
-          element={<ViewResponsePage />}
-        ></Route>
-        <Route path="" element={<ResponseLayout />}>
-          {responsePages}
+    <SmoothScroll>
+      <Routes>
+        <Route path="/home" element={<Outlet />}>
+          {landingRoutes}
         </Route>
-        <Route path="" element={<DemocracyLayout />}>
-          {democracyPages}
+        <Route path="/auth" element={<AuthPagesLayout />}>
+          {authRoutes}
         </Route>
-      </Route>
+        <Route path="" element={<MainLayout />}>
+          {pageRoutes}
+          <Route
+            path="response/view-response/1"
+            element={<ViewResponsePage />}
+          ></Route>
+          <Route path="" element={<ResponseLayout />}>
+            {responsePages}
+          </Route>
+          <Route path="" element={<DemocracyLayout />}>
+            {democracyPages}
+          </Route>
+        </Route>
 
-      <Route path="*" element={<div>Route Not Found</div>} />
-    </Routes>
+        <Route path="*" element={<div>Route Not Found</div>} />
+      </Routes>
+    </SmoothScroll>
   );
 };
 

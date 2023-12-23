@@ -1,6 +1,7 @@
 import { useGetProposalInfo } from "@/api/democracy/proposals";
 import {
   DisplayDocuments,
+  NotFound,
   ProposalComments,
   ProposalInfo,
   RelatedDebates,
@@ -36,16 +37,8 @@ const ProposalInfoPage: React.FC<ProposalInfoPageProps> = () => {
         )}
       </div>
       {/* ERROR */}
-      {isError && (
-        <div className="flex items-center flex-wrap justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10 my-10">
-          <div className="flex justify-start items-center gap-1">
-            <IconWrapper className="text-primary rounded-full">
-              <Danger size="32" />
-            </IconWrapper>
-            <p className="text-[16px]">No Proposal Found</p>
-          </div>
-        </div>
-      )}
+      {isError && <NotFound message="Proposal not found" />}
+
       {/* PROPOSAL INFO */}
       {proposal && (
         <div>
@@ -69,8 +62,8 @@ const ProposalInfoPage: React.FC<ProposalInfoPageProps> = () => {
               Documents ({proposal?.proposalDocuments.length})
             </h2>
             <div className="flex gap-4 flex-wrap">
-              {proposal?.proposalDocuments.map((doc) => (
-                <DisplayDocuments doc={doc} />
+              {proposal?.proposalDocuments.map((doc, i) => (
+                <DisplayDocuments doc={doc} key={i} />
               ))}
             </div>
           </>

@@ -1,5 +1,6 @@
 import {
   AdvancedSearch,
+  FetchingError,
   ListViewCard,
   PagesHeroSection,
   Pagination,
@@ -49,6 +50,14 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
           setFilterOptions={setFilterOptions}
         />
 
+        {fetchingProposalError && !fetchingProposals && (
+          <FetchingError
+            message="Error fetching Proposals"
+            refetching={fetchingProposals}
+            retryFunction={() => refetchProposals()}
+          />
+        )}
+
         {fetchingProposals && (
           <div className="w-full flex justify-center">
             <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
@@ -87,20 +96,6 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
             filterOptions={filterOptions}
             perPage={perPage}
           />
-        )}
-
-        {fetchingProposalError && (
-          <div className="flex items-center flex-wrap justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10 my-10">
-            <div className="flex justify-start items-center gap-1">
-              <IconWrapper className="text-primary rounded-full">
-                <Danger size="32" />
-              </IconWrapper>
-              <p className="text-[16px]">Error fetching proposal</p>
-            </div>
-            <Button className="w-fit h-fit" onClick={refetchProposals}>
-              Retry
-            </Button>
-          </div>
         )}
       </div>
     </>

@@ -6,7 +6,7 @@ import ROUTES from "@/utils/routesNames";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getProposalSchema, proposalCommentSchema, proposalTopicCommentSchema, proposalTopicSchema, voteProposalCommentSchema } from "@/schemas/ProposalSchema";
 import axios from "axios";
-import { GET_ALL_PROPOSALS_ENDPOINT, GET_ALL_PROPOSAL_TOPICS_ENDPOINT, GET_PROPOSAL_COMMENTS_ENDPOINT, GET_PROPOSAL_COMMUNITY_MEMBERS_ENDPOINT, GET_PROPOSAL_INFO_ENDPOINT, GET_PROPOSAL_TOPIC_COMMENTS_ENDPOINT, GET_PROPOSAL_TOPIC_INFO_ENDPOINT, PUBLISH_PROPOSALS_ENDPOINT, PUBLISH_PROPOSAL_COMMENT_ENDPOINT, PUBLISH_PROPOSAL_TOPIC_COMMENT_ENDPOINT, PUBLISH_PROPOSAL_TOPIC_ENDPOINT, SUPPORT_PROPOSAL_ENDPOINT, VOTE_PROPOSAL_COMMENT_ENDPOINT } from ".";
+import { GET_ALL_PROPOSALS_ENDPOINT, GET_ALL_PROPOSAL_TOPICS_ENDPOINT, GET_PROPOSAL_COMMENTS_ENDPOINT, GET_PROPOSAL_COMMUNITY_MEMBERS_ENDPOINT, GET_PROPOSAL_INFO_ENDPOINT, GET_PROPOSAL_TOPIC_COMMENTS_ENDPOINT, GET_PROPOSAL_TOPIC_INFO_ENDPOINT, PUBLISH_PROPOSALS_ENDPOINT, PUBLISH_PROPOSAL_COMMENT_ENDPOINT, PUBLISH_PROPOSAL_TOPIC_COMMENT_ENDPOINT, PUBLISH_PROPOSAL_TOPIC_ENDPOINT, SUPPORT_PROPOSAL_ENDPOINT, VOTE_PROPOSAL_COMMENT_ENDPOINT, VOTE_PROPOSAL_TOPIC_COMMENT_ENDPOINT } from ".";
 
 
 // PUBLISH PROPOSAL
@@ -79,7 +79,6 @@ export const useGetProposalInfo = (proposalId: number) => {
                     .get(GET_PROPOSAL_INFO_ENDPOINT(proposalId))
                     .then((res) => res.data.data.proposal);
             },
-            staleTime: 0,
             retry: false,
             refetchOnWindowFocus: false
         },
@@ -114,9 +113,7 @@ export const useVoteProposalComment = () => {
                 .then((res) => res.data);
         },
         {
-            onSuccess: (res, variables) => {
-                console.log("res", res);
-                console.log("variables", variables);
+            onSuccess: (res) => {
                 queryClient.invalidateQueries({ queryKey: ["proposal-comments"] })
                 toast({
                     title: "Success!",
@@ -156,6 +153,7 @@ export const useSupportProposal = (proposalId: number) => {
 export const usePublishProposalTopic = () => {
     const { toast } = useToast();
     const queryClient = useQueryClient()
+    const navigate = useNavigate();
     return useMutation(
         (values: z.infer<typeof proposalTopicSchema>): Promise<ResponseDataType> => {
             return axios
@@ -172,6 +170,10 @@ export const usePublishProposalTopic = () => {
                 variant: "success",
                 description: res.message
             })
+            if (variables.id) {
+                queryClient.invalidateQueries("get-proposal-topic-info")
+                // navigate(ROUTES.PROPOSAL_TOPIC_INFO_ROUTE(variables.id));
+            }
         }
     }
     );
@@ -189,7 +191,7 @@ export const useGetAllProposalTopics = (page: number, proposalId: number, filter
         {
             retry: false,
             refetchOnWindowFocus: false,
-
+            enabled: false
         }
     );
 
@@ -201,12 +203,11 @@ export const useGetProposalTopicInfo = (topicId: number | string) => {
         (): Promise<ProposalTopicType> => {
             return axios
                 .get(GET_PROPOSAL_TOPIC_INFO_ENDPOINT(topicId))
-                .then((res) => res.data.data[0]);
+                .then((res) => res.data.data.topic);
         },
         {
             retry: false,
             refetchOnWindowFocus: false,
-
         }
     );
 
@@ -247,6 +248,29 @@ export const useGetProposalTopicComments = (topicId: number, page: number, filte
             staleTime: 0,
             refetchOnWindowFocus: false,
         },
+    );
+};
+
+// vote proposal topic comment
+export const useVoteProposalTopicComment = () => {
+    const queryClient = useQueryClient()
+    const { toast } = useToast();
+    return useMutation(
+        (values: z.infer<typeof voteProposalCommentSchema>): Promise<ResponseDataType> => {
+            return axios
+                .post(VOTE_PROPOSAL_TOPIC_COMMENT_ENDPOINT(values.type, values.comment_id))
+                .then((res) => res.data);
+        },
+        {
+            onSuccess: (res) => {
+                queryClient.invalidateQueries({ queryKey: ["proposal-topic-comments"] })
+                toast({
+                    title: "Success!",
+                    variant: "success",
+                    description: res.message
+                })
+            }
+        }
     );
 };
 // get all proposal community members
