@@ -10,7 +10,10 @@ const ProposalTopicCard: React.FC<ProposalTopicCardProps> = ({ topic }) => {
   const { created_at, creator, total_comment_cache, title, id } = topic;
   return (
     <div className="flex flex-col w-full bg-[#fff] shadow-xl p-4 rounded-2xl">
-      <Link to={ROUTES.PROPOSAL_TOPIC_INFO_ROUTE(id)}>
+      <Link
+        to={ROUTES.PROPOSAL_TOPIC_INFO_ROUTE(id)}
+        className="hover:underline"
+      >
         <h1 className="text-[20px] text-dark pb-4">{title}</h1>
       </Link>
       <div className="flex justify-start items-start gap-6 flex-wrap">

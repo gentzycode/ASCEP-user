@@ -22,26 +22,31 @@ interface ProposalInfoProps {
   proposal: ProposalType;
   scrollToComments: () => void;
 }
+
 const ProposalInfo: React.FC<ProposalInfoProps> = ({
   proposal,
   scrollToComments,
 }) => {
+
   const { mutate: supportProposal, isLoading: isSupportingProposal } =
     useSupportProposal(proposal.id);
+
   const [copied, setCopied] = useState(false);
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       setCopied(false);
     }, 500);
-
     return () => {
       clearTimeout(timeout);
     };
   }, [copied]);
+
   const handleCopyLink = () => {
     navigator.clipboard.writeText(proposal.external_video_url);
     setCopied(true);
   };
+
   return (
     <div className="flex justify-start gap-10 xl:flex-row flex-col">
       <div className=" w-full xl:min-w-[700px] flex flex-col gap-6">
@@ -187,7 +192,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
           </Button>
         </div>
         {/* AUTHOR */}
-        {proposal.user_id === proposal.author.id && (
+        {/* {proposal.user_id === proposal.author.id && (
           <div>
             <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
               Author
@@ -199,7 +204,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
               </Button>
             </Link>
           </div>
-        )}
+        )} */}
 
         {/* SUPPORT */}
         <div>

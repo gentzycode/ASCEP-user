@@ -1,7 +1,7 @@
 export const proposalFilterButtonOptions: FilterButtonOptionsType[] = [
+  { label: "Newest", value: "newest" },
   { label: "Most active", value: "mostactive" },
   { label: "Highest rated", value: "highestrating" },
-  { label: "Newest", value: "newest" },
 ];
 export const proposalTopicFilterButtonOptions: FilterButtonOptionsType[] = [
   { label: "Newest first", value: "newest" },

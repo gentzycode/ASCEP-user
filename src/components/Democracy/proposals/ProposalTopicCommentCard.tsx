@@ -11,7 +11,7 @@ import { IconWrapper } from "@/components/custom";
 import { useClickAway } from "@uidotdev/usehooks";
 import {
   usePublishProposalTopicComment,
-  useVoteProposalComment,
+  useVoteProposalTopicComment,
 } from "@/api/democracy/proposals";
 import { proposalTopicCommentSchema } from "@/schemas/ProposalSchema";
 
@@ -30,7 +30,7 @@ const ProposalTopicCommentCard: React.FC<ProposalTopicCommentCardProps> = ({
     usePublishProposalTopicComment();
 
   const { mutate: voteComment, isLoading: isVotingComment } =
-    useVoteProposalComment();
+  useVoteProposalTopicComment();
 
   const ref = useClickAway<HTMLDivElement>(() => {
     setTimeout(() => {
@@ -48,7 +48,7 @@ const ProposalTopicCommentCard: React.FC<ProposalTopicCommentCardProps> = ({
       comment_reference: comment.id,
     },
   });
-  
+
   const {
     control,
     handleSubmit,
