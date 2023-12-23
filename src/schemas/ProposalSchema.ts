@@ -121,8 +121,9 @@ export const proposalTopicSchema = z.object({
             message: "Topic content is required",
         }),
     proposal_id: z
-        .number({ required_error: "Proposal id is required" })
-
+        .number({ required_error: "Proposal id is required" }),
+    id: z
+        .number().optional(),
 });
 
 

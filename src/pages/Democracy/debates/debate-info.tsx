@@ -1,11 +1,6 @@
 import { useGetDebateInfo } from "@/api/democracy/debates";
-import {
-  DebateComments,
-  DebateInfo,
-  RelatedDebates,
-} from "@/components/Democracy";
+import { DebateComments, DebateInfo, NotFound } from "@/components/Democracy";
 import { IconWrapper } from "@/components/custom";
-import { Danger } from "iconsax-react";
 import { useRef } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { useParams } from "react-router-dom";
@@ -35,16 +30,7 @@ const DebatesInfoPage: React.FC<DebatesInfoPageProps> = () => {
       </div>
 
       {/* ERROR */}
-      {isError && (
-        <div className="flex items-center flex-wrap justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10 my-10">
-          <div className="flex justify-start items-center gap-1">
-            <IconWrapper className="text-primary rounded-full">
-              <Danger size="32" />
-            </IconWrapper>
-            <p className="text-[16px]">No Debate Found</p>
-          </div>
-        </div>
-      )}
+      {isError && <NotFound message="Debate not found" />}
 
       {/* DEBATE INFO */}
       {debate && (
@@ -57,7 +43,7 @@ const DebatesInfoPage: React.FC<DebatesInfoPageProps> = () => {
       {/* <div className="my-10 w-full max-w-[700px]">
           <RelatedDebates />
         </div> */}
-        
+
       {/*COMMENTS */}
       <div
         className="my-10 w-full max-w-[700px]"

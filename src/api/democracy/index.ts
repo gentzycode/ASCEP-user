@@ -26,9 +26,10 @@ export const GET_PROPOSAL_COMMUNITY_MEMBERS_ENDPOINT = (proposalId: number) => b
 export const GET_PROPOSAL_TOPIC_INFO_ENDPOINT = (topicId: number | string) => baseUrl + `/proposal/topic/info/${topicId}`
 export const GET_PROPOSAL_TOPIC_COMMENTS_ENDPOINT = (topicId: number, page: number, filter?: string) => baseUrl + `/proposal/topic/comments?page=${page}&perPage=${perPage}&filter=${filter}&proposalTopic=${topicId}`
 export const PUBLISH_PROPOSAL_TOPIC_COMMENT_ENDPOINT = baseUrl + "/proposal/topic/comment"
-
+export const VOTE_PROPOSAL_TOPIC_COMMENT_ENDPOINT = (type: string, comment_id: number) => baseUrl + `/proposal/topic/vote-comment/${type}/${comment_id}`
 
 //SDG
 export const GET_ALL_SDGs_ENDPOINT = baseUrl + "/sdg/all"
+
 //WARDS
 export const GET_ALL_WARDS_ENDPOINT = baseUrl + "/local/wards"

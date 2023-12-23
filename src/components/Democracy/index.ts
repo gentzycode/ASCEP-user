@@ -24,6 +24,8 @@ export { default as FormTags } from "./common/FormTags";
 export { default as TargetDisplay } from "./common/TargetDisplay";
 export { default as TagDisplay } from "./common/TagDisplay";
 export { default as DisplayDocuments } from "./common/DisplayDocuments";
+export { default as NotFound } from "./common/NotFound";
+export { default as FetchingError } from "./common/FetchingError";
 
 // DEBATES
 export { default as DebatesCardViewCard } from "./debates/DebatesCardViewCard";
@@ -37,12 +39,15 @@ export { default as ProposalInfo } from "./proposals/ProposalInfo";
 export { default as ProposalComments } from "./proposals/ProposalComments";
 export { default as ProposalCommentCard } from "./proposals/ProposalCommentCard";
 export { default as ProposalCommentResponse } from "./proposals/ProposalCommentResponse";
+
+//PROPOSAL TOPIC
 export { default as CreateTopicModal } from "./proposals/CreateTopicModal";
+export { default as ProposalTopicInfo } from "./proposals/ProposalTopicInfo";
 export { default as ProposalParticipantCard } from "./proposals/ProposalParticipantCard";
 export { default as ProposalTopicCard } from "./proposals/ProposalTopicCard";
 export { default as ProposalTopicComments } from "./proposals/ProposalTopicComments";
-export { default as ProposalTopicCommentResponse } from "./proposals/ProposalTopicCommentResponse";
 export { default as ProposalTopicCommentCard } from "./proposals/ProposalTopicCommentCard";
+export { default as ProposalTopicCommentResponse } from "./proposals/ProposalTopicCommentResponse";
 
 //INITIATIVES
 export { default as InitiativesCardViewCard } from "./initiatives/InitiativesCardViewCard";
