@@ -9,7 +9,7 @@ export const startDebateSchema = z.object({
     tags: z.array(z.string()).optional(),
     sdgs: z.array(z.number()).optional(),
     targets: z.array(z.number()).optional(),
-    id: z.number().optional()
+    id: z.string().optional()
 });
 
 export const debateCommentSchema = z.object({
@@ -19,9 +19,9 @@ export const debateCommentSchema = z.object({
             message: "comment text cannot be empty",
         }),
     debate_id: z
-        .number({ required_error: "debate id is required" }),
+        .string({ required_error: "debate id is required" }),
     comment_reference: z
-        .number().optional()
+        .string().optional()
 });
 
 export const voteDebateSchema = z.object({
@@ -29,7 +29,7 @@ export const voteDebateSchema = z.object({
         .string({ required_error: "vote type is required" }),
 
     debate_id: z
-        .number({ required_error: "debate id is required" }),
+        .string({ required_error: "debate id is required" }),
 });
 
 export const voteDebateCommentSchema = z.object({
@@ -37,7 +37,7 @@ export const voteDebateCommentSchema = z.object({
         .string({ required_error: "vote type is required" }),
 
     comment_id: z
-        .number({ required_error: "debate id is required" }),
+        .string({ required_error: "debate id is required" }),
 });
 
 export const filterDebateSchema = z.object({

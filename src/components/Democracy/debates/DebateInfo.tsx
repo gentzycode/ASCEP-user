@@ -3,18 +3,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { formattedDate } from "@/utils/helper";
-import {
-  CardEdit,
-  Dislike,
-  DocumentCopy,
-  Facebook,
-  Flag,
-  Like1,
-  Messages1,
-  Whatsapp,
-} from "iconsax-react";
+import { CardEdit, Dislike, Flag, Like1, Messages1 } from "iconsax-react";
 import { Link } from "react-router-dom";
-import { SDGCard, TagDisplay, TargetDisplay } from "..";
+import { SDGCard, Share, TagDisplay, TargetDisplay } from "..";
 import { useVoteDebate } from "@/api/democracy/debates";
 import ROUTES from "@/utils/routesNames";
 
@@ -119,6 +110,7 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
             Block Author
           </Button>
         </div>
+
         {/* AUTHOR */}
         {debate.user_id === debate.author.id && (
           <div>
@@ -144,6 +136,7 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
               {debate.total_votes_cache} votes
             </h3>
           </div>
+
           {/* LIKE AND DISLIKE */}
           <div className="flex gap-4 my-4">
             <Button
@@ -185,26 +178,11 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
             </Button>
           </div>
         </div>
+
         {/* SHARE */}
-        <div>
-          <div className="flex justify-start items-start gap-8">
-            <h2 className="pb-2  border-b-4 text-[18px] font-medium border-primary w-fit">
-              Share
-            </h2>
-            <Button className="bg-transparent p-0 w-fit hover:bg-transparent text-dark text-[14px] flex justify-center  gap-1">
-              <DocumentCopy size={20} />
-              <span>Copy link</span>
-            </Button>
-          </div>
-          <div className="flex gap-2 my-4">
-            <Link to="#" className="text-subtle_text">
-              <Whatsapp size={35} variant="Bold" />
-            </Link>
-            <Link to="#" className=" text-subtle_text">
-              <Facebook size={35} variant="Bold" />
-            </Link>
-          </div>
-        </div>
+        <Share
+          shareableId={`http://localhost:5173/democracy/share/${debate.shareable_id}`}
+        />
       </div>
     </div>
   );

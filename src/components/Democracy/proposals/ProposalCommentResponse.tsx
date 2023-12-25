@@ -1,12 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import {
-  AddSquare,
-  CloseCircle,
-  Flag,
-  MinusSquare,
-} from "iconsax-react";
+import { AddSquare, CloseCircle, Flag, MinusSquare } from "iconsax-react";
 import { useState } from "react";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
@@ -27,26 +22,31 @@ const ProposalCommentResponse: React.FC<ProposalCommentResponseProps> = ({
   response,
   paddingLeft,
 }) => {
+  const { proposalId } = useParams();
+
   const { mutateAsync: publishResponse, isLoading: isPublishingComment } =
     usePublishProposalComment();
-  const { proposalId } = useParams();
+
   const [showResponse, setShowResponse] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
+
   const ref = useClickAway<HTMLDivElement>(() => {
     setTimeout(() => {
       setIsReplying(false);
       setShowResponse(false);
     }, 500);
   });
+
   const form = useForm<z.infer<typeof proposalCommentSchema>>({
     resolver: zodResolver(proposalCommentSchema),
     mode: "onChange",
     defaultValues: {
       content: "",
-      proposal_id: parseInt(proposalId!),
-      comment_reference: response.response_id,
+      proposal_id: "",
+      comment_reference: "",
     },
   });
+
   const {
     control,
     handleSubmit,
@@ -55,7 +55,11 @@ const ProposalCommentResponse: React.FC<ProposalCommentResponseProps> = ({
   } = form;
 
   async function onSubmit(values: z.infer<typeof proposalCommentSchema>) {
-    await publishResponse(values);
+    await publishResponse({
+      ...values,
+      proposal_id: proposalId!,
+      comment_reference: response.response_id,
+    });
     closeResponse();
   }
 

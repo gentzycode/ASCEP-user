@@ -68,9 +68,9 @@ export const proposalCommentSchema = z.object({
             message: "comment text cannot be empty",
         }),
     proposal_id: z
-        .number({ required_error: "Proposal_id id is required" }),
+        .string({ required_error: "Proposal_id id is required" }),
     comment_reference: z
-        .number().optional()
+        .string().optional()
 });
 export const getProposalSchema = z.object({
     page: z.number(),
@@ -109,7 +109,7 @@ export const voteProposalCommentSchema = z.object({
         .string({ required_error: "vote type is required" }),
 
     comment_id: z
-        .number({ required_error: "proposal id is required" }),
+        .string({ required_error: "proposal id is required" }),
 });
 export const proposalTopicSchema = z.object({
     title: z
@@ -121,9 +121,9 @@ export const proposalTopicSchema = z.object({
             message: "Topic content is required",
         }),
     proposal_id: z
-        .number({ required_error: "Proposal id is required" }),
+        .string({ required_error: "Proposal id is required" }),
     id: z
-        .number().optional(),
+        .string().optional(),
 });
 
 
@@ -134,9 +134,9 @@ export const proposalTopicCommentSchema = z.object({
             message: "comment text cannot be empty",
         }),
     proposal_topic_id: z
-        .number({ required_error: "Proposal_id id is required" }),
+        .string({ required_error: "Proposal_id id is required" }),
     comment_reference: z
-        .number().optional(),
+        .string().optional(),
     id: z
-        .number().optional()
+        .string().optional()
 });

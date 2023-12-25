@@ -39,14 +39,14 @@ const ProposalComments: React.FC<ProposalCommentsCardProps> = () => {
     isLoading: isLoadingComments,
     isFetching: isFetchingComments,
     refetch: refetchComments,
-  } = useGetProposalTopicComments(parseInt(topicId!), page, filter);
+  } = useGetProposalTopicComments(topicId!, page, filter);
 
   const form = useForm<z.infer<typeof proposalTopicCommentSchema>>({
     resolver: zodResolver(proposalTopicCommentSchema),
     mode: "onChange",
     defaultValues: {
       content: "",
-      proposal_topic_id: parseInt(topicId!),
+      proposal_topic_id: topicId!,
     },
   });
   const {

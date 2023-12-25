@@ -70,7 +70,7 @@ export const useGetAllProposals = () => {
 };
 
 // GET PROPOSAL INFO
-export const useGetProposalInfo = (proposalId: number) => {
+export const useGetProposalInfo = (proposalId: string) => {
     return useQuery(
         {
             queryKey: ["proposal-info", proposalId],
@@ -87,7 +87,7 @@ export const useGetProposalInfo = (proposalId: number) => {
 };
 
 // GET PROPOSAL COMMENTS
-export const useGetProposalComments = (proposalId: number, page: number, filter?: string) => {
+export const useGetProposalComments = (proposalId: string, page: number, filter?: string) => {
     return useQuery(
         {
             queryKey: ["proposal-comments"],
@@ -125,7 +125,7 @@ export const useVoteProposalComment = () => {
     );
 };
 // SUPPORT PROPOSAL 
-export const useSupportProposal = (proposalId: number) => {
+export const useSupportProposal = (proposalId: string) => {
     const queryClient = useQueryClient()
     const { toast } = useToast();
     return useMutation(
@@ -149,11 +149,11 @@ export const useSupportProposal = (proposalId: number) => {
 
 
 //PROPOSAL COMMUNITY
+
 //publish proposal topic
 export const usePublishProposalTopic = () => {
     const { toast } = useToast();
     const queryClient = useQueryClient()
-    const navigate = useNavigate();
     return useMutation(
         (values: z.infer<typeof proposalTopicSchema>): Promise<ResponseDataType> => {
             return axios
@@ -163,8 +163,6 @@ export const usePublishProposalTopic = () => {
                 .then((res) => res.data);
         }, {
         onSuccess: (res, variables) => {
-            console.log("variables", variables);
-            queryClient.invalidateQueries({ queryKey: ["get-proposal-topics"] })
             toast({
                 title: "Success!",
                 variant: "success",
@@ -172,7 +170,8 @@ export const usePublishProposalTopic = () => {
             })
             if (variables.id) {
                 queryClient.invalidateQueries("get-proposal-topic-info")
-                // navigate(ROUTES.PROPOSAL_TOPIC_INFO_ROUTE(variables.id));
+            } else {
+                queryClient.invalidateQueries("get-proposal-topics")
             }
         }
     }
@@ -180,7 +179,7 @@ export const usePublishProposalTopic = () => {
 };
 
 // get all proposal topics
-export const useGetAllProposalTopics = (page: number, proposalId: number, filter: string) => {
+export const useGetAllProposalTopics = (page: number, proposalId: string, filter: string) => {
     return useQuery(
         ["get-proposal-topics", page, proposalId, filter],
         (): Promise<ProposalTopicDataType> => {
@@ -191,13 +190,12 @@ export const useGetAllProposalTopics = (page: number, proposalId: number, filter
         {
             retry: false,
             refetchOnWindowFocus: false,
-            enabled: false
         }
     );
 
 };
 // get proposal topic info
-export const useGetProposalTopicInfo = (topicId: number | string) => {
+export const useGetProposalTopicInfo = (topicId: string) => {
     return useQuery(
         ["get-proposal-topic-info", topicId],
         (): Promise<ProposalTopicType> => {
@@ -236,7 +234,7 @@ export const usePublishProposalTopicComment = () => {
     );
 }
 // get proposal topic comments
-export const useGetProposalTopicComments = (topicId: number, page: number, filter?: string) => {
+export const useGetProposalTopicComments = (topicId: string, page: number, filter?: string) => {
     return useQuery(
         {
             queryKey: ["proposal-topic-comments"],
@@ -274,7 +272,7 @@ export const useVoteProposalTopicComment = () => {
     );
 };
 // get all proposal community members
-export const useGetProposalCommunityMembers = (proposalId: number) => {
+export const useGetProposalCommunityMembers = (proposalId: string) => {
     return useQuery(
         ["get-proposal-community-member"],
         (): Promise<ProposalCommunityMemberType[]> => {

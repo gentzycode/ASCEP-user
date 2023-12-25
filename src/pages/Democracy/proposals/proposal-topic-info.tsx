@@ -31,7 +31,7 @@ const ProposalTopicInfoPage: React.FC<ProposalTopicInfoPageProps> = () => {
   return (
     <div>
       {/* ERROR */}
-      {isError && <NotFound message="No Topic found" />}
+      {isError && !topic && <NotFound message="No Topic found" />}
 
       {/* LOADING */}
       {isLoadingTopic && (

@@ -41,8 +41,8 @@ const ProposalTopicCommentResponse: React.FC<
     mode: "onChange",
     defaultValues: {
       content: "",
-      proposal_topic_id: parseInt(topicId!),
-      comment_reference: response.response_id,
+      proposal_topic_id: "",
+      comment_reference: "",
     },
   });
 
@@ -54,8 +54,11 @@ const ProposalTopicCommentResponse: React.FC<
   } = form;
 
   async function onSubmit(values: z.infer<typeof proposalTopicCommentSchema>) {
-    console.log(values);
-    await publishResponse(values);
+    await publishResponse({
+      ...values,
+      proposal_topic_id: topicId!,
+      comment_reference: response.response_id,
+    });
     closeResponse();
   }
 

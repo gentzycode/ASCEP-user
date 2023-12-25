@@ -25,23 +25,27 @@ const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
   const { mutateAsync: publishResponse, isLoading: isPublishingComment } =
     usePublishDebateComment();
   const { debateId } = useParams();
+
   const [showResponse, setShowResponse] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
+
   const ref = useClickAway<HTMLDivElement>(() => {
     setTimeout(() => {
       setIsReplying(false);
       setShowResponse(false);
     }, 500);
   });
+
   const form = useForm<z.infer<typeof debateCommentSchema>>({
     resolver: zodResolver(debateCommentSchema),
     mode: "onChange",
     defaultValues: {
       content: "",
-      debate_id: parseInt(debateId!),
-      comment_reference: response.response_id,
+      debate_id: "",
+      comment_reference: "",
     },
   });
+
   const {
     control,
     handleSubmit,
@@ -50,7 +54,11 @@ const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
   } = form;
 
   async function onSubmit(values: z.infer<typeof debateCommentSchema>) {
-    await publishResponse(values);
+    await publishResponse({
+      ...values,
+      debate_id: debateId!,
+      comment_reference: response.response_id,
+    });
     closeResponse();
   }
 
