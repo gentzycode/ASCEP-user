@@ -26,6 +26,7 @@ export { default as TagDisplay } from "./common/TagDisplay";
 export { default as DisplayDocuments } from "./common/DisplayDocuments";
 export { default as NotFound } from "./common/NotFound";
 export { default as FetchingError } from "./common/FetchingError";
+export { default as Share } from "./common/Share";
 
 // DEBATES
 export { default as DebatesCardViewCard } from "./debates/DebatesCardViewCard";

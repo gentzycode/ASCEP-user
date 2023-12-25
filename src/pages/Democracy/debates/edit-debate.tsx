@@ -22,8 +22,11 @@ import TargetsMultiSelect from "@/components/custom/TargetsMultiSelect";
 interface EditDebatePageProps {}
 const EditDebatePage: React.FC<EditDebatePageProps> = () => {
   const { debateId } = useParams();
-  const { data: debate, isError } = useGetDebateInfo(parseInt(debateId!));
+  const { data: debate, isError, refetch } = useGetDebateInfo(debateId!);
   const { targets: allTargets } = useAppContext();
+  useEffect(() => {
+    refetch();
+  }, []);
 
   const { mutateAsync: publishDebate, isLoading: isLoadingDebate } =
     usePublishDebate();
@@ -40,7 +43,7 @@ const EditDebatePage: React.FC<EditDebatePageProps> = () => {
       sdgs: debate?.debateSDGs.map((item) => item.sdgs_id),
       targets: [],
       tags: [],
-      id: debate?.id,
+      id: debateId,
     },
   });
 

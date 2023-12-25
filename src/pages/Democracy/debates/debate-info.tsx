@@ -12,7 +12,7 @@ const DebatesInfoPage: React.FC<DebatesInfoPageProps> = () => {
     data: debate,
     isError,
     isLoading: isLoadingDebate,
-  } = useGetDebateInfo(parseInt(debateId!));
+  } = useGetDebateInfo(debateId!);
 
   const commentsSectionRef = useRef<HTMLDivElement | null>(null);
   const scrollToComments = () => {

@@ -24,7 +24,6 @@ const RelatedDebates: React.FC<RelatedDebatesProps> = () => {
     formState: { errors },
   } = form;
   function onSubmit(values: z.infer<typeof addRelatedSchema>) {
-    console.log(values);
   }
   return (
     <div>

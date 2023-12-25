@@ -5,7 +5,7 @@ import React from "react";
 interface DisplayDocumentsProps {
   doc: {
     document_url: string;
-    proposal_id: number;
+    proposal_id: string;
   };
 }
 

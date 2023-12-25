@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { useProposalContext } from "@/contexts/ProposalContext";
 import { proposalFilterButtonOptions } from "@/utils/Democracy/Proposals";
 import ROUTES from "@/utils/routesNames";
-import { Danger } from "iconsax-react";
 import { FaSpinner } from "react-icons/fa";
 import { Link } from "react-router-dom";
 

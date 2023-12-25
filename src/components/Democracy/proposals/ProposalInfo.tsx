@@ -2,18 +2,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { formattedDate } from "@/utils/helper";
-import {
-  CardEdit,
-  Copy,
-  DocumentCopy,
-  Facebook,
-  Flag,
-  Messages1,
-  PlayCircle,
-  Whatsapp,
-} from "iconsax-react";
+import { Copy, Flag, Messages1, PlayCircle } from "iconsax-react";
 import { Link } from "react-router-dom";
-import { SDGCard, TagDisplay, TargetDisplay } from "..";
+import { SDGCard, Share, TagDisplay, TargetDisplay } from "..";
 import ROUTES from "@/utils/routesNames";
 import { useEffect, useState } from "react";
 import { useSupportProposal } from "@/api/democracy/proposals";
@@ -27,7 +18,6 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
   proposal,
   scrollToComments,
 }) => {
-
   const { mutate: supportProposal, isLoading: isSupportingProposal } =
     useSupportProposal(proposal.id);
 
@@ -80,14 +70,18 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
               {proposal.total_comments_cache} Comments
             </div>
           </div>
+
           {/* IMAGE */}
-          <div className="w-full max-w-[700px] relative h-[300px] lg:h-[400px] rounded-2xl overflow-hidden my-8">
-            <img
-              src={proposal.descriptive_image}
-              alt={proposal.title}
-              className="absolute top-0 left-0 w-full h-full object-cover"
-            />
-          </div>
+          {proposal.descriptive_image && (
+            <div className="w-full max-w-[700px] relative h-[300px] lg:h-[400px] rounded-2xl overflow-hidden my-8">
+              <img
+                src={proposal.descriptive_image}
+                alt={proposal.title}
+                className="absolute top-0 left-0 w-full h-full object-cover"
+              />
+            </div>
+          )}
+
           {/* SUMMARY */}
           <div className="border-t-2 border-subtle_text py-4">
             <h2 className="text-base">
@@ -95,6 +89,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
             </h2>
             <p className="text-sm md:text-base py-2">{proposal.summary}</p>
           </div>
+
           {/* BODY */}
           <div className="border-t-2 border-subtle_text py-4 whitespace-pre-wrap w-full  overflow-hidden">
             <div
@@ -102,13 +97,15 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
               className=""
             />
           </div>
+
           {/* MAP */}
           <div>
-            <h3 className="text-base underline underline-offset-8 decoration-primary py-2">
+            <h2 className="pb-2  pl-0 my-6 border-b-4 text-[18px] font-medium border-primary w-fit">
               Map view
-            </h3>
+            </h2>
             <div className="bg-subtle_text h-[400px] rounded-2xl w-full max-w-[700px] my-2"></div>
           </div>
+
           {/* VIDEO */}
           <div className="py-4 my-8 px-2 max-w-[700px] flex-wrap bg-light border border-primary rounded-lg flex justify-between items-center">
             <div className="flex items-center gap-2 flex-wrap">
@@ -251,26 +248,12 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
             </Button>
           </div>
         </div>
+
         {/* SHARE */}
-        <div>
-          <div className="flex justify-start items-start gap-8">
-            <h2 className="pb-2  border-b-4 text-[18px] font-medium border-primary w-fit">
-              Share
-            </h2>
-            <Button className="bg-transparent p-0 w-fit hover:bg-transparent text-dark text-[14px] flex justify-center  gap-1">
-              <DocumentCopy size={20} />
-              <span>Copy link</span>
-            </Button>
-          </div>
-          <div className="flex gap-2 my-4">
-            <Link to="#" className="text-subtle_text">
-              <Whatsapp size={35} variant="Bold" />
-            </Link>
-            <Link to="#" className=" text-subtle_text">
-              <Facebook size={35} variant="Bold" />
-            </Link>
-          </div>
-        </div>
+        <Share
+          shareableId={`http://localhost:5173/democracy/share/${proposal.proposal_code}`}
+        />
+
         {/* FOLLOW */}
         <div>
           <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
@@ -280,6 +263,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
             Follow citizen Proposal
           </Button>
         </div>
+
         {/* COMMUNITY */}
         <div>
           <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">

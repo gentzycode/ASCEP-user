@@ -42,8 +42,8 @@ const ProposalCommentCard: React.FC<ProposalCommentCardProps> = ({
     mode: "onChange",
     defaultValues: {
       content: "",
-      proposal_id: parseInt(proposalId!),
-      comment_reference: comment.id,
+      proposal_id: "",
+      comment_reference: "",
     },
   });
   const {
@@ -54,7 +54,11 @@ const ProposalCommentCard: React.FC<ProposalCommentCardProps> = ({
   } = form;
 
   async function onSubmit(values: z.infer<typeof proposalCommentSchema>) {
-    await publishResponse(values);
+    await publishResponse({
+      ...values,
+      proposal_id: proposalId!,
+      comment_reference: comment.id,
+    });
     closeResponse();
   }
 

@@ -22,6 +22,7 @@ import {
   ProposalTopicInfoPage,
   SdgDetailsPage,
   StartInitiativePage,
+  ResolveSharedIDPage,
 } from "./Democracy";
 import { ActivityPage, DataView, MapView } from "./Response";
 import DebateProvider from "@/contexts/DebateContext";
@@ -88,6 +89,11 @@ export const democracyRoutes: RouterType[] = [
     path: "/democracy/debates/edit-debate/:debateId",
     element: <EditDebatePage />,
     title: "democracy-debate-start",
+  },
+  {
+    path: "/democracy/share/:shareableId",
+    element: <ResolveSharedIDPage />,
+    title: "democracy-debate-share",
   },
   {
     path: "/democracy/proposals",

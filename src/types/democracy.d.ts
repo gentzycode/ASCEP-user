@@ -23,7 +23,7 @@ interface FilterButtonOptionsType {
 
 // DEBATES
 interface DebateAuthorType {
-    id: number
+    id: string
     username: string
     profile_picture: string | null
     firstname?: string
@@ -70,11 +70,11 @@ interface DebateDataType {
     debates: DebateType[]
 }
 interface DebateType {
-    id: number
+    id: string
     title: string
     description: string
     shareable_id: string
-    user_id: number
+    user_id: string
     total_comments_cache: number
     total_votes_cache: number
     inapproriate_flag: boolean
@@ -94,12 +94,12 @@ interface DebateType {
 }
 
 interface CommentResponseType {
-    response_id: number
-    comment_id: number
+    response_id: string
+    comment_id: string
     commentDetail: {
         content
-        id: number
-        user_id: number
+        id: string
+        user_id: string
         user: DebateAuthorType
         responses: DebateCommentResponseType[]
     }
@@ -154,8 +154,8 @@ interface ProposalDataType {
     proposals: ProposalType[]
 }
 interface ProposalType {
-    id: number
-    user_id: number
+    id: string
+    user_id: string
     title: string
     content: string
     status: string
@@ -180,7 +180,7 @@ interface ProposalType {
     proposal_code: string
     proposalDocuments: {
         document_url: string
-        proposal_id: number
+        proposal_id: string
     }[]
 }
 
@@ -219,9 +219,9 @@ interface ProposalTopicDataType {
 }
 
 interface ProposalTopicType {
-    id: number
-    proposal_id: number
-    user_id: number
+    id: string
+    proposal_id: string
+    user_id: string
     title: string
     content: string
     total_vote_cache: number
@@ -233,21 +233,21 @@ interface ProposalTopicType {
         lastname: string
         username: string
         profile_picture: string
-        id: number
+        id: string
     }
     proposal: {
         title: string
-        user_id: number
-        id: number
+        user_id: string
+        id: string
     }
 }
 interface ProposalCommunityMemberType {
-    user_id: number
+    user_id: string
     creator: {
         profile_picture: string
         firstname: string
         lastname: string
-        id: number
+        id: string
     }
 }
 
@@ -270,8 +270,8 @@ interface CommentMetaDataType {
 }
 interface CommentType {
     content: string
-    id: number
-    user_id: number
+    id: string
+    user_id: string
     author: DebateAuthorType
     responses: DebateCommentResponseType[]
     likes: number

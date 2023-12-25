@@ -12,18 +12,18 @@ import { proposalTopicSchema } from "@/schemas/ProposalSchema";
 import { usePublishProposalTopic } from "@/api/democracy/proposals";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
-import { useEffect } from "react";
 
 interface CreateTopicModalProps {
   isOpen: boolean;
   onOpenChange: () => void;
   onClose: () => void;
-  propsalId: number;
+  propsalId: string;
   isEditing?: boolean;
-  topicId?: number;
+  topicId?: string;
   title?: string;
   content?: string;
 }
+
 const CreateTopicModal: React.FC<CreateTopicModalProps> = ({
   isOpen,
   onOpenChange,
@@ -34,37 +34,31 @@ const CreateTopicModal: React.FC<CreateTopicModalProps> = ({
   title,
   content,
 }) => {
-  console.log(title);
-
+  
   const { mutateAsync: publishTopic, isLoading: isPublishing } =
     usePublishProposalTopic();
+
   const form = useForm<z.infer<typeof proposalTopicSchema>>({
     resolver: zodResolver(proposalTopicSchema),
     defaultValues: {
       title: title ?? "",
       content: content ?? "",
-      proposal_id: propsalId,
+      proposal_id: "",
+      id: undefined,
     },
   });
 
   const {
-    setValue,
     reset,
     control,
     handleSubmit,
     formState: { errors },
   } = form;
+
   async function onSubmit(values: z.infer<typeof proposalTopicSchema>) {
-    console.log(values);
-    await publishTopic(values);
+    await publishTopic({ ...values, proposal_id: propsalId, id: topicId });
     onClose();
   }
-
-  useEffect(() => {
-    if (isEditing) {
-      setValue("id", topicId);
-    }
-  }, []);
 
   return (
     <AlertDialog open={isOpen} onOpenChange={onOpenChange}>

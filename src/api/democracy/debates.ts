@@ -3,7 +3,7 @@ import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { configOptions } from "../config";
 import { z } from "zod";
-import { GET_ALL_DEBATES_ENDPOINT, GET_ALL_SDGs_ENDPOINT, GET_DEBATE_COMMENTS_ENDPOINT, GET_DEBATE_INFO_ENDPOINT, PUBLISH_COMMENT_ENDPOINT, PUBLISH_DEBATES_ENDPOINT, VOTE_DEBATE_COMMENT_ENDPOINT, VOTE_DEBATE_ENDPOINT } from ".";
+import { GET_ALL_DEBATES_ENDPOINT, GET_ALL_SDGs_ENDPOINT, GET_DEBATE_COMMENTS_ENDPOINT, GET_DEBATE_INFO_ENDPOINT, PUBLISH_COMMENT_ENDPOINT, PUBLISH_DEBATES_ENDPOINT, RESOLVE_SHARE_ID_ENDPOINT, VOTE_DEBATE_COMMENT_ENDPOINT, VOTE_DEBATE_ENDPOINT } from ".";
 import { debateCommentSchema, getDebateSchema, startDebateSchema, voteDebateCommentSchema, voteDebateSchema } from "@/schemas/DebateSchema";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
@@ -71,7 +71,7 @@ export const useGetAllDebates = () => {
 };
 
 // GET DEBATE INFO
-export const useGetDebateInfo = (debateId: number) => {
+export const useGetDebateInfo = (debateId: string) => {
     return useQuery(
         {
             queryKey: ["debate-info", debateId],
@@ -88,7 +88,7 @@ export const useGetDebateInfo = (debateId: number) => {
     );
 };
 // GET DEBATE COMMENTS
-export const useGetDebateComments = (debateId: number, page: number, filter?: string) => {
+export const useGetDebateComments = (debateId: string, page: number, filter?: string) => {
     return useQuery(
         {
             queryKey: ["debate-comments"],
@@ -113,8 +113,8 @@ export const useVoteDebate = () => {
                 .then((res) => res.data);
         },
         {
-            onSuccess: (res, variables) => {
-                queryClient.invalidateQueries({ queryKey: ["debate-info", variables.debate_id] })
+            onSuccess: (res) => {
+                queryClient.invalidateQueries("debate-info")
                 toast({
                     title: "Success!",
                     variant: "success",
@@ -158,7 +158,21 @@ export const useGetAllSDGs = () => {
         },
         {
             refetchOnWindowFocus: false,
+        },
+    );
+};
 
+//SHARE ID
+export const useResolveShareID = (shareableId: string) => {
+    return useQuery(
+        ["shareID"],
+        (): Promise<string> => {
+            return axios
+                .get(RESOLVE_SHARE_ID_ENDPOINT(shareableId))
+                .then((res) => res.data.data.id);
+        },
+        {
+            refetchOnWindowFocus: false,
         },
     );
 };
