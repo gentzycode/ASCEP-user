@@ -25,11 +25,14 @@ import { debateCommentSchema } from "@/schemas/DebateSchema";
 
 interface DebateCommentsCardProps {}
 const DebateComments: React.FC<DebateCommentsCardProps> = () => {
+  
+  const { isLoggedIn } = useAuthContext();
+  const { debateId } = useParams();
+
   const { mutateAsync: publishComment, isLoading: isPublishingComment } =
     usePublishDebateComment();
-  const { isLoggedIn } = useAuthContext();
+
   const [page, setPage] = useState(1);
-  const { debateId } = useParams();
   const [filter, setFilter] = useState("newest");
 
   const {
@@ -37,14 +40,14 @@ const DebateComments: React.FC<DebateCommentsCardProps> = () => {
     isLoading: isLoadingComments,
     refetch,
     isFetching: isFetchingComments,
-  } = useGetDebateComments(parseInt(debateId!), page, filter);
+  } = useGetDebateComments(debateId!, page, filter);
 
   const form = useForm<z.infer<typeof debateCommentSchema>>({
     resolver: zodResolver(debateCommentSchema),
     mode: "onChange",
     defaultValues: {
       content: "",
-      debate_id: parseInt(debateId!),
+      debate_id: debateId,
     },
   });
   const {
@@ -113,6 +116,7 @@ const DebateComments: React.FC<DebateCommentsCardProps> = () => {
         </div>
       )}
 
+      {/* FILTER BUTTONS */}
       {commentsData?.comments?.length !== 0 && (
         <FilterButtons
           filterButtonOptions={debateCommentFilterButtonOptions}
@@ -122,6 +126,7 @@ const DebateComments: React.FC<DebateCommentsCardProps> = () => {
           }}
         />
       )}
+
       {commentsData?.comments?.length === 0 && (
         <div>
           <h1 className="text-dark text-[16px] md:text-[20px]">
@@ -137,6 +142,7 @@ const DebateComments: React.FC<DebateCommentsCardProps> = () => {
           </IconWrapper>
         </div>
       )}
+
       {commentsData && commentsData.comments.length > 0 && (
         <div
           className={`${
@@ -149,6 +155,7 @@ const DebateComments: React.FC<DebateCommentsCardProps> = () => {
             <DebateCommentCard comment={comment} key={comment.id} />
           ))}
 
+          {/* PAGINATION */}
           <CommentsPagination
             meta={commentsData.meta}
             onPageChange={(page: number) => setPage(page)}

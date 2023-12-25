@@ -30,7 +30,7 @@ const ProposalTopicCommentCard: React.FC<ProposalTopicCommentCardProps> = ({
     usePublishProposalTopicComment();
 
   const { mutate: voteComment, isLoading: isVotingComment } =
-  useVoteProposalTopicComment();
+    useVoteProposalTopicComment();
 
   const ref = useClickAway<HTMLDivElement>(() => {
     setTimeout(() => {
@@ -44,8 +44,8 @@ const ProposalTopicCommentCard: React.FC<ProposalTopicCommentCardProps> = ({
     mode: "onChange",
     defaultValues: {
       content: "",
-      proposal_topic_id: parseInt(topicId!),
-      comment_reference: comment.id,
+      proposal_topic_id: "",
+      comment_reference: "",
     },
   });
 
@@ -57,7 +57,11 @@ const ProposalTopicCommentCard: React.FC<ProposalTopicCommentCardProps> = ({
   } = form;
 
   async function onSubmit(values: z.infer<typeof proposalTopicCommentSchema>) {
-    await publishResponse(values);
+    await publishResponse({
+      ...values,
+      proposal_topic_id: topicId!,
+      comment_reference: comment.id,
+    });
     closeResponse();
   }
 

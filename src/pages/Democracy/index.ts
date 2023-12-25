@@ -3,6 +3,7 @@ export { default as DebatesHomePage } from "./debates/debates";
 export { default as DebateInfoPage } from "./debates/debate-info";
 export { default as PublishDebatePage } from "./debates/publish-debate";
 export { default as EditDebatePage } from "./debates/edit-debate";
+export { default as ResolveSharedIDPage } from "./debates/resolve-share-id";
 
 //PROPOSALS
 export { default as ProposalsHomePage } from "./proposals/proposals";

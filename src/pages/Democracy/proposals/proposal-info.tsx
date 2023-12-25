@@ -7,7 +7,6 @@ import {
   RelatedDebates,
 } from "@/components/Democracy";
 import { IconWrapper } from "@/components/custom";
-import { Danger } from "iconsax-react";
 import { useRef } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { useParams } from "react-router-dom";
@@ -19,7 +18,7 @@ const ProposalInfoPage: React.FC<ProposalInfoPageProps> = () => {
     data: proposal,
     isLoading: isLoadingProposal,
     isError,
-  } = useGetProposalInfo(parseInt(proposalId!));
+  } = useGetProposalInfo(proposalId!);
 
   const commentsSectionRef = useRef<HTMLDivElement | null>(null);
   const scrollToComments = () => {
@@ -37,7 +36,7 @@ const ProposalInfoPage: React.FC<ProposalInfoPageProps> = () => {
         )}
       </div>
       {/* ERROR */}
-      {isError && <NotFound message="Proposal not found" />}
+      {isError && !proposal && <NotFound message="Proposal not found" />}
 
       {/* PROPOSAL INFO */}
       {proposal && (

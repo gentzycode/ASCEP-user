@@ -11,7 +11,6 @@ const ScrollToTop: React.FC<SmoothScrollPProps> = ({ children }) => {
     if (navType !== "POP") {
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
       });
     }
   }, [location]);

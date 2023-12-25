@@ -6,7 +6,6 @@ import {
 import {
   CommentsPagination,
   CreateTopicModal,
-  FetchingError,
   FilterButtons,
   NotFound,
   ProposalParticipantCard,
@@ -36,17 +35,17 @@ const ProposalCommuntityHomePage = () => {
     data: proposal,
     isError: noProposalError,
     isLoading: isLoadingProposal,
-  } = useGetProposalInfo(parseInt(proposalId!));
+  } = useGetProposalInfo(proposalId!);
 
   const {
     refetch: refetchProposalTopics,
     data: proposalTopicData,
     isLoading: isLoadingProposalTopics,
     isFetching: isFetchingProposalTopics,
-  } = useGetAllProposalTopics(page, parseInt(proposalId!), filter);
+  } = useGetAllProposalTopics(page, proposalId!, filter);
 
   const { data: communityMembers } = useGetProposalCommunityMembers(
-    parseInt(proposalId!)
+    proposalId!
   );
 
   useEffect(() => {
@@ -58,8 +57,9 @@ const ProposalCommuntityHomePage = () => {
       <h4 className="text-xl md:text-2xl text-primary font-semibold mb-10">
         Proposal community
       </h4>
+
       {/* ERROR */}
-      {noProposalError && <NotFound message="No proposal found" />}
+      {noProposalError && !proposal && <NotFound message="No proposal found" />}
 
       {/* PROPOSAL INFO */}
       {proposal && (
