@@ -1,28 +1,36 @@
 import { Button } from "@/components/ui/button";
-import { DocumentCopy, Facebook, Whatsapp } from "iconsax-react";
-import { Twitter } from "lucide-react";
+import { DocumentCopy } from "iconsax-react";
 import { useEffect, useState } from "react";
-import { FaReddit } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
-import { Link } from "react-router-dom";
+import {
+  FacebookShareButton,
+  WhatsappShareButton,
+  FacebookIcon,
+  WhatsappIcon,
+  RedditShareButton,
+  RedditIcon,
+  EmailShareButton,
+  EmailIcon,
+  TwitterShareButton,
+  TwitterIcon,
+} from "react-share";
 
 interface ShareProps {
-  shareableId: string;
+  shareableURL: string;
 }
-const Share: React.FC<ShareProps> = ({ shareableId }) => {
+const Share: React.FC<ShareProps> = ({ shareableURL }) => {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       setCopied(false);
-    }, 500);
+    }, 1000);
     return () => {
       clearTimeout(timeout);
     };
   }, [copied]);
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(shareableId);
+    navigator.clipboard.writeText(shareableURL);
     setCopied(true);
   };
 
@@ -44,28 +52,22 @@ const Share: React.FC<ShareProps> = ({ shareableId }) => {
       </div>
 
       <div className="flex gap-2 my-4">
-        <Link
-          to={`whatsapp://send?text= ${shareableId}`}
-          rel="nofollow noopener"
-          target="_blank"
-          className="text-subtle_text"
-        >
-          <Whatsapp size={35} variant="Bold" />
-        </Link>
-        <Link to="#" className=" text-subtle_text">
-          <Facebook size={35} variant="Bold" />
-        </Link>
-        <Link to="#" className=" text-subtle_text">
-          <Twitter size={35} />
-        </Link>
-        <Link to="#" className=" text-subtle_text">
-          <MdEmail size={35} />
-        </Link>
-        <Link to="#" className=" text-subtle_text">
-          <FaReddit size={35} />
-        </Link>
+        <FacebookShareButton url={shareableURL}>
+          <FacebookIcon size={40} round />
+        </FacebookShareButton>
+        <WhatsappShareButton url={shareableURL}>
+          <WhatsappIcon size={40} round />
+        </WhatsappShareButton>
+        <RedditShareButton url={shareableURL}>
+          <RedditIcon size={40} round />
+        </RedditShareButton>
+        <EmailShareButton url={shareableURL}>
+          <EmailIcon round size={40} />
+        </EmailShareButton>
+        <TwitterShareButton url={shareableURL}>
+          <TwitterIcon round size={40} />
+        </TwitterShareButton>
       </div>
-      
     </div>
   );
 };

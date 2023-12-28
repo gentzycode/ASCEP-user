@@ -2,12 +2,25 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { formattedDate } from "@/utils/helper";
-import { Copy, Flag, Messages1, PlayCircle } from "iconsax-react";
+import {
+  CardEdit,
+  Copy,
+  Flag,
+  Messages1,
+  PlayCircle,
+  Trash,
+} from "iconsax-react";
 import { Link } from "react-router-dom";
-import { SDGCard, Share, TagDisplay, TargetDisplay } from "..";
+import { CategoryDisplay, SDGCard, Share, TagDisplay, TargetDisplay } from "..";
 import ROUTES from "@/utils/routesNames";
 import { useEffect, useState } from "react";
-import { useSupportProposal } from "@/api/democracy/proposals";
+import {
+  useDeleteProposal,
+  useSupportProposal,
+} from "@/api/democracy/proposals";
+import useDisclosure from "@/hooks/useDisclosure";
+import ALert from "@/components/custom/Alert";
+import { useAuthContext } from "@/providers/AuthProvider";
 
 interface ProposalInfoProps {
   proposal: ProposalType;
@@ -18,6 +31,8 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
   proposal,
   scrollToComments,
 }) => {
+  const { isLoggedIn } = useAuthContext();
+
   const { mutate: supportProposal, isLoading: isSupportingProposal } =
     useSupportProposal(proposal.id);
 
@@ -37,6 +52,19 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
     setCopied(true);
   };
 
+  const { mutateAsync: deleteProposal, isLoading: isDeletingProposal } =
+    useDeleteProposal(proposal.id);
+
+  const {
+    isOpen: alertOpen,
+    onOpen: openAlert,
+    onClose: closeAlert,
+  } = useDisclosure();
+
+  const handleDelete = async () => {
+    await deleteProposal();
+    close();
+  };
   return (
     <div className="flex justify-start gap-10 xl:flex-row flex-col">
       <div className=" w-full xl:min-w-[700px] flex flex-col gap-6">
@@ -152,7 +180,10 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
         {proposal.proposalTarget.length > 0 && (
           <div className="flex gap-[8px] flex-wrap">
             {proposal.proposalTarget.map((target) => (
-              <TargetDisplay target={target} key={target.target_id} />
+              <TargetDisplay
+                target={target.targetInfo}
+                key={target.target_id}
+              />
             ))}
           </div>
         )}
@@ -165,43 +196,69 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
             ))}
           </div>
         )}
+
+        {/* CATEGORIES */}
+        {proposal.proposalCategory.length > 0 && (
+          <div className="flex gap-[8px] flex-wrap">
+            {proposal.proposalCategory.map((category) => (
+              <CategoryDisplay category={category.categoryDetail.name} />
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="w-full  md:w-[300px] flex justify-start flex-col gap-10">
-        <div className="flex gap-2">
-          <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
-            <Flag size="25" />
-          </Button>
-
-          <Separator
-            orientation="vertical"
-            className="h-5  text-dark bg-base-500"
-          />
-          <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
-            Hide
-          </Button>
-          <Separator
-            orientation="vertical"
-            className="h-5  text-dark bg-base-500"
-          />
-          <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
-            Block Author
-          </Button>
-        </div>
-        {/* AUTHOR */}
-        {/* {proposal.user_id === proposal.author.id && (
-          <div>
-            <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
-              Author
-            </h2>
-            <Link to={ROUTES.EDIT_DEBATE_ROUTE(proposal.id)}>
-              <Button className="text-dark text-[16px] h-fit w-fit my-4 px-8 justify-center gap-3 flex rounded-lg">
-                <span>Edit</span>
-                <CardEdit />
+        {isLoggedIn && (
+          <>
+            <div className="flex gap-2">
+              <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
+                <Flag size="25" />
               </Button>
-            </Link>
-          </div>
-        )} */}
+
+              <Separator
+                orientation="vertical"
+                className="h-5  text-dark bg-base-500"
+              />
+              <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
+                Hide
+              </Button>
+              <Separator
+                orientation="vertical"
+                className="h-5  text-dark bg-base-500"
+              />
+              <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
+                Block Author
+              </Button>
+            </div>
+
+            {/* AUTHOR */}
+            {proposal.user_id === proposal.author.id && (
+              <div>
+                <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
+                  Author
+                </h2>
+                <Link to={ROUTES.EDIT_PROPOSAL_ROUTE(proposal.id)}>
+                  <Button
+                    className="text-dark text-base h-fit my-4 px-8 py-3 w-full justify-center
+               gap-3 flex rounded-lg max-w-[220px]"
+                  >
+                    <span>Edit</span>
+                    <CardEdit />
+                  </Button>
+                </Link>
+                <Button
+                  className="text-red-500 border border-red-500
+                 hover:text-light text-base  bg-transparent hover:bg-red-400 h-fit my-4 px-8 py-3 
+                 justify-center gap-1 flex rounded-lg w-full max-w-[220px]"
+                  onClick={openAlert}
+                >
+                  <span>Delete Proposal</span>
+                  <Trash />
+                </Button>
+              </div>
+            )}
+          </>
+        )}
 
         {/* SUPPORT */}
         <div>
@@ -239,46 +296,68 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
               <Messages1 size="25" />
               <span>{proposal.supportNeeded} support needed</span>
             </Button>
-            <Button
-              className="h-fit  max-w-[200px] py-4 text-lg w-full rounded-full"
-              isLoading={isSupportingProposal}
-              onClick={() => supportProposal()}
-            >
-              Support
-            </Button>
+            {isLoggedIn ? (
+              <Button
+                className="h-fit  max-w-[200px] py-4 text-lg w-full rounded-full"
+                isLoading={isSupportingProposal}
+                onClick={() => supportProposal()}
+              >
+                Support
+              </Button>
+            ) : (
+              <Link to={ROUTES.SIGNIN_ROUTE}>
+                <Button className="bg-transparent border-dark border-2 w-[175px]">
+                  Log in
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
 
         {/* SHARE */}
         <Share
-          shareableId={`http://localhost:5173/democracy/share/${proposal.proposal_code}`}
+          shareableURL={`http://localhost:5173/democracy/share/${proposal.proposal_code}`}
         />
 
         {/* FOLLOW */}
-        <div>
-          <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
-            Follow
-          </h2>
-          <Button className="bg-transparent border border-primary mt-3 text-primary hover:text-light">
-            Follow citizen Proposal
-          </Button>
-        </div>
+        {isLoggedIn && (
+          <>
+            <div>
+              <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
+                Follow
+              </h2>
+              <Button className="bg-transparent border border-primary mt-3 text-primary hover:text-light">
+                Follow citizen Proposal
+              </Button>
+            </div>
 
-        {/* COMMUNITY */}
-        <div>
-          <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
-            Community
-          </h2>
-          <Link
-            to={ROUTES.PROPOSAL_COMMUNITY_ROUTE(proposal.id)}
-            state={{ proposal: proposal }}
-          >
-            <Button className="bg-transparent border border-primary mt-3 text-primary hover:text-light">
-              Access the Community
-            </Button>
-          </Link>
-        </div>
+            {/* COMMUNITY */}
+            <div>
+              <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
+                Community
+              </h2>
+              <Link
+                to={ROUTES.PROPOSAL_COMMUNITY_ROUTE(proposal.id)}
+                state={{ proposal: proposal }}
+              >
+                <Button className="bg-transparent border border-primary mt-3 text-primary hover:text-light">
+                  Access the Community
+                </Button>
+              </Link>
+            </div>
+          </>
+        )}
       </div>
+
+      {/* DELETE ALERT */}
+      <ALert
+        message="Are you sure you want to delete this proposal"
+        description="This action cannot be undone. This will permanently delete your proposal."
+        action={handleDelete}
+        isOpen={alertOpen}
+        close={closeAlert}
+        loadingAction={isDeletingProposal}
+      />
     </div>
   );
 };

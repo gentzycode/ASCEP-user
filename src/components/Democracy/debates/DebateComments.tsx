@@ -5,7 +5,7 @@ import {
   FormInput,
 } from "..";
 import { debateCommentFilterButtonOptions } from "@/utils/Democracy/Debates";
-import { IconWrapper } from "@/components/custom";
+import { IconWrapper, PageLoader } from "@/components/custom";
 import { CloseCircle, Danger } from "iconsax-react";
 import { Link, useParams } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
@@ -25,7 +25,6 @@ import { debateCommentSchema } from "@/schemas/DebateSchema";
 
 interface DebateCommentsCardProps {}
 const DebateComments: React.FC<DebateCommentsCardProps> = () => {
-  
   const { isLoggedIn } = useAuthContext();
   const { debateId } = useParams();
 
@@ -135,13 +134,7 @@ const DebateComments: React.FC<DebateCommentsCardProps> = () => {
         </div>
       )}
 
-      {isLoadingComments && (
-        <div className="w-full flex justify-center">
-          <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
-            <FaSpinner className="animate-spin text-[100px]" />
-          </IconWrapper>
-        </div>
-      )}
+      {isLoadingComments && <PageLoader />}
 
       {commentsData && commentsData.comments.length > 0 && (
         <div
