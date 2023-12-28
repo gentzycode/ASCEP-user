@@ -51,7 +51,9 @@ const Router = () => {
   axios.interceptors.request.use(
     (axiosConfig) => {
       const token = localStorage.getItem(config.key.accessToken);
-      axiosConfig.headers.Authorization = `Bearer ${token}`;
+      if (token) {
+        axiosConfig.headers.Authorization = `Bearer ${token}`;
+      }
       return axiosConfig;
     },
     (error) => {

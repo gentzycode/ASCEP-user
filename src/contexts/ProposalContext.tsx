@@ -34,6 +34,8 @@ interface ProposalContextType {
     }
   >;
   perPage: number;
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 }
 const initialFilter = {
   sdgs: [],
@@ -59,6 +61,8 @@ const ProposalContext = createContext<ProposalContextType>({
   setFilterOptions: () => {},
   getAllProposals: () => {},
   perPage: 0,
+  page: 0,
+  setPage: () => {},
 });
 
 export const useProposalContext = () => useContext(ProposalContext);
@@ -74,7 +78,7 @@ export default function ProposalProvider({ children }: PropsWithChildren) {
   const [view, setView] = useState<string>("card-view");
   const [filterOptions, setFilterOptions] =
     useState<z.infer<typeof filterSchema>>(initialFilter);
-  const [page] = useState<number>(1);
+  const [page, setPage] = useState<number>(1);
   const [perPage] = useState<number>(10);
 
   const getFiltersWithValues = () => {
@@ -138,6 +142,8 @@ export default function ProposalProvider({ children }: PropsWithChildren) {
         setFilterOptions,
         getAllProposals,
         perPage,
+        page,
+        setPage,
       }}
     >
       {children}

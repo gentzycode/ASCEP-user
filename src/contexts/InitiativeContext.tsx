@@ -1,7 +1,7 @@
-import { useGetAllDebates } from "@/api/democracy/debates";
-import { filterDebateSchema } from "@/schemas/DebateSchema";
+import { useGetAllInitiatives } from "@/api/democracy/initiatives";
 import { filterSchema } from "@/schemas/GeneralSchema";
-import { debateFilterButtonOptions } from "@/utils/Democracy/Debates";
+import { filterProposalSchema } from "@/schemas/ProposalSchema";
+import { initiativeFilterButtonOptions } from "@/utils/Democracy/Initiatives";
 import {
   PropsWithChildren,
   createContext,
@@ -12,25 +12,25 @@ import {
 import { UseMutateFunction } from "react-query";
 import * as z from "zod";
 
-interface DebateContextType {
+interface InitiativeContextType {
   view: string;
   setView: React.Dispatch<React.SetStateAction<string>>;
-  fetchingDebates: boolean;
-  fetchingDebatesError: boolean;
-  fetchedDebatesData: DebateDataType | undefined;
-  refetchDebates: () => void;
+  fetchingInitiatives: boolean;
+  fetchingInitiativeError: boolean;
+  fetchedInitiativeData: InitiativeDataType | undefined;
+  refetchInitiatives: () => void;
   filterByButton: (value: string) => void;
   filterOptions: z.infer<typeof filterSchema>;
   setFilterOptions: React.Dispatch<
     React.SetStateAction<z.infer<typeof filterSchema>>
   >;
-  getAllDebates: UseMutateFunction<
+  getAllInitiatives: UseMutateFunction<
     any,
     unknown,
     {
       page: number;
       perPage: number;
-      filter: z.infer<typeof filterDebateSchema>;
+      filter: z.infer<typeof filterProposalSchema>;
     }
   >;
   perPage: number;
@@ -43,37 +43,39 @@ const initialFilter = {
   specificTarget: undefined,
   targets: [],
   tags: [],
-  mostactive: false,
+  all: false,
   text: "",
-  highestrating: false,
+  opened: false,
+  closed: false,
+  answered: false,
   newest: true,
   datetimeSpecific: "",
 };
-const DebateContext = createContext<DebateContextType>({
+const InitiativeContext = createContext<InitiativeContextType>({
   view: "",
   setView: () => {},
-  fetchingDebates: false,
-  fetchingDebatesError: false,
-  fetchedDebatesData: undefined,
-  refetchDebates: () => {},
+  fetchingInitiatives: false,
+  fetchingInitiativeError: false,
+  fetchedInitiativeData: undefined,
+  refetchInitiatives: () => {},
   filterByButton: () => {},
   filterOptions: initialFilter,
   setFilterOptions: () => {},
-  getAllDebates: () => {},
+  getAllInitiatives: () => {},
   perPage: 0,
   page: 0,
   setPage: () => {},
 });
 
-export const useDebateContext = () => useContext(DebateContext);
+export const useInitiativeContext = () => useContext(InitiativeContext);
 
-export default function DebateProvider({ children }: PropsWithChildren) {
+export default function InitiativeProvider({ children }: PropsWithChildren) {
   const {
-    mutate: getAllDebates,
-    isLoading: fetchingDebates,
-    isError: fetchingDebatesError,
-    data: fetchedDebatesData,
-  } = useGetAllDebates();
+    mutate: getAllInitiatives,
+    isLoading: fetchingInitiatives,
+    isError: fetchingInitiativeError,
+    data: fetchedInitiativeData,
+  } = useGetAllInitiatives();
 
   const [view, setView] = useState<string>("card-view");
   const [filterOptions, setFilterOptions] =
@@ -100,7 +102,7 @@ export default function DebateProvider({ children }: PropsWithChildren) {
   };
 
   const filterByButton = (value: string) => {
-    const isValidOption = debateFilterButtonOptions.some(
+    const isValidOption = initiativeFilterButtonOptions.some(
       (option) => option.value === value
     );
 
@@ -117,37 +119,37 @@ export default function DebateProvider({ children }: PropsWithChildren) {
       const newFilter = { ...filterOptions, [value]: true };
       setFilterOptions(newFilter);
     } else {
-      return;
+      setFilterOptions({});
     }
   };
 
   useEffect(() => {
-    getAllDebates({ page, perPage, filter: getFiltersWithValues() });
+    getAllInitiatives({ page, perPage, filter: getFiltersWithValues() });
   }, [filterOptions]);
 
-  const refetchDebates = () => {
-    getAllDebates({ page, perPage, filter: { newest: true } });
+  const refetchInitiatives = () => {
+    getAllInitiatives({ page, perPage, filter: { newest: true } });
   };
 
   return (
-    <DebateContext.Provider
+    <InitiativeContext.Provider
       value={{
         view,
         setView,
-        fetchingDebates,
-        fetchingDebatesError,
-        fetchedDebatesData,
-        refetchDebates,
+        fetchingInitiatives,
+        fetchingInitiativeError,
+        fetchedInitiativeData,
+        refetchInitiatives,
         filterByButton,
         filterOptions,
         setFilterOptions,
-        getAllDebates,
+        getAllInitiatives,
         perPage,
         page,
         setPage,
       }}
     >
       {children}
-    </DebateContext.Provider>
+    </InitiativeContext.Provider>
   );
 }

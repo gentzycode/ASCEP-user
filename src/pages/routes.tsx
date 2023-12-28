@@ -23,11 +23,20 @@ import {
   SdgDetailsPage,
   StartInitiativePage,
   ResolveSharedIDPage,
+  VotingHomePage,
+  StartPollPage,
+  EditProposalPage,
+  InitiativeInfoPage,
+  EditInitiativePage,
+  BudgetingHomePage,
+  WardProjectsHomePage,
 } from "./Democracy";
 import { ActivityPage, DataView, MapView } from "./Response";
 import DebateProvider from "@/contexts/DebateContext";
 import { ContactUs, LandingPage } from "./Landing";
 import ProposalProvider from "@/contexts/ProposalContext";
+import InitiativeProvider from "@/contexts/InitiativeContext";
+import DemocracyLandingePage from "./Democracy/landing-page";
 
 export const landingPages: RouterType[] = [
   {
@@ -58,14 +67,14 @@ const routes: RouterType[] = [
     element: <SettingsPage />,
     title: "ssettings",
   },
+  {
+    path: "/democracy",
+    element: <DemocracyLandingePage />,
+    title: "democracy",
+  },
 ];
 
 export const democracyRoutes: RouterType[] = [
-  {
-    path: "/democracy",
-    element: <Navigate to="/democracy/debates" />,
-    title: "democracy",
-  },
   {
     path: "/democracy/debates",
     element: (
@@ -93,7 +102,7 @@ export const democracyRoutes: RouterType[] = [
   {
     path: "/democracy/share/:shareableId",
     element: <ResolveSharedIDPage />,
-    title: "democracy-debate-share",
+    title: "democracy-shared-id",
   },
   {
     path: "/democracy/proposals",
@@ -115,6 +124,11 @@ export const democracyRoutes: RouterType[] = [
     title: "democracy-proposals-start",
   },
   {
+    path: "/democracy/proposals/edit-proposal/:proposalId",
+    element: <EditProposalPage />,
+    title: "democracy-proposals-start",
+  },
+  {
     path: "/democracy/proposals/community/:proposalId",
     element: <ProposalCommuntityHomePage />,
     title: "democracy-proposals-community",
@@ -126,13 +140,27 @@ export const democracyRoutes: RouterType[] = [
   },
   {
     path: "/democracy/initiatives",
-    element: <InitiativesHomePage />,
+    element: (
+      <InitiativeProvider>
+        <InitiativesHomePage />
+      </InitiativeProvider>
+    ),
     title: "democracy-initiatives",
   },
   {
     path: "/democracy/initiatives/start-initiative",
     element: <StartInitiativePage />,
     title: "democracy-initiatives-start",
+  },
+  {
+    path: "/democracy/initiatives/:initiativeId",
+    element: <InitiativeInfoPage />,
+    title: "democracy-initiatives-info",
+  },
+  {
+    path: "/democracy/initiatives/edit-initiative/:initiativeId",
+    element: <EditInitiativePage />,
+    title: "democracy-initiatives-edit",
   },
   {
     path: "/democracy/sdg",
@@ -143,6 +171,26 @@ export const democracyRoutes: RouterType[] = [
     path: "/democracy/sdg/details",
     element: <SdgDetailsPage />,
     title: "democracy-SDGs-details",
+  },
+  {
+    path: "/democracy/voting",
+    element: <VotingHomePage />,
+    title: "democracy-SDGs-details",
+  },
+  {
+    path: "/democracy/voting/start-poll",
+    element: <StartPollPage />,
+    title: "democracy-SDGs-start",
+  },
+  {
+    path: "/democracy/budgeting",
+    element: <BudgetingHomePage />,
+    title: "democracy-budgeting",
+  },
+  {
+    path: "/democracy/budgeting/ward-project/:wardId",
+    element: <WardProjectsHomePage />,
+    title: "democracy-budgeting-ward-project",
   },
 ];
 

@@ -7,6 +7,7 @@ import {
   Facebook,
   Youtube,
 } from "iconsax-react";
+import { FaLinkedin, FaTwitter } from "react-icons/fa";
 
 export const DemocracyLinks: NavLinkType[] = [
   {
@@ -23,11 +24,11 @@ export const DemocracyLinks: NavLinkType[] = [
   },
   {
     title: "Voting",
-    path: "#",
+    path: "/democracy/voting",
   },
   {
     title: "Participatory Budgeting",
-    path: "#",
+    path: "/democracy/budgeting",
   },
   {
     title: "SDG",
@@ -88,21 +89,21 @@ export const SocialLinks: NavLinkType[] = [
   {
     title: "Facebook",
     path: "#",
-    Icon: <Facebook />,
+    Icon: <Facebook variant="Bold"   />,
   },
   {
     title: "X",
     path: "#",
-    Icon: <Facebook />,
+    Icon: <FaTwitter />,
   },
   {
     title: "Youtube",
     path: "#",
-    Icon: <Youtube />,
+    Icon: <Youtube variant="Bold"/>,
   },
   {
     title: "Linkedin",
     path: "#",
-    Icon: <Facebook />,
+    Icon: <FaLinkedin />,
   },
 ];

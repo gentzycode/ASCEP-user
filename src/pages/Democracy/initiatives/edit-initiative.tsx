@@ -3,70 +3,80 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { startDebateSchema } from "@/schemas/DebateSchema";
 import {
   FormCheckBoxSDG,
   FormInput,
+  FormSelectMultipleCategory,
+  FormSelectWard,
   FormTags,
   NotFound,
-  TextEditor,
 } from "@/components/Democracy";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useGetDebateInfo, usePublishDebate } from "@/api/democracy/debates";
+import FormTextArea from "@/components/Democracy/common/FormTextArea";
+import TargetsMultiSelect from "@/components/custom/TargetsMultiSelect";
 import { IconWrapper } from "@/components/custom";
 import { FaSpinner } from "react-icons/fa";
 import { useAppContext } from "@/contexts/AppContext";
-import TargetsMultiSelect from "@/components/custom/TargetsMultiSelect";
+import { useGetAllCategories } from "@/api/category";
+import {
+  useGetInitiativeInfo,
+  usePublishInitiative,
+} from "@/api/democracy/initiatives";
+import { startInitiativeSchema } from "@/schemas/InitiativesSchema";
 
-interface EditDebatePageProps {}
-const EditDebatePage: React.FC<EditDebatePageProps> = () => {
-  const { debateId } = useParams();
+interface EditInitiativePageProps {}
 
-  const {
-    data: debate,
-    isError,
-    isLoading: isLoadingDebate,
-  } = useGetDebateInfo(debateId!);
+const EditInitiativePage: React.FC<EditInitiativePageProps> = () => {
+  const { initiativeId } = useParams();
+
+  const { mutateAsync: UpdateInitiative, isLoading: isUpdatingInitiative } =
+    usePublishInitiative();
 
   const { targets: allTargets } = useAppContext();
+  const { data: allCategories } = useGetAllCategories();
 
-  const { mutateAsync: publishDebate, isLoading: isUpdatingDebate } =
-    usePublishDebate();
+  const {
+    data: initiative,
+    isLoading: isLoadingProposal,
+    isError,
+  } = useGetInitiativeInfo(initiativeId!);
 
   const [tags, setTags] = useState<string[]>(
-    debate?.debateTag.map((tag) => tag.tag_name) ?? []
+    initiative?.initiativeTag.map((tag) => tag.tag_name) ?? []
   );
   const [targets, setTargets] = useState<SDGTarget[]>([]);
 
-  const form = useForm<z.infer<typeof startDebateSchema>>({
-    resolver: zodResolver(startDebateSchema),
+  const [categories, setCategories] = useState<CategoryType[]>([]);
+
+  const form = useForm<z.infer<typeof startInitiativeSchema>>({
+    resolver: zodResolver(startInitiativeSchema),
     defaultValues: {
-      title: debate?.title,
-      description: debate?.description,
-      sdgs: debate?.debateSDGs.map((item) => item.sdgs_id),
-      targets: [],
+      title: initiative?.title,
+      description: initiative?.description,
+      ward_id: initiative?.ward_id,
       tags: [],
-      id: debateId,
+      categories: initiative?.initiativeCategory.map(
+        (item) => item.category_id
+      ),
+      sdgs: initiative?.initiativeSDGs.map((item) => item.sdg_id),
+      targets: [],
+      support_needed: initiative?.support_needed,
     },
   });
 
   const {
     setValue,
-    register,
     control,
     handleSubmit,
-    watch,
+    trigger,
     formState: { errors },
   } = form;
 
-  async function onSubmit(values: z.infer<typeof startDebateSchema>) {
-    await publishDebate({ ...values });
+  async function onSubmit(values: z.infer<typeof startInitiativeSchema>) {
+    console.log({ ...values, id: initiative?.id });
+    await UpdateInitiative({ ...values, id: initiative?.id });
   }
-
-  useEffect(() => {
-    register("description");
-  }, [register]);
 
   useEffect(() => {
     const IDs = targets.map((target) => target.id);
@@ -74,17 +84,16 @@ const EditDebatePage: React.FC<EditDebatePageProps> = () => {
   }, [targets]);
 
   useEffect(() => {
+    const IDs = categories.map((category) => category.id);
+    setValue("categories", IDs);
+  }, [categories]);
+
+  useEffect(() => {
     setValue("tags", tags);
   }, [tags]);
 
-  const onEditorStateChange = (text: any) => {
-    setValue("description", text);
-  };
-
-  const editorContent = watch("description");
-
   const getTargets = () => {
-    const newArray = debate?.debateTarget
+    const newArray = initiative?.initiativeTarget
       .map(({ targetInfo }) => {
         const matchingObject = allTargets.find(
           (item) => item.code === targetInfo.code
@@ -97,24 +106,40 @@ const EditDebatePage: React.FC<EditDebatePageProps> = () => {
     }
   };
 
+  const getCategories = () => {
+    const newArray = initiative?.initiativeCategory
+      .map(({ category_id }) => {
+        const matchingObject = allCategories?.find(
+          (item) => item.id === category_id
+        );
+        return matchingObject || null;
+      })
+      .filter(Boolean) as CollectionData[];
+    if (newArray) {
+      setCategories(newArray);
+    }
+  };
+
   useEffect(() => {
     getTargets();
+    getCategories();
   }, []);
 
   return (
     <>
-      {isLoadingDebate && (
+      {isLoadingProposal && (
         <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
           <FaSpinner className="animate-spin text-[100px]" />
         </IconWrapper>
       )}
-      {isError && !debate && <NotFound message="No Debate found" />}
-      {debate && (
+      {isError && !initiative && <NotFound message="No Debate found" />}
+
+      {initiative && (
         <div className="flex flex-col gap-8 max-w-[800px]">
           {/* HEADING */}
           <div>
             <h1 className="text-[20px] md:text-[36px] text-dark">
-              Update Debate
+              Update Initiative
             </h1>
             <p className="text-[12px] md:text-[14px] text-subtle_text -tracking-[0.28px]">
               How do Debates Work?
@@ -155,28 +180,67 @@ const EditDebatePage: React.FC<EditDebatePageProps> = () => {
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-6"
             >
+              {/* TITLE */}
               <FormInput
                 name="title"
-                label="Debate title"
+                label="Initiative title"
                 control={control}
                 errors={errors}
-                placeholder="Enter title of the debate "
+                placeholder="Enter title of the initiative "
               />
-              <TextEditor
+
+              {/* SUMMARY */}
+              <FormTextArea
                 name="description"
-                label="Initial Debate Text"
+                label="Initiative summary (maximum of 200 characters)"
                 control={control}
                 errors={errors}
-                onChange={onEditorStateChange}
-                value={editorContent}
+              />
+
+              {/* WARD */}
+              <FormSelectWard
+                name="ward_id"
+                label="Ward"
+                selectedWard={initiative.ward_id}
+              />
+
+              {/* CATEGORIES */}
+              <FormSelectMultipleCategory
+                name="categories"
+                label="Select categories"
+                selected={categories}
+                setSelected={setCategories}
+              />
+              {/* SUPPORTS NEEDED*/}
+              <FormInput
+                name="support_needed"
+                control={control}
+                errors={errors}
+                label="Support needed"
+                type="number"
+                min={1}
+                onChange={(e) => {
+                  setValue("support_needed", Number(e.target.value));
+                  trigger("support_needed");
+                }}
               />
 
               {/* OPTIONAL FIELDS */}
               <h2 className="text-[20px] md:text-[24px] text-dark -tracking-[0.48px]">
                 Optional Fields
               </h2>
+
+              {/* MAP */}
+              <div>
+                <h4 className="text-[14px] text-dark ">Map location</h4>
+                <p className="text-subtle_text text-[14px]">
+                  Navigate the map to the location and place the marker
+                </p>
+              </div>
+
               {/* TAGS */}
-              <FormTags tags={tags} setTags={setTags} />
+              <FormTags setTags={setTags} tags={tags} />
+
               {/* SDGs */}
               <div>
                 <h5 className="text-[16px] md:text-[18px] text-dark -tracking-[0.36px] ">
@@ -196,15 +260,17 @@ const EditDebatePage: React.FC<EditDebatePageProps> = () => {
                   </Link>
                 </p>
               </div>
+
               {/* TARGETS */}
-              <TargetsMultiSelect setSelected={setTargets} selected={targets} />
+              <TargetsMultiSelect selected={targets} setSelected={setTargets} />
+
               <Button
                 type="submit"
                 className="w-full max-w-[400px] p-0 h-fit py-3"
-                isLoading={isUpdatingDebate}
-                disabled={isUpdatingDebate}
+                isLoading={isUpdatingInitiative}
+                disabled={isUpdatingInitiative}
               >
-                Update Debate
+                Update Initiative
               </Button>
             </form>
           </Form>
@@ -214,4 +280,4 @@ const EditDebatePage: React.FC<EditDebatePageProps> = () => {
   );
 };
 
-export default EditDebatePage;
+export default EditInitiativePage;

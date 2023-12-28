@@ -1,21 +1,18 @@
 import { Button } from "@/components/ui/button";
 
-interface TargetDisplayProps {
-  target: {
-    code: string;
-    id: number;
-  };
+interface CategoryDisplayProps {
+  category: string;
 }
 
-const TargetDisplay: React.FC<TargetDisplayProps> = ({ target }) => {
+const CategoryDisplay: React.FC<CategoryDisplayProps> = ({ category }) => {
   return (
     <Button
       className="bg-light_grey px-3 py-1 h-fit w-fit hover:bg-light_grey text-sm font-normal disabled:opacity-100 rounded-lg"
       disabled
     >
-      Target {target.code}
+      {category}
     </Button>
   );
 };
 
-export default TargetDisplay;
+export default CategoryDisplay;
