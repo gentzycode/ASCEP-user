@@ -1,6 +1,5 @@
 import { Dislike, Like1, Messages1 } from "iconsax-react";
 import { IconWrapper } from "../../custom";
-import { Button } from "../../ui/button";
 import { Link } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
 import { formattedDate } from "@/utils/helper";
@@ -36,7 +35,7 @@ const DebatesCardViewCard: React.FC<DebatesCardViewCardProps> = ({
           {/* TARGETS */}
           <div className="flex gap-[8px] flex-wrap my-3">
             {debate.debateTarget.map((target) => (
-              <TargetDisplay target={target} key={target.target_id} />
+              <TargetDisplay target={target.targetInfo} key={target.target_id} />
             ))}
           </div>
           {/* TAGS */}

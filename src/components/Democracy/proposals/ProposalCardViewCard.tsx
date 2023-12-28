@@ -47,7 +47,7 @@ const ProposalCardViewCard: React.FC<ProposalCardViewCardProps> = ({
           {/* TARGETS */}
           <div className="flex gap-[8px] flex-wrap my-3">
             {proposal.proposalTarget.map((target) => (
-              <TargetDisplay target={target} key={target.target_id} />
+              <TargetDisplay target={target.targetInfo} key={target.target_id} />
             ))}
           </div>
           {/* TAGS */}
