@@ -31,7 +31,7 @@ const Pagination: React.FC<PaginationProps> = ({
 
   const getFiltersWithValues = () => {
     const entries = Object.entries(filterOptions);
-    const filteredEntries = entries.filter(([key, value]) => {
+    const filteredEntries = entries.filter(([, value]) => {
       if (value) {
         if (Array.isArray(value)) {
           return value.length > 0;
