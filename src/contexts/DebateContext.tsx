@@ -34,6 +34,8 @@ interface DebateContextType {
     }
   >;
   perPage: number;
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 }
 const initialFilter = {
   sdgs: [],
@@ -59,6 +61,8 @@ const DebateContext = createContext<DebateContextType>({
   setFilterOptions: () => {},
   getAllDebates: () => {},
   perPage: 0,
+  page: 0,
+  setPage: () => {},
 });
 
 export const useDebateContext = () => useContext(DebateContext);
@@ -74,7 +78,7 @@ export default function DebateProvider({ children }: PropsWithChildren) {
   const [view, setView] = useState<string>("card-view");
   const [filterOptions, setFilterOptions] =
     useState<z.infer<typeof filterSchema>>(initialFilter);
-  const [page] = useState<number>(1);
+  const [page, setPage] = useState<number>(1);
   const [perPage] = useState<number>(10);
 
   const getFiltersWithValues = () => {
@@ -124,6 +128,7 @@ export default function DebateProvider({ children }: PropsWithChildren) {
   const refetchDebates = () => {
     getAllDebates({ page, perPage, filter: { newest: true } });
   };
+
   return (
     <DebateContext.Provider
       value={{
@@ -138,6 +143,8 @@ export default function DebateProvider({ children }: PropsWithChildren) {
         setFilterOptions,
         getAllDebates,
         perPage,
+        page,
+        setPage,
       }}
     >
       {children}

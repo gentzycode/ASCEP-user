@@ -3,32 +3,40 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { startDebateSchema } from "@/schemas/DebateSchema";
 import {
   FormCheckBoxSDG,
   FormInput,
+  FormSelectMultipleCategory,
   FormSelectWard,
   FormTags,
-  TextEditor,
+  FormTextArea,
 } from "@/components/Democracy";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { usePublishDebate } from "@/api/democracy/debates";
 import TargetsMultiSelect from "@/components/custom/TargetsMultiSelect";
+import { startInitiativeSchema } from "@/schemas/InitiativesSchema";
+import { usePublishInitiative } from "@/api/democracy/initiatives";
 
 interface StartInitiativePageProps {}
 const StartInitiativePage: React.FC<StartInitiativePageProps> = () => {
-  const { mutateAsync: publishDebate, isLoading } = usePublishDebate();
+  const { mutateAsync: publishInitiative, isLoading: isPublisingInitiative } =
+    usePublishInitiative();
+
   const [tags, setTags] = useState<string[]>([]);
   const [targets, setTargets] = useState<SDGTarget[]>([]);
-  const form = useForm<z.infer<typeof startDebateSchema>>({
-    resolver: zodResolver(startDebateSchema),
+  const [categories, setCategories] = useState<CategoryType[]>([]);
+
+  const form = useForm<z.infer<typeof startInitiativeSchema>>({
+    resolver: zodResolver(startInitiativeSchema),
     defaultValues: {
       title: "",
       description: "",
       sdgs: [],
       targets: [],
       tags: [],
+      categories: [],
+      support_needed: undefined,
+      ward_id: undefined,
     },
   });
 
@@ -37,12 +45,13 @@ const StartInitiativePage: React.FC<StartInitiativePageProps> = () => {
     register,
     control,
     handleSubmit,
-    watch,
+    trigger,
     formState: { errors },
   } = form;
 
-  async function onSubmit(values: z.infer<typeof startDebateSchema>) {
-    await publishDebate({ ...values });
+  async function onSubmit(values: z.infer<typeof startInitiativeSchema>) {
+    console.log(values);
+    await publishInitiative(values);
   }
 
   useEffect(() => {
@@ -58,11 +67,10 @@ const StartInitiativePage: React.FC<StartInitiativePageProps> = () => {
     setValue("tags", tags);
   }, [tags]);
 
-  const onEditorStateChange = (text: any) => {
-    setValue("description", text);
-  };
-
-  const editorContent = watch("description");
+  useEffect(() => {
+    const IDs = categories.map((category) => category.id);
+    setValue("categories", IDs);
+  }, [categories]);
 
   return (
     <>
@@ -106,6 +114,7 @@ const StartInitiativePage: React.FC<StartInitiativePageProps> = () => {
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-6"
           >
+            {/* TITLE */}
             <FormInput
               name="title"
               label="Initiative title"
@@ -113,32 +122,44 @@ const StartInitiativePage: React.FC<StartInitiativePageProps> = () => {
               errors={errors}
               placeholder="Enter title of the initiative "
             />
-            <TextEditor
+
+            {/* SUMMARY */}
+            <FormTextArea
               name="description"
-              label="Initiative  Text"
-              control={control}
-              errors={errors}
-              onChange={onEditorStateChange}
-              value={editorContent}
-            />
-            <FormSelectWard name="ward" label="Ward" />
-            <FormInput
-              name="author"
-              label="Author"
+              label="Initiative summary (maximum of 200 characters)"
               control={control}
               errors={errors}
             />
+
+            {/* WARD */}
+            <FormSelectWard name="ward_id" label="Ward" />
+
+            {/* CATEGORIES */}
+            <FormSelectMultipleCategory
+              name="categories"
+              label="Select categories"
+              selected={categories}
+              setSelected={setCategories}
+            />
+            {/* SUPPORTS NEEDED*/}
             <FormInput
-              name="meeting-link"
-              label="Meeting Link"
+              name="support_needed"
               control={control}
               errors={errors}
+              label="Support needed"
+              type="number"
+              min={1}
+              onChange={(e) => {
+                setValue("support_needed", Number(e.target.value));
+                trigger("support_needed");
+              }}
             />
 
             {/* OPTIONAL FIELDS */}
             <h2 className="text-[20px] md:text-[24px] text-dark -tracking-[0.48px]">
               Optional Fields
             </h2>
+
             {/* MAP */}
             <div>
               <h4 className="text-[14px] text-dark ">Map location</h4>
@@ -146,8 +167,10 @@ const StartInitiativePage: React.FC<StartInitiativePageProps> = () => {
                 Navigate the map to the location and place the marker
               </p>
             </div>
+
             {/* TAGS */}
             <FormTags setTags={setTags} tags={tags} />
+
             {/* SDGs */}
             <div>
               <h5 className="text-[16px] md:text-[18px] text-dark -tracking-[0.36px] ">
@@ -167,13 +190,15 @@ const StartInitiativePage: React.FC<StartInitiativePageProps> = () => {
                 </Link>
               </p>
             </div>
+
             {/* TARGETS */}
             <TargetsMultiSelect selected={targets} setSelected={setTargets} />
+
             <Button
               type="submit"
               className="w-full max-w-[400px] p-0 h-fit py-3"
-              isLoading={isLoading}
-              disabled={isLoading}
+              isLoading={isPublisingInitiative}
+              disabled={isPublisingInitiative}
             >
               Start an Initiative
             </Button>

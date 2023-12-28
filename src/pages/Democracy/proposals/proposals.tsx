@@ -9,6 +9,7 @@ import {
 import { IconWrapper } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { useProposalContext } from "@/contexts/ProposalContext";
+import { useAuthContext } from "@/providers/AuthProvider";
 import { proposalFilterButtonOptions } from "@/utils/Democracy/Proposals";
 import ROUTES from "@/utils/routesNames";
 import { FaSpinner } from "react-icons/fa";
@@ -28,18 +29,23 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
     filterOptions,
     perPage,
     setFilterOptions,
+    setPage,
   } = useProposalContext();
   const pageDescription =
     "Citizens' proposals are an opportunity for neighbours and collectivesto decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.";
+  const { isLoggedIn } = useAuthContext();
 
   return (
     <>
       {/* HEADING */}
       <PagesHeroSection title="proposals" description={pageDescription} />
-      <Link to={ROUTES.START_PROPOSAL_ROUTE}>
-        <Button className="w-[175px] mb-4">Start a proposal</Button>
-      </Link>
+      {isLoggedIn && (
+        <Link to={ROUTES.START_PROPOSAL_ROUTE}>
+          <Button className="w-[175px] mb-4">Start a proposal</Button>
+        </Link>
+      )}
       <div className=" flex flex-col gap-16 mt-[50px] w-full max-w-[1200px]">
+        {/* ADVANCED SEARCH */}
         <AdvancedSearch
           filterButtonOptions={proposalFilterButtonOptions}
           filterByButton={filterByButton}
@@ -49,6 +55,7 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
           setFilterOptions={setFilterOptions}
         />
 
+        {/* ERROR */}
         {fetchingProposalError && !fetchingProposals && (
           <FetchingError
             message="Error fetching Proposals"
@@ -57,6 +64,7 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
           />
         )}
 
+        {/* LOADING */}
         {fetchingProposals && (
           <div className="w-full flex justify-center">
             <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
@@ -94,6 +102,7 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
             onPageChange={getAllProposals}
             filterOptions={filterOptions}
             perPage={perPage}
+            setPage={setPage}
           />
         )}
       </div>

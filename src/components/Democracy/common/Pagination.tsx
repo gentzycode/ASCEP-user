@@ -16,6 +16,7 @@ interface PaginationProps {
   >;
   perPage: number;
   filterOptions: z.infer<typeof filterSchema>;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
@@ -23,6 +24,7 @@ const Pagination: React.FC<PaginationProps> = ({
   onPageChange,
   perPage,
   filterOptions,
+  setPage,
 }) => {
   const { current_page, last_page, next_page_url, previous_page_url } =
     meta as MetaDataType;
@@ -47,6 +49,7 @@ const Pagination: React.FC<PaginationProps> = ({
 
   const handlePageChange = (page: number) => {
     if (page !== current_page) {
+      setPage(page);
       onPageChange({ page, perPage, filter: getFiltersWithValues() });
     }
   };

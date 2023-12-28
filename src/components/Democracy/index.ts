@@ -1,4 +1,3 @@
-
 //COMMON
 export { default as AdvancedSearch } from "./common/AdvancedSearch";
 export { default as FilterButtons } from "./common/FilterButtons";
@@ -18,7 +17,7 @@ export { default as FormDocumentInput } from "./common/FormDocumentInput";
 export { default as CommentsPagination } from "./common/CommentsPagination";
 export { default as FormSelectWard } from "./common/FormSelectWard";
 export { default as SDGCard } from "./common/SDGCard";
-export { default as FormSelectCategory } from "./common/FormSelectCategory";
+export { default as FormSelectMultipleCategory } from "./common/FormSelectMultipleCategory";
 export { default as CommentCard } from "./common/CommentCard";
 export { default as FormTags } from "./common/FormTags";
 export { default as TargetDisplay } from "./common/TargetDisplay";
@@ -27,6 +26,9 @@ export { default as DisplayDocuments } from "./common/DisplayDocuments";
 export { default as NotFound } from "./common/NotFound";
 export { default as FetchingError } from "./common/FetchingError";
 export { default as Share } from "./common/Share";
+export { default as FormTextArea } from "./common/FormTextArea";
+export { default as FormSelectCategory } from "./common/FormSelectCategory";
+export { default as CategoryDisplay } from "./common/CategoryDisplay";
 
 // DEBATES
 export { default as DebatesCardViewCard } from "./debates/DebatesCardViewCard";
@@ -52,3 +54,20 @@ export { default as ProposalTopicCommentResponse } from "./proposals/ProposalTop
 
 //INITIATIVES
 export { default as InitiativesCardViewCard } from "./initiatives/InitiativesCardViewCard";
+export { default as InitiativeInfo } from "./initiatives/InitiativeInfo";
+export { default as InitiativeComments } from "./initiatives/InitiativeComments";
+export { default as InitiativeCommentCard } from "./initiatives/InitiativeCommentCard";
+
+//LANDING PAGE
+export { default as Hero } from "./landing page/Hero";
+export { default as SubModuleCard } from "./landing page/SubModuleCard";
+export { default as SubModules } from "./landing page/SubModules";
+export { default as FAQ } from "./landing page/FAQ";
+
+//BUDGETING
+export { default as CurrentPhase } from "./budgeting/CurrentPhase";
+export { default as CurrentPhaseCard } from "./budgeting/CurrentPhaseCard";
+export { default as WardProjects } from "./budgeting/WardProjects";
+export { default as WardProjectCard } from "./budgeting/WardProjectCard";
+export { default as Investments } from "./budgeting/Investments";
+export { default as InvestmentCard } from "./budgeting/InvestmentCard";
