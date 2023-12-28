@@ -1,9 +1,10 @@
 import { Messages1 } from "iconsax-react";
 import { Button } from "../../ui/button";
 import { formattedDate } from "@/utils/helper";
-import { SDGCard, TagDisplay, TargetDisplay } from "..";
+import { CategoryDisplay, SDGCard, TagDisplay, TargetDisplay } from "..";
 import { Link } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
+import { useAuthContext } from "@/providers/AuthProvider";
 
 interface ProposalCardViewCardProps {
   proposal: ProposalType;
@@ -12,6 +13,8 @@ interface ProposalCardViewCardProps {
 const ProposalCardViewCard: React.FC<ProposalCardViewCardProps> = ({
   proposal,
 }) => {
+  const { isLoggedIn } = useAuthContext();
+
   return (
     <div className="flex flex-col  gap-1">
       <div className="flex-1 bg-[#FFFFFF] shadow-xl flex flex-col justify-start rounded-xl overflow-hidden w-full">
@@ -47,13 +50,23 @@ const ProposalCardViewCard: React.FC<ProposalCardViewCardProps> = ({
           {/* TARGETS */}
           <div className="flex gap-[8px] flex-wrap my-3">
             {proposal.proposalTarget.map((target) => (
-              <TargetDisplay target={target.targetInfo} key={target.target_id} />
+              <TargetDisplay
+                target={target.targetInfo}
+                key={target.target_id}
+              />
             ))}
           </div>
           {/* TAGS */}
           <div className="flex gap-[8px] flex-wrap">
             {proposal.proposalTag.map((tag) => (
               <TagDisplay tag={tag.tag_name} key={tag.id} />
+            ))}
+          </div>
+
+          {/* CATEGORIES */}
+          <div className="flex gap-[8px] flex-wrap mt-3">
+            {proposal.proposalCategory.map((category) => (
+              <CategoryDisplay category={category.categoryDetail.name} />
             ))}
           </div>
         </div>
@@ -86,9 +99,17 @@ const ProposalCardViewCard: React.FC<ProposalCardViewCardProps> = ({
             <Messages1 size="25" />
             <span>{proposal.supportNeeded} support needed</span>
           </Button>
-          <Button className="h-fit text-[16px] w-full rounded-full">
-            Support
-          </Button>
+          {isLoggedIn ? (
+            <Button className="h-fit text-[16px] w-full rounded-full">
+              Support
+            </Button>
+          ) : (
+            <Link to={ROUTES.SIGNIN_ROUTE}>
+              <Button className="bg-transparent border-dark border-2 w-[175px]">
+                Log in
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </div>
