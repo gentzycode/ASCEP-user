@@ -1,6 +1,6 @@
 import { useGetDebateInfo } from "@/api/democracy/debates";
 import { DebateComments, DebateInfo, NotFound } from "@/components/Democracy";
-import { IconWrapper } from "@/components/custom";
+import { IconWrapper, PageLoader } from "@/components/custom";
 import { useRef } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { useParams } from "react-router-dom";
@@ -22,11 +22,7 @@ const DebatesInfoPage: React.FC<DebatesInfoPageProps> = () => {
     <>
       {/* LOADING */}
       <div className="w-full flex justify-center">
-        {isLoadingDebate && (
-          <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
-            <FaSpinner className="animate-spin text-[100px]" />
-          </IconWrapper>
-        )}
+        {isLoadingDebate && <PageLoader />}
       </div>
 
       {/* ERROR */}
