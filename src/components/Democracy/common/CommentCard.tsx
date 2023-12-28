@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { useAuthContext } from "@/providers/AuthProvider";
 import { formattedDate } from "@/utils/helper";
 import { AddSquare, Dislike, Flag, Like1, MinusSquare } from "iconsax-react";
 import React from "react";
@@ -23,6 +24,7 @@ const Comment: React.FC<CommentsCardProps> = ({
   setShowResponse,
   showResponse,
 }) => {
+  const { isLoggedIn } = useAuthContext();
   const { userVoted } = comment;
   return (
     <>
@@ -58,12 +60,14 @@ const Comment: React.FC<CommentsCardProps> = ({
             className="h-5  text-dark bg-base-500"
           />
 
-          <Button
-            className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]"
-            onClick={() => setIsReplying(true)}
-          >
-            Reply
-          </Button>
+          {isLoggedIn && (
+            <Button
+              className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]"
+              onClick={() => setIsReplying(true)}
+            >
+              Reply
+            </Button>
+          )}
 
           <Separator
             orientation="vertical"
@@ -94,32 +98,36 @@ const Comment: React.FC<CommentsCardProps> = ({
           <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
             {comment.likes + comment.dislikes} Vote(s)
           </Button>
-          <Separator
-            orientation="vertical"
-            className="h-5  text-dark bg-base-500"
-          />
-          <Button
-            className={`${
-              userVoted.reactionType === "like"
-                ? "text-[#31D0AA]"
-                : "text-subtitle_text"
-            }  gap-1 bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]`}
-            onClick={() => likeComment()}
-            isLoading={isVotingComment}
-          >
-            <Like1 variant="Bold" /> <span>{comment.likes}</span>
-          </Button>
-          <Button
-            className={`${
-              userVoted.reactionType === "dislike"
-                ? "text-[#E43F40]"
-                : "text-subtitle_text"
-            }  gap-1 bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]`}
-            onClick={() => dislikeComment()}
-            isLoading={isVotingComment}
-          >
-            <Dislike variant="Bold" /> <span>{comment.dislikes}</span>
-          </Button>
+          {isLoggedIn && (
+            <>
+              <Separator
+                orientation="vertical"
+                className="h-5  text-dark bg-base-500"
+              />
+              <Button
+                className={`${
+                  userVoted.reactionType === "like"
+                    ? "text-[#31D0AA]"
+                    : "text-subtitle_text"
+                }  gap-1 bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]`}
+                onClick={() => likeComment()}
+                isLoading={isVotingComment}
+              >
+                <Like1 variant="Bold" /> <span>{comment.likes}</span>
+              </Button>
+              <Button
+                className={`${
+                  userVoted.reactionType === "dislike"
+                    ? "text-[#E43F40]"
+                    : "text-subtitle_text"
+                }  gap-1 bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]`}
+                onClick={() => dislikeComment()}
+                isLoading={isVotingComment}
+              >
+                <Dislike variant="Bold" /> <span>{comment.dislikes}</span>
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </>

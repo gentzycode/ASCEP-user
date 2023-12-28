@@ -4,6 +4,10 @@ import { Link } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
 import { formattedDate } from "@/utils/helper";
 import { SDGCard, TagDisplay, TargetDisplay } from "..";
+import { useAuthContext } from "@/providers/AuthProvider";
+import { useVoteDebate } from "@/api/democracy/debates";
+import { Button } from "@/components/ui/button";
+import { useDebateContext } from "@/contexts/DebateContext";
 
 interface DebatesCardViewCardProps {
   debate: DebateType;
@@ -11,10 +15,27 @@ interface DebatesCardViewCardProps {
 const DebatesCardViewCard: React.FC<DebatesCardViewCardProps> = ({
   debate,
 }) => {
+  const { isLoggedIn } = useAuthContext();
+
+  const { mutateAsync: voteDebate, isLoading: isVotingDebate } =
+    useVoteDebate();
+
+  const { refetchDebates } = useDebateContext();
+
+  const handleLike = async () => {
+    await voteDebate({ type: "like", debate_id: debate.id });
+    refetchDebates();
+  };
+
+  const handleDislike = async () => {
+    await voteDebate({ type: "dislike", debate_id: debate.id });
+    refetchDebates();
+  };
+
   return (
     <div className="flex flex-col gap-3 justify-start">
       <div className="bg-[#FFFFFF] shadow-xl flex flex-col md:flex-row justify-start rounded-xl overflow-hidden flex-1">
-        <div className="p-8 ">
+        <div className="p-8">
           <Link to={ROUTES.DEBATE_INFO_ROUTE(debate.id)}>
             <h1 className="text-[20px] text-dark hover:underline">
               {debate.title}
@@ -35,7 +56,10 @@ const DebatesCardViewCard: React.FC<DebatesCardViewCardProps> = ({
           {/* TARGETS */}
           <div className="flex gap-[8px] flex-wrap my-3">
             {debate.debateTarget.map((target) => (
-              <TargetDisplay target={target.targetInfo} key={target.target_id} />
+              <TargetDisplay
+                target={target.targetInfo}
+                key={target.target_id}
+              />
             ))}
           </div>
           {/* TAGS */}
@@ -46,26 +70,50 @@ const DebatesCardViewCard: React.FC<DebatesCardViewCardProps> = ({
           </div>
         </div>
       </div>
-      <div className="bg-[#FFFFFF] shadow-xl flex justify-start items-center  rounded-xl px-4 gap-4 py-3 flex-wrap">
-        <IconWrapper className="w-[72px] h-[72px] bg-[#31D0AA]/10 text-[#31D0AA]  ">
-          <div className="flex items-center gap-1">
-            <Like1 />
-            {debate.likePercentage}%
-          </div>
-        </IconWrapper>
 
-        <IconWrapper className="w-[72px] h-[72px] bg-[#E43F40]/10 text-[#E43F40]  ">
-          <div className="flex items-center gap-1">
-            <Dislike />
-            {debate.dislikePercentage}%
-          </div>
-        </IconWrapper>
+      {/* LIKE AND DISLIKE */}
+      {isLoggedIn && (
+        <div className="bg-[#FFFFFF] shadow-xl flex justify-start items-center  rounded-xl px-8 gap-4 py-3 flex-wrap">
+          <Button
+            className="w-[72px] h-[72px] p-0 bg-transparent hover:bg-transparent"
+            isLoading={isVotingDebate}
+          >
+            <IconWrapper
+              className={`${
+                debate.userVoted.reactionType === "like"
+                  ? "bg-[#31D0AA]/10 text-[#31D0AA]"
+                  : "bg-subtle_text text-light"
+              } h-full w-full flex gap-1`}
+              onClick={handleLike}
+            >
+              <Like1 />
+              {debate.likePercentage}%
+            </IconWrapper>
+          </Button>
 
-        <div className="flex items-center gap-2 rounded-[10px] px-2 py-1 text-white bg-dark text-[14px]">
-          <Messages1 />
-          {debate.total_comments_cache} Comments
+          <Button
+            className="w-[72px] h-[72px] p-0 bg-transparent hover:bg-transparent"
+            isLoading={isVotingDebate}
+          >
+            <IconWrapper
+              className={`${
+                debate.userVoted.reactionType === "dislike"
+                  ? " bg-[#E43F40]/10 text-[#E43F40]"
+                  : "bg-subtle_text text-light"
+              } w-full h-full    flex gap-1`}
+              onClick={handleDislike}
+            >
+              <Dislike />
+              {debate.dislikePercentage}%
+            </IconWrapper>
+          </Button>
+
+          <div className="flex items-center gap-2 rounded-[10px] px-2 py-1 text-white bg-dark text-[14px]">
+            <Messages1 />
+            {debate.total_comments_cache} Comments
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
