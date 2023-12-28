@@ -6,7 +6,7 @@ import {
   PagesHeroSection,
   Pagination,
 } from "@/components/Democracy";
-import { IconWrapper } from "@/components/custom";
+import { IconWrapper, PageLoader } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { useDebateContext } from "@/contexts/DebateContext";
 import { useAuthContext } from "@/providers/AuthProvider";
@@ -77,13 +77,7 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
           </div>
         )}
 
-        {fetchingDebates && (
-          <div className="w-full flex justify-center">
-            <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
-              <FaSpinner className="animate-spin text-[100px]" />
-            </IconWrapper>
-          </div>
-        )}
+        {fetchingDebates && <PageLoader />}
 
         {/* CARD VIEW */}
         {view === "card-view" && fetchedDebatesData && (
