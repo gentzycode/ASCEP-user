@@ -152,7 +152,10 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
         {proposal.proposalTarget.length > 0 && (
           <div className="flex gap-[8px] flex-wrap">
             {proposal.proposalTarget.map((target) => (
-              <TargetDisplay target={target} key={target.target_id} />
+              <TargetDisplay
+                target={target.targetInfo}
+                key={target.target_id}
+              />
             ))}
           </div>
         )}
@@ -251,7 +254,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
 
         {/* SHARE */}
         <Share
-          shareableId={`http://localhost:5173/democracy/share/${proposal.proposal_code}`}
+          shareableURL={`http://localhost:5173/democracy/share/${proposal.proposal_code}`}
         />
 
         {/* FOLLOW */}

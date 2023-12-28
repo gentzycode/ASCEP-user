@@ -74,7 +74,10 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
         {debateTarget.length > 0 && (
           <div className="flex gap-[8px] flex-wrap">
             {debate.debateTarget.map((target) => (
-              <TargetDisplay target={target} key={target.target_id} />
+              <TargetDisplay
+                target={target.targetInfo}
+                key={target.target_id}
+              />
             ))}
           </div>
         )}
@@ -181,7 +184,7 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
 
         {/* SHARE */}
         <Share
-          shareableId={`http://localhost:5173/democracy/share/${debate.shareable_id}`}
+          shareableURL={`http://localhost:5173/democracy/share/${debate.shareable_id}`}
         />
       </div>
     </div>
