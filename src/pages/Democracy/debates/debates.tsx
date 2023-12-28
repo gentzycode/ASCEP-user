@@ -9,6 +9,7 @@ import {
 import { IconWrapper } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { useDebateContext } from "@/contexts/DebateContext";
+import { useAuthContext } from "@/providers/AuthProvider";
 import { debateFilterButtonOptions } from "@/utils/Democracy/Debates";
 import ROUTES from "@/utils/routesNames";
 import { FaSpinner } from "react-icons/fa";
@@ -28,19 +29,24 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
     perPage,
     filterOptions,
     setFilterOptions,
+    setPage,
   } = useDebateContext();
   const pageDescription =
     "Citizens' proposals are an opportunity for neighbours and collectives to decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.";
+  const { isLoggedIn } = useAuthContext();
 
   return (
     <>
       {/* HEADING */}
       <PagesHeroSection title="debates" description={pageDescription} />
-      <Link to={ROUTES.PUBLISH_DEBATE_ROUTE}>
-        <Button className="w-[175px] mb-4">Start debate</Button>
-      </Link>
+      {isLoggedIn && (
+        <Link to={ROUTES.PUBLISH_DEBATE_ROUTE}>
+          <Button className="w-[175px] mb-4">Start debate</Button>
+        </Link>
+      )}
+
       {/* ADVANCED SEARCH */}
-      <div className="max-w-[1000px]">
+      <div className="max-w-[1000px] mt-8">
         <AdvancedSearch
           filterButtonOptions={debateFilterButtonOptions}
           setView={setView}
@@ -97,6 +103,7 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
             onPageChange={getAllDebates}
             filterOptions={filterOptions}
             perPage={perPage}
+            setPage={setPage}
           />
         )}
       </div>

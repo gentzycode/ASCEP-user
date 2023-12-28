@@ -8,10 +8,10 @@ import {
   FormCheckBoxSDG,
   FormInput,
   FormTags,
+  NotFound,
   TextEditor,
 } from "@/components/Democracy";
 import { useEffect, useState } from "react";
-import { Danger } from "iconsax-react";
 import { Link, useParams } from "react-router-dom";
 import { useGetDebateInfo, usePublishDebate } from "@/api/democracy/debates";
 import { IconWrapper } from "@/components/custom";
@@ -22,14 +22,18 @@ import TargetsMultiSelect from "@/components/custom/TargetsMultiSelect";
 interface EditDebatePageProps {}
 const EditDebatePage: React.FC<EditDebatePageProps> = () => {
   const { debateId } = useParams();
-  const { data: debate, isError, refetch } = useGetDebateInfo(debateId!);
-  const { targets: allTargets } = useAppContext();
-  useEffect(() => {
-    refetch();
-  }, []);
 
-  const { mutateAsync: publishDebate, isLoading: isLoadingDebate } =
+  const {
+    data: debate,
+    isError,
+    isLoading: isLoadingDebate,
+  } = useGetDebateInfo(debateId!);
+
+  const { targets: allTargets } = useAppContext();
+
+  const { mutateAsync: publishDebate, isLoading: isUpdatingDebate } =
     usePublishDebate();
+
   const [tags, setTags] = useState<string[]>(
     debate?.debateTag.map((tag) => tag.tag_name) ?? []
   );
@@ -104,16 +108,7 @@ const EditDebatePage: React.FC<EditDebatePageProps> = () => {
           <FaSpinner className="animate-spin text-[100px]" />
         </IconWrapper>
       )}
-      {isError && (
-        <div className="flex items-center flex-wrap justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10 my-10">
-          <div className="flex justify-start items-center gap-1">
-            <IconWrapper className="text-primary rounded-full">
-              <Danger size="32" />
-            </IconWrapper>
-            <p className="text-[16px]">No Debate Found</p>
-          </div>
-        </div>
-      )}
+      {isError && !debate && <NotFound message="No Debate found" />}
       {debate && (
         <div className="flex flex-col gap-8 max-w-[800px]">
           {/* HEADING */}
@@ -206,7 +201,8 @@ const EditDebatePage: React.FC<EditDebatePageProps> = () => {
               <Button
                 type="submit"
                 className="w-full max-w-[400px] p-0 h-fit py-3"
-                isLoading={isLoadingDebate}
+                isLoading={isUpdatingDebate}
+                disabled={isUpdatingDebate}
               >
                 Update Debate
               </Button>

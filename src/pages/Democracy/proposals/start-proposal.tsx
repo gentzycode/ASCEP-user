@@ -8,7 +8,7 @@ import {
   FormDocumentInput,
   FormImageInput,
   FormInput,
-  FormSelectCategory,
+  FormSelectMultipleCategory,
   FormSelectWard,
   FormTags,
   TextEditor,
@@ -217,7 +217,7 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
               }}
             />
             {/* CATEGORIES */}
-            <FormSelectCategory
+            <FormSelectMultipleCategory
               errors={errors}
               control={control}
               label="Select categories"
