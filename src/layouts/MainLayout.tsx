@@ -11,7 +11,7 @@ import Footer from "./Footer";
 export default function MainLayout() {
   const { isLoggedIn } = useAuthContext();
 
-  // if (!isLoggedIn) return <Navigate to="/auth/login" />;
+  if (!isLoggedIn) return <Navigate to="/auth/login" />;
   return (
     <NavigationContextProvider>
       <div>

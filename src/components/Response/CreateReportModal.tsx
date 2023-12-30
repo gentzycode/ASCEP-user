@@ -1,16 +1,17 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
-import { createPostSchema } from "@/schemas/SettingsSchema";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "../ui/use-toast";
 import { Form } from "../ui/form";
 import { CategoriesMultiSelect, FormInput, SDGMultiSelect } from "../custom";
 import { FaPlus } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Gps } from "iconsax-react";
+import FormTextArea from "../custom/FormTextArea";
+import { createPostSchema } from "@/schemas/ResoonseSchema";
+import { appendObjectToFormData } from "@/utils/helper";
+import { useCreateReport } from "@/api/response";
 
 interface CreatePostModalProps {
   onClose: () => void;
@@ -36,28 +37,33 @@ export default function CreateReportModal({
     resolver: zodResolver(createPostSchema),
   });
 
-  const navigate = useNavigate();
-
-  const { toast } = useToast();
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = form;
 
+  const { mutate, isLoading, isSuccess } = useCreateReport();
+
+  useEffect(() => {
+    if (isSuccess) onClose();
+  }, [isSuccess]);
+
   function onSubmit(values: z.infer<typeof createPostSchema>) {
-    console.log(values);
+    const payload = {
+      ...values,
+      location: {
+        latitude: 5.957062146,
+        longitude: 7.115944668,
+      },
+      images: selectedImages.map((image) => image.image),
+      categories: selectedCategories.map((category) => category.id),
+      sdgs: selectedSDGs.map((sdg) => sdg.id),
+    };
+    const formData = new FormData();
 
-    toast({
-      title: "Success",
-      description: "Password has been changed",
-      variant: "success",
-    });
-    onClose();
-
-    setTimeout(() => {
-      navigate("/response/activity");
-    }, 1000);
+    appendObjectToFormData(formData, payload);
+    mutate(formData);
   }
 
   const handleFileSelection = (event: ChangeEvent<HTMLInputElement>) => {
@@ -151,7 +157,7 @@ export default function CreateReportModal({
                 <p className="text-subtle_text">Location</p>
                 <div className=" w-full max-w-[350px]">
                   <FormInput
-                    name="location"
+                    name="location_meta"
                     label="Location"
                     control={control}
                     placeholder="Enter location"
@@ -160,9 +166,22 @@ export default function CreateReportModal({
                   />
                 </div>
               </div>
+              <div className="flex items-center justify-between ">
+                <p className="text-subtle_text">More details</p>
+                <div className=" w-full max-w-[350px]">
+                  <FormTextArea
+                    name="description"
+                    label="More details"
+                    control={control}
+                    errors={errors}
+                  />
+                </div>
+              </div>
 
               <div className="flex items-center justify-end">
-                <Button className="w-[180px]">Create</Button>
+                <Button isLoading={isLoading} className="w-[180px]">
+                  Create
+                </Button>
               </div>
             </form>
           </Form>
