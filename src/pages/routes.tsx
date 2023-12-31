@@ -30,6 +30,9 @@ import {
   EditInitiativePage,
   BudgetingHomePage,
   WardProjectsHomePage,
+  VotingInfoPage,
+  ConfigureVotingPage,
+  EditVotePage,
 } from "./Democracy";
 import { ActivityPage, DataView, MapView } from "./Response";
 import DebateProvider from "@/contexts/DebateContext";
@@ -37,6 +40,7 @@ import { ContactUs, LandingPage } from "./Landing";
 import ProposalProvider from "@/contexts/ProposalContext";
 import InitiativeProvider from "@/contexts/InitiativeContext";
 import DemocracyLandingePage from "./Democracy/landing-page";
+import VotingProvider from "@/contexts/VotingContext";
 
 export const landingPages: RouterType[] = [
   {
@@ -174,12 +178,31 @@ export const democracyRoutes: RouterType[] = [
   },
   {
     path: "/democracy/voting",
-    element: <VotingHomePage />,
-    title: "democracy-SDGs-details",
+    element: (
+      <VotingProvider>
+        <VotingHomePage />
+      </VotingProvider>
+    ),
+    title: "democracy-voting",
+  },
+  {
+    path: "/democracy/voting/:pollId",
+    element: <VotingInfoPage />,
+    title: "democracy-voting-info",
   },
   {
     path: "/democracy/voting/start-poll",
     element: <StartPollPage />,
+    title: "democracy-SDGs-start",
+  },
+  {
+    path: "/democracy/voting/configure/:pollId",
+    element: <ConfigureVotingPage />,
+    title: "democracy-SDGs-start",
+  },
+  {
+    path: "/democracy/voting/edit-vote/:pollId",
+    element: <EditVotePage />,
     title: "democracy-SDGs-start",
   },
   {

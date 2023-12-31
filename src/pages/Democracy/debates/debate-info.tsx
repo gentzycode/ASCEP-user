@@ -1,8 +1,11 @@
 import { useGetDebateInfo } from "@/api/democracy/debates";
-import { DebateComments, DebateInfo, NotFound } from "@/components/Democracy";
-import { IconWrapper, PageLoader } from "@/components/custom";
+import {
+  DebateCommentSection,
+  DebateInfo,
+  NotFound,
+} from "@/components/Democracy";
+import { PageLoader } from "@/components/custom";
 import { useRef } from "react";
-import { FaSpinner } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 
 interface DebatesInfoPageProps {}
@@ -15,9 +18,11 @@ const DebatesInfoPage: React.FC<DebatesInfoPageProps> = () => {
   } = useGetDebateInfo(debateId!);
 
   const commentsSectionRef = useRef<HTMLDivElement | null>(null);
+
   const scrollToComments = () => {
     commentsSectionRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
   return (
     <>
       {/* LOADING */}
@@ -26,7 +31,7 @@ const DebatesInfoPage: React.FC<DebatesInfoPageProps> = () => {
       </div>
 
       {/* ERROR */}
-      {isError && <NotFound message="Debate not found" />}
+      {isError && !debate && <NotFound message="Debate not found" />}
 
       {/* DEBATE INFO */}
       {debate && (
@@ -40,19 +45,9 @@ const DebatesInfoPage: React.FC<DebatesInfoPageProps> = () => {
           <RelatedDebates />
         </div> */}
 
-      {/*COMMENTS */}
-      <div
-        className="my-10 w-full max-w-[700px]"
-        id="comments"
-        ref={commentsSectionRef}
-      >
-        <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
-          Comments
-        </h2>
-
-        <div className="flex gap-10 flex-col mt-10">
-          {debate && <DebateComments />}
-        </div>
+      {/* COMMENT SECTION */}
+      <div ref={commentsSectionRef} className="max-w-[900px] mt-10">
+        <DebateCommentSection />
       </div>
     </>
   );

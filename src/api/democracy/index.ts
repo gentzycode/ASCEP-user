@@ -20,6 +20,14 @@ export const GET_DEBATE_COMMENTS_ENDPOINT = (
 ) =>
   baseUrl +
   `/debate/comments?page=${page}&perPage=${perPage}&filter=${filter}&debate=${debateId}`;
+
+export const GET_DEBATE_COMMENTS_RESPONSES_ENDPOINT = (
+  commentId: string,
+  page: number
+) =>
+  baseUrl +
+  `/debate/comment-responses?page=${page}&perPage=${perPage}&comment=${commentId}`;
+
 export const DELETE_DEBATE_ENDPOINT = (debateId: string) =>
   baseUrl + `/debate/delete/${debateId}`;
 export const RESOLVE_DEBTATE_SHARE_ID_ENDPOINT = (shareableId: string) =>
@@ -38,6 +46,13 @@ export const GET_PROPOSAL_COMMENTS_ENDPOINT = (
 ) =>
   baseUrl +
   `/proposal/comments?page=${page}&perPage=${perPage}&filter=${filter}&proposal=${proposalId}`;
+export const GET_PROPOSAL_COMMENTS_RESPONSES_ENDPOINT = (
+  commentId: string,
+  page: number
+) =>
+  baseUrl +
+  `/proposal/comment-responses?page=${page}&perPage=${perPage}&comment=${commentId}`;
+
 export const VOTE_PROPOSAL_COMMENT_ENDPOINT = (
   type: string,
   comment_id: string
@@ -98,6 +113,13 @@ export const GET_INITIATIVE_COMMENTS_ENDPOINT = (
   baseUrl +
   `/initiative/comments?page=${page}&perPage=${perPage}&filter=${filter}&initiative=${initiativeId}`;
 
+export const GET_INITIATIVE_COMMENTS_RESPONSES_ENDPOINT = (
+  commentId: string,
+  page: number
+) =>
+  baseUrl +
+  `/initiative/comment-responses?page=${page}&perPage=${perPage}&comment=${commentId}`;
+
 export const VOTE_INITIATIVE_COMMENT_ENDPOINT = (
   type: string,
   comment_id: string
@@ -106,10 +128,36 @@ export const VOTE_INITIATIVE_COMMENT_ENDPOINT = (
 export const SUPPORT_INITIATIVE_ENDPOINT = (initiativeId: string) =>
   baseUrl + `/initiative/support/${initiativeId}`;
 
+export const FOLLOW_INITIATIVE_ENDPOINT = baseUrl + `/initiative/follow`;
+
 export const DELETE_INITIATIVE_ENDPOINT = (initiativeId: string) =>
   baseUrl + `/initiative/delete/${initiativeId}`;
 export const RESOLVE_INITIATIVE_SHARE_ID_ENDPOINT = (shareableId: string) =>
   baseUrl + `/initiative/resolve-link/${shareableId}`;
+
+//VOTING/POLLING
+export const PUBLISH_POLL_ENDPOINT = baseUrl + "/voting/compose-poll";
+export const GET_ALL_POLLS_ENDPOINT = baseUrl + "/voting/all";
+export const PUBLISH_POLL_COMMENT_ENDPOINT = baseUrl + "/voting/comment";
+export const GET_POLL_INFO_ENDPOINT = (pollId: string) =>
+  baseUrl + `/voting/poll-information/${pollId}`;
+export const GET_POLL_COMMENTS_ENDPOINT = (
+  pollId: string,
+  page: number,
+  filter?: string
+) =>
+  baseUrl +
+  `/voting/comments?page=${page}&perPage=${perPage}&filter=${filter}&poll=${pollId}`;
+
+export const GET_POLL_COMMENTS_RESPONSES_ENDPOINT = (
+  pollId: string,
+  page: number
+) =>
+  baseUrl +
+  `/voting/comment-responses?page=${page}&perPage=${perPage}&comment=${pollId}`;
+
+export const VOTE_POLL_COMMENT_ENDPOINT = (type: string, comment_id: string) =>
+  baseUrl + `/voting/vote-comment/${type}/${comment_id}`;
 
 //SDG
 export const GET_ALL_SDGs_ENDPOINT = baseUrl + "/sdg/all";
