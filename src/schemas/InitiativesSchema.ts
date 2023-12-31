@@ -38,6 +38,9 @@ export const voteInitiativeCommentSchema = z.object({
 
   comment_id: z.string({ required_error: "proposal id is required" }),
 });
+export const followInitiativeSchema = z.object({
+  initiative_id: z.string({ required_error: "initiative id is required" }),
+});
 
 export const getInitiativeSchema = z.object({
   page: z.number(),

@@ -1,5 +1,11 @@
 import axios from "axios";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  QueryFunctionContext,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "react-query";
 import { configOptions } from "../config";
 import { z } from "zod";
 import {
@@ -7,6 +13,7 @@ import {
   GET_ALL_DEBATES_ENDPOINT,
   GET_ALL_SDGs_ENDPOINT,
   GET_DEBATE_COMMENTS_ENDPOINT,
+  GET_DEBATE_COMMENTS_RESPONSES_ENDPOINT,
   GET_DEBATE_INFO_ENDPOINT,
   PUBLISH_COMMENT_ENDPOINT,
   PUBLISH_DEBATES_ENDPOINT,
@@ -129,6 +136,29 @@ export const useGetDebateComments = (
     staleTime: 0,
     refetchOnWindowFocus: false,
   });
+};
+
+// GET DEBATE RESPONSES
+export const useGetDebateCommentResponses = (commentId: string) => {
+  return useInfiniteQuery(
+    ["debate-comments-responses"],
+    (
+      context: QueryFunctionContext<string[], number>
+    ): Promise<CommentDataType> => {
+      const { pageParam = 1 } = context;
+      return axios
+        .get(
+          GET_DEBATE_COMMENTS_RESPONSES_ENDPOINT(commentId, Number(pageParam))
+        )
+        .then((res) => res.data.data);
+    },
+    {
+      staleTime: 0,
+      refetchOnWindowFocus: false,
+      enabled: false,
+      getNextPageParam: (_, pages) => pages.length + 1,
+    }
+  );
 };
 
 // VOTE DEBATE

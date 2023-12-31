@@ -25,6 +25,10 @@ export { default as SdgDetailsPage } from "./SDGs/sdg-details";
 // VOTING
 export { default as VotingHomePage } from "./voting/voting";
 export { default as StartPollPage } from "./voting/start-poll";
+export { default as VotingInfoPage } from "./voting/voting-info";
+export { default as ConfigureVotingPage } from "./voting/configure";
+export { default as EditVotePage } from "./voting/edit-vote";
+
 // BUDGETING
 export { default as BudgetingHomePage } from "./budgeting/budgeting";
 export { default as WardProjectsHomePage } from "./budgeting/ward-project";

@@ -2,13 +2,12 @@ import { useGetProposalInfo } from "@/api/democracy/proposals";
 import {
   DisplayDocuments,
   NotFound,
-  ProposalComments,
+  ProposalCommentSection,
   ProposalInfo,
   RelatedDebates,
 } from "@/components/Democracy";
-import { IconWrapper } from "@/components/custom";
+import { PageLoader } from "@/components/custom";
 import { useRef } from "react";
-import { FaSpinner } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 
 interface ProposalInfoPageProps {}
@@ -28,13 +27,8 @@ const ProposalInfoPage: React.FC<ProposalInfoPageProps> = () => {
   return (
     <>
       {/* LOADING */}
-      <div className="w-full flex justify-center ">
-        {isLoadingProposal && (
-          <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
-            <FaSpinner className="animate-spin text-[100px]" />
-          </IconWrapper>
-        )}
-      </div>
+      {isLoadingProposal && <PageLoader />}
+
       {/* ERROR */}
       {isError && !proposal && <NotFound message="Proposal not found" />}
 
@@ -48,11 +42,11 @@ const ProposalInfoPage: React.FC<ProposalInfoPageProps> = () => {
         </div>
       )}
 
+      
       {/* ***********************************RELATED CONTENT***************************************** */}
       {/* <div className="my-10 w-full max-w-[700px]">
         <RelatedDebates />
       </div> */}
-
       {/* DOCUMENTS */}
       <div className="pt-10">
         {proposal?.proposalDocuments.length !== 0 && (
@@ -69,18 +63,9 @@ const ProposalInfoPage: React.FC<ProposalInfoPageProps> = () => {
         )}
       </div>
 
-      {/*COMMENTS */}
-      <div
-        className="my-10 w-full max-w-[700px]"
-        id="comments"
-        ref={commentsSectionRef}
-      >
-        <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
-          Comments
-        </h2>
-        <div className="flex gap-10 flex-col mt-10">
-          {proposal && <ProposalComments />}
-        </div>
+      {/* COMMENT SECTION */}
+      <div ref={commentsSectionRef} className="max-w-[900px] mt-10">
+        <ProposalCommentSection />
       </div>
     </>
   );

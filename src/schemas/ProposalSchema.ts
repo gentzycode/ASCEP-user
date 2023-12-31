@@ -77,7 +77,7 @@ export const proposalCommentSchema = z.object({
     .refine((data) => data.trim() !== "", {
       message: "comment text cannot be empty",
     }),
-  proposal_id: z.string({ required_error: "Proposal_id id is required" }),
+  proposal_id: z.string({ required_error: "Proposal id is required" }),
   comment_reference: z.string().optional(),
 });
 

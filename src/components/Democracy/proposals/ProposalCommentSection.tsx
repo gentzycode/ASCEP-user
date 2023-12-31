@@ -1,36 +1,35 @@
-import {
-  CommentsPagination,
-  FilterButtons,
-  FormInput,
-  InitiativeCommentCard,
-  ProposalCommentCard,
-} from "..";
-import { IconWrapper } from "@/components/custom";
+import { IconWrapper, PageLoader } from "@/components/custom";
+import { Button } from "@/components/ui/button";
+import { useAuthContext } from "@/providers/AuthProvider";
+import ROUTES from "@/utils/routesNames";
 import { CloseCircle, Danger } from "iconsax-react";
 import { Link, useParams } from "react-router-dom";
-import ROUTES from "@/utils/routesNames";
-import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
-import { useAuthContext } from "@/providers/AuthProvider";
-import { useEffect, useState } from "react";
-import { FaSpinner } from "react-icons/fa";
 import {
-  useGetInitiativeComments,
-  usePublishInitiativeComment,
-} from "@/api/democracy/initiatives";
-import { initiativeCommentSchema } from "@/schemas/InitiativesSchema";
-import { InitiativeCommentFilterButtonOptions } from "@/utils/Democracy/Initiatives";
+  CommentsPagination,
+  FilterButtons,
+  FormInput,
+  ProposalCommentCard,
+} from "..";
+import { commentFilterButtonOptions } from "@/utils/Democracy/General";
+import { useEffect, useState } from "react";
+import {
+  useGetProposalComments,
+  usePublishProposalComment,
+} from "@/api/democracy/proposals";
+import { proposalCommentSchema } from "@/schemas/ProposalSchema";
 
-interface InitiativeCommentsCardProps {}
-const InitiativeComments: React.FC<InitiativeCommentsCardProps> = () => {
+interface ProposalCommentSectionProp {}
+
+const ProposalCommentSection: React.FC<ProposalCommentSectionProp> = () => {
   const { isLoggedIn } = useAuthContext();
-  const { initiativeId } = useParams();
+  const { proposalId } = useParams();
 
   const { mutateAsync: publishComment, isLoading: isPublishingComment } =
-    usePublishInitiativeComment();
+    usePublishProposalComment();
 
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState("newest");
@@ -38,16 +37,16 @@ const InitiativeComments: React.FC<InitiativeCommentsCardProps> = () => {
   const {
     data: commentsData,
     isLoading: isLoadingComments,
+    refetch,
     isFetching: isFetchingComments,
-    refetch: refetchComments,
-  } = useGetInitiativeComments(initiativeId!, page, filter);
+  } = useGetProposalComments(proposalId!, page, filter);
 
-  const form = useForm<z.infer<typeof initiativeCommentSchema>>({
-    resolver: zodResolver(initiativeCommentSchema),
+  const form = useForm<z.infer<typeof proposalCommentSchema>>({
+    resolver: zodResolver(proposalCommentSchema),
     mode: "onChange",
     defaultValues: {
       content: "",
-      initiative_id: initiativeId!,
+      proposal_id: proposalId!,
     },
   });
   const {
@@ -57,18 +56,24 @@ const InitiativeComments: React.FC<InitiativeCommentsCardProps> = () => {
     formState: { errors },
   } = form;
 
-  async function onSubmit(values: z.infer<typeof initiativeCommentSchema>) {
+  async function onSubmit(values: z.infer<typeof proposalCommentSchema>) {
     await publishComment(values);
     if (commentsData) {
       reset();
     }
   }
   useEffect(() => {
-    refetchComments();
+    refetch();
   }, [page, filter]);
-  
+
   return (
     <>
+      {/*COMMENTS */}
+      <div className="w-full">
+        <h2 className="pb-2 mb-4 pt-0 pl-0 border-b-4 text-lg text-text font-medium border-primary w-fit">
+          Comments
+        </h2>
+      </div>
       {!isLoggedIn ? (
         <div className="flex items-center justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10">
           <div className="flex justify-start items-center gap-1">
@@ -79,8 +84,8 @@ const InitiativeComments: React.FC<InitiativeCommentsCardProps> = () => {
               You must{" "}
               <Link to={ROUTES.SIGNIN_ROUTE} className="underline">
                 sign in
-              </Link>{" "}
-              or{" "}
+              </Link>
+              or
               <Link to={ROUTES.SIGNIN_ROUTE} className="underline">
                 sign up
               </Link>{" "}
@@ -96,7 +101,7 @@ const InitiativeComments: React.FC<InitiativeCommentsCardProps> = () => {
           <Form {...form}>
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col gap-4"
+              className="flex flex-col gap-4 max-w-[900px]"
             >
               <FormInput
                 label="Leave a comment"
@@ -109,6 +114,7 @@ const InitiativeComments: React.FC<InitiativeCommentsCardProps> = () => {
                 type="submit"
                 className="w-fit"
                 isLoading={isPublishingComment}
+                disabled={isPublishingComment}
               >
                 Publish Comment
               </Button>
@@ -116,28 +122,23 @@ const InitiativeComments: React.FC<InitiativeCommentsCardProps> = () => {
           </Form>
         </div>
       )}
-
-      {commentsData?.comments?.length !== 0 && (
+      {/* FILTER BUTTONS */}
+      <div className="my-8">
         <FilterButtons
-          filterButtonOptions={InitiativeCommentFilterButtonOptions}
+          filterButtonOptions={commentFilterButtonOptions}
           filterByButton={(value: string) => {
             setFilter(value);
             setPage(1);
           }}
         />
-      )}
+      </div>
+
+      {isLoadingComments && <PageLoader />}
       {commentsData?.comments?.length === 0 && (
         <div>
           <h1 className="text-dark text-[16px] md:text-[20px]">
-            This Initiative has no comments
+            This Proposal has no comments yet
           </h1>
-        </div>
-      )}
-      {isLoadingComments && (
-        <div className="w-full flex justify-center">
-          <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
-            <FaSpinner className="animate-spin text-[100px]" />
-          </IconWrapper>
         </div>
       )}
 
@@ -146,13 +147,14 @@ const InitiativeComments: React.FC<InitiativeCommentsCardProps> = () => {
           className={`${
             isFetchingComments
               ? "opacity-50 pointer-events-none"
-              : "opacity-100"
+              : "opacity-100 "
           } flex flex-col gap-6`}
         >
           {commentsData.comments.map((comment: CommentType) => (
-            <InitiativeCommentCard comment={comment} key={comment.id} />
+            <ProposalCommentCard comment={comment} key={comment.id} />
           ))}
 
+          {/* PAGINATION */}
           <CommentsPagination
             meta={commentsData.meta}
             onPageChange={(page: number) => setPage(page)}
@@ -162,4 +164,5 @@ const InitiativeComments: React.FC<InitiativeCommentsCardProps> = () => {
     </>
   );
 };
-export default InitiativeComments;
+
+export default ProposalCommentSection;

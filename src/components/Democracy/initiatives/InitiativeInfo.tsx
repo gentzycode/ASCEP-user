@@ -10,6 +10,7 @@ import useDisclosure from "@/hooks/useDisclosure";
 import ALert from "@/components/custom/Alert";
 import {
   useDeleteInitiative,
+  useFollowInitiative,
   useSupportInitiative,
 } from "@/api/democracy/initiatives";
 import { useEffect, useState } from "react";
@@ -41,11 +42,15 @@ const InitiativeInfo: React.FC<InitiativeInfoProps> = ({
     navigator.clipboard.writeText(initiative.meeting_link);
     setCopied(true);
   };
+
   const { mutate: supportProposal, isLoading: isSupportingProposal } =
     useSupportInitiative(initiative.id);
 
   const { mutateAsync: deleteProposal, isLoading: isDeletingProposal } =
     useDeleteInitiative(initiative.id);
+
+  const { mutateAsync: followInitiative, isLoading: isFollowingInitiative } =
+    useFollowInitiative();
 
   const {
     isOpen: alertOpen,
@@ -56,6 +61,10 @@ const InitiativeInfo: React.FC<InitiativeInfoProps> = ({
   const handleDelete = async () => {
     await deleteProposal();
     close();
+  };
+
+  const handleFollow = async () => {
+    await followInitiative({ initiative_id: initiative.id });
   };
   return (
     <div className="flex justify-start gap-10 xl:flex-row flex-col">
@@ -297,8 +306,15 @@ const InitiativeInfo: React.FC<InitiativeInfoProps> = ({
           <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
             Follow
           </h2>
-          <Button className="bg-transparent border border-primary mt-3 text-primary hover:text-light">
-            Follow this Initiative
+          <Button
+            className="bg-transparent border border-primary mt-3 text-primary hover:text-light w-full max-w-[200px]"
+            onClick={handleFollow}
+            disabled={isFollowingInitiative}
+            isLoading={isFollowingInitiative}
+          >
+            {initiative.userFollowing.following === true
+              ? "Unfollow this Initiative"
+              : "Follow this Initiative"}
           </Button>
         </div>
       </div>

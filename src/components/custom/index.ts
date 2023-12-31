@@ -7,3 +7,5 @@ export { default as PageFetchError } from "./PageFetchError";
 export { default as CommentInput } from "./CommentInput";
 export { default as SDGMultiSelect } from "./SDGMultiSelect";
 export { default as CategoriesMultiSelect } from "./CategoriesMultiSelect";
+export { default as WardsMultiSelect } from "./WardsMultiSelect";
+export { default as TargetsMultiSelect } from "./TargetsMultiSelect";

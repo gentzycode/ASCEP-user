@@ -37,6 +37,10 @@ const ROUTES = {
   //VOTING
   VOTING_HOME_ROUTE: "/democracy/voting",
   START_POLL_ROUTE: "/democracy/voting/start-poll",
+  VOTING_INFO_ROUTE: (pollId: string) => `/democracy/voting/${pollId}`,
+  EDIT_VOTE_ROUTE: (pollId: string) => `/democracy/voting/edit-vote/${pollId}`,
+  CONFIGURE_VOTE_ROUTE: (pollId: string) =>
+    `/democracy/voting/configure/${pollId}`,
 
   //BUDGETING
   BUDGETING_HOME_ROUTE: "/democracy/budgeting",

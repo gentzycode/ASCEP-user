@@ -7,33 +7,35 @@ import {
   FormCheckBoxSDG,
   FormImageInput,
   FormInput,
-  FormSelectWard,
-  FormTags,
 } from "@/components/Democracy";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import FormTextArea from "@/components/Democracy/common/FormTextArea";
-import { usePublishProposal } from "@/api/democracy/proposals";
 import TargetsMultiSelect from "@/components/custom/TargetsMultiSelect";
-import { startVotingSchema } from "@/schemas/VotingSchema";
+import { publishPollingSchema } from "@/schemas/VotingSchema";
+import { WardsMultiSelect } from "@/components/custom";
+import { usePublishPoll } from "@/api/democracy/voting";
+import { format } from "date-fns";
 
 interface StartPollPageProps {}
 const StartPollPage: React.FC<StartPollPageProps> = () => {
-  const { mutateAsync: publishProposal, isLoading } = usePublishProposal();
-  const [tags, setTags] = useState<string[]>([]);
+  const { mutateAsync: publishPoll, isLoading } = usePublishPoll();
   const [targets, setTargets] = useState<SDGTarget[]>([]);
+  const [wards, setWards] = useState<WardsType[]>([]);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const form = useForm<z.infer<typeof startVotingSchema>>({
-    resolver: zodResolver(startVotingSchema),
+  const form = useForm<z.infer<typeof publishPollingSchema>>({
+    resolver: zodResolver(publishPollingSchema),
     defaultValues: {
       title: undefined,
       summary: "",
-      more_info: "",
-      ward_id: undefined,
-      tags: [],
+      description: "",
+      wards: [],
       sdgs: [],
       targets: [],
       image: undefined,
+      id: undefined,
+      start_date: undefined,
+      end_date: undefined,
     },
   });
 
@@ -44,13 +46,16 @@ const StartPollPage: React.FC<StartPollPageProps> = () => {
     formState: { errors },
   } = form;
 
-  async function onSubmit(values: z.infer<typeof startVotingSchema>) {
+  async function onSubmit(values: z.infer<typeof publishPollingSchema>) {
     console.log(values);
 
     const formData = new FormData();
     formData.append("title", values.title!);
     formData.append("summary", values.summary!);
-    formData.append("ward_id", JSON.stringify(values.ward_id!));
+    formData.append("start_date", format(values.start_date, "yyyy-MM-dd"));
+    formData.append("end_date", format(values.end_date, "yyyy-MM-dd"));
+    formData.append("description", values.description);
+    // formData.append("ward_id", JSON.stringify(values.ward_id!));
 
     if (values.image) {
       formData.append("image", values.image);
@@ -62,28 +67,29 @@ const StartPollPage: React.FC<StartPollPageProps> = () => {
       });
     }
 
-    if (values.tags && values.tags.length > 0) {
-      values.tags.forEach((tag, index) => {
-        formData.append(`tags[${index}]`, tag);
+    if (values.wards && values.wards.length > 0) {
+      values.wards.forEach((ward, index) => {
+        formData.append(`wards[${index}]`, JSON.stringify(ward));
       });
     }
+
     if (values.targets && values.targets.length > 0) {
       values.targets.forEach((target, index) => {
         formData.append(`targets[${index}]`, JSON.stringify(target));
       });
     }
 
-    // await publishProposal(formData);
+    await publishPoll(formData);
   }
-
   useEffect(() => {
     const IDs = targets.map((target) => target.id);
     setValue("targets", IDs);
   }, [targets]);
 
   useEffect(() => {
-    setValue("tags", tags);
-  }, [tags]);
+    const IDs = wards.map((ward) => ward.id);
+    setValue("wards", IDs);
+  }, [wards]);
 
   return (
     <>
@@ -114,7 +120,7 @@ const StartPollPage: React.FC<StartPollPageProps> = () => {
 
               {/* CLOSING DATE */}
               <FormInput
-                name="closing_date"
+                name="end_date"
                 label="Closing Date"
                 control={control}
                 errors={errors}
@@ -142,8 +148,8 @@ const StartPollPage: React.FC<StartPollPageProps> = () => {
 
             {/* MORE INFO */}
             <FormTextArea
-              name="more_info"
-              label="More information"
+              name="description"
+              label="Description"
               control={control}
               errors={errors}
             />
@@ -158,22 +164,20 @@ const StartPollPage: React.FC<StartPollPageProps> = () => {
             />
 
             {/* WARD */}
-            <FormSelectWard
-              /* @ts-ignore */
-              control={control}
-              /* @ts-ignore */
+
+            <WardsMultiSelect
+              selected={wards}
+              setSelected={setWards}
+              // @ts-ignore
+              name="wards"
               errors={errors}
-              name="ward_id"
-              label="Ward"
+              control={control}
             />
 
             {/* OPTIONAL FIELDS */}
             <h2 className="text-[20px] md:text-[24px] text-dark -tracking-[0.48px]">
               Optional Fields
             </h2>
-
-            {/* TAGS */}
-            <FormTags tags={tags} setTags={setTags} />
 
             {/* SDGs */}
             <div>
@@ -197,6 +201,7 @@ const StartPollPage: React.FC<StartPollPageProps> = () => {
 
             {/* TARGETS */}
             <TargetsMultiSelect selected={targets} setSelected={setTargets} />
+
             <Button
               type="submit"
               className="w-full max-w-[400px] p-0 h-fit py-3"

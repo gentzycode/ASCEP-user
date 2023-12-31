@@ -3,7 +3,13 @@ import { z } from "zod";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  QueryFunctionContext,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "react-query";
 import {
   getProposalSchema,
   proposalCommentSchema,
@@ -18,6 +24,7 @@ import {
   GET_ALL_PROPOSALS_ENDPOINT,
   GET_ALL_PROPOSAL_TOPICS_ENDPOINT,
   GET_PROPOSAL_COMMENTS_ENDPOINT,
+  GET_PROPOSAL_COMMENTS_RESPONSES_ENDPOINT,
   GET_PROPOSAL_COMMUNITY_MEMBERS_ENDPOINT,
   GET_PROPOSAL_INFO_ENDPOINT,
   GET_PROPOSAL_TOPIC_COMMENTS_ENDPOINT,
@@ -130,6 +137,29 @@ export const useGetProposalComments = (
     staleTime: 0,
     refetchOnWindowFocus: false,
   });
+};
+
+// GET PROPOSAL COMMENT RESPONSES
+export const useGetProposalCommentResponses = (commentId: string) => {
+  return useInfiniteQuery(
+    ["proposal-comments-responses"],
+    (
+      context: QueryFunctionContext<string[], number>
+    ): Promise<CommentDataType> => {
+      const { pageParam = 1 } = context;
+      return axios
+        .get(
+          GET_PROPOSAL_COMMENTS_RESPONSES_ENDPOINT(commentId, Number(pageParam))
+        )
+        .then((res) => res.data.data);
+    },
+    {
+      staleTime: 0,
+      refetchOnWindowFocus: false,
+      enabled: false,
+      getNextPageParam: (lastPage, pages) => pages.length + 1,
+    }
+  );
 };
 
 // VOTE PROPOSAL COMMENT

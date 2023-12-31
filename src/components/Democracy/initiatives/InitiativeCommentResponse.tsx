@@ -4,14 +4,9 @@ import { CloseCircle } from "iconsax-react";
 import { useState } from "react";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
-import { debateCommentSchema } from "@/schemas/DebateSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import {
-  usePublishDebateComment,
-  useVoteDebateComment,
-} from "@/api/democracy/debates";
 import {
   CommentCardFooter,
   CommentCardHeader,
@@ -20,22 +15,21 @@ import {
 } from "..";
 import { IconWrapper } from "@/components/custom";
 import { useClickAway } from "@uidotdev/usehooks";
+import { proposalCommentSchema } from "@/schemas/ProposalSchema";
+import { usePublishProposalComment } from "@/api/democracy/proposals";
 
-interface DebateCommentResponseProps {
+interface InitiativeCommentResponseProps {
   response: CommentType;
   paddingLeft: number;
 }
-const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
+const InitiativeCommentResponse: React.FC<InitiativeCommentResponseProps> = ({
   response,
   paddingLeft,
 }) => {
-  const { debateId } = useParams();
+  const { proposalId } = useParams();
 
   const { mutateAsync: publishResponse, isLoading: isPublishingComment } =
-    usePublishDebateComment();
-
-  const { mutate: voteComment, isLoading: isVotingComment } =
-    useVoteDebateComment();
+    usePublishProposalComment();
 
   const [showResponse, setShowResponse] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
@@ -47,12 +41,12 @@ const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
     }, 500);
   });
 
-  const form = useForm<z.infer<typeof debateCommentSchema>>({
-    resolver: zodResolver(debateCommentSchema),
+  const form = useForm<z.infer<typeof proposalCommentSchema>>({
+    resolver: zodResolver(proposalCommentSchema),
     mode: "onChange",
     defaultValues: {
       content: "",
-      debate_id: "",
+      proposal_id: "",
       comment_reference: "",
     },
   });
@@ -64,10 +58,10 @@ const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
     formState: { errors },
   } = form;
 
-  async function onSubmit(values: z.infer<typeof debateCommentSchema>) {
+  async function onSubmit(values: z.infer<typeof proposalCommentSchema>) {
     await publishResponse({
       ...values,
-      debate_id: debateId!,
+      proposal_id: proposalId!,
       comment_reference: response.id,
     });
     closeResponse();
@@ -81,7 +75,7 @@ const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
   return (
     <>
       <div ref={ref}>
-        <Separator orientation="horizontal" className="bg-base-500 my-1" />
+        <Separator orientation="horizontal" className="bg-base-500" />
         <div
           className={`pl-[${paddingLeft}px]`}
           style={{ paddingLeft: `${paddingLeft}px` }}
@@ -92,7 +86,6 @@ const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
             createdAt={response.createdAt}
             profilePicture={response.author.profile_picture}
           />
-
           {/* FOOTER */}
           <div className="flex justify-between items-center flex-wrap-reverse gap-2">
             <CommentCardFooter
@@ -104,15 +97,12 @@ const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
               isLoadingResponses={false}
               loading={false}
             />
+
             <VoteCommentButtons
-              dislikeComment={() =>
-                voteComment({ type: "dislike", comment_id: response.id })
-              }
-              likeComment={() =>
-                voteComment({ type: "like", comment_id: response.id })
-              }
+              dislikeComment={() => {}}
+              likeComment={() => {}}
               dislikes={response.dislikes}
-              isVoting={isVotingComment}
+              isVoting={false}
               likes={response.likes}
               reactionType={response.userVoted.reactionType}
             />
@@ -155,9 +145,13 @@ const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
           )}
         </div>
 
-        <div className={` ${showResponse ? "" : "h-0  overflow-hidden"}`}>
+        <div
+          className={` ${
+            showResponse ? "" : "h-0  overflow-hidden"
+          } duration-300`}
+        >
           {response?.responses?.map((response) => (
-            <DebateCommentResponse
+            <InitiativeCommentResponse
               key={response.response_id}
               response={response}
               paddingLeft={paddingLeft + 20}
@@ -169,4 +163,4 @@ const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
   );
 };
 
-export default DebateCommentResponse;
+export default InitiativeCommentResponse;

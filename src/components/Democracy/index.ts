@@ -5,7 +5,6 @@ export { default as PagesHeroSection } from "./common/HeroSection";
 export { default as ListViewCard } from "./common/ListViewCard";
 export { default as DemocracyMultipleCheckbox } from "./common/MultipleCheckbox";
 export { default as DemocracyNavigation } from "./common/DemocracyNavigation";
-export { default as DebateComments } from "./debates/DebateComments";
 export { default as DebateCommentCard } from "./debates/DebateCommentCard";
 export { default as FormInput } from "./common/FormInput";
 export { default as TextEditor } from "./common/TextEditor";
@@ -29,12 +28,16 @@ export { default as Share } from "./common/Share";
 export { default as FormTextArea } from "./common/FormTextArea";
 export { default as FormSelectCategory } from "./common/FormSelectCategory";
 export { default as CategoryDisplay } from "./common/CategoryDisplay";
+export { default as VoteCommentButtons } from "./common/VoteCommentButtons";
+export { default as CommentCardFooter } from "./common/CommentCardFooter";
+export { default as CommentCardHeader } from "./common/CommentCardHeader";
 
 // DEBATES
 export { default as DebatesCardViewCard } from "./debates/DebatesCardViewCard";
 export { default as DebateCommentResponse } from "./debates/DebateCommentResponse";
 export { default as DebateInfo } from "./debates/DebateInfo";
 export { default as RelatedDebates } from "./debates/RelatedDebates";
+export { default as DebateCommentSection } from "./debates/DebateCommentSection";
 
 // PROPOSAL
 export { default as ProposalCardViewCard } from "./proposals/ProposalCardViewCard";
@@ -42,6 +45,7 @@ export { default as ProposalInfo } from "./proposals/ProposalInfo";
 export { default as ProposalComments } from "./proposals/ProposalComments";
 export { default as ProposalCommentCard } from "./proposals/ProposalCommentCard";
 export { default as ProposalCommentResponse } from "./proposals/ProposalCommentResponse";
+export { default as ProposalCommentSection } from "./proposals/ProposalCommentSection";
 
 //PROPOSAL TOPIC
 export { default as CreateTopicModal } from "./proposals/CreateTopicModal";
@@ -55,8 +59,9 @@ export { default as ProposalTopicCommentResponse } from "./proposals/ProposalTop
 //INITIATIVES
 export { default as InitiativesCardViewCard } from "./initiatives/InitiativesCardViewCard";
 export { default as InitiativeInfo } from "./initiatives/InitiativeInfo";
-export { default as InitiativeComments } from "./initiatives/InitiativeComments";
 export { default as InitiativeCommentCard } from "./initiatives/InitiativeCommentCard";
+export { default as InitiativeCommentSection } from "./initiatives/InitiativeCommentSection";
+export { default as InitiativeCommentResponse } from "./initiatives/InitiativeCommentResponse";
 
 //LANDING PAGE
 export { default as Hero } from "./landing page/Hero";
@@ -71,3 +76,16 @@ export { default as WardProjects } from "./budgeting/WardProjects";
 export { default as WardProjectCard } from "./budgeting/WardProjectCard";
 export { default as Investments } from "./budgeting/Investments";
 export { default as InvestmentCard } from "./budgeting/InvestmentCard";
+
+//VOTING
+export { default as PollLIst } from "./voting/PollLIst";
+export { default as PollListCard } from "./voting/PollListCard";
+export { default as PollInfo } from "./voting/PollInfo";
+export { default as Questions } from "./voting/Questions";
+export { default as CompareProposals } from "./voting/CompareProposals";
+export { default as VotingProposalInfo } from "./voting/VotingProposalInfo";
+export { default as PollCommentSection } from "./voting/PollCommentSection";
+export { default as SingleAnswerQuestion } from "./voting/SingleAnswerQuestion";
+export { default as MultiAnswerQuestion } from "./voting/MultiAnswerQuestion";
+export { default as PollCommentCard } from "./voting/PollCommentCard";
+export { default as PollCommentResponse } from "./voting/PollCommentResponse";
