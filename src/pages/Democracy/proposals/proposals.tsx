@@ -6,7 +6,7 @@ import {
   Pagination,
   ProposalCardViewCard,
 } from "@/components/Democracy";
-import { IconWrapper } from "@/components/custom";
+import { IconWrapper, PageLoader } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { useProposalContext } from "@/contexts/ProposalContext";
 import { useAuthContext } from "@/providers/AuthProvider";
@@ -65,13 +65,7 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
         )}
 
         {/* LOADING */}
-        {fetchingProposals && (
-          <div className="w-full flex justify-center">
-            <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
-              <FaSpinner className="animate-spin text-[100px]" />
-            </IconWrapper>
-          </div>
-        )}
+        {fetchingProposals && <PageLoader />}
 
         {/* LIST VIEW */}
         {view === "list-view" && fetchedProposalData && (

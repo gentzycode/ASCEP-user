@@ -21,6 +21,7 @@ import {
 import useDisclosure from "@/hooks/useDisclosure";
 import ALert from "@/components/custom/Alert";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { frontendURL } from "@/api/baseUrl";
 
 interface ProposalInfoProps {
   proposal: ProposalType;
@@ -316,7 +317,9 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
 
         {/* SHARE */}
         <Share
-          shareableURL={`http://localhost:5173/democracy/share/${proposal.proposal_code}`}
+          shareableURL={
+            frontendURL + `/democracy/share/${proposal.proposal_code}`
+          }
         />
 
         {/* FOLLOW */}

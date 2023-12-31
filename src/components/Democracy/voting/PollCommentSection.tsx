@@ -1,35 +1,34 @@
-import {
-  CommentsPagination,
-  DebateCommentCard,
-  FilterButtons,
-  FormInput,
-} from "..";
-import { debateCommentFilterButtonOptions } from "@/utils/Democracy/Debates";
 import { IconWrapper, PageLoader } from "@/components/custom";
+import { Button } from "@/components/ui/button";
+import { useAuthContext } from "@/providers/AuthProvider";
+import ROUTES from "@/utils/routesNames";
 import { CloseCircle, Danger } from "iconsax-react";
 import { Link, useParams } from "react-router-dom";
-import ROUTES from "@/utils/routesNames";
-import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
-import { useAuthContext } from "@/providers/AuthProvider";
 import {
-  useGetDebateComments,
-  usePublishDebateComment,
-} from "@/api/democracy/debates";
+  CommentsPagination,
+  FilterButtons,
+  FormInput,
+  PollCommentCard,
+} from "..";
+import { commentFilterButtonOptions } from "@/utils/Democracy/General";
+import {
+  useGetPollComments,
+  usePublishPollComment,
+} from "@/api/democracy/voting";
 import { useEffect, useState } from "react";
-import { FaSpinner } from "react-icons/fa";
-import { debateCommentSchema } from "@/schemas/DebateSchema";
+import { pollCommentSchema } from "@/schemas/VotingSchema";
 
-interface DebateCommentsCardProps {}
-const DebateComments: React.FC<DebateCommentsCardProps> = () => {
+interface PollCommentSectionProp {}
+const PollCommentSection: React.FC<PollCommentSectionProp> = () => {
   const { isLoggedIn } = useAuthContext();
-  const { debateId } = useParams();
+  const { pollId } = useParams();
 
   const { mutateAsync: publishComment, isLoading: isPublishingComment } =
-    usePublishDebateComment();
+    usePublishPollComment();
 
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState("newest");
@@ -39,14 +38,14 @@ const DebateComments: React.FC<DebateCommentsCardProps> = () => {
     isLoading: isLoadingComments,
     refetch,
     isFetching: isFetchingComments,
-  } = useGetDebateComments(debateId!, page, filter);
+  } = useGetPollComments(pollId!, page, filter);
 
-  const form = useForm<z.infer<typeof debateCommentSchema>>({
-    resolver: zodResolver(debateCommentSchema),
+  const form = useForm<z.infer<typeof pollCommentSchema>>({
+    resolver: zodResolver(pollCommentSchema),
     mode: "onChange",
     defaultValues: {
       content: "",
-      debate_id: debateId,
+      voting_id: pollId!,
     },
   });
   const {
@@ -56,7 +55,7 @@ const DebateComments: React.FC<DebateCommentsCardProps> = () => {
     formState: { errors },
   } = form;
 
-  async function onSubmit(values: z.infer<typeof debateCommentSchema>) {
+  async function onSubmit(values: z.infer<typeof pollCommentSchema>) {
     await publishComment(values);
     if (commentsData) {
       reset();
@@ -65,8 +64,15 @@ const DebateComments: React.FC<DebateCommentsCardProps> = () => {
   useEffect(() => {
     refetch();
   }, [page, filter]);
+
   return (
     <>
+      {/*COMMENTS */}
+      <div className="w-full">
+        <h2 className="pb-2 mb-4 pt-0 pl-0 border-b-4 text-lg text-text font-medium border-primary w-fit">
+          Comments
+        </h2>
+      </div>
       {!isLoggedIn ? (
         <div className="flex items-center justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10">
           <div className="flex justify-start items-center gap-1">
@@ -77,8 +83,8 @@ const DebateComments: React.FC<DebateCommentsCardProps> = () => {
               You must{" "}
               <Link to={ROUTES.SIGNIN_ROUTE} className="underline">
                 sign in
-              </Link>{" "}
-              or{" "}
+              </Link>
+              or
               <Link to={ROUTES.SIGNIN_ROUTE} className="underline">
                 sign up
               </Link>{" "}
@@ -94,7 +100,7 @@ const DebateComments: React.FC<DebateCommentsCardProps> = () => {
           <Form {...form}>
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col gap-4"
+              className="flex flex-col gap-4 max-w-[900px]"
             >
               <FormInput
                 label="Leave a comment"
@@ -107,6 +113,7 @@ const DebateComments: React.FC<DebateCommentsCardProps> = () => {
                 type="submit"
                 className="w-fit"
                 isLoading={isPublishingComment}
+                disabled={isPublishingComment}
               >
                 Publish Comment
               </Button>
@@ -116,25 +123,25 @@ const DebateComments: React.FC<DebateCommentsCardProps> = () => {
       )}
 
       {/* FILTER BUTTONS */}
-      {commentsData?.comments?.length !== 0 && (
+      <div className="my-8">
         <FilterButtons
-          filterButtonOptions={debateCommentFilterButtonOptions}
+          filterButtonOptions={commentFilterButtonOptions}
           filterByButton={(value: string) => {
             setFilter(value);
             setPage(1);
           }}
         />
-      )}
+      </div>
+
+      {isLoadingComments && <PageLoader />}
 
       {commentsData?.comments?.length === 0 && (
         <div>
           <h1 className="text-dark text-[16px] md:text-[20px]">
-            This debate has no comments yet
+            This Poll has no comments yet
           </h1>
         </div>
       )}
-
-      {isLoadingComments && <PageLoader />}
 
       {commentsData && commentsData.comments.length > 0 && (
         <div
@@ -145,7 +152,7 @@ const DebateComments: React.FC<DebateCommentsCardProps> = () => {
           } flex flex-col gap-6`}
         >
           {commentsData.comments.map((comment: CommentType) => (
-            <DebateCommentCard comment={comment} key={comment.id} />
+            <PollCommentCard comment={comment} key={comment.id} />
           ))}
 
           {/* PAGINATION */}
@@ -158,4 +165,5 @@ const DebateComments: React.FC<DebateCommentsCardProps> = () => {
     </>
   );
 };
-export default DebateComments;
+
+export default PollCommentSection;

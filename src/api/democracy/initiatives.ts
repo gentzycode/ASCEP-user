@@ -1,4 +1,10 @@
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  QueryFunctionContext,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "react-query";
 import { configOptions } from "../config";
 import { z } from "zod";
 import { useToast } from "@/components/ui/use-toast";
@@ -6,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
 import axios from "axios";
 import {
+  followInitiativeSchema,
   getInitiativeSchema,
   initiativeCommentSchema,
   startInitiativeSchema,
@@ -13,8 +20,10 @@ import {
 } from "@/schemas/InitiativesSchema";
 import {
   DELETE_INITIATIVE_ENDPOINT,
+  FOLLOW_INITIATIVE_ENDPOINT,
   GET_ALL_INITIATIVES_ENDPOINT,
   GET_INITIATIVE_COMMENTS_ENDPOINT,
+  GET_INITIATIVE_COMMENTS_RESPONSES_ENDPOINT,
   GET_INITIATIVE_INFO_ENDPOINT,
   PUBLISH_INITIATIVES_ENDPOINT,
   PUBLISH_INITIATIVE_COMMENT_ENDPOINT,
@@ -133,6 +142,31 @@ export const useGetInitiativeComments = (
   });
 };
 
+// GET INITIATIVE COMMENT RESPONSES
+export const useGetInitiativeCommentResponses = (commentId: string) => {
+  return useInfiniteQuery(
+    ["initiative-comments-responses"],
+    (
+      context: QueryFunctionContext<string[], number>
+    ): Promise<CommentDataType> => {
+      const { pageParam = 1 } = context;
+      return axios
+        .get(
+          GET_INITIATIVE_COMMENTS_RESPONSES_ENDPOINT(
+            commentId,
+            Number(pageParam)
+          )
+        )
+        .then((res) => res.data.data);
+    },
+    {
+      staleTime: 0,
+      refetchOnWindowFocus: false,
+      enabled: false,
+      getNextPageParam: (lastPage, pages) => pages.length + 1,
+    }
+  );
+};
 // VOTE PROPOSAL COMMENT
 export const useVoteInitiativeComment = () => {
   const queryClient = useQueryClient();
@@ -165,6 +199,31 @@ export const useSupportInitiative = (initiativeId: string) => {
     (): Promise<ResponseDataType> => {
       return axios
         .patch(SUPPORT_INITIATIVE_ENDPOINT(initiativeId))
+        .then((res) => res.data);
+    },
+    {
+      onSuccess: (res) => {
+        queryClient.invalidateQueries("initiative-info");
+        toast({
+          title: "Success!",
+          variant: "success",
+          description: res.message,
+        });
+      },
+    }
+  );
+};
+
+// FOLLOW INITIATIVE
+export const useFollowInitiative = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  return useMutation(
+    (
+      values: z.infer<typeof followInitiativeSchema>
+    ): Promise<ResponseDataType> => {
+      return axios
+        .put(FOLLOW_INITIATIVE_ENDPOINT, { ...values })
         .then((res) => res.data);
     },
     {

@@ -6,32 +6,30 @@ import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { CommentCard, FormInput, InitiativeCommentResponse } from "..";
+import { CommentCard, FormInput, PollCommentResponse } from "..";
 import { IconWrapper } from "@/components/custom";
 import { useClickAway } from "@uidotdev/usehooks";
-import {
-  useGetInitiativeCommentResponses,
-  usePublishInitiativeComment,
-  useVoteInitiativeComment,
-} from "@/api/democracy/initiatives";
-import { initiativeCommentSchema } from "@/schemas/InitiativesSchema";
 import { Separator } from "@/components/ui/separator";
+import {
+  useGetPollCommentResponses,
+  usePublishPollComment,
+  useVotePollComment,
+} from "@/api/democracy/voting";
+import { pollCommentSchema } from "@/schemas/VotingSchema";
 
-interface InitiativeCommentCardProps {
+interface PollCommentCardProps {
   comment: CommentType;
 }
-const InitiativeCommentCard: React.FC<InitiativeCommentCardProps> = ({
-  comment,
-}) => {
+const PollCommentCard: React.FC<PollCommentCardProps> = ({ comment }) => {
   const [dynamicPadding] = useState(20);
 
-  const { initiativeId } = useParams();
+  const { pollId } = useParams();
 
   const [showResponse, setShowResponse] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
 
   const { mutateAsync: publishResponse, isLoading: isPublishingComment } =
-    usePublishInitiativeComment();
+    usePublishPollComment();
 
   const {
     data: Data,
@@ -39,10 +37,10 @@ const InitiativeCommentCard: React.FC<InitiativeCommentCardProps> = ({
     refetch: getResponses,
     fetchNextPage,
     isFetchingNextPage,
-  } = useGetInitiativeCommentResponses(comment.id);
+  } = useGetPollCommentResponses(comment.id);
 
   const { mutate: voteComment, isLoading: isVotingComment } =
-    useVoteInitiativeComment();
+    useVotePollComment();
 
   // CLose responses on click away
   const ref = useClickAway<HTMLDivElement>(() => {
@@ -52,12 +50,12 @@ const InitiativeCommentCard: React.FC<InitiativeCommentCardProps> = ({
     }, 500);
   });
 
-  const form = useForm<z.infer<typeof initiativeCommentSchema>>({
-    resolver: zodResolver(initiativeCommentSchema),
+  const form = useForm<z.infer<typeof pollCommentSchema>>({
+    resolver: zodResolver(pollCommentSchema),
     mode: "onChange",
     defaultValues: {
       content: "",
-      initiative_id: "",
+      voting_id: "",
       comment_reference: "",
     },
   });
@@ -69,10 +67,10 @@ const InitiativeCommentCard: React.FC<InitiativeCommentCardProps> = ({
     formState: { errors },
   } = form;
 
-  async function onSubmit(values: z.infer<typeof initiativeCommentSchema>) {
+  async function onSubmit(values: z.infer<typeof pollCommentSchema>) {
     await publishResponse({
       ...values,
-      initiative_id: initiativeId!,
+      voting_id: pollId!,
       comment_reference: comment.id,
     });
     closeResponse();
@@ -153,7 +151,7 @@ const InitiativeCommentCard: React.FC<InitiativeCommentCardProps> = ({
         {Data?.pages.map((commentsData, i) => (
           <div key={i}>
             {commentsData.comments.map((response) => (
-              <InitiativeCommentResponse
+              <PollCommentResponse
                 key={response.id}
                 response={response}
                 paddingLeft={dynamicPadding + 20}
@@ -175,4 +173,4 @@ const InitiativeCommentCard: React.FC<InitiativeCommentCardProps> = ({
     </div>
   );
 };
-export default InitiativeCommentCard;
+export default PollCommentCard;
