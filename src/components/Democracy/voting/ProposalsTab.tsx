@@ -170,7 +170,7 @@ const ProposalsTab: React.FC<ProposalsTabProp> = ({ proposals }) => {
             meta={fetchedProposalData?.meta}
           />
           <Button
-            className="h-fit text-dark rounded-xl w-full max-w-[200px] my-4"
+            className="h-12 text-dark rounded-xl w-full max-w-[200px] my-4"
             onClick={handleSave}
             disabled={selectedProposal.length < 2 || isLinkingProposals}
             isLoading={isLinkingProposals}
