@@ -49,6 +49,7 @@ export default function AnswerOptions({
       </div>
       {error && <FormMessage>{error}</FormMessage>}
       <div className="flex flex-wrap gap-2 ">
+        <span className="text-base text-text">Options:</span>
         {options.map((option, i) => (
           <SelectedTags option={option} key={i} handleRemove={handleRemove} />
         ))}

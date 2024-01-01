@@ -69,7 +69,7 @@ const ResultsTab: React.FC<ResultsTabProp> = () => {
         />
         <Button
           type="submit"
-          className="h-fit text-dark rounded-xl w-full max-w-[200px] mt-2"
+          className="h-12 p-0 text-dark rounded-xl w-full max-w-[200px] mt-2"
         >
           Update poll
         </Button>
