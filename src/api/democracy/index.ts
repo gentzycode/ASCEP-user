@@ -158,6 +158,12 @@ export const GET_POLL_COMMENTS_RESPONSES_ENDPOINT = (
 
 export const VOTE_POLL_COMMENT_ENDPOINT = (type: string, comment_id: string) =>
   baseUrl + `/voting/vote-comment/${type}/${comment_id}`;
+export const PUBLISH_POLL_QUESTION_ENDPOINT = baseUrl + "/voting/poll-question";
+
+export const GET_POLL_QUESTIONS_ENDPOINT = (pollId: string) =>
+  baseUrl + `/voting/questions/${pollId}`;
+
+export const LINK_PROPOSAL_ENDPOINT = baseUrl + "/voting/link-proposals";
 
 //SDG
 export const GET_ALL_SDGs_ENDPOINT = baseUrl + "/sdg/all";

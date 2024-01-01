@@ -115,3 +115,27 @@ export const votePollCommentSchema = z.object({
 
   comment_id: z.string({ required_error: "proposal id is required" }),
 });
+
+export const publishPollingQuestionSchema = z.object({
+  question: z
+    .string({ required_error: "Please enter poll question" })
+    .refine((value) => value.trim() !== "", {
+      message: "Please enter poll question",
+    }),
+  voting_id: z.string({ required_error: "Voting id is required" }),
+  response_type: z.enum(["single", "multi_choice"], {
+    required_error: "Please select answer type",
+  }),
+  options: z.array(z.string()).min(2, "Please add at least two (2) Options"),
+  id: z.string().optional(),
+});
+
+export const linkProposalSchema = z.object({
+  proposals: z.array(z.string()).min(2, "Please add at least two (2) proposal"),
+  voting_id: z.string({ required_error: "Voting id is required" }),
+});
+
+export const showResultsSchema = z.object({
+  results: z.boolean().optional(),
+  stats: z.boolean().optional(),
+});

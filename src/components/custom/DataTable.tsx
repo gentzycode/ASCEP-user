@@ -1,7 +1,13 @@
 import {
   ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -13,6 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import React from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -23,22 +30,43 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  );
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
+
   const table = useReactTable({
     data,
     columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
+    },
   });
 
   return (
     <div className="">
-      <Table>
+      <Table className="bg-[#fff] rounded-2xl">
         <TableHeader className="border-none">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow className="border-none" key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead
-                    className="text-sm font-normal text-subtle_text/70"
+                    className="text-sm font-normal text-subtle_text/70 border-none"
                     key={header.id}
                   >
                     {header.isPlaceholder
@@ -59,7 +87,7 @@ export function DataTable<TData, TValue>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="border-none"
+                className="!border-t-2 border-light_grey"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell className="py-3" key={cell.id}>
