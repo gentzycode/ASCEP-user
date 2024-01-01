@@ -127,14 +127,14 @@ const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
             <div className="flex gap-3 flex-wrap">
               <Button
                 type="submit"
-                className="w-full max-w-[150px] text-base p-1 h-fit py-3"
+                className="w-full max-w-[150px] text-base h-12"
                 isLoading={isPublishing}
                 disabled={isPublishing}
               >
                 {isEditing ? "Update question" : "Save"}
               </Button>
               <Button
-                className="w-full max-w-[150px] text-base p-0 h-fit py-3 bg-transparent border border-primary"
+                className="w-full max-w-[150px] text-base p-0 h-12 bg-transparent border border-primary"
                 onClick={() => {
                   onClose();
                   reset();

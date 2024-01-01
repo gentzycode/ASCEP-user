@@ -11,15 +11,15 @@ const QuestionTable: React.FC<QuestionTableProp> = ({ questions }) => {
   const columns: ColumnDef<VotingQuestionsType>[] = [
     {
       accessorKey: "question",
-      header: () => <div className="text-left text-dark">Title</div>,
+      header: () => <div className="text-left text-dark">Questions</div>,
       cell: ({ row }) => {
-        const qst = row.getValue("question") as string;
-        return <div className="text-left text-text">{qst}</div>;
+        const question = row.getValue("question") as string;
+        return <div className="text-left text-text">{question}</div>;
       },
     },
     {
       id: "actions",
-      header: () => <div className="text-right text-dark">Action</div>,
+      header: () => <div className="text-right text-dark">Actions</div>,
       cell: ({ row }) => {
         return (
           <div className="flex justify-end gap-4">
