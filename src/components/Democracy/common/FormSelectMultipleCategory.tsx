@@ -110,7 +110,6 @@ const FormSelectMultipleCategory = <
                     <Button
                       role="combobox"
                       aria-expanded={open}
-                      // className="bg-[#C4C4C41F] hover:bg-[#C4C4C41F] rounded-full text-base text-text focus-visible:ring-0 focus-visible:ring-primary border-none focus:border-none focus-visible:ring-offset-0 h-[50px] placeholder:text-base placeholder:text-subtle_text/30 placeholder:font-medium w-full justify-between "
                       className={`${
                         hasError
                           ? " border-red-500 border"

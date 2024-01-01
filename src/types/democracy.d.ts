@@ -402,7 +402,7 @@ interface VotingType {
   };
   userParticipated: boolean;
   questions: VotingQuestionsType[];
-  proposals: VotingProposalType[];
+  proposals: ProposalType[];
 }
 interface VotingTarget {
   target_id: number;
@@ -432,6 +432,9 @@ interface VotingQuestionsType {
     user_responded: boolean;
     response: QuestionResponseType;
   };
+  voting_id: string;
+  updatedAt: string;
+  createdAt: string;
 }
 
 type QuestionResponseType = string | { answer: string[] };

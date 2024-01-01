@@ -1,30 +1,69 @@
+import { useGetPollInfo } from "@/api/democracy/voting";
+import { ProposalsTab, QuestionsTab, ResultsTab } from "@/components/Democracy";
+import { IconWrapper } from "@/components/custom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Danger } from "iconsax-react";
+import { ReactNode } from "react";
+import { useParams } from "react-router-dom";
+
 interface ConfigureVotingPageProp {}
 const ConfigureVotingPage: React.FC<ConfigureVotingPageProp> = () => {
-  return (
-    <Tabs defaultValue="questions" className="w-[400px]">
-      <TabsList className="grid w-full grid-cols-3 h-fit bg-subtle_text ">
-        <TabsTrigger value="questions" className="text-text text-base">
-          Questions (5)
-        </TabsTrigger>
-        <TabsTrigger value="proposals" className="text-text text-base">
-          Proposals
-        </TabsTrigger>
-        <TabsTrigger value="results" className="text-text text-base">
-          Results
-        </TabsTrigger>
-      </TabsList>
+  const { pollId } = useParams();
 
-      <TabsContent value="questions">
-        <h1>Questions</h1>
-      </TabsContent>
-      <TabsContent value="proposals">
-        <h1>proposals</h1>
-      </TabsContent>
-      <TabsContent value="results">
-        <h1>Results</h1>
-      </TabsContent>
-    </Tabs>
+  const { data: poll, isLoading: isLoadingPolls } = useGetPollInfo(pollId!);
+
+  const TabData: { title: string; value: string; content: ReactNode }[] = [
+    {
+      title: "Questions",
+      value: "questions",
+      content: <QuestionsTab />,
+    },
+    {
+      title: "Proposals",
+      value: "proposals",
+      content: <ProposalsTab proposals={poll?.proposals!} />,
+    },
+    {
+      title: "Results",
+      value: "results",
+      content: <ResultsTab />,
+    },
+  ];
+
+  return (
+    <div>
+      <div className="w-fit border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10 mt-8 mb-12">
+        <div className="flex justify-start items-center gap-4">
+          <IconWrapper className="text-primary rounded-full p-2">
+            <Danger size="35" />
+          </IconWrapper>
+          <p className="text-sm text-dark">
+            Once the poll has started it will not be possible to create, edit or
+            delete questions, answers or any content associated with the poll.
+          </p>
+        </div>
+      </div>
+
+      <Tabs defaultValue="questions" className="w-full">
+        <TabsList className="grid grid-cols-3 h-fit bg-light_grey  w-full max-w-[400px]">
+          {TabData.map((tab) => (
+            <TabsTrigger
+              value={tab.value}
+              className="text-text text-base data-[state=active]:bg-primary"
+              key={tab.value}
+            >
+              {tab.title}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+
+        {TabData.map((tab) => (
+          <TabsContent value={tab.value} key={tab.value}>
+            {tab.content}
+          </TabsContent>
+        ))}
+      </Tabs>
+    </div>
   );
 };
 

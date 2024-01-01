@@ -13,8 +13,11 @@ import {
   GET_POLL_COMMENTS_ENDPOINT,
   GET_POLL_COMMENTS_RESPONSES_ENDPOINT,
   GET_POLL_INFO_ENDPOINT,
+  GET_POLL_QUESTIONS_ENDPOINT,
+  LINK_PROPOSAL_ENDPOINT,
   PUBLISH_POLL_COMMENT_ENDPOINT,
   PUBLISH_POLL_ENDPOINT,
+  PUBLISH_POLL_QUESTION_ENDPOINT,
   VOTE_POLL_COMMENT_ENDPOINT,
 } from ".";
 import { useToast } from "@/components/ui/use-toast";
@@ -22,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
 import {
   getPollsSchema,
+  linkProposalSchema,
   pollCommentSchema,
   votePollCommentSchema,
 } from "@/schemas/VotingSchema";
@@ -44,7 +48,6 @@ export const usePublishPoll = () => {
     {
       onSuccess: (res, variables) => {
         const id = variables.get("id") as string;
-        console.log(id);
         toast({
           title: "Success!",
           variant: "success",
@@ -116,6 +119,20 @@ export const useGetPollInfo = (pollId: string) => {
   });
 };
 
+// GET POLL QUESTIONS
+export const useGetPollQuestions = (pollId: string) => {
+  return useQuery({
+    queryKey: ["poll-questions", pollId],
+    queryFn: (): Promise<VotingQuestionsType[]> => {
+      return axios
+        .get(GET_POLL_QUESTIONS_ENDPOINT(pollId))
+        .then((res) => res.data.data.questions);
+    },
+    retry: false,
+    refetchOnWindowFocus: false,
+  });
+};
+
 // GET POLL COMMENTS
 export const useGetPollComments = (
   pollId: string,
@@ -170,6 +187,57 @@ export const useVotePollComment = () => {
     {
       onSuccess: (res) => {
         queryClient.invalidateQueries({ queryKey: ["poll-comments"] });
+        toast({
+          title: "Success!",
+          variant: "success",
+          description: res.message,
+        });
+      },
+    }
+  );
+};
+
+// PUBLISH POLL QUESTION
+export const usePublishPollQuestion = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  return useMutation(
+    (values: FormData): Promise<ResponseDataType> => {
+      return axios
+        .post(PUBLISH_POLL_QUESTION_ENDPOINT, values, {
+          headers: {
+            ...configOptions(),
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => res.data);
+    },
+    {
+      onSuccess: (res) => {
+        queryClient.invalidateQueries({ queryKey: ["poll-questions"] });
+        toast({
+          title: "Success!",
+          variant: "success",
+          description: res.message,
+        });
+      },
+    }
+  );
+};
+
+// PUBLISH POLL QUESTION
+export const useLinkProposal = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  return useMutation(
+    (values: z.infer<typeof linkProposalSchema>): Promise<ResponseDataType> => {
+      return axios
+        .put(LINK_PROPOSAL_ENDPOINT, values, { headers: configOptions() })
+        .then((res) => res.data);
+    },
+    {
+      onSuccess: (res) => {
+        queryClient.invalidateQueries({ queryKey: ["poll-questions"] });
         toast({
           title: "Success!",
           variant: "success",

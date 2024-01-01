@@ -95,7 +95,11 @@ const PollListCard: React.FC<PollListCardProp> = ({ poll }) => {
       {/* BOTTOM */}
       <div className="bg-[#FFFFFF] shadow-xl flex justify-start items-center  rounded-xl p-6 gap-2 flex-wrap">
         {isLoggedIn ? (
-          <Button className="h-fit text-base">Participate in this poll</Button>
+          <Link to={ROUTES.VOTING_INFO_ROUTE(id)}>
+            <Button className="h-fit text-base">
+              Participate in this poll
+            </Button>
+          </Link>
         ) : (
           <Link to={ROUTES.SIGNIN_ROUTE}>
             <Button className="bg-transparent border-dark border-2 w-[150px]">
