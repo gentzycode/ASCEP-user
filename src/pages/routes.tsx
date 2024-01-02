@@ -41,6 +41,14 @@ import ProposalProvider from "@/contexts/ProposalContext";
 import InitiativeProvider from "@/contexts/InitiativeContext";
 import DemocracyLandingePage from "./Democracy/landing-page";
 import VotingProvider from "@/contexts/VotingContext";
+import {
+  BrowseRequestHomePage,
+  CreateRequestPage,
+  DialoguLandingPage,
+  DialogueHelpHomePage,
+  MakeARequestHomePage,
+  ViewAuthoritiesHomePage,
+} from "./Dialogue";
 
 export const landingPages: RouterType[] = [
   {
@@ -75,6 +83,39 @@ const routes: RouterType[] = [
     path: "/democracy",
     element: <DemocracyLandingePage />,
     title: "democracy",
+  },
+];
+
+export const dialogueRoutes: RouterType[] = [
+  {
+    path: "/dialogue",
+    element: <DialoguLandingPage />,
+    title: "dailogue",
+  },
+  {
+    path: "/dialogue/make-a-request",
+    element: <MakeARequestHomePage />,
+    title: "dailogue",
+  },
+  {
+    path: "/dialogue/make-a-request/create-request",
+    element: <CreateRequestPage />,
+    title: "dailogue-create-request",
+  },
+  {
+    path: "/dialogue/browse-request",
+    element: <BrowseRequestHomePage />,
+    title: "dailogue",
+  },
+  {
+    path: "/dialogue/view-authorities",
+    element: <ViewAuthoritiesHomePage />,
+    title: "dailogue",
+  },
+  {
+    path: "/dialogue/dialogue-help",
+    element: <DialogueHelpHomePage />,
+    title: "dailogue",
   },
 ];
 

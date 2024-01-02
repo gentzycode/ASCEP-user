@@ -49,23 +49,35 @@ const DebatesCardViewCard: React.FC<DebatesCardViewCardProps> = ({
           </div>
           {/* SDGs */}
           <div className="my-6 flex gap-[4px]">
-            {debate.debateSDGs.map((SDGs) => (
-              <SDGCard SDG={SDGs.sdgs} key={SDGs.sdgs_id} />
+            {debate.debateSDGs.map((SDGs, i) => (
+              <SDGCard
+                SDG={SDGs.sdgs}
+                key={SDGs.sdgs_id}
+                index={i}
+                isCard={true}
+              />
             ))}
           </div>
           {/* TARGETS */}
           <div className="flex gap-[8px] flex-wrap my-3">
-            {debate.debateTarget.map((target) => (
+            {debate.debateTarget.map((target, i) => (
               <TargetDisplay
                 target={target.targetInfo}
                 key={target.target_id}
+                index={i}
+                isCard={true}
               />
             ))}
           </div>
           {/* TAGS */}
           <div className="flex gap-[8px] flex-wrap">
-            {debate.debateTag.map((tag) => (
-              <TagDisplay tag={tag.tag_name} key={tag.id} />
+            {debate.debateTag.map((tag, i) => (
+              <TagDisplay
+                tag={tag.tag_name}
+                key={tag.id}
+                index={i}
+                isCard={true}
+              />
             ))}
           </div>
         </div>

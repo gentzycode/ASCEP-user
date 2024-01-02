@@ -121,7 +121,7 @@ const WardsMultiSelect = <TFormValues extends Record<string, unknown>>({
                     <Command>
                       <CommandInput placeholder="Search Categories..." />
                       <CommandEmpty>No Ward found.</CommandEmpty>
-                      <CommandGroup>
+                      <CommandGroup className="h-[300px] overflow-y-scroll">
                         {renderedItems.map((renderedItem) => (
                           <CommandItem
                             key={renderedItem.id}

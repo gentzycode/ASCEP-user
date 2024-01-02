@@ -17,16 +17,16 @@ const SDGHomePage: React.FC<SDGProps> = () => {
       <div className="max-w-[900px]">
         <div className="flex gap-2 items-center ">
           <img src="/images/SDG/sdg-logo.png" alt="sdg-logo" />
-          <h1 className="text-[40px] lg:text-[60px]">SDGs</h1>
+          <h1 className="text-3xl text-text lg:text-6xl">SDGs</h1>
         </div>
         <h1 className="capitalize text-primary text-[40px] lg:text-[60px] text-dark">
           Sustainable development goals
         </h1>
 
-        <h3 className="text-[20px] lg:text-[24px] my-3 text-dark">
+        <h3 className="text-[20px] lg:text-[24px] my-3 text-text">
           What are the Sustainable Development Goals?
         </h3>
-        <p className="text-justify text-subtle_text">
+        <p className="text-justify text-subtitle_text">
           The Sustainable Development Goals (SDGs), also known as the Global
           Goals, were adopted by the United Nations in 2015 as a universal call
           to action to end poverty, protect the planet, and ensure that by 2030
@@ -43,7 +43,7 @@ const SDGHomePage: React.FC<SDGProps> = () => {
       </div>
 
       <div className="my-8">
-        <h3 className="text-xl lg:text-3xl  ">
+        <h3 className="text-xl lg:text-3xl  text-text">
           The Sustainable Development Goals
         </h3>
         {fetchingSdgs && (

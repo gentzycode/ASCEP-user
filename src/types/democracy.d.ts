@@ -403,6 +403,13 @@ interface VotingType {
   userParticipated: boolean;
   questions: VotingQuestionsType[];
   proposals: ProposalType[];
+  votingWards: VotingWardType[];
+}
+
+interface VotingWardType {
+  voting_id: string;
+  wardDetail: WardsType;
+  ward_id: number;
 }
 interface VotingTarget {
   target_id: number;
@@ -437,7 +444,7 @@ interface VotingQuestionsType {
   createdAt: string;
 }
 
-type QuestionResponseType = string | { answer: string[] };
+type QuestionResponseType = { answer: string[] };
 
 interface VotingProposalType {
   id: string;

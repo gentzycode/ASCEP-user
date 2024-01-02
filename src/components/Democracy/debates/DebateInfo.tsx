@@ -93,8 +93,8 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
         {/* SDGs */}
         {debateSDGs.length > 0 && (
           <div className="flex gap-2 flex-wrap">
-            {debate.debateSDGs.map((SDGs) => (
-              <SDGCard SDG={SDGs.sdgs} key={SDGs.sdgs_id} />
+            {debate.debateSDGs.map((SDGs, i) => (
+              <SDGCard SDG={SDGs.sdgs} key={SDGs.sdgs_id} index={i} />
             ))}
           </div>
         )}
@@ -102,10 +102,11 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
         {/* TARGETS */}
         {debateTarget.length > 0 && (
           <div className="flex gap-[8px] flex-wrap">
-            {debate.debateTarget.map((target) => (
+            {debate.debateTarget.map((target, i) => (
               <TargetDisplay
                 target={target.targetInfo}
                 key={target.target_id}
+                index={i}
               />
             ))}
           </div>

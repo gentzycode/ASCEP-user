@@ -1,6 +1,7 @@
 import { useNavigationContext } from "@/contexts/NavigationContext";
 import {
   DemocracyLinks,
+  DialogueLinks,
   FooterLinks,
   sidebarLinks,
 } from "@/utils/NavigationData";
@@ -53,6 +54,59 @@ const MobileNavigation = () => {
             <div className="flex flex-col mt-[60px]  pb-20 px-6">
               <div className="flex flex-col justify-start gap-[25px]">
                 {DemocracyLinks.map((link: NavLinkType, index) => {
+                  return (
+                    <Link
+                      key={index}
+                      className={`${
+                        activeLink === link.path
+                          ? "border-b-4 border-primary"
+                          : "text-[#6B6B6B]"
+                      } w-fit`}
+                      to={link.path}
+                    >
+                      <button className="inline-flex text-[18px] duration-300 font-[500] gap-[14px] pb-2">
+                        {link.title}
+                      </button>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="300"
+              height="5"
+              viewBox="0 0 193 2"
+              fill="none"
+              className="mx-auto"
+            >
+              <path
+                d="M1 1H192"
+                stroke="url(#paint0_radial_300_2198)"
+                strokeLinecap="round"
+              />
+              <defs>
+                <radialGradient
+                  id="paint0_radial_300_2198"
+                  cx="0"
+                  cy="0"
+                  r="1"
+                  gradientUnits="userSpaceOnUse"
+                  gradientTransform="translate(96.5 1.5) rotate(90) scale(0.5 95.5)"
+                >
+                  <stop stopColor="#6B6B6B" />
+                  <stop offset="1" stopOpacity="0" />
+                </radialGradient>
+              </defs>
+            </svg>
+          </>
+        )}
+        {activeModule === "dialogue" && (
+          <>
+            <div className="flex flex-col mt-[60px]  pb-20 px-6">
+              <div className="flex flex-col justify-start gap-[25px]">
+                {DialogueLinks.map((link: NavLinkType, index) => {
                   return (
                     <Link
                       key={index}

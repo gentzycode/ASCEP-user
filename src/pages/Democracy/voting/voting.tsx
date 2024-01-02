@@ -27,6 +27,7 @@ const VotingHomePage: React.FC<VotingHomePageProp> = () => {
     filterOptions,
     perPage,
     setPage,
+    filterByButton,
   } = useVotingContext();
 
   const { isLoggedIn } = useAuthContext();
@@ -45,7 +46,7 @@ const VotingHomePage: React.FC<VotingHomePageProp> = () => {
       <div className="my-8">
         <FilterButtons
           filterButtonOptions={votingFilterButtonOptions}
-          filterByButton={() => {}}
+          filterByButton={filterByButton}
         />
       </div>
 

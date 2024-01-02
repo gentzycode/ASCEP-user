@@ -42,7 +42,7 @@ const FormInput = <TFormValues extends Record<string, unknown>>({
         <FormItem className="flex-1">
           <h3 className="text-sm md:text-base text-text">{label}</h3>
           {description && (
-            <p className="text-[12px] text-dark -tracking-[0.28px]">
+            <p className="text-[12px] text-text -tracking-[0.28px]">
               {description}
             </p>
           )}
