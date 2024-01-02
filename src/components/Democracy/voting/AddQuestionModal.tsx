@@ -25,11 +25,9 @@ const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
   isOpen,
   onClose,
   isEditing,
-  question,
+  question: questionToEdit,
 }) => {
-  const [options, setOptions] = useState<string[]>(
-    question?.options ? [...question.options] : []
-  );
+  const [options, setOptions] = useState<string[]>([]);
 
   const { pollId } = useParams();
 
@@ -39,11 +37,11 @@ const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
   const form = useForm<z.infer<typeof publishPollingQuestionSchema>>({
     resolver: zodResolver(publishPollingQuestionSchema),
     defaultValues: {
-      question: question?.question ?? "",
+      question: "",
       voting_id: pollId!,
-      response_type: question?.response_type ?? undefined,
+      response_type: undefined,
       options: [],
-      id: question?.id ? String(question?.id) : undefined,
+      id: undefined,
     },
   });
 
@@ -57,11 +55,24 @@ const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
   } = form;
 
   useEffect(() => {
-    setValue("options", options);
     if (options.length > 0) {
+      setValue("options", options);
       trigger("options");
     }
   }, [options]);
+
+  useEffect(() => {
+    if (questionToEdit) {
+      const { id, options, response_type, voting_id, question } =
+        questionToEdit;
+      setValue("options", options);
+      setValue("question", question);
+      setValue("response_type", response_type);
+      setValue("voting_id", String(voting_id));
+      setValue("id", String(id));
+      setOptions(options);
+    }
+  }, []);
 
   async function onSubmit(
     values: z.infer<typeof publishPollingQuestionSchema>
@@ -81,10 +92,13 @@ const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
     await publishPollQuestion(formData);
     handleCloseModal();
   }
+  const cancelEditing = () => {
+    onClose();
+  };
   const handleCloseModal = () => {
     reset();
-    onClose();
     setOptions([]);
+    onClose();
   };
 
   return (
@@ -135,10 +149,7 @@ const AddQuestionModal: React.FC<AddQuestionModalProps> = ({
               </Button>
               <Button
                 className="w-full max-w-[150px] text-base p-0 h-12 bg-transparent border border-primary"
-                onClick={() => {
-                  onClose();
-                  reset();
-                }}
+                onClick={cancelEditing}
                 type="button"
                 disabled={isPublishing}
               >

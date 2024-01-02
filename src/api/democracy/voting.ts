@@ -9,6 +9,7 @@ import {
 import { configOptions } from "../config";
 import { z } from "zod";
 import {
+  DELETE_POLL_ENDPOINT,
   GET_ALL_POLLS_ENDPOINT,
   GET_POLL_COMMENTS_ENDPOINT,
   GET_POLL_COMMENTS_RESPONSES_ENDPOINT,
@@ -18,6 +19,7 @@ import {
   PUBLISH_POLL_COMMENT_ENDPOINT,
   PUBLISH_POLL_ENDPOINT,
   PUBLISH_POLL_QUESTION_ENDPOINT,
+  PUBLISH_QUESTION_ANSWERS_ENDPOINT,
   VOTE_POLL_COMMENT_ENDPOINT,
 } from ".";
 import { useToast } from "@/components/ui/use-toast";
@@ -27,6 +29,7 @@ import {
   getPollsSchema,
   linkProposalSchema,
   pollCommentSchema,
+  pollQuestionAnswerSchema,
   votePollCommentSchema,
 } from "@/schemas/VotingSchema";
 
@@ -243,6 +246,54 @@ export const useLinkProposal = () => {
           variant: "success",
           description: res.message,
         });
+      },
+    }
+  );
+};
+
+// PUBLISH  QUESTION ANSWER
+export const usePublishQuestionAnswers = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  return useMutation(
+    (
+      values: z.infer<typeof pollQuestionAnswerSchema>
+    ): Promise<ResponseDataType> => {
+      return axios
+        .put(PUBLISH_QUESTION_ANSWERS_ENDPOINT, values, {
+          headers: configOptions(),
+        })
+        .then((res) => res.data);
+    },
+    {
+      onSuccess: (res) => {
+        queryClient.invalidateQueries({ queryKey: ["poll-info"] });
+        toast({
+          title: "Success!",
+          variant: "success",
+          description: res.message,
+        });
+      },
+    }
+  );
+};
+
+// DELETE POLL
+export const useDeletePoll = (pollId: string) => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  return useMutation(
+    (): Promise<ResponseDataType> => {
+      return axios.delete(DELETE_POLL_ENDPOINT(pollId)).then((res) => res.data);
+    },
+    {
+      onSuccess: (res) => {
+        toast({
+          title: "Success!",
+          variant: "success",
+          description: res.message,
+        });
+        navigate(ROUTES.VOTING_HOME_ROUTE, { replace: true });
       },
     }
   );

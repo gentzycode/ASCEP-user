@@ -11,8 +11,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { multiAnswerQuestionSchema } from "@/schemas/VotingSchema";
+import { pollQuestionAnswerSchema } from "@/schemas/VotingSchema";
 import { useParams } from "react-router-dom";
+import { usePublishQuestionAnswers } from "@/api/democracy/voting";
+import { TickSquare } from "iconsax-react";
 
 interface MultiAnswerQuestionProp {
   questions: VotingQuestionsType;
@@ -21,20 +23,26 @@ const MultiAnswerQuestion: React.FC<MultiAnswerQuestionProp> = ({
   questions,
 }) => {
   const { pollId } = useParams();
-  const { options, question, id } = questions;
+  const { options, question, id, userAnswered } = questions;
 
-  const form = useForm<z.infer<typeof multiAnswerQuestionSchema>>({
-    resolver: zodResolver(multiAnswerQuestionSchema),
+  const { mutateAsync: publishAnswer, isLoading: isPublishingAnswer } =
+    usePublishQuestionAnswers();
+
+  const form = useForm<z.infer<typeof pollQuestionAnswerSchema>>({
+    resolver: zodResolver(pollQuestionAnswerSchema),
     defaultValues: {
       voting_id: "",
       question_id: "",
-      selected_option: [],
+      selected_option: "",
     },
   });
 
-  function onSubmit(data: z.infer<typeof multiAnswerQuestionSchema>) {
-    console.log({ ...data, question_id: id, voting_id: pollId });
+  function onSubmit(data: z.infer<typeof pollQuestionAnswerSchema>) {
+    publishAnswer({ ...data, question_id: id, voting_id: pollId! });
   }
+
+  const selected = (option: string) =>
+    userAnswered?.response?.answer.includes(option);
 
   return (
     <Form {...form}>
@@ -63,23 +71,29 @@ const MultiAnswerQuestion: React.FC<MultiAnswerQuestionProp> = ({
                       return (
                         <FormItem key={i}>
                           <FormControl>
-                            <div className="bg-transparent flex justify-center py-3 rounded-xl border text-text border-dark min-w-[150px] whitespace-normal h-fit relative has-[:checked]:bg-primary">
+                            <div
+                              className={`bg-transparent flex justify-center items-center gap-2 py-3 rounded-xl border text-text border-dark min-w-[150px] whitespace-normal h-fit relative ${
+                                selected(item) && "!bg-primary"
+                              }`}
+                            >
                               <Checkbox
-                                checked={field.value?.includes(item)}
-                                onCheckedChange={(checked: boolean) => {
-                                  return checked
-                                    ? field.onChange([...field.value, item])
-                                    : field.onChange(
-                                        field.value?.filter(
-                                          (value) => value !== item
-                                        )
-                                      );
-                                }}
+                                checked={userAnswered?.response?.answer?.includes(
+                                  item
+                                )}
+                                onCheckedChange={() => field.onChange(item)}
                                 className="absolute top-0 left-0 w-full h-full !appearance-none !text-transparent !bg-transparent"
+                                type="submit"
+                                disabled={isPublishingAnswer}
                               />
-                              <FormLabel className="text-sm text-text">
+                              <Button
+                                className="text-sm text-text h-4 w-fit p-0 bg-transparent "
+                                isLoading={isPublishingAnswer}
+                              >
                                 {item}
-                              </FormLabel>
+                                {userAnswered?.response?.answer?.includes(
+                                  item
+                                ) && <TickSquare size="20" color="green" />}
+                              </Button>
                             </div>
                           </FormControl>
                         </FormItem>
@@ -92,12 +106,6 @@ const MultiAnswerQuestion: React.FC<MultiAnswerQuestionProp> = ({
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          className="w-full max-w-[150px] text-text text-base py-2 h-fit px-3"
-        >
-          Submit
-        </Button>
       </form>
     </Form>
   );

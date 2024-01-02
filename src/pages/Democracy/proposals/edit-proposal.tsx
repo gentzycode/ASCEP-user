@@ -23,10 +23,9 @@ import {
   usePublishProposal,
 } from "@/api/democracy/proposals";
 import TargetsMultiSelect from "@/components/custom/TargetsMultiSelect";
-import { IconWrapper } from "@/components/custom";
-import { FaSpinner } from "react-icons/fa";
 import { useAppContext } from "@/contexts/AppContext";
 import { useGetAllCategories } from "@/api/category";
+import { PageLoader } from "@/components/custom";
 
 interface EditProposalPageProps {}
 const EditProposalPage: React.FC<EditProposalPageProps> = () => {
@@ -147,11 +146,7 @@ const EditProposalPage: React.FC<EditProposalPageProps> = () => {
 
   return (
     <>
-      {isLoadingProposal && (
-        <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
-          <FaSpinner className="animate-spin text-[100px]" />
-        </IconWrapper>
-      )}
+      {isLoadingProposal && <PageLoader />}
       {isError && !proposal && <NotFound message="No Debate found" />}
 
       {proposal && (
@@ -341,7 +336,7 @@ const EditProposalPage: React.FC<EditProposalPageProps> = () => {
 
               <Button
                 type="submit"
-                className="w-full max-w-[300px] p-0 h-fit py-3"
+                className="w-full max-w-[300px] p-0 h-12"
                 isLoading={isUpdatingProposal}
                 disabled
               >

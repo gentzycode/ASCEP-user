@@ -11,18 +11,25 @@ const EditQuestionButton: React.FC<EditQuestionButtonProp> = ({ question }) => {
     onClose: closeModal,
     onOpen: openModal,
   } = useDisclosure();
+  const handleEdit = () => {
+    openModal();
+  };
+
+  const handleClose = () => {
+    closeModal();
+  };
 
   return (
     <>
       <Edit
         size="25"
-        onClick={openModal}
+        onClick={handleEdit}
         className="cursor-pointer text-primary"
       />
       {/* EDIT MODAL */}
       <AddQuestionModal
         isOpen={isModalOpen}
-        onClose={closeModal}
+        onClose={handleClose}
         isEditing={true}
         question={question}
       />

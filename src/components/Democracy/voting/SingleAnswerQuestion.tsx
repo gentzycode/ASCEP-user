@@ -11,8 +11,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { singleAnswerQuestionSchema } from "@/schemas/VotingSchema";
+import { pollQuestionAnswerSchema } from "@/schemas/VotingSchema";
 import { useParams } from "react-router-dom";
+import { usePublishQuestionAnswers } from "@/api/democracy/voting";
+import { TickSquare } from "iconsax-react";
 
 interface SingleAnswerQuestionProp {
   questions: VotingQuestionsType;
@@ -21,21 +23,26 @@ const SingleAnswerQuestion: React.FC<SingleAnswerQuestionProp> = ({
   questions,
 }) => {
   const { pollId } = useParams();
+  const { options, question, id, userAnswered } = questions;
 
-  const { options, question, id } = questions;
+  const { mutateAsync: publishAnswer, isLoading: isPublishingAnswer } =
+    usePublishQuestionAnswers();
 
-  const form = useForm<z.infer<typeof singleAnswerQuestionSchema>>({
-    resolver: zodResolver(singleAnswerQuestionSchema),
+  const form = useForm<z.infer<typeof pollQuestionAnswerSchema>>({
+    resolver: zodResolver(pollQuestionAnswerSchema),
     defaultValues: {
       voting_id: "",
       question_id: "",
-      selected_option: "",
+      selected_option: userAnswered?.response?.answer[0] ?? "",
     },
   });
 
-  function onSubmit(data: z.infer<typeof singleAnswerQuestionSchema>) {
-    console.log({ ...data, question_id: id, voting_id: pollId });
+  function onSubmit(data: z.infer<typeof pollQuestionAnswerSchema>) {
+    publishAnswer({ ...data, question_id: id, voting_id: pollId! });
   }
+
+  const selected = (option: string) =>
+    userAnswered?.response?.answer.includes(option);
 
   return (
     <Form {...form}>
@@ -49,7 +56,9 @@ const SingleAnswerQuestion: React.FC<SingleAnswerQuestionProp> = ({
           render={() => (
             <FormItem>
               <div className="mb-5">
-                <h4 className="text-text text-base md:text-lg  ">{question}</h4>
+                <h4 className="text-text text-base md:text-lg  flex items-center gap-2">
+                  {question}
+                </h4>
               </div>
               <div className="flex justify-start items-center gap-2 flex-wrap my-2">
                 {options.map((item, i) => (
@@ -61,19 +70,33 @@ const SingleAnswerQuestion: React.FC<SingleAnswerQuestionProp> = ({
                       return (
                         <FormItem key={i}>
                           <FormControl>
-                            <div className="bg-transparent flex justify-center py-3 rounded-xl border text-text border-dark min-w-[150px] whitespace-normal h-fit relative has-[:checked]:bg-primary">
+                            <div
+                              className={`bg-transparent flex justify-center gap-2 py-3 rounded-xl border text-text border-dark min-w-[150px] whitespace-normal h-fit relative ${
+                                selected(item) && "!bg-primary"
+                              }`}
+                            >
                               <Checkbox
-                                checked={field.value === item}
+                                checked={userAnswered?.response?.answer?.includes(
+                                  item
+                                )}
                                 onCheckedChange={(checked: boolean) => {
                                   return checked
                                     ? field.onChange(item)
-                                    : field.onChange("");
+                                    : field.onChange(item);
                                 }}
                                 className="absolute top-0 left-0 w-full h-full !appearance-none !text-transparent !bg-transparent"
+                                type="submit"
+                                disabled={isPublishingAnswer}
                               />
-                              <FormLabel className="text-sm text-text">
+                              <Button
+                                className="text-sm text-text h-4 w-fit p-0 bg-transparent "
+                                isLoading={isPublishingAnswer}
+                              >
                                 {item}
-                              </FormLabel>
+                                {userAnswered?.response?.answer?.includes(
+                                  item
+                                ) && <TickSquare size="20" color="green" />}
+                              </Button>
                             </div>
                           </FormControl>
                         </FormItem>
@@ -86,12 +109,6 @@ const SingleAnswerQuestion: React.FC<SingleAnswerQuestionProp> = ({
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          className="w-full max-w-[150px] text-text text-base py-2 h-fit px-3"
-        >
-          Submit
-        </Button>
       </form>
     </Form>
   );

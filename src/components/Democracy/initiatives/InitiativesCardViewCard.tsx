@@ -79,25 +79,34 @@ const InitiativesCardViewCard: React.FC<InitiativesCardViewCardProps> = ({
           </div>
           {/* TARGETS */}
           <div className="flex gap-[8px] flex-wrap my-3">
-            {initiative.initiativeTarget.map((target) => (
+            {initiative.initiativeTarget.map((target, i) => (
               <TargetDisplay
                 target={target.targetInfo}
                 key={target.target_id}
+                index={i}
+                isCard={true}
               />
             ))}
           </div>
           {/* TAGS */}
           <div className="flex gap-[8px] flex-wrap">
-            {initiative.initiativeTag.map((tag) => (
-              <TagDisplay tag={tag.tag_name} key={tag.id} />
+            {initiative.initiativeTag.map((tag, i) => (
+              <TagDisplay
+                tag={tag.tag_name}
+                key={tag.id}
+                index={i}
+                isCard={true}
+              />
             ))}
           </div>
           {/* CATEGORIES */}
           <div className="flex gap-[8px] flex-wrap mt-3">
-            {initiative.initiativeCategory.map((category) => (
+            {initiative.initiativeCategory.map((category, i) => (
               <CategoryDisplay
                 category={category.categoryDetail.name}
                 key={category.category_id}
+                index={i}
+                isCard={true}
               />
             ))}
           </div>

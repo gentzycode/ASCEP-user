@@ -1,4 +1,4 @@
-import { CardEdit, Flag, Messages1, Setting3 } from "iconsax-react";
+import { CardEdit, Flag, Messages1, Setting3, Trash } from "iconsax-react";
 import { Questions, SDGCard, Share, TargetDisplay } from "..";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { Button } from "@/components/ui/button";
@@ -7,14 +7,15 @@ import ROUTES from "@/utils/routesNames";
 import { Link } from "react-router-dom";
 import { formattedDate } from "@/utils/helper";
 import { frontendURL } from "@/api/baseUrl";
+import ALert from "@/components/custom/Alert";
+import useDisclosure from "@/hooks/useDisclosure";
+import { useDeletePoll } from "@/api/democracy/voting";
 
 interface PollInfoProp {
   scrollToComments: () => void;
   poll: VotingType;
 }
 const PollInfo: React.FC<PollInfoProp> = ({ scrollToComments, poll }) => {
-  const { isLoggedIn } = useAuthContext();
-
   const {
     id,
     title,
@@ -29,6 +30,21 @@ const PollInfo: React.FC<PollInfoProp> = ({ scrollToComments, poll }) => {
     shareable_id,
     questions,
   } = poll;
+  const { isLoggedIn } = useAuthContext();
+
+  const { mutateAsync: deletePoll, isLoading: isDeletingPoll } =
+    useDeletePoll(id);
+
+  const {
+    isOpen: alertOpen,
+    onOpen: openAlert,
+    onClose: closeAlert,
+  } = useDisclosure();
+
+  const handleDelete = async () => {
+    await deletePoll();
+    close();
+  };
   return (
     <>
       <div className="flex justify-start gap-10 xl:flex-row flex-col">
@@ -60,8 +76,8 @@ const PollInfo: React.FC<PollInfoProp> = ({ scrollToComments, poll }) => {
           {/* SDGs */}
           {votingSDGs.length > 0 && (
             <div className="flex gap-2 flex-wrap">
-              {votingSDGs.map((SDGs) => (
-                <SDGCard SDG={SDGs.sdg} key={SDGs.sdg_id} />
+              {votingSDGs.map((SDGs, i) => (
+                <SDGCard SDG={SDGs.sdg} key={SDGs.sdg_id} index={i} />
               ))}
             </div>
           )}
@@ -69,10 +85,11 @@ const PollInfo: React.FC<PollInfoProp> = ({ scrollToComments, poll }) => {
           {/* TARGETS */}
           {votingTarget.length > 0 && (
             <div className="flex gap-[8px] flex-wrap">
-              {votingTarget.map((target) => (
+              {votingTarget.map((target, i) => (
                 <TargetDisplay
                   target={target.targetInfo}
                   key={target.target_id}
+                  index={i}
                 />
               ))}
             </div>
@@ -138,6 +155,15 @@ const PollInfo: React.FC<PollInfoProp> = ({ scrollToComments, poll }) => {
                     <Setting3 />
                   </Button>
                 </Link>
+                <Button
+                  className="text-red-500 border border-red-500
+                 hover:text-light text-base  bg-transparent hover:bg-red-400 h-fit my-4 px-8 py-3 
+                 justify-center gap-1 flex rounded-lg w-full max-w-[220px]"
+                  onClick={openAlert}
+                >
+                  <span>Delete Poll</span>
+                  <Trash />
+                </Button>
               </div>
             </>
           )}
@@ -170,6 +196,16 @@ const PollInfo: React.FC<PollInfoProp> = ({ scrollToComments, poll }) => {
         </h5>
         <p className="text-subtitle_text  text-justify">{description}</p>
       </div>
+
+      {/* DELETE ALERT */}
+      <ALert
+        message="Are you sure you want to delete this poll"
+        description="This action cannot be undone. This will permanently delete your poll."
+        action={handleDelete}
+        isOpen={alertOpen}
+        close={closeAlert}
+        loadingAction={isDeletingPoll}
+      />
     </>
   );
 };

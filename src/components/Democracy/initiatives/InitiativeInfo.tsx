@@ -111,8 +111,8 @@ const InitiativeInfo: React.FC<InitiativeInfoProps> = ({
         {/* SDGs */}
         {initiative.initiativeSDGs.length > 0 && (
           <div className="flex gap-2 flex-wrap">
-            {initiative.initiativeSDGs.map((SDGs) => (
-              <SDGCard SDG={SDGs.sdg} key={SDGs.sdg_id} />
+            {initiative.initiativeSDGs.map((SDGs, i) => (
+              <SDGCard SDG={SDGs.sdg} key={SDGs.sdg_id} index={i} />
             ))}
           </div>
         )}
@@ -120,10 +120,11 @@ const InitiativeInfo: React.FC<InitiativeInfoProps> = ({
         {/* TARGETS */}
         {initiative.initiativeTarget.length > 0 && (
           <div className="flex gap-[8px] flex-wrap">
-            {initiative.initiativeTarget.map((target) => (
+            {initiative.initiativeTarget.map((target, i) => (
               <TargetDisplay
                 target={target.targetInfo}
                 key={target.target_id}
+                index={i}
               />
             ))}
           </div>
@@ -132,8 +133,8 @@ const InitiativeInfo: React.FC<InitiativeInfoProps> = ({
         {/* TAGS */}
         {initiative.initiativeTag.length > 0 && (
           <div className="flex gap-[8px] flex-wrap">
-            {initiative.initiativeTag.map((tag) => (
-              <TagDisplay tag={tag.tag_name} key={tag.id} />
+            {initiative.initiativeTag.map((tag, i) => (
+              <TagDisplay tag={tag.tag_name} key={tag.id} index={i} />
             ))}
           </div>
         )}
@@ -141,8 +142,11 @@ const InitiativeInfo: React.FC<InitiativeInfoProps> = ({
         {/* CATEGORIES */}
         {initiative.initiativeCategory.length > 0 && (
           <div className="flex gap-[8px] flex-wrap">
-            {initiative.initiativeCategory.map((category) => (
-              <CategoryDisplay category={category.categoryDetail.name} />
+            {initiative.initiativeCategory.map((category, i) => (
+              <CategoryDisplay
+                category={category.categoryDetail.name}
+                index={i}
+              />
             ))}
           </div>
         )}

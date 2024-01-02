@@ -3,16 +3,22 @@ import axios from "axios";
 
 import routes, {
   democracyRoutes,
+  dialogueRoutes,
   landingPages,
   responseRoutes,
   unauthenticatedRoutes,
 } from "./routes";
-import { AuthPagesLayout, MainLayout, ResponseLayout } from "@/layouts";
+import {
+  AuthPagesLayout,
+  MainLayout,
+  ResponseLayout,
+  DemocracyLayout,
+  DialogueLayout,
+} from "@/layouts";
 import config from "@/utils/config";
 import { useToast } from "@/components/ui/use-toast";
 import useAutoLogout from "@/hooks/useAuthoLogout";
 import { ViewResponsePage } from "./Response";
-import DemocracyLayout from "@/layouts/DemocracyLayout";
 import SmoothScroll from "@/components/custom/ScrollToTop";
 
 const Router = () => {
@@ -25,7 +31,14 @@ const Router = () => {
       return <Route key={title} path={`/${path}`} element={element} />;
     }
   );
+
   const democracyPages = democracyRoutes.map(
+    ({ path, title, element }: RouterType) => {
+      return <Route key={title} path={`/${path}`} element={element} />;
+    }
+  );
+
+  const dialoguePages = dialogueRoutes.map(
     ({ path, title, element }: RouterType) => {
       return <Route key={title} path={`/${path}`} element={element} />;
     }
@@ -115,6 +128,9 @@ const Router = () => {
           </Route>
           <Route path="" element={<DemocracyLayout />}>
             {democracyPages}
+          </Route>
+          <Route path="" element={<DialogueLayout />}>
+            {dialoguePages}
           </Route>
         </Route>
 

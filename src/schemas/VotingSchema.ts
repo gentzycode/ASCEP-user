@@ -9,22 +9,22 @@ const ACCEPTED_IMAGE_MIME_TYPES = [
 
 export const publishPollingSchema = z.object({
   title: z
-    .string({ required_error: "Please enter a title for your proposal" })
+    .string({ required_error: "Please enter a title for your poll" })
     .refine((value) => value.trim() !== "", {
-      message: "Please enter a title for your proposal",
+      message: "Please enter a title for your poll",
     }),
   summary: z
-    .string({ required_error: "Proposal summary is required" })
+    .string({ required_error: "Poll summary is required" })
     .max(200, {
-      message: "Proposal summary must be maximum of 200 characters.",
+      message: "Poll summary must be maximum of 200 characters.",
     })
     .refine((value) => value.trim() !== "", {
-      message: "Please enter a summary of your proposal",
+      message: "Please enter a summary of your poll",
     }),
   description: z
-    .string({ required_error: "Voting description is required" })
+    .string({ required_error: "Poll description is required" })
     .refine((value) => value.trim() !== "", {
-      message: "Please enter a summary of your proposal",
+      message: "Please enter a description of your poll",
     }),
   start_date: z.coerce.date({
     required_error: "Start date is required",
@@ -92,22 +92,14 @@ export const pollCommentSchema = z.object({
   comment_reference: z.string().optional(),
 });
 
-export const singleAnswerQuestionSchema = z.object({
+export const pollQuestionAnswerSchema = z.object({
   voting_id: z.string(),
   question_id: z.string(),
-  selected_option: z
-    .string({ required_error: "select an answer" })
-    .refine((value) => value.trim() !== "", {
-      message: "Please select an answer",
-    }),
-});
-
-export const multiAnswerQuestionSchema = z.object({
-  voting_id: z.string(),
-  question_id: z.string(),
-  selected_option: z
-    .array(z.string())
-    .min(1, "Please select at least one answer"),
+  selected_option: z.string().refine((value) => value.trim() !== "", {
+    message: "Please select an question",
+  }),
+  // .array(z.string())
+  // .min(1, "Please select at least one answer"),
 });
 
 export const votePollCommentSchema = z.object({

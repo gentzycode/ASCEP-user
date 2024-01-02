@@ -46,6 +46,19 @@ const ROUTES = {
   BUDGETING_HOME_ROUTE: "/democracy/budgeting",
   WARD_PROJECTS_HOME_ROUTE: (wardId: string) =>
     `/democracy/budgeting/ward-project/${wardId}`,
+
+  //MAKE A REQUEST
+  MAKE_A_REQUEST_HOME_ROUTE: "/dialogue/make-a-request",
+  CREATE_REQUEST_ROUTE: "/dialogue/make-a-request/create-request",
+
+  //BROWSE REQUEST
+  BROWSE_REQUEST_HOME_ROUTE: "/dialogue/browse-request",
+
+  //VIEW AUTHORITIES
+  VIEW_AUTHORITIES_HOME_ROUTE: "/dialogue/view-authorities",
+
+  //DIALOGUE HELP
+  DIALOGUE_HELP_HOME_ROUTE: "/dialogue/dialogue-help",
 };
 
 export default ROUTES;

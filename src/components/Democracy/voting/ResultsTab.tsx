@@ -4,7 +4,6 @@ import { Controller, useForm } from "react-hook-form";
 import { showResultsSchema } from "@/schemas/VotingSchema";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-
 interface ResultsTabProp {}
 const ResultsTab: React.FC<ResultsTabProp> = () => {
   const form = useForm<z.infer<typeof showResultsSchema>>({

@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import FormTextArea from "@/components/Democracy/common/FormTextArea";
 import TargetsMultiSelect from "@/components/custom/TargetsMultiSelect";
-import { IconWrapper } from "@/components/custom";
+import { IconWrapper, PageLoader } from "@/components/custom";
 import { FaSpinner } from "react-icons/fa";
 import { useAppContext } from "@/contexts/AppContext";
 import { useGetAllCategories } from "@/api/category";
@@ -42,9 +42,7 @@ const EditInitiativePage: React.FC<EditInitiativePageProps> = () => {
     isError,
   } = useGetInitiativeInfo(initiativeId!);
 
-  const [tags, setTags] = useState<string[]>(
-    initiative?.initiativeTag.map((tag) => tag.tag_name) ?? []
-  );
+  const [tags, setTags] = useState<string[]>([]);
   const [targets, setTargets] = useState<SDGTarget[]>([]);
 
   const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -52,16 +50,14 @@ const EditInitiativePage: React.FC<EditInitiativePageProps> = () => {
   const form = useForm<z.infer<typeof startInitiativeSchema>>({
     resolver: zodResolver(startInitiativeSchema),
     defaultValues: {
-      title: initiative?.title,
-      description: initiative?.description,
-      ward_id: initiative?.ward_id,
+      title: undefined,
+      description: undefined,
+      ward_id: undefined,
       tags: [],
-      categories: initiative?.initiativeCategory.map(
-        (item) => item.category_id
-      ),
-      sdgs: initiative?.initiativeSDGs.map((item) => item.sdg_id),
+      categories: [],
+      sdgs: [],
       targets: [],
-      support_needed: initiative?.support_needed,
+      support_needed: undefined,
     },
   });
 
@@ -125,13 +121,34 @@ const EditInitiativePage: React.FC<EditInitiativePageProps> = () => {
     getCategories();
   }, []);
 
+  useEffect(() => {
+    if (initiative) {
+      getTargets();
+      getCategories();
+      const {
+        title,
+        description,
+        initiativeSDGs,
+        initiativeTag,
+        ward_id,
+        support_needed,
+      } = initiative;
+      setValue("id", initiativeId);
+      setValue("title", title);
+      setValue("description", description);
+      setValue("ward_id", ward_id);
+      setValue("support_needed", support_needed);
+      setTags(initiativeTag.map((tag) => tag.tag_name));
+      setValue(
+        "sdgs",
+        initiativeSDGs.map((item) => item.sdg_id)
+      );
+    }
+  }, [initiative, allTargets, allCategories]);
+
   return (
     <>
-      {isLoadingProposal && (
-        <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
-          <FaSpinner className="animate-spin text-[100px]" />
-        </IconWrapper>
-      )}
+      {isLoadingProposal && <PageLoader />}
       {isError && !initiative && <NotFound message="No Debate found" />}
 
       {initiative && (
@@ -266,7 +283,7 @@ const EditInitiativePage: React.FC<EditInitiativePageProps> = () => {
 
               <Button
                 type="submit"
-                className="w-full max-w-[400px] p-0 h-fit py-3"
+                className="w-full max-w-[400px] p-0 h-12"
                 isLoading={isUpdatingInitiative}
                 disabled={isUpdatingInitiative}
               >

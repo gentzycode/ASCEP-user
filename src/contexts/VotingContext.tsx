@@ -117,7 +117,7 @@ export default function VotingProvider({ children }: PropsWithChildren) {
         }
       });
 
-      const newFilter = { ...filterOptions, status: "value" };
+      const newFilter = { ...filterOptions, status: value };
       setFilterOptions(newFilter);
     } else {
       setFilterOptions({});
