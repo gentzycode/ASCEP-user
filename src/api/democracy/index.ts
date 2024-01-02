@@ -163,7 +163,13 @@ export const PUBLISH_POLL_QUESTION_ENDPOINT = baseUrl + "/voting/poll-question";
 export const GET_POLL_QUESTIONS_ENDPOINT = (pollId: string) =>
   baseUrl + `/voting/questions/${pollId}`;
 
+export const PUBLISH_QUESTION_ANSWERS_ENDPOINT =
+  baseUrl + "/voting/answer-question";
+
 export const LINK_PROPOSAL_ENDPOINT = baseUrl + "/voting/link-proposals";
+
+export const DELETE_POLL_ENDPOINT = (pollId: string) =>
+  baseUrl + `/voting/delete/${pollId}`;
 
 //SDG
 export const GET_ALL_SDGs_ENDPOINT = baseUrl + "/sdg/all";

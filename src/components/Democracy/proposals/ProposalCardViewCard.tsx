@@ -37,36 +37,55 @@ const ProposalCardViewCard: React.FC<ProposalCardViewCardProps> = ({
             <p className="text-[12px] text-base-400 my-3 ">
               {formattedDate(proposal.createdAt)}
             </p>
-            <div className="text-14px text-transparent max-h-[70px] pb-5 bg-gradient-to-t to-[#64748B] to-70% from-[#f0f2f4] bg-clip-text overflow-hidden">
+            <div
+              className="text-14px text-transparent max-h-[70px] pb-5 bg-gradient-to-t 
+            to-[#64748B] to-70% from-[#f0f2f4] bg-clip-text overflow-hidden"
+            >
               <div dangerouslySetInnerHTML={{ __html: proposal.content }} />
             </div>
           </div>
           {/* SDG */}
           <div className="my-6 flex gap-[4px]">
-            {proposal.proposalSDGs.map((SDGs: ProposalSDGType) => (
-              <SDGCard SDG={SDGs.sdgs} key={SDGs.sdgs_id} />
+            {proposal.proposalSDGs.map((SDGs: ProposalSDGType, i) => (
+              <SDGCard
+                SDG={SDGs.sdgs}
+                key={SDGs.sdgs_id}
+                index={i}
+                isCard={true}
+              />
             ))}
           </div>
           {/* TARGETS */}
           <div className="flex gap-[8px] flex-wrap my-3">
-            {proposal.proposalTarget.map((target) => (
+            {proposal.proposalTarget.map((target, i) => (
               <TargetDisplay
                 target={target.targetInfo}
                 key={target.target_id}
+                index={i}
               />
             ))}
           </div>
           {/* TAGS */}
           <div className="flex gap-[8px] flex-wrap">
-            {proposal.proposalTag.map((tag) => (
-              <TagDisplay tag={tag.tag_name} key={tag.id} />
+            {proposal.proposalTag.map((tag, i) => (
+              <TagDisplay
+                tag={tag.tag_name}
+                key={tag.id}
+                index={i}
+                isCard={true}
+              />
             ))}
           </div>
 
           {/* CATEGORIES */}
           <div className="flex gap-[8px] flex-wrap mt-3">
-            {proposal.proposalCategory.map((category) => (
-              <CategoryDisplay category={category.categoryDetail.name} />
+            {proposal.proposalCategory.map((category, i) => (
+              <CategoryDisplay
+                category={category.categoryDetail.name}
+                key={category.category_id}
+                index={i}
+                isCard={true}
+              />
             ))}
           </div>
         </div>

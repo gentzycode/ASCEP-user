@@ -171,8 +171,8 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
         {/* SDGs */}
         {proposal.proposalSDGs.length > 0 && (
           <div className="flex gap-2 flex-wrap">
-            {proposal.proposalSDGs.map((SDGs) => (
-              <SDGCard SDG={SDGs.sdgs} key={SDGs.sdgs_id} />
+            {proposal.proposalSDGs.map((SDGs, i) => (
+              <SDGCard SDG={SDGs.sdgs} key={SDGs.sdgs_id} index={i} />
             ))}
           </div>
         )}
@@ -180,10 +180,11 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
         {/* TARGETS */}
         {proposal.proposalTarget.length > 0 && (
           <div className="flex gap-[8px] flex-wrap">
-            {proposal.proposalTarget.map((target) => (
+            {proposal.proposalTarget.map((target, i) => (
               <TargetDisplay
                 target={target.targetInfo}
                 key={target.target_id}
+                index={i}
               />
             ))}
           </div>
@@ -192,8 +193,8 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
         {/* TAGS */}
         {proposal.proposalTag.length > 0 && (
           <div className="flex gap-[8px] flex-wrap">
-            {proposal.proposalTag.map((tag) => (
-              <TagDisplay tag={tag.tag_name} key={tag.id} />
+            {proposal.proposalTag.map((tag, i) => (
+              <TagDisplay tag={tag.tag_name} key={tag.id} index={i} />
             ))}
           </div>
         )}
@@ -201,8 +202,11 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
         {/* CATEGORIES */}
         {proposal.proposalCategory.length > 0 && (
           <div className="flex gap-[8px] flex-wrap">
-            {proposal.proposalCategory.map((category) => (
-              <CategoryDisplay category={category.categoryDetail.name} />
+            {proposal.proposalCategory.map((category, i) => (
+              <CategoryDisplay
+                category={category.categoryDetail.name}
+                index={i}
+              />
             ))}
           </div>
         )}

@@ -13,8 +13,8 @@ const DemocracyNavigation = () => {
             key={index}
             className={`${
               activeLink === link.path
-                ? " bg-primary"
-                : "text-[#6B6B6B]"
+                ? " bg-primary text-dark"
+                : "text-text"
             } flex h-fit items-center rounded-2xl`}
             to={link.path}
           >

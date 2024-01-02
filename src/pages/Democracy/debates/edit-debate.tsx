@@ -14,7 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useGetDebateInfo, usePublishDebate } from "@/api/democracy/debates";
-import { IconWrapper } from "@/components/custom";
+import { IconWrapper, PageLoader } from "@/components/custom";
 import { FaSpinner } from "react-icons/fa";
 import { useAppContext } from "@/contexts/AppContext";
 import TargetsMultiSelect from "@/components/custom/TargetsMultiSelect";
@@ -34,20 +34,18 @@ const EditDebatePage: React.FC<EditDebatePageProps> = () => {
   const { mutateAsync: publishDebate, isLoading: isUpdatingDebate } =
     usePublishDebate();
 
-  const [tags, setTags] = useState<string[]>(
-    debate?.debateTag.map((tag) => tag.tag_name) ?? []
-  );
+  const [tags, setTags] = useState<string[]>([]);
   const [targets, setTargets] = useState<SDGTarget[]>([]);
 
   const form = useForm<z.infer<typeof startDebateSchema>>({
     resolver: zodResolver(startDebateSchema),
     defaultValues: {
-      title: debate?.title,
-      description: debate?.description,
-      sdgs: debate?.debateSDGs.map((item) => item.sdgs_id),
+      title: "",
+      description: "",
+      sdgs: [],
       targets: [],
       tags: [],
-      id: debateId,
+      id: undefined,
     },
   });
 
@@ -98,16 +96,23 @@ const EditDebatePage: React.FC<EditDebatePageProps> = () => {
   };
 
   useEffect(() => {
-    getTargets();
-  }, []);
+    if (debate) {
+      getTargets();
+      const { title, description, debateSDGs, debateTag } = debate;
+      setValue("id", debateId);
+      setValue("title", title);
+      setValue("description", description);
+      setTags(debateTag.map((tag) => tag.tag_name));
+      setValue(
+        "sdgs",
+        debateSDGs.map((item) => item.sdgs_id)
+      );
+    }
+  }, [debate, allTargets]);
 
   return (
     <>
-      {isLoadingDebate && (
-        <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
-          <FaSpinner className="animate-spin text-[100px]" />
-        </IconWrapper>
-      )}
+      {isLoadingDebate && <PageLoader />}
       {isError && !debate && <NotFound message="No Debate found" />}
       {debate && (
         <div className="flex flex-col gap-8 max-w-[800px]">
@@ -200,7 +205,7 @@ const EditDebatePage: React.FC<EditDebatePageProps> = () => {
               <TargetsMultiSelect setSelected={setTargets} selected={targets} />
               <Button
                 type="submit"
-                className="w-full max-w-[400px] p-0 h-fit py-3"
+                className="w-full max-w-[400px] p-0 h-12"
                 isLoading={isUpdatingDebate}
                 disabled={isUpdatingDebate}
               >

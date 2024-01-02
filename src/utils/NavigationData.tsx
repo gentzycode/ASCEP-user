@@ -9,6 +9,24 @@ import {
 } from "iconsax-react";
 import { FaLinkedin, FaTwitter } from "react-icons/fa";
 
+export const DialogueLinks: NavLinkType[] = [
+  {
+    title: "Make a request",
+    path: "/dialogue/make-a-request",
+  },
+  {
+    title: "Browse requests",
+    path: "/dialogue/browse-request",
+  },
+  {
+    title: "View Authorities",
+    path: "/dialogue/view-authorities",
+  },
+  {
+    title: "Help",
+    path: "/dialogue/dialogue-help",
+  },
+];
 export const DemocracyLinks: NavLinkType[] = [
   {
     title: "Debates",
@@ -89,7 +107,7 @@ export const SocialLinks: NavLinkType[] = [
   {
     title: "Facebook",
     path: "#",
-    Icon: <Facebook variant="Bold"   />,
+    Icon: <Facebook variant="Bold" />,
   },
   {
     title: "X",
@@ -99,7 +117,7 @@ export const SocialLinks: NavLinkType[] = [
   {
     title: "Youtube",
     path: "#",
-    Icon: <Youtube variant="Bold"/>,
+    Icon: <Youtube variant="Bold" />,
   },
   {
     title: "Linkedin",

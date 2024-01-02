@@ -19,7 +19,8 @@ import { format } from "date-fns";
 
 interface StartPollPageProps {}
 const StartPollPage: React.FC<StartPollPageProps> = () => {
-  const { mutateAsync: publishPoll, isLoading } = usePublishPoll();
+  const { mutateAsync: publishPoll, isLoading: isCreatingPoll } =
+    usePublishPoll();
   const [targets, setTargets] = useState<SDGTarget[]>([]);
   const [wards, setWards] = useState<WardsType[]>([]);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -47,15 +48,12 @@ const StartPollPage: React.FC<StartPollPageProps> = () => {
   } = form;
 
   async function onSubmit(values: z.infer<typeof publishPollingSchema>) {
-    console.log(values);
-
     const formData = new FormData();
     formData.append("title", values.title!);
     formData.append("summary", values.summary!);
     formData.append("start_date", format(values.start_date, "yyyy-MM-dd"));
     formData.append("end_date", format(values.end_date, "yyyy-MM-dd"));
     formData.append("description", values.description);
-    // formData.append("ward_id", JSON.stringify(values.ward_id!));
 
     if (values.image) {
       formData.append("image", values.image);
@@ -144,6 +142,7 @@ const StartPollPage: React.FC<StartPollPageProps> = () => {
               label="Summary"
               control={control}
               errors={errors}
+              rows={4}
             />
 
             {/* MORE INFO */}
@@ -152,6 +151,7 @@ const StartPollPage: React.FC<StartPollPageProps> = () => {
               label="Description"
               control={control}
               errors={errors}
+              rows={6}
             />
 
             {/* DESCRIPTIVE IMAGE */}
@@ -204,8 +204,9 @@ const StartPollPage: React.FC<StartPollPageProps> = () => {
 
             <Button
               type="submit"
-              className="w-full max-w-[400px] p-0 h-fit py-3"
-              isLoading={isLoading}
+              className="w-full max-w-[400px] p-0 h-12"
+              isLoading={isCreatingPoll}
+              disabled={isCreatingPoll}
             >
               Create Poll
             </Button>
