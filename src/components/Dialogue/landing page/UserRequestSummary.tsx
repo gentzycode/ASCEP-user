@@ -6,8 +6,8 @@ const UserRequestSummary: React.FC<UserRequestSummaryProp> = () => {
   return (
     <div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-10">
-        {Array.from({ length: 6 }).map(() => (
-          <div>
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i}>
             <p className="text-text text-base md:text-lg">
               <span className="text-royal_blue">Ministry of Health</span>{" "}
               answered a request about{" "}
