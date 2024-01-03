@@ -47,6 +47,7 @@ import {
   DialoguLandingPage,
   DialogueHelpHomePage,
   MakeARequestHomePage,
+  RequestInfoPage,
   ViewAuthoritiesHomePage,
 } from "./Dialogue";
 
@@ -105,7 +106,12 @@ export const dialogueRoutes: RouterType[] = [
   {
     path: "/dialogue/browse-request",
     element: <BrowseRequestHomePage />,
-    title: "dailogue",
+    title: "dailogue-request",
+  },
+  {
+    path: "/dialogue/browse-request/:requestId",
+    element: <RequestInfoPage />,
+    title: "dailogue-request-info",
   },
   {
     path: "/dialogue/view-authorities",
