@@ -84,7 +84,7 @@ const RequestMultiStepForm: React.FC<RequestMultiStepFormProp> = () => {
             <div className="flex gap-2 flex-wrap">
               <Button
                 type="button"
-                className="w-full max-w-[200px] px-4  py-0 h-12 bg-transparent border border-primary text-primary hover:text-light"
+                className="w-full max-w-[300px] px-4  py-0 h-12 bg-transparent border border-primary text-primary hover:text-light"
                 onClick={handlePrev}
               >
                 Edit your request

@@ -16,7 +16,7 @@ import { useState } from "react";
 import { InputProps } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 
-type FormInputProps<TFormValues extends FieldValues = FieldValues> = {
+type FormTextAreaProps<TFormValues extends FieldValues = FieldValues> = {
   control: Control<TFormValues>;
   name: Path<TFormValues>;
   label?: string;
@@ -31,7 +31,7 @@ const FormTextArea = <TFormValues extends Record<string, unknown>>({
   name,
   placeholder,
   errors,
-}: FormInputProps<TFormValues>): JSX.Element => {
+}: FormTextAreaProps<TFormValues>): JSX.Element => {
   const errorMessage = lodash.get(errors, name);
   const hasError = !!errors && errorMessage;
 

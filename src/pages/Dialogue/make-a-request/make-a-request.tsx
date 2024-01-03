@@ -1,7 +1,7 @@
 import {
   MakeARequestHeading,
   MakeRequestPageFooter,
-  SearchRequestList,
+  SearchAuthoritiesList,
 } from "@/components/Dialogue";
 
 interface MakeARequestHomePageProp {}
@@ -9,7 +9,7 @@ const MakeARequestHomePage: React.FC<MakeARequestHomePageProp> = () => {
   return (
     <div className="max-w-[900px] mt-11">
       <MakeARequestHeading />
-      <SearchRequestList />
+      <SearchAuthoritiesList />
       <MakeRequestPageFooter />
     </div>
   );
