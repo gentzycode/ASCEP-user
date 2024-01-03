@@ -1,9 +1,9 @@
-import { SearchRequestCard } from "@/components/Dialogue";
+import { SearchAuthoritiesCard } from "@/components/Dialogue";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-interface SearchRequestListProp {}
-const SearchRequestList: React.FC<SearchRequestListProp> = () => {
+interface SearchAuthoritiesListProp {}
+const SearchAuthoritiesList: React.FC<SearchAuthoritiesListProp> = () => {
   return (
     <div className="my-10">
       <div className="flex items-start justify-start gap-4 flex-wrap flex-col min-[500px]:flex-row">
@@ -15,13 +15,13 @@ const SearchRequestList: React.FC<SearchRequestListProp> = () => {
       </div>
       <p className="text-base text-text py-8">4 matching authorities</p>
       <div className="flex flex-col gap-10">
-        <SearchRequestCard />
-        <SearchRequestCard />
-        <SearchRequestCard />
-        <SearchRequestCard />
+        <SearchAuthoritiesCard />
+        <SearchAuthoritiesCard />
+        <SearchAuthoritiesCard />
+        <SearchAuthoritiesCard />
       </div>
     </div>
   );
 };
 
-export default SearchRequestList;
+export default SearchAuthoritiesList;

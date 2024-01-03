@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 interface MakeRequestInstructionProp {}
 const MakeRequestInstruction: React.FC<MakeRequestInstructionProp> = () => {
   return (
-    <div className="w-full max-w-[350px] space-y-6">
+    <div className="w-full max-w-[300px] space-y-6">
       <div className="space-y-3">
         <h1 className="text-xl text-dark">Before you start</h1>
         <ul className="list-none text-text space-y-2 text-base lg:text-lg">

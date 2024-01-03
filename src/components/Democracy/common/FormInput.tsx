@@ -51,11 +51,11 @@ const FormInput = <TFormValues extends Record<string, unknown>>({
             <Input
               placeholder={placeholder}
               {...field}
-              className={`focus-visible:ring-1 bg-[#C4C4C41F] ${
+              className={`focus-visible:ring-1 bg-[#C4C4C41F] text-text ${
                 hasError
                   ? "focus-visible:ring-red-500"
                   : "focus-visible:ring-primary"
-              } focus-visible:ring-offset-2 border-transparent  h-12 rounded-full px-4 text-sm md:text-base`}
+              } focus-visible:ring-offset-2 border-transparent  h-12 rounded-full px-4 text-sm md:text-base placeholder:text-text`}
               {...props}
             />
           </FormControl>
