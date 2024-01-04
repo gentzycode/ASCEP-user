@@ -64,14 +64,14 @@ const DebateCommentSection: React.FC<DebateCommentSectionProp> = () => {
     <>
       {/*COMMENTS */}
       <div className="w-full">
-        <h2 className="pb-2 mb-4 pt-0 pl-0 border-b-4 text-lg text-text font-medium border-primary w-fit">
+        <h2 className="pt-0 pb-2 pl-0 mb-4 text-lg font-medium border-b-4 text-text border-primary w-fit">
           Comments
         </h2>
       </div>
       {!isLoggedIn ? (
         <div className="flex items-center justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10">
-          <div className="flex justify-start items-center gap-1">
-            <IconWrapper className="text-primary rounded-full">
+          <div className="flex items-center justify-start gap-1">
+            <IconWrapper className="rounded-full text-primary">
               <Danger size="32" />
             </IconWrapper>
             <p className="text-[16px]">
@@ -133,7 +133,7 @@ const DebateCommentSection: React.FC<DebateCommentSectionProp> = () => {
       {isLoadingComments && <PageLoader />}
       {commentsData?.comments?.length === 0 && (
         <div>
-          <h1 className="text-text text-base md:text-xl">
+          <h1 className="text-base text-text md:text-xl">
             This debate has no comments yet
           </h1>
         </div>

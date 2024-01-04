@@ -30,7 +30,7 @@ const FilterButtons: React.FC<FilterButtonsProps> = ({
         >
           <RadioGroupItem
             value={button.value}
-            className="absolute w-full h-full top-0 left-0 opacity-0"
+            className="absolute top-0 left-0 w-full h-full opacity-0"
           />
           {button.label}
         </Button>

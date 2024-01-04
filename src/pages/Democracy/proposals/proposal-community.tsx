@@ -52,7 +52,7 @@ const ProposalCommuntityHomePage = () => {
 
   return (
     <>
-      <h4 className="text-xl md:text-2xl text-primary font-semibold mb-10">
+      <h4 className="mb-10 text-xl font-semibold md:text-2xl text-primary">
         Proposal community
       </h4>
 
@@ -63,11 +63,11 @@ const ProposalCommuntityHomePage = () => {
       {proposal && (
         <div>
           <div className="mt-10">
-            <h1 className="text-xl md:text-2xl text-dark my-2">
+            <h1 className="my-2 text-xl md:text-2xl text-dark">
               {proposal.title}
             </h1>
-            <div className="flex justify-start items-center gap-6 flex-wrap">
-              <Avatar className="h-12 w-12">
+            <div className="flex flex-wrap items-center justify-start gap-6">
+              <Avatar className="w-12 h-12">
                 <AvatarImage
                   src={
                     proposal.author.profile_picture
@@ -92,7 +92,7 @@ const ProposalCommuntityHomePage = () => {
             </div>
           </div>
           <div className="flex flex-col xl:flex-row gap-10 my-11 max-w-[1000px]">
-            <p className="text-xl md:text-2xl text-subtle_text text-justify">
+            <p className="text-xl text-justify md:text-2xl text-subtle_text">
               Participate in the community of this proposal. An active community
               can help to improve the content of the proposal and boost its
               dissemination to get more support.
@@ -101,12 +101,12 @@ const ProposalCommuntityHomePage = () => {
               <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
                 Participant
               </h2>
-              <Button className="h-fit w-fit rounded-lg" onClick={onOpen}>
+              <Button className="rounded-lg h-fit w-fit" onClick={onOpen}>
                 Create Topic
               </Button>
             </div>
           </div>
-          <Separator orientation="horizontal" className="bg-base-500 mb-10" />
+          <Separator orientation="horizontal" className="mb-10 bg-base-500" />
         </div>
       )}
 
