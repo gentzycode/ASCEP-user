@@ -1,4 +1,4 @@
-import { IconWrapper, PageLoader } from "@/components/custom";
+import { IconWrapper, PageLoader, Pagination } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { useAuthContext } from "@/providers/AuthProvider";
 import ROUTES from "@/utils/routesNames";
@@ -8,12 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
-import {
-  CommentsPagination,
-  FilterButtons,
-  FormInput,
-  ProposalCommentCard,
-} from "..";
+import { FilterButtons, FormInput, ProposalCommentCard } from "..";
 import { commentFilterButtonOptions } from "@/utils/Democracy/General";
 import { useEffect, useState } from "react";
 import {
@@ -155,9 +150,11 @@ const ProposalCommentSection: React.FC<ProposalCommentSectionProp> = () => {
           ))}
 
           {/* PAGINATION */}
-          <CommentsPagination
-            meta={commentsData.meta}
-            onPageChange={(page: number) => setPage(page)}
+          <Pagination
+            page={page}
+            setPage={setPage}
+            paginationData={commentsData.meta}
+            isFetching={isFetchingComments}
           />
         </div>
       )}

@@ -123,7 +123,7 @@ export default function ProposalProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     getAllProposals({ page, perPage, filter: getFiltersWithValues() });
-  }, [filterOptions]);
+  }, [filterOptions, page]);
 
   const refetchProposals = () => {
     getAllProposals({ page, perPage, filter: { newest: true } });

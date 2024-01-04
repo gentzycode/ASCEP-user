@@ -125,7 +125,7 @@ export default function InitiativeProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     getAllInitiatives({ page, perPage, filter: getFiltersWithValues() });
-  }, [filterOptions]);
+  }, [filterOptions, page]);
 
   const refetchInitiatives = () => {
     getAllInitiatives({ page, perPage, filter: { newest: true } });
