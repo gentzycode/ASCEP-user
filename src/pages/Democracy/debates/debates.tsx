@@ -4,15 +4,13 @@ import {
   FetchingError,
   ListViewCard,
   PagesHeroSection,
-  Pagination,
 } from "@/components/Democracy";
-import { IconWrapper, PageLoader } from "@/components/custom";
+import { PageLoader, Pagination } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { useDebateContext } from "@/contexts/DebateContext";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { debateFilterButtonOptions } from "@/utils/Democracy/Debates";
 import ROUTES from "@/utils/routesNames";
-import { FaSpinner } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 interface DebatesProps {}
@@ -25,11 +23,10 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
     fetchedDebatesData,
     refetchDebates,
     filterByButton,
-    getAllDebates,
-    perPage,
     filterOptions,
     setFilterOptions,
     setPage,
+    page,
   } = useDebateContext();
   const pageDescription =
     "Citizens' proposals are an opportunity for neighbours and collectives to decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.";
@@ -54,8 +51,8 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
           filterByButton={filterByButton}
           filterOptions={filterOptions}
           setFilterOptions={setFilterOptions}
+          isSearching={fetchingDebates}
         />
-
         {fetchingDebatesError && !fetchingDebates && (
           <FetchingError
             message="Error fetching Debates"
@@ -63,7 +60,6 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
             retryFunction={() => refetchDebates()}
           />
         )}
-
         {/* LIST VIEW */}
         {view === "list-view" && fetchedDebatesData && (
           <div className="grid grid-cols-1 my-10 gap-10 max-w-[700px]">
@@ -76,9 +72,7 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
             ))}
           </div>
         )}
-
         {fetchingDebates && <PageLoader />}
-
         {/* CARD VIEW */}
         {view === "card-view" && fetchedDebatesData && (
           <div className="w-full flex justify-start">
@@ -91,13 +85,17 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
         )}
 
         {/* PAGINATION */}
+        {fetchedDebatesData && fetchedDebatesData.debates.length === 0 && (
+          <h1 className="text-dark text-base md:text-lg bg-primary/10 p-4">
+            No Debates meets the search criteria
+          </h1>
+        )}
         {fetchedDebatesData && (
           <Pagination
-            meta={fetchedDebatesData?.meta}
-            onPageChange={getAllDebates}
-            filterOptions={filterOptions}
-            perPage={perPage}
+            paginationData={fetchedDebatesData?.meta}
+            page={page}
             setPage={setPage}
+            isFetching={fetchingDebates}
           />
         )}
       </div>

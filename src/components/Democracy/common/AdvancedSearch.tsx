@@ -24,6 +24,7 @@ interface AdvancedSearchProps {
   setFilterOptions: React.Dispatch<
     React.SetStateAction<z.infer<typeof filterSchema>>
   >;
+  isSearching: boolean;
 }
 
 const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
@@ -33,6 +34,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
   filterByButton,
   setFilterOptions,
   filterOptions,
+  isSearching,
 }) => {
   const [advanceSearch, setAdvanceSearch] = useState(false);
 
@@ -57,7 +59,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
   // GET FILTER OBJECT WITH VALUES
   const getFiltersWithValues = (filters: any) => {
     const entries = Object.entries(filters);
-    const filteredEntries = entries.filter(([key, value]) => {
+    const filteredEntries = entries.filter(([_, value]) => {
       if (value) {
         if (Array.isArray(value)) {
           return value.length > 0;
@@ -111,7 +113,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
         </div>
         {!advanceSearch ? (
           <Button
-            className="text-[18px] font-400 text-right md:w-fit bg-transparent p-0 hover:bg-transparent"
+            className="text-lg text-text font-400 text-right md:w-fit bg-transparent p-0 hover:bg-transparent"
             onClick={() => {
               setAdvanceSearch(!advanceSearch);
             }}
@@ -120,7 +122,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
           </Button>
         ) : (
           <Button
-            className="text-[18px] font-400 text-right md:w-fit bg-transparent p-0 hover:bg-transparent"
+            className="text-lg font-400 text-right md:w-fit bg-transparent p-0 hover:bg-transparent text-text"
             onClick={() => {
               reset();
               setAdvanceSearch(!advanceSearch);
@@ -185,7 +187,12 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
               <FormCheckBoxSDG control={control} name="sdgs" />
             </div>
 
-            <Button type="submit" className="w-[175px] col-span-2">
+            <Button
+              type="submit"
+              className="w-[175px] col-span-2"
+              isLoading={isSearching}
+              disabled={isSearching}
+            >
               Filter
               <IconWrapper className="bg-transparent">
                 <Filter size="25" color="#292925" variant="Bold" />

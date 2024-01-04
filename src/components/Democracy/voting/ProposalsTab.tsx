@@ -1,8 +1,8 @@
 import { useGetAllProposals } from "@/api/democracy/proposals";
-import { PageLoader } from "@/components/custom";
+import { PageLoader, Pagination } from "@/components/custom";
 import { DataTable } from "@/components/custom/DataTable";
 import { ColumnDef } from "@tanstack/react-table";
-import { NotFound, Pagination } from "..";
+import { NotFound } from "..";
 import { useEffect, useState } from "react";
 import { formattedDate } from "@/utils/helper";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -41,7 +41,7 @@ const ProposalsTab: React.FC<ProposalsTabProp> = ({ proposals }) => {
 
   useEffect(() => {
     getAllProposals({ page, perPage, filter: { newest: true } });
-  }, []);
+  }, [page]);
 
   const columns: ColumnDef<ProposalType>[] = [
     {
@@ -163,11 +163,10 @@ const ProposalsTab: React.FC<ProposalsTabProp> = ({ proposals }) => {
         <div className="my-6">
           <DataTable columns={columns} data={fetchedProposalData?.proposals!} />
           <Pagination
-            onPageChange={getAllProposals}
-            perPage={perPage}
+            page={page}
             setPage={setPage}
-            filterOptions={{ newest: true }}
-            meta={fetchedProposalData?.meta}
+            paginationData={fetchedProposalData.meta}
+            isFetching={fetchingProposals}
           />
           <Button
             className="h-12 text-dark rounded-xl w-full max-w-[200px] my-4"

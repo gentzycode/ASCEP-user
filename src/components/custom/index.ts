@@ -10,3 +10,4 @@ export { default as CategoriesMultiSelect } from "./CategoriesMultiSelect";
 export { default as WardsMultiSelect } from "./WardsMultiSelect";
 export { default as TargetsMultiSelect } from "./TargetsMultiSelect";
 export { default as FormCalendar } from "./FormCalendar";
+export { default as Pagination } from "./Pagination";
