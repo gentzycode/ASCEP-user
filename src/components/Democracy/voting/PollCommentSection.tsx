@@ -1,4 +1,4 @@
-import { IconWrapper, PageLoader } from "@/components/custom";
+import { IconWrapper, PageLoader, Pagination } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { useAuthContext } from "@/providers/AuthProvider";
 import ROUTES from "@/utils/routesNames";
@@ -8,12 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
-import {
-  CommentsPagination,
-  FilterButtons,
-  FormInput,
-  PollCommentCard,
-} from "..";
+import { FilterButtons, FormInput, PollCommentCard } from "..";
 import { commentFilterButtonOptions } from "@/utils/Democracy/General";
 import {
   useGetPollComments,
@@ -156,9 +151,11 @@ const PollCommentSection: React.FC<PollCommentSectionProp> = () => {
           ))}
 
           {/* PAGINATION */}
-          <CommentsPagination
-            meta={commentsData.meta}
-            onPageChange={(page: number) => setPage(page)}
+          <Pagination
+            page={page}
+            setPage={setPage}
+            paginationData={commentsData.meta}
+            isFetching={isFetchingComments}
           />
         </div>
       )}

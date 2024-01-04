@@ -3,16 +3,14 @@ import {
   FetchingError,
   ListViewCard,
   PagesHeroSection,
-  Pagination,
   ProposalCardViewCard,
 } from "@/components/Democracy";
-import { IconWrapper, PageLoader } from "@/components/custom";
+import { PageLoader, Pagination } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { useProposalContext } from "@/contexts/ProposalContext";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { proposalFilterButtonOptions } from "@/utils/Democracy/Proposals";
 import ROUTES from "@/utils/routesNames";
-import { FaSpinner } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 interface ProposalsHomePageProps {}
@@ -25,9 +23,8 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
     fetchedProposalData,
     refetchProposals,
     filterByButton,
-    getAllProposals,
     filterOptions,
-    perPage,
+    page,
     setFilterOptions,
     setPage,
   } = useProposalContext();
@@ -53,6 +50,7 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
           view={view}
           filterOptions={filterOptions}
           setFilterOptions={setFilterOptions}
+          isSearching={fetchingProposals}
         />
 
         {/* ERROR */}
@@ -92,10 +90,9 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
         {/* PAGINATION */}
         {fetchedProposalData && (
           <Pagination
-            meta={fetchedProposalData?.meta}
-            onPageChange={getAllProposals}
-            filterOptions={filterOptions}
-            perPage={perPage}
+            page={page}
+            paginationData={fetchedProposalData.meta}
+            isFetching={fetchingProposals}
             setPage={setPage}
           />
         )}

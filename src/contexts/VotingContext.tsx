@@ -126,7 +126,7 @@ export default function VotingProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     getAllPolls({ page, perPage, filter: getFiltersWithValues() });
-  }, [filterOptions]);
+  }, [filterOptions, page]);
 
   const refetchPolls = () => {
     getAllPolls({ page, perPage, filter: { status: "upcoming" } });
