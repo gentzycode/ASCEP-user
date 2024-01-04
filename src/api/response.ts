@@ -1,6 +1,6 @@
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import baseUrl from "./baseUrl";
 
 export const useCreateReport = () => {
@@ -21,6 +21,19 @@ export const useCreateReport = () => {
           description: `Report created`,
         });
       },
+    }
+  );
+};
+
+export const useGetAllReports = () => {
+  return useQuery(
+    ["all-reports"],
+    (): Promise<ReportData[]> => {
+      return axios.get(`${baseUrl}/report/all`).then((res) => res.data.data);
+    },
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
     }
   );
 };
