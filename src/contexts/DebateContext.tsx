@@ -123,7 +123,7 @@ export default function DebateProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     getAllDebates({ page, perPage, filter: getFiltersWithValues() });
-  }, [filterOptions]);
+  }, [filterOptions, page]);
 
   const refetchDebates = () => {
     getAllDebates({ page, perPage, filter: { newest: true } });

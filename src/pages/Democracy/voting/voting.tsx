@@ -2,10 +2,9 @@ import {
   FetchingError,
   FilterButtons,
   PagesHeroSection,
-  Pagination,
   PollLIst,
 } from "@/components/Democracy";
-import { PageLoader } from "@/components/custom";
+import { PageLoader, Pagination } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { useVotingContext } from "@/contexts/VotingContext";
 import { useAuthContext } from "@/providers/AuthProvider";
@@ -23,9 +22,7 @@ const VotingHomePage: React.FC<VotingHomePageProp> = () => {
     fetchingPolls,
     fetchingPollsError,
     refetchPolls,
-    getAllPolls,
-    filterOptions,
-    perPage,
+    page,
     setPage,
     filterByButton,
   } = useVotingContext();
@@ -68,11 +65,10 @@ const VotingHomePage: React.FC<VotingHomePageProp> = () => {
       {/* PAGINATION */}
       {fetchedPollsData && (
         <Pagination
-          meta={fetchedPollsData?.meta}
-          onPageChange={getAllPolls}
-          filterOptions={filterOptions}
-          perPage={perPage}
+          page={page}
           setPage={setPage}
+          paginationData={fetchedPollsData.meta}
+          isFetching={fetchingPollsError}
         />
       )}
     </>

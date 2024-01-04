@@ -1,6 +1,6 @@
 interface DialogueHelpHomePageProp {}
 const DialogueHelpHomePage: React.FC<DialogueHelpHomePageProp> = () => {
-  return <div>help</div>;
+  return <div></div>;
 };
 
 export default DialogueHelpHomePage;

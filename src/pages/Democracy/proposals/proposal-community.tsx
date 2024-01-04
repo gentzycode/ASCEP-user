@@ -4,14 +4,13 @@ import {
   useGetProposalInfo,
 } from "@/api/democracy/proposals";
 import {
-  CommentsPagination,
   CreateTopicModal,
   FilterButtons,
   NotFound,
   ProposalParticipantCard,
   ProposalTopicCard,
 } from "@/components/Democracy";
-import { IconWrapper } from "@/components/custom";
+import { IconWrapper, Pagination } from "@/components/custom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -162,9 +161,11 @@ const ProposalCommuntityHomePage = () => {
 
       {/* PAGINATION */}
       {proposalTopicData?.meta && proposalTopicData.data.length > 0 && (
-        <CommentsPagination
-          onPageChange={(page: number) => setPage(page)}
-          meta={proposalTopicData?.meta}
+        <Pagination
+          page={page}
+          setPage={setPage}
+          paginationData={proposalTopicData.meta}
+          isFetching={isFetchingProposalTopics}
         />
       )}
       {/* PARTICIPANTS */}

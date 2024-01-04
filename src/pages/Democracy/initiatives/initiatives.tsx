@@ -5,14 +5,12 @@ import {
   InitiativesCardViewCard,
   ListViewCard,
   PagesHeroSection,
-  Pagination,
 } from "@/components/Democracy";
 import ROUTES from "@/utils/routesNames";
 import { Link } from "react-router-dom";
 import { useInitiativeContext } from "@/contexts/InitiativeContext";
 import { initiativeFilterButtonOptions } from "@/utils/Democracy/Initiatives";
-import { IconWrapper } from "@/components/custom";
-import { FaSpinner } from "react-icons/fa";
+import { PageLoader, Pagination } from "@/components/custom";
 import { useAuthContext } from "@/providers/AuthProvider";
 
 const InitiativesHomePage = () => {
@@ -24,10 +22,9 @@ const InitiativesHomePage = () => {
     fetchedInitiativeData,
     refetchInitiatives,
     filterByButton,
-    getAllInitiatives,
     filterOptions,
     setFilterOptions,
-    perPage,
+    page,
     setPage,
   } = useInitiativeContext();
 
@@ -53,6 +50,7 @@ const InitiativesHomePage = () => {
           view={view}
           filterOptions={filterOptions}
           setFilterOptions={setFilterOptions}
+          isSearching={fetchingInitiatives}
         />
 
         {/* ERROR */}
@@ -65,13 +63,7 @@ const InitiativesHomePage = () => {
         )}
 
         {/* LOADING */}
-        {fetchingInitiatives && (
-          <div className="w-full flex justify-center">
-            <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
-              <FaSpinner className="animate-spin text-[100px]" />
-            </IconWrapper>
-          </div>
-        )}
+        {fetchingInitiatives && <PageLoader />}
 
         {/* LIST VIEW */}
         {view === "list-view" && fetchedInitiativeData && (
@@ -101,10 +93,8 @@ const InitiativesHomePage = () => {
         {/* PAGINATION */}
         {fetchedInitiativeData && (
           <Pagination
-            meta={fetchedInitiativeData?.meta}
-            onPageChange={getAllInitiatives}
-            filterOptions={filterOptions}
-            perPage={perPage}
+            paginationData={fetchedInitiativeData.meta}
+            page={page}
             setPage={setPage}
           />
         )}

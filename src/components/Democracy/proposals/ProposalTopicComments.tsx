@@ -1,11 +1,6 @@
-import {
-  CommentsPagination,
-  FilterButtons,
-  FormInput,
-  ProposalTopicCommentCard,
-} from "..";
+import { FilterButtons, FormInput, ProposalTopicCommentCard } from "..";
 import { debateCommentFilterButtonOptions } from "@/utils/Democracy/Debates";
-import { IconWrapper } from "@/components/custom";
+import { IconWrapper, Pagination } from "@/components/custom";
 import { CloseCircle, Danger } from "iconsax-react";
 import { Link, useParams } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
@@ -23,8 +18,8 @@ import {
 } from "@/api/democracy/proposals";
 import { proposalTopicCommentSchema } from "@/schemas/ProposalSchema";
 
-interface ProposalCommentsCardProps {}
-const ProposalComments: React.FC<ProposalCommentsCardProps> = () => {
+interface ProposalTopicCommentsCardProps {}
+const ProposalTopicComments: React.FC<ProposalTopicCommentsCardProps> = () => {
   const { isLoggedIn } = useAuthContext();
   const { topicId } = useParams();
 
@@ -151,13 +146,15 @@ const ProposalComments: React.FC<ProposalCommentsCardProps> = () => {
             <ProposalTopicCommentCard comment={comment} key={comment.id} />
           ))}
 
-          <CommentsPagination
-            meta={commentsData.meta}
-            onPageChange={(page: number) => setPage(page)}
+          <Pagination
+            page={page}
+            setPage={setPage}
+            paginationData={commentsData.meta}
+            isFetching={isFetchingComments}
           />
         </div>
       )}
     </>
   );
 };
-export default ProposalComments;
+export default ProposalTopicComments;
