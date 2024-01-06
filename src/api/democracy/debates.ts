@@ -54,7 +54,7 @@ export const usePublishDebate = () => {
           description: res.message,
         });
         if (variables.id) {
-          navigate(ROUTES.DEBATE_INFO_ROUTE(variables.id), { replace: true });
+          navigate(ROUTES.DEBATE_INFO_ROUTE(variables.id), { replace: true,  });
         } else {
           navigate(ROUTES.DEBATES_HOME_ROUTE, { replace: true });
         }

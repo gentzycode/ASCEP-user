@@ -22,7 +22,6 @@ import {
   ProposalTopicInfoPage,
   SdgDetailsPage,
   StartInitiativePage,
-  ResolveSharedIDPage,
   VotingHomePage,
   StartPollPage,
   EditProposalPage,
@@ -33,6 +32,10 @@ import {
   VotingInfoPage,
   ConfigureVotingPage,
   EditVotePage,
+  ResolveDebateSharedIdPage,
+  ResolveInitiativeSharedIdPage,
+  ResolveProposalSharedIdPage,
+  ResolvePollSharedIdPage,
 } from "./Democracy";
 import { ActivityPage, DataView, MapView } from "./Response";
 import DebateProvider from "@/contexts/DebateContext";
@@ -151,9 +154,9 @@ export const democracyRoutes: RouterType[] = [
     title: "democracy-debate-start",
   },
   {
-    path: "/democracy/share/:shareableId",
-    element: <ResolveSharedIDPage />,
-    title: "democracy-shared-id",
+    path: "/democracy/debate/share/:shareableId",
+    element: <ResolveDebateSharedIdPage />,
+    title: "democracy-debate-shared-id",
   },
   {
     path: "/democracy/proposals",
@@ -178,6 +181,11 @@ export const democracyRoutes: RouterType[] = [
     path: "/democracy/proposals/edit-proposal/:proposalId",
     element: <EditProposalPage />,
     title: "democracy-proposals-start",
+  },
+  {
+    path: "/democracy/proposal/share/:shareableId",
+    element: <ResolveProposalSharedIdPage />,
+    title: "democracy-proposal-shared-id",
   },
   {
     path: "/democracy/proposals/community/:proposalId",
@@ -212,6 +220,11 @@ export const democracyRoutes: RouterType[] = [
     path: "/democracy/initiatives/edit-initiative/:initiativeId",
     element: <EditInitiativePage />,
     title: "democracy-initiatives-edit",
+  },
+  {
+    path: "/democracy/initiative/share/:shareableId",
+    element: <ResolveInitiativeSharedIdPage />,
+    title: "democracy-initiative-shared-id",
   },
   {
     path: "/democracy/sdg",
@@ -251,6 +264,11 @@ export const democracyRoutes: RouterType[] = [
     path: "/democracy/voting/edit-vote/:pollId",
     element: <EditVotePage />,
     title: "democracy-SDGs-start",
+  },
+  {
+    path: "/democracy/voting/share/:shareableId",
+    element: <ResolvePollSharedIdPage />,
+    title: "democracy-voting-share-id",
   },
   {
     path: "/democracy/budgeting",

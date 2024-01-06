@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import FormTextArea from "@/components/Democracy/common/FormTextArea";
 import TargetsMultiSelect from "@/components/custom/TargetsMultiSelect";
 import { publishPollingSchema } from "@/schemas/VotingSchema";
-import { WardsMultiSelect } from "@/components/custom";
+import { FormCalendar, WardsMultiSelect } from "@/components/custom";
 import { usePublishPoll } from "@/api/democracy/voting";
 import { format } from "date-fns";
 
@@ -105,25 +105,21 @@ const StartPollPage: React.FC<StartPollPageProps> = () => {
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-10"
           >
-            <div className="flex gap-4 flex-wrap">
+            <div className="flex gap-4 flex-col md:flex-row">
               {/* START DATE */}
-              <FormInput
+              <FormCalendar
                 name="start_date"
                 label="Start Date"
                 control={control}
                 errors={errors}
-                placeholder="Enter title of the proposal "
-                type="date"
               />
 
               {/* CLOSING DATE */}
-              <FormInput
+              <FormCalendar
                 name="end_date"
-                label="Closing Date"
+                label="End Date"
                 control={control}
                 errors={errors}
-                placeholder="Enter title of the proposal "
-                type="date"
               />
             </div>
 
@@ -133,7 +129,7 @@ const StartPollPage: React.FC<StartPollPageProps> = () => {
               label="Title"
               control={control}
               errors={errors}
-              placeholder="Enter title of the proposal "
+              placeholder="Enter title of the poll "
             />
 
             {/* SUMMARY */}

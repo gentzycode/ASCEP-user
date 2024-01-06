@@ -37,20 +37,7 @@ interface InitiativeContextType {
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
 }
-const initialFilter = {
-  sdgs: [],
-  specificSDG: undefined,
-  specificTarget: undefined,
-  targets: [],
-  tags: [],
-  all: false,
-  text: "",
-  opened: false,
-  closed: false,
-  answered: false,
-  newest: true,
-  datetimeSpecific: "",
-};
+
 const InitiativeContext = createContext<InitiativeContextType>({
   view: "",
   setView: () => {},
@@ -59,7 +46,7 @@ const InitiativeContext = createContext<InitiativeContextType>({
   fetchedInitiativeData: undefined,
   refetchInitiatives: () => {},
   filterByButton: () => {},
-  filterOptions: initialFilter,
+  filterOptions: {},
   setFilterOptions: () => {},
   getAllInitiatives: () => {},
   perPage: 0,
@@ -70,6 +57,21 @@ const InitiativeContext = createContext<InitiativeContextType>({
 export const useInitiativeContext = () => useContext(InitiativeContext);
 
 export default function InitiativeProvider({ children }: PropsWithChildren) {
+  const initialFilter = {
+    sdgs: [],
+    specificSDG: undefined,
+    specificTarget: undefined,
+    targets: [],
+    tags: [],
+    all: false,
+    text: "",
+    opened: false,
+    closed: false,
+    answered: false,
+    newest: true,
+    datetimeSpecific: "",
+  };
+
   const {
     mutate: getAllInitiatives,
     isLoading: fetchingInitiatives,
@@ -85,7 +87,7 @@ export default function InitiativeProvider({ children }: PropsWithChildren) {
 
   const getFiltersWithValues = () => {
     const entries = Object.entries(filterOptions);
-    const filteredEntries = entries.filter(([key, value]) => {
+    const filteredEntries = entries.filter(([_, value]) => {
       if (value) {
         if (Array.isArray(value)) {
           return value.length > 0;
@@ -128,7 +130,7 @@ export default function InitiativeProvider({ children }: PropsWithChildren) {
   }, [filterOptions, page]);
 
   const refetchInitiatives = () => {
-    getAllInitiatives({ page, perPage, filter: { newest: true } });
+    getAllInitiatives({ page, perPage, filter: getFiltersWithValues() });
   };
 
   return (
