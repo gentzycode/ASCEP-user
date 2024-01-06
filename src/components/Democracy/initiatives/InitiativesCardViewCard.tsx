@@ -6,6 +6,8 @@ import { CategoryDisplay, TagDisplay, TargetDisplay } from "..";
 import { Link } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { useSupportInitiative } from "@/api/democracy/initiatives";
+import { useInitiativeContext } from "@/contexts/InitiativeContext";
 
 interface InitiativesCardViewCardProps {
   initiative: InitiativeType;
@@ -15,6 +17,14 @@ const InitiativesCardViewCard: React.FC<InitiativesCardViewCardProps> = ({
   initiative,
 }) => {
   const { isLoggedIn } = useAuthContext();
+  const { mutateAsync: supportInitiative, isLoading: isSupporting } =
+    useSupportInitiative(initiative.id);
+  const { refetchInitiatives } = useInitiativeContext();
+
+  const handleSupport = async () => {
+    await supportInitiative();
+    refetchInitiatives();
+  };
 
   return (
     <div className=" flex flex-col gap-3 max-w-[600px] ">
@@ -133,7 +143,12 @@ const InitiativesCardViewCard: React.FC<InitiativesCardViewCardProps> = ({
             <span>{initiative.support_needed} support needed</span>
           </Button>
           {isLoggedIn ? (
-            <Button className="h-fit text-[16px] w-full rounded-full">
+            <Button
+              className="h-11 text-[16px] w-full rounded-full"
+              onClick={handleSupport}
+              isLoading={isSupporting}
+              disabled={isSupporting}
+            >
               Support
             </Button>
           ) : (

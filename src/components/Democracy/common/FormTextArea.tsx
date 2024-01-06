@@ -50,7 +50,7 @@ const FormTextArea = <TFormValues extends Record<string, unknown>>({
                 hasError
                   ? "focus-visible:ring-red-500"
                   : "focus-visible:ring-primary"
-              } focus-visible:ring-offset-2 border-transparent`}
+              } focus-visible:ring-offset-2 border-transparent text-text`}
               {...field}
               {...props}
               rows={rows}

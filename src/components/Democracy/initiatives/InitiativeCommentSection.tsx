@@ -123,13 +123,15 @@ const InitiativeCommentSection: React.FC<InitiativeCommentSectionProp> = () => {
             setFilter(value);
             setPage(1);
           }}
+          defaultFilterButtonValue="newest"
+          isFiltering={isFetchingComments}
         />
       </div>
 
       {isLoadingComments && <PageLoader />}
       {commentsData?.comments?.length === 0 && (
         <div>
-          <h1 className="text-dark text-[16px] md:text-[20px]">
+          <h1 className="text-text text-base md:text-xl">
             This Proposal has no comments yet
           </h1>
         </div>

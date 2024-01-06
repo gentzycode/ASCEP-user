@@ -15,13 +15,11 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "../ui/form";
 import { InputProps } from "../ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
-import { cn } from "@/lib/utils";
 import { Calendar1 } from "iconsax-react";
 import { Calendar } from "../ui/calendar";
 
@@ -29,7 +27,6 @@ type FormCalendarProps<TFormValues extends FieldValues = FieldValues> = {
   control: Control<TFormValues>;
   name: Path<TFormValues>;
   label?: string;
-  placeholder?: string;
   errors?: Partial<DeepMap<TFormValues, FieldError>> | FieldErrors<TFormValues>;
 } & Omit<InputProps, "name">;
 
@@ -37,7 +34,6 @@ const FormCalendar = <TFormValues extends Record<string, unknown>>({
   control,
   label,
   name,
-  placeholder,
   errors,
 }: FormCalendarProps<TFormValues>): JSX.Element => {
   const errorMessage = lodash.get(errors, name);
@@ -48,22 +44,20 @@ const FormCalendar = <TFormValues extends Record<string, unknown>>({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex flex-col">
-          <FormLabel>{label}</FormLabel>
+        <FormItem className="flex flex-col w-full md:max-w-[500px]">
+          <h3 className="text-sm md:text-base text-text">{label}</h3>
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>
-                <Button
-                  className={
-                    "w-full pl-3 flex justify-between font-normal bg-[#C4C4C41F]  hover:bg-[#C4C4C41F]"
-                  }
-                >
+                <Button className={`${hasError && " border-[1px] border-red-500"} text-text rounded-full w-full pl-3 flex justify-between font-normal bg-[#C4C4C41F] hover:bg-[#C4C4C41F]`}>
                   {field.value ? (
                     format(Number(field.value), "PPP")
                   ) : (
-                    <span className="text-sm md:text-base text-text">Select Date</span>
+                    <span className="text-sm md:text-base text-text">
+                      Select Date
+                    </span>
                   )}
-                  <Calendar1 size="25" className="text-text"/>
+                  <Calendar1 size="25" className="text-text" />
                 </Button>
               </FormControl>
             </PopoverTrigger>

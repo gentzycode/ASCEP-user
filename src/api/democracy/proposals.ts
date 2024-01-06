@@ -118,6 +118,7 @@ export const useGetProposalInfo = (proposalId: string) => {
     },
     retry: false,
     refetchOnWindowFocus: false,
+    keepPreviousData: true,
   });
 };
 
@@ -161,6 +162,7 @@ export const useGetProposalCommentResponses = (commentId: string) => {
     }
   );
 };
+
 
 // VOTE PROPOSAL COMMENT
 export const useVoteProposalComment = () => {
@@ -312,7 +314,7 @@ export const useGetAllProposalTopics = (
   filter: string
 ) => {
   return useQuery(
-    ["get-proposal-topics", page, proposalId, filter],
+    ["get-proposal-topics"],
     (): Promise<ProposalTopicDataType> => {
       return axios
         .get(GET_ALL_PROPOSAL_TOPICS_ENDPOINT(page, proposalId, filter), {

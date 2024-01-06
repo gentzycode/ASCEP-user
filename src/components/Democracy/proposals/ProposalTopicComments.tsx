@@ -1,6 +1,6 @@
 import { FilterButtons, FormInput, ProposalTopicCommentCard } from "..";
 import { debateCommentFilterButtonOptions } from "@/utils/Democracy/Debates";
-import { IconWrapper, Pagination } from "@/components/custom";
+import { IconWrapper, PageLoader, Pagination } from "@/components/custom";
 import { CloseCircle, Danger } from "iconsax-react";
 import { Link, useParams } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
@@ -11,7 +11,6 @@ import * as z from "zod";
 import { Form } from "@/components/ui/form";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { useEffect, useState } from "react";
-import { FaSpinner } from "react-icons/fa";
 import {
   useGetProposalTopicComments,
   usePublishProposalTopicComment,
@@ -117,6 +116,8 @@ const ProposalTopicComments: React.FC<ProposalTopicCommentsCardProps> = () => {
             setFilter(value);
             setPage(1);
           }}
+          defaultFilterButtonValue="newest"
+          isFiltering={isFetchingComments}
         />
       )}
       {commentsData?.comments?.length === 0 && (
@@ -126,13 +127,7 @@ const ProposalTopicComments: React.FC<ProposalTopicCommentsCardProps> = () => {
           </h1>
         </div>
       )}
-      {isLoadingComments && (
-        <div className="w-full flex justify-center">
-          <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
-            <FaSpinner className="animate-spin text-[100px]" />
-          </IconWrapper>
-        </div>
-      )}
+      {isLoadingComments && <PageLoader />}
 
       {commentsData && commentsData.comments.length > 0 && (
         <div

@@ -15,6 +15,7 @@ import {
 } from "@/api/democracy/initiatives";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { frontendURL } from "@/api/baseUrl";
 
 interface InitiativeInfoProps {
   initiative: InitiativeType;
@@ -146,6 +147,7 @@ const InitiativeInfo: React.FC<InitiativeInfoProps> = ({
               <CategoryDisplay
                 category={category.categoryDetail.name}
                 index={i}
+                key={category.category_id}
               />
             ))}
           </div>
@@ -284,7 +286,7 @@ const InitiativeInfo: React.FC<InitiativeInfoProps> = ({
 
             {isLoggedIn ? (
               <Button
-                className="h-fit  max-w-[200px] py-4 text-lg w-full rounded-full"
+                className="h-12  max-w-[200px] py-4 text-lg w-full rounded-full"
                 isLoading={isSupportingProposal}
                 onClick={() => supportProposal()}
               >
@@ -292,7 +294,7 @@ const InitiativeInfo: React.FC<InitiativeInfoProps> = ({
               </Button>
             ) : (
               <Link to={ROUTES.SIGNIN_ROUTE}>
-                <Button className="bg-transparent border-dark border-2 w-[175px]">
+                <Button className="bg-transparent border-dark border-2 w-[175px] h-12">
                   Log in
                 </Button>
               </Link>
@@ -302,7 +304,10 @@ const InitiativeInfo: React.FC<InitiativeInfoProps> = ({
 
         {/* SHARE */}
         <Share
-          shareableURL={`http://localhost:5173/democracy/share/${initiative.initiative_code}`}
+          shareableURL={
+            frontendURL +
+            `/democracy/initiative/share/${initiative.initiative_code}`
+          }
         />
 
         {/* FOLLOW */}

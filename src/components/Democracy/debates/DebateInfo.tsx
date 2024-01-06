@@ -115,8 +115,8 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
         {/* TAGS */}
         {debateTag.length > 0 && (
           <div className="flex gap-[8px] flex-wrap">
-            {debate.debateTag.map((tag) => (
-              <TagDisplay tag={tag.tag_name} key={tag.id} />
+            {debate.debateTag.map((tag, i) => (
+              <TagDisplay tag={tag.tag_name} key={tag.id} index={i} />
             ))}
           </div>
         )}
@@ -225,7 +225,7 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
 
         {/* SHARE */}
         <Share
-          shareableURL={frontendURL + `/democracy/share/${debate.shareable_id}`}
+          shareableURL={frontendURL + `/democracy/debate/share/${debate.shareable_id}`}
         />
 
         {/* DELETE ALERT */}

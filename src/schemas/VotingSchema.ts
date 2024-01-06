@@ -26,14 +26,16 @@ export const publishPollingSchema = z.object({
     .refine((value) => value.trim() !== "", {
       message: "Please enter a description of your poll",
     }),
-  start_date: z.coerce.date({
+
+  start_date: z.date({
     required_error: "Start date is required",
-    invalid_type_error: "That's not a date!",
+    invalid_type_error: "Please enter a valid date!",
   }),
-  end_date: z.coerce.date({
+  end_date: z.date({
     required_error: "Closing date is required",
-    invalid_type_error: "That's not a date!",
+    invalid_type_error: "Please enter a valid date!",
   }),
+
   wards: z.number().array().min(1, "Please select at least one ward"),
   sdgs: z.array(z.number()).optional(),
   targets: z.array(z.number()).optional(),
@@ -98,8 +100,6 @@ export const pollQuestionAnswerSchema = z.object({
   selected_option: z.string().refine((value) => value.trim() !== "", {
     message: "Please select an question",
   }),
-  // .array(z.string())
-  // .min(1, "Please select at least one answer"),
 });
 
 export const votePollCommentSchema = z.object({

@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { SelectViewport } from "@radix-ui/react-select";
 interface PaginationComponentProp {
   paginationData: MetaDataType;
   page: number;
@@ -39,18 +40,19 @@ const PaginationComponent: React.FC<PaginationComponentProp> = ({
         <div className="flex items-center gap-3">
           <p className="text-text text-sm">The page you are on</p>
           <Select
-            defaultValue={page}
+            value={page}
             onValueChange={(value: number) => setPage(value)}
           >
             <SelectTrigger className="w-fit flex gap-3 font-bold text-[#71bb61] ring-0 focus:ring-4 rounded-2xl focus:ring-offset-0  focus:ring-[#DFDFDF]">
               <SelectValue placeholder={page} />
             </SelectTrigger>
-            <SelectContent sideOffset={0} align="center">
+            <SelectContent sideOffset={0} align="center" className="min-w-fit">
               <SelectGroup className="m-0 p-0">
                 {Array.from({ length: numberOfPages }).map((_, i) => (
                   <SelectItem
                     value={1 + i}
-                    className=" text-sm flex justify-center"
+                    className=" text-sm flex justify-center w-fit"
+                    key={i}
                   >
                     {i + 1}
                   </SelectItem>

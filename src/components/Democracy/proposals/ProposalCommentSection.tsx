@@ -125,6 +125,7 @@ const ProposalCommentSection: React.FC<ProposalCommentSectionProp> = () => {
             setFilter(value);
             setPage(1);
           }}
+          defaultFilterButtonValue="newest"
         />
       </div>
 

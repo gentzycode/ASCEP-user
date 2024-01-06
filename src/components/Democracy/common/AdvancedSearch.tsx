@@ -25,6 +25,7 @@ interface AdvancedSearchProps {
     React.SetStateAction<z.infer<typeof filterSchema>>
   >;
   isSearching: boolean;
+  defaultFilterButtonValue: string;
 }
 
 const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
@@ -35,6 +36,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
   setFilterOptions,
   filterOptions,
   isSearching,
+  defaultFilterButtonValue,
 }) => {
   const [advanceSearch, setAdvanceSearch] = useState(false);
 
@@ -139,6 +141,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
         <FilterButtons
           filterButtonOptions={filterButtonOptions}
           filterByButton={filterByButton}
+          defaultFilterButtonValue={defaultFilterButtonValue}
         />
         {/* View type */}
         <div className="hidden md:block">
