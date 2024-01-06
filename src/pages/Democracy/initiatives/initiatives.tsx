@@ -51,12 +51,13 @@ const InitiativesHomePage = () => {
           filterOptions={filterOptions}
           setFilterOptions={setFilterOptions}
           isSearching={fetchingInitiatives}
+          defaultFilterButtonValue="newest"
         />
 
         {/* ERROR */}
         {fetchingInitiativeError && !fetchingInitiatives && (
           <FetchingError
-            message="Error fetching Proposals"
+            message="Error fetching Initiatives"
             refetching={fetchingInitiatives}
             retryFunction={() => refetchInitiatives()}
           />

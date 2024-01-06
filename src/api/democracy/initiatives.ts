@@ -204,6 +204,7 @@ export const useSupportInitiative = (initiativeId: string) => {
     {
       onSuccess: (res) => {
         queryClient.invalidateQueries("initiative-info");
+        queryClient.invalidateQueries("get-initiative");
         toast({
           title: "Success!",
           variant: "success",

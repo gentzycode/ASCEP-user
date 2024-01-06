@@ -129,6 +129,7 @@ const StartInitiativePage: React.FC<StartInitiativePageProps> = () => {
               label="Initiative summary (maximum of 200 characters)"
               control={control}
               errors={errors}
+              rows={6}
             />
 
             {/* WARD */}
@@ -196,7 +197,7 @@ const StartInitiativePage: React.FC<StartInitiativePageProps> = () => {
 
             <Button
               type="submit"
-              className="w-full max-w-[400px] p-0 h-fit py-3"
+              className="w-full max-w-[400px] p-0 h-12"
               isLoading={isPublisingInitiative}
               disabled={isPublisingInitiative}
             >

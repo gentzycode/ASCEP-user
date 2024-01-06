@@ -14,7 +14,11 @@ import { Link, useParams } from "react-router-dom";
 import FormTextArea from "@/components/Democracy/common/FormTextArea";
 import TargetsMultiSelect from "@/components/custom/TargetsMultiSelect";
 import { publishPollingSchema } from "@/schemas/VotingSchema";
-import { PageLoader, WardsMultiSelect } from "@/components/custom";
+import {
+  FormCalendar,
+  PageLoader,
+  WardsMultiSelect,
+} from "@/components/custom";
 import { useGetPollInfo, usePublishPoll } from "@/api/democracy/voting";
 import { format, parseISO } from "date-fns";
 import { useAppContext } from "@/contexts/AppContext";
@@ -94,13 +98,13 @@ const EditVotePage: React.FC<EditVotePageProps> = () => {
     await updatePoll(formData);
   }
   useEffect(() => {
-    const IDs = targets.map((target) => target.id);
-    setValue("targets", IDs);
+    const targetIDs = targets.map((target) => target.id);
+    setValue("targets", targetIDs);
   }, [targets]);
 
   useEffect(() => {
-    const IDs = wards.map((ward) => ward.id);
-    setValue("wards", IDs);
+    const wardIDs = wards.map((ward) => ward.id);
+    setValue("wards", wardIDs);
   }, [wards]);
 
   const getTargets = () => {
@@ -134,9 +138,9 @@ const EditVotePage: React.FC<EditVotePageProps> = () => {
       setValue("description", description);
       setValue("summary", summary);
       // @ts-ignore
-      setValue("start_date", format(parseISO(start_date!), "yyyy-MM-dd"));
+      setValue("start_date", parseISO(start_date));
       // @ts-ignore
-      setValue("end_date", format(parseISO(end_date!), "yyyy-MM-dd"));
+      setValue("end_date", parseISO(end_date));
       setValue(
         "sdgs",
         votingSDGs.map((item) => item.sdg_id)
@@ -165,25 +169,21 @@ const EditVotePage: React.FC<EditVotePageProps> = () => {
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-10"
             >
-              <div className="flex gap-4 flex-wrap">
+              <div className="flex gap-4 flex-col md:flex-row">
                 {/* START DATE */}
-                <FormInput
+                <FormCalendar
                   name="start_date"
                   label="Start Date"
                   control={control}
                   errors={errors}
-                  placeholder="Enter title of the proposal "
-                  type="date"
                 />
 
                 {/* CLOSING DATE */}
-                <FormInput
+                <FormCalendar
                   name="end_date"
-                  label="Closing Date"
+                  label="End Date"
                   control={control}
                   errors={errors}
-                  placeholder="Enter title of the proposal "
-                  type="date"
                 />
               </div>
 

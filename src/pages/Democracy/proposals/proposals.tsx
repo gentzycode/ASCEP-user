@@ -51,6 +51,7 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
           filterOptions={filterOptions}
           setFilterOptions={setFilterOptions}
           isSearching={fetchingProposals}
+          defaultFilterButtonValue="newest"
         />
 
         {/* ERROR */}
