@@ -10,7 +10,7 @@ interface FormTagsProps {
 
 export default function FormTags({ tags, setTags }: FormTagsProps) {
   const [tag, setTag] = React.useState("");
-  
+
   const handleAdd = (tag: string) => {
     setTags((tags) => [...tags, tag]);
     setTag("");

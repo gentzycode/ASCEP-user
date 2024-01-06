@@ -20,6 +20,7 @@ import {
   PUBLISH_POLL_ENDPOINT,
   PUBLISH_POLL_QUESTION_ENDPOINT,
   PUBLISH_QUESTION_ANSWERS_ENDPOINT,
+  RESOLVE_POLL_SHARE_ID_ENDPOINT,
   VOTE_POLL_COMMENT_ENDPOINT,
 } from ".";
 import { useToast } from "@/components/ui/use-toast";
@@ -295,6 +296,22 @@ export const useDeletePoll = (pollId: string) => {
         });
         navigate(ROUTES.VOTING_HOME_ROUTE, { replace: true });
       },
+    }
+  );
+};
+
+//SHARE ID
+export const useResolvePollShareID = (shareableId: string) => {
+  return useQuery(
+    ["voting-shareID"],
+    (): Promise<string> => {
+      return axios
+        .get(RESOLVE_POLL_SHARE_ID_ENDPOINT(shareableId))
+        .then((res) => res.data.data.id);
+    },
+    {
+      refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };

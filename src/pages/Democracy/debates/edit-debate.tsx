@@ -14,8 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useGetDebateInfo, usePublishDebate } from "@/api/democracy/debates";
-import { IconWrapper, PageLoader } from "@/components/custom";
-import { FaSpinner } from "react-icons/fa";
+import { PageLoader } from "@/components/custom";
 import { useAppContext } from "@/contexts/AppContext";
 import TargetsMultiSelect from "@/components/custom/TargetsMultiSelect";
 

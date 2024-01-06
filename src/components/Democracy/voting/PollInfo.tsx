@@ -170,7 +170,9 @@ const PollInfo: React.FC<PollInfoProp> = ({ scrollToComments, poll }) => {
 
           {/* SHARE */}
           <Share
-            shareableURL={frontendURL + `/democracy/share/${shareable_id}`}
+            shareableURL={
+              frontendURL + `/democracy/voting/share/${poll.shareable_id}`
+            }
           />
         </div>
       </div>

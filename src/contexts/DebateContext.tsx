@@ -37,18 +37,7 @@ interface DebateContextType {
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
 }
-const initialFilter = {
-  sdgs: [],
-  specificSDG: undefined,
-  specificTarget: undefined,
-  targets: [],
-  tags: [],
-  mostactive: false,
-  text: "",
-  highestrating: false,
-  newest: true,
-  datetimeSpecific: "",
-};
+
 const DebateContext = createContext<DebateContextType>({
   view: "",
   setView: () => {},
@@ -57,7 +46,7 @@ const DebateContext = createContext<DebateContextType>({
   fetchedDebatesData: undefined,
   refetchDebates: () => {},
   filterByButton: () => {},
-  filterOptions: initialFilter,
+  filterOptions: {},
   setFilterOptions: () => {},
   getAllDebates: () => {},
   perPage: 0,
@@ -68,6 +57,19 @@ const DebateContext = createContext<DebateContextType>({
 export const useDebateContext = () => useContext(DebateContext);
 
 export default function DebateProvider({ children }: PropsWithChildren) {
+  const initialFilter = {
+    sdgs: [],
+    specificSDG: undefined,
+    specificTarget: undefined,
+    targets: [],
+    tags: [],
+    mostactive: false,
+    text: "",
+    highestrating: false,
+    newest: true,
+    datetimeSpecific: "",
+  };
+
   const {
     mutate: getAllDebates,
     isLoading: fetchingDebates,
@@ -83,7 +85,7 @@ export default function DebateProvider({ children }: PropsWithChildren) {
 
   const getFiltersWithValues = () => {
     const entries = Object.entries(filterOptions);
-    const filteredEntries = entries.filter(([key, value]) => {
+    const filteredEntries = entries.filter(([_, value]) => {
       if (value) {
         if (Array.isArray(value)) {
           return value.length > 0;
@@ -95,7 +97,6 @@ export default function DebateProvider({ children }: PropsWithChildren) {
       }
     });
     const filteredObject = Object.fromEntries(filteredEntries);
-
     return filteredObject;
   };
 
@@ -126,7 +127,7 @@ export default function DebateProvider({ children }: PropsWithChildren) {
   }, [filterOptions, page]);
 
   const refetchDebates = () => {
-    getAllDebates({ page, perPage, filter: { newest: true } });
+    getAllDebates({ page, perPage, filter: getFiltersWithValues() });
   };
 
   return (

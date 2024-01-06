@@ -19,14 +19,14 @@ import { debateCommentSchema } from "@/schemas/DebateSchema";
 
 interface DebateCommentSectionProp {}
 const DebateCommentSection: React.FC<DebateCommentSectionProp> = () => {
+  const [page, setPage] = useState(1);
+  const [filter, setFilter] = useState("newest");
+
   const { isLoggedIn } = useAuthContext();
   const { debateId } = useParams();
 
   const { mutateAsync: publishComment, isLoading: isPublishingComment } =
     usePublishDebateComment();
-
-  const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState("newest");
 
   const {
     data: commentsData,
@@ -115,6 +115,7 @@ const DebateCommentSection: React.FC<DebateCommentSectionProp> = () => {
           </Form>
         </div>
       )}
+
       {/* FILTER BUTTONS */}
       <div className="my-8">
         <FilterButtons
@@ -124,13 +125,15 @@ const DebateCommentSection: React.FC<DebateCommentSectionProp> = () => {
             setPage(1);
           }}
           isFiltering={isFetchingComments}
+          defaultFilterButtonValue="newest"
         />
       </div>
 
+      {/* LOADING */}
       {isLoadingComments && <PageLoader />}
       {commentsData?.comments?.length === 0 && (
         <div>
-          <h1 className="text-dark text-[16px] md:text-[20px]">
+          <h1 className="text-text text-base md:text-xl">
             This debate has no comments yet
           </h1>
         </div>
@@ -148,6 +151,7 @@ const DebateCommentSection: React.FC<DebateCommentSectionProp> = () => {
             <DebateCommentCard comment={comment} key={comment.id} />
           ))}
 
+          {/* PAGINATION */}
           <Pagination
             page={page}
             setPage={setPage}

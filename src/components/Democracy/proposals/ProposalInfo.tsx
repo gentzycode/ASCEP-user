@@ -303,7 +303,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
             </Button>
             {isLoggedIn ? (
               <Button
-                className="h-fit  max-w-[200px] py-4 text-lg w-full rounded-full"
+                className="h-12  max-w-[200px] py-4 text-lg w-full rounded-full"
                 isLoading={isSupportingProposal}
                 onClick={() => supportProposal()}
               >
@@ -318,11 +318,11 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
             )}
           </div>
         </div>
-
         {/* SHARE */}
         <Share
           shareableURL={
-            frontendURL + `/democracy/share/${proposal.proposal_code}`
+            frontendURL +
+            `/democracy/proposal/share/${proposal.proposal_code}`
           }
         />
 
@@ -333,7 +333,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
               <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
                 Follow
               </h2>
-              <Button className="bg-transparent border border-primary mt-3 text-primary hover:text-light">
+              <Button className="bg-transparent border border-primary mt-3 text-primary hover:text-light h-12">
                 Follow citizen Proposal
               </Button>
             </div>
@@ -347,7 +347,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
                 to={ROUTES.PROPOSAL_COMMUNITY_ROUTE(proposal.id)}
                 state={{ proposal: proposal }}
               >
-                <Button className="bg-transparent border border-primary mt-3 text-primary hover:text-light">
+                <Button className="h-12 bg-transparent border border-primary mt-3 text-primary hover:text-light">
                   Access the Community
                 </Button>
               </Link>

@@ -171,6 +171,9 @@ export const LINK_PROPOSAL_ENDPOINT = baseUrl + "/voting/link-proposals";
 export const DELETE_POLL_ENDPOINT = (pollId: string) =>
   baseUrl + `/voting/delete/${pollId}`;
 
+export const RESOLVE_POLL_SHARE_ID_ENDPOINT = (shareableId: string) =>
+  baseUrl + `/voting/resolve-link/${shareableId}`;
+
 //SDG
 export const GET_ALL_SDGs_ENDPOINT = baseUrl + "/sdg/all";
 

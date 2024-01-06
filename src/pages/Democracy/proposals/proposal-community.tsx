@@ -10,7 +10,7 @@ import {
   ProposalParticipantCard,
   ProposalTopicCard,
 } from "@/components/Democracy";
-import { IconWrapper, Pagination } from "@/components/custom";
+import { PageLoader, Pagination } from "@/components/custom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -19,7 +19,6 @@ import { proposalTopicFilterButtonOptions } from "@/utils/Democracy/Proposals";
 import { formattedDate } from "@/utils/helper";
 import { Messages1 } from "iconsax-react";
 import { useEffect, useState } from "react";
-import { FaSpinner } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 
 const ProposalCommuntityHomePage = () => {
@@ -113,30 +112,20 @@ const ProposalCommuntityHomePage = () => {
 
       {/* *********************************************************************** PROPOSAL TOPICS ********************************************************************************/}
 
-      {isLoadingProposal && (
-        <div className="w-full flex justify-center">
-          <IconWrapper className=" text-primary bg-transparent my-10 w-fit h-full rounded-full">
-            <FaSpinner className="animate-spin text-[50px]" />
-          </IconWrapper>
-        </div>
-      )}
+      {isLoadingProposal && <PageLoader />}
 
       {/* FILTER BUTTONS */}
       {communityMembers?.length !== 0 && (
         <FilterButtons
           filterButtonOptions={proposalTopicFilterButtonOptions}
           filterByButton={(value) => setFilter(value)}
+          defaultFilterButtonValue="newest"
+          isFiltering={isFetchingProposalTopics}
         />
       )}
 
       {/* LOADING TOPICS */}
-      {isLoadingProposalTopics && (
-        <div className="w-full flex justify-center">
-          <IconWrapper className=" text-primary bg-transparent my-10 w-fit h-full rounded-full">
-            <FaSpinner className="animate-spin text-[50px]" />
-          </IconWrapper>
-        </div>
-      )}
+      {isLoadingProposalTopics && <PageLoader />}
 
       {/* TOPICS */}
       {proposalTopicData?.data && proposalTopicData?.data.length > 0 && (

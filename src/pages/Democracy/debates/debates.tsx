@@ -52,7 +52,10 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
           filterOptions={filterOptions}
           setFilterOptions={setFilterOptions}
           isSearching={fetchingDebates}
+          defaultFilterButtonValue="newest"
         />
+
+        {/* ERROR */}
         {fetchingDebatesError && !fetchingDebates && (
           <FetchingError
             message="Error fetching Debates"
@@ -60,6 +63,7 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
             retryFunction={() => refetchDebates()}
           />
         )}
+
         {/* LIST VIEW */}
         {view === "list-view" && fetchedDebatesData && (
           <div className="grid grid-cols-1 my-10 gap-10 max-w-[700px]">
@@ -72,7 +76,11 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
             ))}
           </div>
         )}
+
+        {/* LOADING */}
         {fetchingDebates && <PageLoader />}
+
+        
         {/* CARD VIEW */}
         {view === "card-view" && fetchedDebatesData && (
           <div className="w-full flex justify-start">
