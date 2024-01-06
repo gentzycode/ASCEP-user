@@ -51,7 +51,7 @@ const PaginationComponent: React.FC<PaginationComponentProp> = ({
                 {Array.from({ length: numberOfPages }).map((_, i) => (
                   <SelectItem
                     value={1 + i}
-                    className="flex justify-center text-sm  w-fit"
+                    className="flex justify-center text-sm w-fit"
                     key={i}
                   >
                     {i + 1}

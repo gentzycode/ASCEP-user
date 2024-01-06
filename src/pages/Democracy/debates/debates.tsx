@@ -63,6 +63,7 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
             retryFunction={() => refetchDebates()}
           />
         )}
+
         {/* LIST VIEW */}
         {view === "list-view" && fetchedDebatesData && (
           <div className="grid grid-cols-1 my-10 gap-10 max-w-[700px]">
