@@ -1,87 +1,15 @@
-import { CreateReportModal } from "@/components/Response";
+import { CreateReportModal, ResponseFilters } from "@/components/Response";
 import GroupedFiltersButton from "@/components/custom/GroupedFiltersButton";
 import { Button } from "@/components/ui/button";
-import { useAppContext } from "@/contexts/AppContext";
 import useDisclosure from "@/hooks/useDisclosure";
-import { getPastDays } from "@/utils/helper";
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
-const dateRange: FilterOption[] = [
-  {
-    label: "Today",
-    value: "",
-  },
-  {
-    label: "Past One Week",
-    value: getPastDays(7),
-  },
-  {
-    label: "Past One Month",
-    value: getPastDays(31),
-  },
-  {
-    label: "Past One Year",
-    value: getPastDays(366),
-  },
-];
-
 export default function ResponseLayout() {
   const [selectedPage, setSelectedPage] = useState("");
-  const [filters, setFilters] = useState<FilterShape[]>([]);
 
   const location = useLocation();
-
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { categories, wards } = useAppContext();
-
-  useEffect(() => {
-    let newFilters: FilterShape[] = [];
-    if (categories) {
-      const categoriesOptions: FilterOption[] = categories.map((category) => ({
-        label: category.name,
-        value: category.id,
-      }));
-
-      categoriesOptions.unshift({ label: "All", value: "" });
-      const filteredFilters = filters.filter(
-        (filter) => filter.title !== "Categories"
-      );
-
-      newFilters = [
-        ...filteredFilters,
-        { title: "Categories", options: categoriesOptions },
-      ];
-      setFilters(newFilters);
-    }
-
-    if (wards) {
-      const locationsOptions: FilterOption[] = wards.map((ward) => ({
-        label: ward.ward,
-        value: `longitude=${ward.longitude}&latitude=${ward.latitude}`,
-      }));
-      locationsOptions.unshift({ label: "Everywhere", value: "" });
-
-      const filteredFilters = newFilters.filter(
-        (filter) => filter.title !== "Locations"
-      );
-
-      newFilters = [
-        ...filteredFilters,
-        { title: "Locations", options: locationsOptions },
-      ];
-      setFilters(newFilters);
-    }
-
-    const filteredFilters = newFilters.filter(
-      (filter) => filter.title !== "Date Range"
-    );
-
-    setFilters([
-      ...filteredFilters,
-      { title: "Date Range", options: dateRange },
-    ]);
-  }, [categories, wards, dateRange]);
 
   useEffect(() => {
     setSelectedPage(
@@ -95,16 +23,16 @@ export default function ResponseLayout() {
         <h4>{selectedPage}</h4>
 
         <div className="flex gap-4">
-          <Button onClick={onOpen} size="xs" variant="pill">
-            Add new report
+          <Button onClick={onOpen} size="xs" variant="primary">
+            + Add new report
           </Button>
           <CreateReportModal isOpen={isOpen} onClose={onClose} />
           <Button size="xs" variant="pill">
             Post history
           </Button>
-          {filters.length > 0 && (
-            <GroupedFiltersButton variant="secondary" filters={filters} />
-          )}
+          <GroupedFiltersButton variant="pill">
+            <ResponseFilters />
+          </GroupedFiltersButton>
         </div>
       </div>
 
@@ -145,17 +73,3 @@ const responsePages: NavLinkType[] = [
     path: "/response/activity",
   },
 ];
-
-// const
-
-// const categories = [
-//   "all",
-//   "event",
-//   "education",
-//   "justice",
-//   "violence",
-//   "accident",
-//   "build",
-// ];
-
-// const locations = ["Everywhere", "Abuja", "Lagos", "Kano", "Port-Harcout"];
