@@ -10,6 +10,7 @@ import {
 interface ResponseContextType {
   reports: ReportData[];
   isLoading: boolean;
+  filtersString: string;
   filterDate: (arg: string | null) => void;
   filterLocation: (arg: string | null) => void;
   filterCategory: (arg: string | null) => void;
@@ -18,6 +19,8 @@ interface ResponseContextType {
 const ResponseContext = createContext<ResponseContextType>({
   reports: [],
   isLoading: false,
+  filtersString: "",
+
   filterDate: () => {},
   filterLocation: () => {},
   filterCategory: () => {},
@@ -66,8 +69,6 @@ export default function RepsonseProvider({ children }: PropsWithChildren) {
     setFiltersString(newFiltersString ? `?${newFiltersString}` : "");
   }, [filters]);
 
-  console.log(filtersString);
-
   const filterDate = (arg: string | null) => {
     setFilters({ ...filters, start_date: arg });
   };
@@ -82,7 +83,14 @@ export default function RepsonseProvider({ children }: PropsWithChildren) {
 
   return (
     <ResponseContext.Provider
-      value={{ isLoading, reports, filterCategory, filterDate, filterLocation }}
+      value={{
+        isLoading,
+        reports,
+        filtersString,
+        filterCategory,
+        filterDate,
+        filterLocation,
+      }}
     >
       {children}
     </ResponseContext.Provider>

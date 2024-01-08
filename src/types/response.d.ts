@@ -62,3 +62,29 @@ interface ReportStatus {
   description: string;
   id: number;
 }
+
+// ACTIVITIES
+interface ActivityResponse {
+  meta: MetaDataType;
+  data: ActivityData[];
+}
+interface ActivityData {
+  report_id: number;
+  action: "CREATE" | "READ" | "DELETE" | "DELETE-COMMENT" | "COMMENT";
+  ref_user: number;
+  refUser: RefUser;
+  report: ActivityReport;
+}
+
+interface RefUser {
+  firstname: string;
+  lastname: string;
+  profile_picture: string;
+  id: number;
+}
+
+interface ActivityReport {
+  title: string;
+  user_id: number;
+  id: number;
+}
