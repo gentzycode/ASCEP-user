@@ -20,6 +20,7 @@ import { useToast } from "@/components/ui/use-toast";
 import useAutoLogout from "@/hooks/useAuthoLogout";
 import { ViewResponsePage } from "./Response";
 import SmoothScroll from "@/components/custom/ScrollToTop";
+import RepsonseProvider from "@/providers/ResponseProvider";
 
 const Router = () => {
   const pageRoutes = routes.map(({ path, title, element }: RouterType) => {
@@ -123,7 +124,14 @@ const Router = () => {
             path="response/view-response/1"
             element={<ViewResponsePage />}
           ></Route>
-          <Route path="" element={<ResponseLayout />}>
+          <Route
+            path=""
+            element={
+              <RepsonseProvider>
+                <ResponseLayout />
+              </RepsonseProvider>
+            }
+          >
             {responsePages}
           </Route>
           <Route path="" element={<DemocracyLayout />}>
