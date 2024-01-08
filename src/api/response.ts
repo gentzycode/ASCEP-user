@@ -14,7 +14,7 @@ export const useCreateReport = () => {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("user-profile");
+        queryClient.invalidateQueries("all-reports");
         toast({
           title: "Success!",
           variant: "success",
@@ -25,17 +25,19 @@ export const useCreateReport = () => {
   );
 };
 
-export const useGetAllReports = () => {
+interface GetAllReportsQueryArgs {
+  filtersString: string;
+}
+export const useGetAllReports = ({ filtersString }: GetAllReportsQueryArgs) => {
   return useQuery(
-    ["all-reports"],
+    ["all-reports", filtersString],
     (): Promise<ReportData[]> => {
       return axios
-        .get(`${baseUrl}/report/all?start_date=2023-12-07T23:00:00.000Z`)
+        .get(`${baseUrl}/report/all${filtersString}`)
         .then((res) => res.data.data.reports);
     },
     {
       retry: false,
-      refetchOnWindowFocus: false,
     }
   );
 };

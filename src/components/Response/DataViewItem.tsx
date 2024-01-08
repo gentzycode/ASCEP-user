@@ -6,14 +6,14 @@ interface DataViewItemProps {
 
 export default function DataViewItem({ report }: DataViewItemProps) {
   return (
-    <div className="flex gap-3 ">
+    <div className="flex gap-3 h-[160px] ">
       <img
         src={
           report.reportImages.length > 0
             ? report.reportImages[0].image_url
             : "/images/activity.png"
         }
-        className="w-[165px] rounded-[20px] h-auto object-cover "
+        className="w-[165px] rounded-[20px]  object-cover "
         alt=""
       />
 

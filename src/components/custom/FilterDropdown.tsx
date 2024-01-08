@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowDown2 } from "iconsax-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import {
   Command,
@@ -13,11 +13,13 @@ import {
 interface FilterDropdownProps {
   options: FilterOption[];
   title: string;
+  onSelect?: (arg: FilterOption) => void;
 }
 
 export default function FilterDropdown({
   options,
   title,
+  onSelect,
 }: FilterDropdownProps) {
   const [selected, setSelected] = useState(options[0]);
   const [open, setOpen] = useState(false);
@@ -26,6 +28,10 @@ export default function FilterDropdown({
     const selected = JSON.parse(selectedJson);
     setSelected(selected);
   };
+
+  useEffect(() => {
+    if (onSelect) onSelect(selected);
+  }, [selected]);
 
   return (
     <div className="flex gap-3">
@@ -39,11 +45,11 @@ export default function FilterDropdown({
             <ArrowDown2 size="18" color="#292925" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent align="end" className="p-0 max-w-[230px]">
+        <PopoverContent align="end" className="p-0 max-w-[230px] ">
           <Command>
             <CommandInput placeholder="Search Categories..." />
             <CommandEmpty>None found.</CommandEmpty>
-            <CommandGroup>
+            <CommandGroup className="h-full overflow-y-auto max-h-80">
               {options.map((option) => (
                 <CommandItem
                   key={option.value}
