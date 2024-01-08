@@ -41,3 +41,19 @@ export const useGetAllReports = ({ filtersString }: GetAllReportsQueryArgs) => {
     }
   );
 };
+
+export const useGetAllActivities = ({
+  filtersString,
+}: GetAllReportsQueryArgs) => {
+  return useQuery(
+    ["all-activities", filtersString],
+    (): Promise<ActivityResponse> => {
+      return axios
+        .get(`${baseUrl}/report/activities${filtersString}`)
+        .then((res) => res.data.data);
+    },
+    {
+      retry: false,
+    }
+  );
+};

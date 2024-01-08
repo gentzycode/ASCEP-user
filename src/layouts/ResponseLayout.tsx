@@ -38,7 +38,7 @@ export default function ResponseLayout() {
 
       <Outlet />
 
-      <div className="fixed top-[80vh] left-0 flex justify-center w-[115vw] ml-auto">
+      <div className="fixed top-[90vh] left-0 flex justify-center w-[115vw] ml-auto">
         <div className="bg-white p-[6px] rounded-[20px] flex items-center gap-1 shadow-lg">
           {responsePages.map((page) => (
             <Link
