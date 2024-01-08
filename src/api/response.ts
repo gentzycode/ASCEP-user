@@ -57,3 +57,17 @@ export const useGetAllActivities = ({
     }
   );
 };
+
+export const useGetReportInfo = (id: string) => {
+  return useQuery(
+    ["all-activities", id],
+    (): Promise<ReportData> => {
+      return axios
+        .get(`${baseUrl}/report/info/${id}`)
+        .then((res) => res.data.data);
+    },
+    {
+      retry: false,
+    }
+  );
+};
