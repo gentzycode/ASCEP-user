@@ -36,3 +36,13 @@ interface CollectionData {
   description: string;
   type: string;
 }
+
+interface FilterOption {
+  label: string;
+  value: string | number;
+}
+
+interface FilterShape {
+  options: FilterOption[];
+  title: string;
+}
