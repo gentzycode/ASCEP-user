@@ -29,7 +29,9 @@ export const useGetAllReports = () => {
   return useQuery(
     ["all-reports"],
     (): Promise<ReportData[]> => {
-      return axios.get(`${baseUrl}/report/all`).then((res) => res.data.data);
+      return axios
+        .get(`${baseUrl}/report/all?start_date=2023-12-07T23:00:00.000Z`)
+        .then((res) => res.data.data.reports);
     },
     {
       retry: false,
