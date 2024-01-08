@@ -28,3 +28,14 @@ export function appendObjectToFormData(
     }
   }
 }
+
+export function getPastDays(days: number) {
+  const today = new Date();
+  const lastWeek = new Date(today);
+  lastWeek.setDate(today.getDate() - days);
+
+  // Format the date to ISO 8601 format
+  const isoDate = lastWeek.toISOString().split("T")[0];
+
+  return isoDate;
+}

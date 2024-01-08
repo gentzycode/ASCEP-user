@@ -17,6 +17,7 @@ interface ReportData {
   reportCategory: ReportCategory;
   reporter: Reporter;
   reportImages: ReportImage[];
+  reportStatus: ReportStatus;
 }
 
 interface ReportSdg {
@@ -53,4 +54,11 @@ interface Reporter {
 interface ReportImage {
   image_url: string;
   report_id: number;
+}
+
+interface ReportStatus {
+  name: string;
+  slug: string;
+  description: string;
+  id: number;
 }
