@@ -1,20 +1,13 @@
 import { Location } from "iconsax-react";
 import { CommentInput } from "../custom";
-// import GoogleMapReact from "google-map-react";
-
-// const defaultProps = {
-//   center: {
-//     lat: 10.99835602,
-//     lng: 77.01502627,
-//   },
-//   zoom: 11,
-// };
+import { usePostComment } from "@/api/response";
 
 interface ResponseDetailsProps {
   report: ReportData;
 }
 
 export default function ResponseDetails({ report }: ResponseDetailsProps) {
+  const { mutate, isLoading, isSuccess } = usePostComment();
   return (
     <div>
       <h3>{report.title}</h3>
@@ -55,9 +48,10 @@ export default function ResponseDetails({ report }: ResponseDetailsProps) {
 
         <div className="absolute w-full px-20 bottom-10 ">
           <CommentInput
-            isLoading={false}
-            handleSend={(data) => console.log(data)}
+            isLoading={isLoading}
+            handleSend={(data) => mutate({ ...data, report_id: report.id })}
             placeholder="Type your comment here"
+            isSent={isSuccess}
           />
         </div>
       </div>

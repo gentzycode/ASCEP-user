@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -68,6 +69,28 @@ export const useGetReportInfo = (id: string) => {
     },
     {
       retry: false,
+    }
+  );
+};
+
+export const usePostComment = () => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  return useMutation(
+    (values: any) => {
+      return axios
+        .post(`${baseUrl}/report/comment`, values)
+        .then((res) => res.data);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("report-comments");
+        toast({
+          title: "Success!",
+          variant: "success",
+          description: `Comment sent`,
+        });
+      },
     }
   );
 };
