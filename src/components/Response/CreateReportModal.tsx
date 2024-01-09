@@ -85,7 +85,7 @@ export default function CreateReportModal({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
-        className="min-w-[700px]"
+        className="w-[90%]  max-h-[700px] overflow-y-auto  lg:min-w-[700px]"
         style={{ borderRadius: 40, padding: 32 }}
       >
         <h4 className="pb-3 border-b border-dark/10 ">Create a report</h4>
@@ -93,7 +93,7 @@ export default function CreateReportModal({
         <div className="pt-8 space-y-8">
           <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <div className="flex items-center justify-between ">
+              <div className="items-center justify-between space-y-2 md:flex ">
                 <p className="text-subtle_text">Image</p>
 
                 <div className=" w-full max-w-[350px] flex gap-2">
@@ -122,7 +122,7 @@ export default function CreateReportModal({
                   />
                 </div>
               </div>
-              <div className="flex items-center justify-between ">
+              <div className="items-center justify-between space-y-2 md:flex ">
                 <p className="text-subtle_text">Title</p>
                 <div className=" w-full max-w-[350px]">
                   <FormInput
@@ -134,7 +134,7 @@ export default function CreateReportModal({
                   />
                 </div>
               </div>
-              <div className="flex items-center justify-between ">
+              <div className="items-center justify-between space-y-2 md:flex ">
                 <p className="text-subtle_text">Category</p>
                 <div className=" w-full max-w-[350px]">
                   <CategoriesMultiSelect
@@ -143,7 +143,7 @@ export default function CreateReportModal({
                   />
                 </div>
               </div>
-              <div className="flex items-center justify-between ">
+              <div className="items-center justify-between space-y-2 md:flex ">
                 <p className="text-subtle_text">Link to SDG (Optional)</p>
                 <div className=" w-full max-w-[350px]">
                   <SDGMultiSelect
@@ -153,7 +153,7 @@ export default function CreateReportModal({
                 </div>
               </div>
 
-              <div className="flex items-center justify-between ">
+              <div className="items-center justify-between space-y-2 md:flex ">
                 <p className="text-subtle_text">Location</p>
                 <div className=" w-full max-w-[350px]">
                   <FormInput
@@ -166,7 +166,7 @@ export default function CreateReportModal({
                   />
                 </div>
               </div>
-              <div className="flex items-center justify-between ">
+              <div className="items-center justify-between space-y-2 md:flex ">
                 <p className="text-subtle_text">More details</p>
                 <div className=" w-full max-w-[350px]">
                   <FormTextArea

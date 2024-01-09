@@ -11,6 +11,7 @@ interface ResponseContextType {
   reports: ReportData[];
   isLoading: boolean;
   filtersString: string;
+  clearFilter: () => void;
   filterDate: (arg: string | null) => void;
   filterLocation: (arg: string | null) => void;
   filterCategory: (arg: string | null) => void;
@@ -20,7 +21,7 @@ const ResponseContext = createContext<ResponseContextType>({
   reports: [],
   isLoading: false,
   filtersString: "",
-
+  clearFilter: () => {},
   filterDate: () => {},
   filterLocation: () => {},
   filterCategory: () => {},
@@ -44,14 +45,14 @@ export default function RepsonseProvider({ children }: PropsWithChildren) {
   const [reports, setReports] = useState<ReportData[]>([]);
   const [filtersString, setFiltersString] = useState("");
 
-  const { data, isLoading } = useGetAllReports({
+  const { data, isLoading, refetch } = useGetAllReports({
     filtersString,
   });
 
   useEffect(() => {
     if (data?.length) {
       setReports(data);
-    }
+    } else setReports([]);
   }, [data]);
 
   useEffect(() => {
@@ -69,6 +70,10 @@ export default function RepsonseProvider({ children }: PropsWithChildren) {
     setFiltersString(newFiltersString ? `?${newFiltersString}` : "");
   }, [filters]);
 
+  const clearFilter = () => {
+    setFilters(filtersDefault);
+    refetch();
+  };
   const filterDate = (arg: string | null) => {
     setFilters({ ...filters, start_date: arg });
   };
@@ -87,6 +92,7 @@ export default function RepsonseProvider({ children }: PropsWithChildren) {
         isLoading,
         reports,
         filtersString,
+        clearFilter,
         filterCategory,
         filterDate,
         filterLocation,

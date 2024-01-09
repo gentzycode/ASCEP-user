@@ -3,6 +3,7 @@ import FilterDropdown from "../custom/FilterDropdown";
 import { useAppContext } from "@/contexts/AppContext";
 import { useEffect, useState } from "react";
 import { useResponseContext } from "@/providers/ResponseProvider";
+import { Button } from "../ui/button";
 
 const dateRange: FilterOption[] = [
   {
@@ -28,7 +29,15 @@ export default function ResponseFilters() {
   const [locationFilters, setLocationFilters] = useState<FilterOption[]>([]);
 
   const { categories, wards } = useAppContext();
-  const { filterCategory, filterDate, filterLocation } = useResponseContext();
+  const {
+    filterCategory,
+    filterDate,
+    filterLocation,
+    clearFilter,
+    filtersString,
+  } = useResponseContext();
+
+  console.log("Filter", filtersString);
 
   useEffect(() => {
     if (categories) {
@@ -52,7 +61,7 @@ export default function ResponseFilters() {
   }, [wards, categories]);
 
   return (
-    <div className="flex items-center gap-4 p-4 bg-white ">
+    <div className="flex flex-col gap-4 p-4 bg-white md:items-center md:flex-row ">
       {!!categoryFilters.length && (
         <FilterDropdown
           title={"Category"}
@@ -76,6 +85,20 @@ export default function ResponseFilters() {
         options={dateRange}
         onSelect={(e) => filterDate(e.value === "" ? null : e.value.toString())}
       />
+
+      <div className="flex flex-row gap-4 md:hidden">
+        <Button
+          className="w-full"
+          variant="outline-primary"
+          onClick={() => {
+            clearFilter();
+          }}
+        >
+          Clear all filters
+        </Button>
+
+        {/* <Button className="w-full">Submit</Button> */}
+      </div>
     </div>
   );
 }

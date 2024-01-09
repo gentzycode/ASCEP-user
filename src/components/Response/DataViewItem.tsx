@@ -15,16 +15,18 @@ export default function DataViewItem({ report }: DataViewItemProps) {
               ? report.reportImages[0].image_url
               : "/images/activity.png"
           }
-          className="w-[165px] rounded-[20px]  object-cover "
+          className="hidden md:block w-20 md:w-[165px] rounded-[20px]  object-cover "
           alt=""
         />
 
-        <div className="py-6 px-[18px] bg-white w-full rounded-[20px] space-y-3  ">
+        <div className="md:py-6 md:px-[18px]  p-3 bg-white w-full rounded-xl md:rounded-[20px] space-y-3  ">
           <div className="flex items-center gap-3">
-            <h4 className="text-xl font-semibold">{report.title}</h4>
+            <h4 className="text-base font-semibold md:text-xl">
+              {report.title}
+            </h4>
 
             <div
-              className={` py-1 px-5 rounded-full ${
+              className={` py-1 px-2 md:px-5 text-xs md:text-base rounded-full ${
                 report.reportStatus.name === "Public"
                   ? "text-[#31D0AA] bg-[#31D0AA]/10"
                   : "text-[#2F80ED] bg-[#2F80ED]/10"
@@ -34,22 +36,25 @@ export default function DataViewItem({ report }: DataViewItemProps) {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 text-sm font-medium text-dark">
-            <Location color="black" size={16} />
+          <div className="items-center gap-2 space-x-2 space-y-2 text-sm font-medium md:flex text-dark">
+            <div className="flex items-center gap-2">
+              <Location color="black" size={16} />
 
-            <p>{report.location_meta}</p>
+              <p>{report.location_meta}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <p className="font-semibold text-link">Posted By</p>
 
-            <p className="font-semibold text-link">Posted By</p>
-
-            <p>
-              {report.reporter?.firstname
-                ? `${report.reporter?.firstname} ${report.reporter?.lastname}`
-                : report.reporter.username}{" "}
-              on {new Date(report.submission_date).toDateString()}
-            </p>
+              <p>
+                {report.reporter?.firstname
+                  ? `${report.reporter?.firstname} ${report.reporter?.lastname}`
+                  : report.reporter.username}{" "}
+                on {new Date(report.submission_date).toDateString()}
+              </p>
+            </div>
           </div>
 
-          <p className="text-sm text-ellipsis line-clamp-5 text-subtle_text ">
+          <p className="text-sm text-ellipsis line-clamp-2 md:line-clamp-5 text-subtle_text ">
             {report.description}
           </p>
         </div>
