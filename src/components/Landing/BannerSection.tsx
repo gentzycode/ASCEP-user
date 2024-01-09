@@ -10,8 +10,7 @@ export default function BannerSection() {
         </h1>
 
         <p className="text-2xl text-subtitle_text">
-          Gift yourself, your family, a friend or a boo a Bion card to manage
-          their spendings
+        Connect, voice opinions, and influence policy decisions in a unified, accessible digital democracy platform.
         </p>
 
         <div className="flex justify-center gap-6 sm:justify-start md:gap-8">

@@ -1,4 +1,5 @@
 import { Button } from "../ui/button";
+import { Link } from 'react-router-dom';
 
 export default function ServicesSection() {
   return (
@@ -37,7 +38,9 @@ export default function ServicesSection() {
           integration, citizens can easily submit incident reports and provide
           valuable information to authorities.
         </p>
-        <Button className="w-[175px] ">Get Started</Button>
+        <Link to="/auth/signup">
+          <Button className="w-[175px]">Get Started</Button>
+        </Link>
       </div>
     </div>
   );
