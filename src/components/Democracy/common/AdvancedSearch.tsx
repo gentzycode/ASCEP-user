@@ -115,6 +115,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
         </div>
         {!advanceSearch ? (
           <Button
+
             className="text-lg text-text font-400 text-right md:w-fit bg-transparent p-0 hover:bg-transparent"
             onClick={() => {
               setAdvanceSearch(!advanceSearch);
@@ -124,6 +125,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
           </Button>
         ) : (
           <Button
+
             className="text-lg font-400 text-right md:w-fit bg-transparent p-0 hover:bg-transparent text-text"
             onClick={() => {
               reset();
@@ -136,7 +138,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
         )}
       </div>
 
-      <div className="flex justify-between gap-2 mb-2 flex-wrap">
+      <div className="flex flex-wrap justify-between gap-2 mb-2">
         {/* Filter buttons */}
         <FilterButtons
           filterButtonOptions={filterButtonOptions}
@@ -185,6 +187,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
               <FormSelectTarget name="specificTarget" control={control} />
             </div>
             {/* SDG */}
+
             <div className="col-span-3 flex flex-col">
               <FormLabel className="mb-2">Select SDGs</FormLabel>
               <FormCheckBoxSDG control={control} name="sdgs" />

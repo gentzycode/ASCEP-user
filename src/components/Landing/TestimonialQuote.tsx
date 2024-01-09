@@ -3,16 +3,18 @@ import { VscQuote } from "react-icons/vsc";
 export default function TestimonialQuote({ active }: { active: boolean }) {
   return (
     <div
-      className={`p-8 rounded-[50px] text-start  ${
-        active ? "bg-primary" : "testimonial-gradient"
+      className={`p-5 md:p-8 rounded-[50px] text-start  ${
+        active
+          ? "xl:bg-primary testimonial-gradient"
+          : "bg-primary xl:testimonial-gradient"
       }  `}
       style={{
         direction: "ltr",
       }}
     >
-      <VscQuote className="text-[120px] mb-7 text-dark  " />
+      <VscQuote className="text-5xl sm:text-[70px] md:text-[120px] mb-4 md:mb-7 text-dark  " />
 
-      <div className="mb-10 text-xl text-[#4F4F4F]  ">
+      <div className="mb-10 text-base lg:text-xl text-[#4F4F4F]  ">
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -34,8 +36,10 @@ export default function TestimonialQuote({ active }: { active: boolean }) {
         </div>
 
         <div>
-          <p className="m-0 text-2xl font-bold leading-none">Dexter Olaniyi</p>
-          <p className="text--[10px] ">Medical Doctor</p>
+          <p className="m-0 text-lg font-bold leading-none lg:text-2xl">
+            Dexter Olaniyi
+          </p>
+          <p className="text-xs ">Medical Doctor</p>
         </div>
       </div>
     </div>

@@ -5,20 +5,45 @@ import {
   Footer,
   NavBar,
 } from "@/components/Landing";
+import useDisclosure from "@/hooks/useDisclosure";
+import { useRef, useState } from "react";
 
 export default function ContactUs() {
-  return (
-    <div className="relative w-full h-screen space-y-40 overflow-y-auto bg-dark">
-      <div className="absolute w-full">
-        <NavBar />
-      </div>
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const parentRef = useRef<HTMLDivElement>(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
-      {/* <div className="space-y-40"> */}
-      <ContactHeading />
-      <ContactInfo />
-      <ContactFormSection />
-      <Footer />
-      {/* </div> */}
+  const handleScroll = () => {
+    const parentElement = parentRef.current;
+    if (parentElement) {
+      const scrollPosition = parentElement.scrollTop;
+      setScrollPosition(scrollPosition);
+    }
+  };
+  return (
+    <div
+      ref={parentRef}
+      onScroll={handleScroll}
+      className={`w-full h-screen  bg-dark ${
+        isOpen ? "overflow-y-hidden" : "overflow-y-auto"
+      } `}
+    >
+      {/* <div className="absolute w-full">
+        <NavBar />
+      </div> */}
+      <NavBar
+        scrollPosition={scrollPosition}
+        onOpen={onOpen}
+        onClose={onClose}
+        isOpen={isOpen}
+      />
+
+      <div className="relative z-10 space-y-20 md:space-y-40">
+        <ContactHeading />
+        <ContactInfo />
+        <ContactFormSection />
+        <Footer />
+      </div>
     </div>
   );
 }

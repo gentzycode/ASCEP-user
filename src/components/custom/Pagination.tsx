@@ -32,12 +32,14 @@ const PaginationComponent: React.FC<PaginationComponentProp> = ({
   const numberOfPages = Math.ceil(total / per_page);
   return (
     <Pagination className="relative my-8">
+
       <PaginationContent className="list-none flex justify-between w-full items-center flex-wrap">
         <p className="text-text text-base">
           {page} - {numberOfPages} pages
         </p>
 
         <div className="flex items-center gap-3">
+
           <p className="text-text text-sm">The page you are on</p>
           <Select
             value={page}
@@ -47,6 +49,7 @@ const PaginationComponent: React.FC<PaginationComponentProp> = ({
               <SelectValue placeholder={page} />
             </SelectTrigger>
             <SelectContent sideOffset={0} align="center" className="min-w-fit">
+
               <SelectGroup className="m-0 p-0">
                 {Array.from({ length: numberOfPages }).map((_, i) => (
                   <SelectItem
@@ -71,6 +74,7 @@ const PaginationComponent: React.FC<PaginationComponentProp> = ({
               <IoIosArrowBack />
             </Button>
           </PaginationItem>
+
           <PaginationItem className="h-fit flex items-center">
             <Button
               className="h-fit w-fit rounded-lg text-dark bg-transparent text-2xl p-0"

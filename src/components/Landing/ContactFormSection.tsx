@@ -19,8 +19,8 @@ export default function ContactFormSection() {
     console.log(e);
   };
   return (
-    <div className="grid grid-cols-2 gap-16 px-[100px] ">
-      <div className="flex flex-col justify-center p-12">
+    <div className="grid-cols-2 gap-16 lg:grid section-padding ">
+      <div className="flex flex-col justify-center px-0 py-12 xl:px-12 max-w-[500px] mx-auto">
         <div className="mb-12 space-y-5">
           <p className="text-lg uppercase text-primary">Send us a message</p>
           <p className="text-2xl text-[#6B6B6B]">
@@ -30,7 +30,7 @@ export default function ContactFormSection() {
 
         <Form {...form}>
           <form onSubmit={handleSubmit(submitForm)} className="space-y-6">
-            <div className="grid grid-cols-2 gap-8">
+            <div className="grid gap-8 md:grid-cols-2">
               <FormInput
                 name="firstname"
                 control={control}
@@ -88,9 +88,9 @@ export default function ContactFormSection() {
         </Form>
       </div>
 
-      <div className="">
+      <div className="flex justify-center">
         <img
-          className="h-[800px] object-cover"
+          className="h-[360px] md:h-[500px] lg:h-[800px] max-w-[500px] w-full object-cover rounded-[40px]"
           src="/images/landing/map.png"
           alt=""
         />
