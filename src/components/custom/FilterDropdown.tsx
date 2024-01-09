@@ -34,14 +34,13 @@ export default function FilterDropdown({
   }, [selected]);
 
   return (
-    <div className="flex gap-3">
+    <div className="flex justify-between gap-3">
       <p className="text-lg text-subtitle_text">{title}</p>
 
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button className="gap-4 capitalize rounded-full h-7 ">
             <p className="text-xs font-semibold text-dark">{selected.label}</p>
-
             <ArrowDown2 size="18" color="#292925" />
           </Button>
         </PopoverTrigger>

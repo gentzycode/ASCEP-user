@@ -1,4 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+interface ReportResponse {
+  status: string;
+  message: string;
+  reports: ReportData;
+}
 interface ReportData {
   id: number;
   user_id: number;

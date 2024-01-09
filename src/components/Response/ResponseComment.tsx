@@ -1,4 +1,4 @@
-import { AddSquare } from "iconsax-react";
+import { AddSquare, CloseCircle } from "iconsax-react";
 import { useState } from "react";
 import { CommentInput } from "../custom";
 import { usePostComment } from "@/api/response";
@@ -18,20 +18,20 @@ export default function ResponseComment({
 
   return (
     <div className="space-y-4">
-      <div className="bg-white rounded-[24px] space-y-4 shadow-sm p-8">
-        <div className="flex items-center gap-8">
+      <div className="bg-white rounded-[24px] space-y-4 shadow-sm p-4 md:p-8">
+        <div className="flex items-center justify-between gap-8 md:justify-start">
           <div className="flex items-center gap-2">
             <img
               src={comment.author.profile_picture}
               className="w-10 h-10 rounded-full"
               alt=""
             />
-            <p className="text-xl font-bold text-dark">
+            <p className="text-lg font-bold md:text-xl text-dark">
               {comment.author.username}
             </p>
           </div>
 
-          <p className="text-subtle_text">
+          <p className="text-sm md:text-base text-subtle_text">
             {new Date(comment.createdAt).toDateString()}
           </p>
         </div>
@@ -44,9 +44,13 @@ export default function ResponseComment({
           onClick={() => setShowInput(!showInput)}
           className="flex items-center gap-2 font-medium cursor-pointer w-fit"
         >
-          <AddSquare size="32" color="black" />
+          {showInput ? (
+            <CloseCircle color="black" />
+          ) : (
+            <AddSquare color="black" />
+          )}
 
-          <p>Add Response</p>
+          {showInput ? <p>Close</p> : <p>Add Response</p>}
         </div>
       </div>
       {showInput && (
