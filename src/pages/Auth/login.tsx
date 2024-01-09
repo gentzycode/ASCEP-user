@@ -1,95 +1,76 @@
-import React, { useState } from 'react';
-import AuthBanner from '../../../common/AuthBanner';
-import Logo from '/assets/ansg_logo.png';
-import { login } from '../../../apiCalls/authActions';
-import { toast, ToastContainer } from 'react-toastify';
-import ButtonLoader from '../../../common/ButtonLoader';
-import { Link, useNavigate } from 'react-router-dom';
+import { useLogin } from "@/api/auth";
+import { FormCard } from "@/components/Auth";
+import { FormInput } from "@/components/custom";
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { loginSchema } from "@/schemas/AuthSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import { z } from "zod";
 
-const Login = () => {
-    const navigate = useNavigate();
+export default function LoginPage() {
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+  });
 
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
-    const [success, setSuccess] = useState(null);
-    const [error, setError] = useState(null);
-    const [loggingin, setLoggingin] = useState(false);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = form;
 
-    const handleLogin = (e) => {
-        e.preventDefault();
+  const { mutate, isLoading } = useLogin();
 
-        const data = {
-            username, password
-        };
+  function onSubmit(values: z.infer<typeof loginSchema>) {
+    mutate(values);
+  }
 
-        login(data, setSuccess, setError, setLoggingin);
-    };
-
-    if (error !== null) {
-        toast.error(error?.message);
-        setError(null);
-    }
-
-    if (success !== null) {
-        localStorage.setItem('isLoggedIn', JSON.stringify(success));
-        navigate('/dashboard');
-        location.reload();
-    }
-
-    return (
-        <div className='w-full m-0 flex'>
-            <AuthBanner />
-            <div className='w-full flex justify-center h-screen items-center md:w-1/2 p-6'>
-                <div className='w-full lg:w-2/3 space-y-3'>
-                    <div className='flex justify-center'>
-                        <img src={Logo} alt='logo' width="80px" />
-                    </div>
-                    <div className='w-full flex justify-center'>
-                        <span className='text-3xl text-gray-700'>Anambra State Edu Portal</span>
-                    </div>
-                    <ToastContainer />
-                    <form onSubmit={handleLogin} className='space-y-3'>
-                        <input 
-                            type='text'
-                            className='w-full border border-gray-200 rounded-xl px-6 py-4 text-gray-500 text-xl'
-                            placeholder='Username'
-                            required
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                        <input 
-                            type='password'
-                            className='w-full border border-gray-200 rounded-xl px-6 py-4 text-gray-500 text-xl'
-                            placeholder='Password'
-                            required
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-
-                        <div className='space-y-1'>
-                            {/* Existing Buttons */}
-                            {/* ... */}
-                            <div
-                                className='w-full flex justify-center border border-gray-200 shadow-md p-4 rounded-xl bg-white hover:bg-gray-200 text-sm font-bold uppercase cursor-pointer'
-                                onClick={() => navigate('/check-result')}
-                            >
-                                Check result
-                            </div>
-
-                            {/* Call to Action Box */}
-                            <div className='p-4 bg-yellow-200 text-black text-sm rounded-lg border border-yellow-400'>
-                                <p>For result uploads, a valid token and a correctly formatted sheet as per the provided template are required.</p>
-                            </div>
-
-                            {/* External Links */}
-                            <div className='flex justify-around my-4'>
-                                <a href="https://edu.anambrastate.gov.ng" target="_blank" rel="noopener noreferrer" className='text-gray-400 hover:text-gray-600'>Edu Portal</a>
-                                <a href="https://anambrastate.gov.ng" target="_blank" rel="noopener noreferrer" className='text-gray-400 hover:text-gray-600'>State Website</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+  return (
+    <div>
+      <img src="/images/logo.png" alt="logo" className="h-[70px] mb-12" />
+      <FormCard>
+        <div className="space-y-7 mb-7">
+          <h2 className="text-[30px] text-center text-dark">Welcome back 😊</h2>
+          <p className="font-medium text-center text-text">
+            Hey, 👋🏼 Enter your details below to login to your account
+          </p>
         </div>
-    );
-}
+        <Form {...form}>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-7">
+            <FormInput
+              name="username"
+              label="Username"
+              control={control}
+              placeholder="Enter username"
+              errors={errors}
+            />
+            <FormInput
+              name="password"
+              label="Password"
+              control={control}
+              placeholder="Enter Password"
+              errors={errors}
+              type="password"
+            />
 
-export default Login;
+            <div className="font-semibold cursor-pointer text-end">
+              <Link to="/auth/forgot-password">Forgot Password?</Link>
+            </div>
+
+            <Button isLoading={isLoading} type="submit" className="w-full">
+              Login
+            </Button>
+
+            <div className="flex items-center justify-center w-full gap-1 text-xs text-center">
+              <p>Don’t have an account? </p>
+              <Link to="/auth/signup" className="font-bold">
+                Signup now
+              </Link>
+            </div>
+          </form>
+        </Form>
+      </FormCard>
+    </div>
+  );
+}
