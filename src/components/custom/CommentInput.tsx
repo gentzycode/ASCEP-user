@@ -42,7 +42,7 @@ export default function CommentInput({
       </div>
       <Input
         {...register("content")}
-        className={`bg-[#fff] pl-[135px] text-base text-text focus-visible:ring-0 focus-visible:ring-primary border-none focus:border-none focus-visible:ring-offset-0 rounded-[20px] h-[50px] placeholder:text-base  placeholder:font-medium shadow-sm ${
+        className={`bg-[#fff] pl-[135px] pr-16 text-base text-text focus-visible:ring-0 focus-visible:ring-primary border-none focus:border-none focus-visible:ring-offset-0 rounded-[20px] h-[50px] placeholder:text-base  placeholder:font-medium shadow-sm ${
           errors.content
             ? "placeholder:text-error placeholder:text-sm "
             : "placeholder:text-subtle_text/30"

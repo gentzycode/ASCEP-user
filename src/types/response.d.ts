@@ -88,3 +88,26 @@ interface ActivityReport {
   user_id: number;
   id: number;
 }
+
+// RESPONSE COMMENTS
+
+interface ReportCommentsResponse {
+  meta: MetaDataType;
+  comments: ReportComment[];
+}
+
+interface ReportComment {
+  content: string;
+  id: number;
+  user_id: number;
+  comment_vote_cache: number;
+  comment_response_cache: number;
+  createdAt: string;
+  author: Author;
+}
+
+interface Author {
+  username: string;
+  profile_picture: string;
+  id: number;
+}
