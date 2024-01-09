@@ -10,7 +10,7 @@ export default function FaqItem({ title }: { title: string }) {
       value={title}
       className="border-none bg-[#7878781A] rounded-[30px]  px-6 py-4"
     >
-      <AccordionTrigger className="text-2xl text-white hover:no-underline">
+      <AccordionTrigger className="text-xl text-white sm:text-2xl hover:no-underline">
         {title}
       </AccordionTrigger>
       <AccordionContent className="text-[#EDEDED]/40 text-lg ">

@@ -5,8 +5,8 @@ import { CiLocationOn } from "react-icons/ci";
 
 export default function ContactHeading() {
   return (
-    <div className="px-[100px]">
-      <div className="mb-10">
+    <div className="section-padding">
+      <div className="py-10 text-center lg:text-start ">
         <p className="text-lg uppercase text-primary">Contact us</p>
         <h3 className="mb-6 text-white">We’d love to hear from you</h3>
 
@@ -15,7 +15,7 @@ export default function ContactHeading() {
         </p>
       </div>
 
-      <div className="grid grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
         {contactCard.map((card) => (
           <ContactCard key={card.title} card={card} />
         ))}

@@ -80,6 +80,7 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
           <h2 className="text-[18px] md:text-[24px] -tracking-[0.48px] text-dark mb-2">
             Recommendations for creating a debate
           </h2>
+
           <ul className="list-disc list-inside pl-3 text-subtle_text flex flex-col gap-4">
             <li className="text-[14px] md:text-[16px] -tracking-[0.32px]">
               Do not use capital letters for the debate title or for whole
@@ -131,6 +132,7 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
               Optional Fields
             </h2>
             {/* TAGS */}
+
             <FormTags setTags={setTags} tags={tags} />
             {/* SDGs */}
             <div>
@@ -146,6 +148,7 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
               <p className="text-[14px] md:text-[16px] text-subtle_text -tracking-[0.36px] my-2">
                 You can introduce the code of a specific goal/target or a text
                 to find one. For more information visit the
+
                 <Link to="#" className="text-primary ml-1">
                   SDG help page.
                 </Link>

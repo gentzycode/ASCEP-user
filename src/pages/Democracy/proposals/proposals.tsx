@@ -68,6 +68,7 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
 
         {/* LIST VIEW */}
         {view === "list-view" && fetchedProposalData && (
+
           <div className="grid grid-cols-1 my-10 gap-10">
             {fetchedProposalData?.proposals.map((proposal) => (
               <ListViewCard
@@ -81,6 +82,7 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
 
         {/* CARD VIEW */}
         {view === "card-view" && fetchedProposalData && (
+
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-14 justify-stretch">
             {fetchedProposalData?.proposals.map((proposal: ProposalType) => (
               <ProposalCardViewCard proposal={proposal} key={proposal.id} />
