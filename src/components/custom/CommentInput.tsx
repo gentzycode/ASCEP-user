@@ -37,12 +37,14 @@ export default function CommentInput({
       <div className="absolute left-0 h-full p-3">
         <div className="flex gap-1 items-center bg-dark rounded-[10px]  h-full text-white px-3 ">
           <LiaCommentsSolid size={16} />
-          <p className="text-xs">2 Comments</p>
+          <p className="text-xs">
+            2 <span className="hidden md:inline-block">Comments</span>
+          </p>
         </div>
       </div>
       <Input
         {...register("content")}
-        className={`bg-[#fff] pl-[135px] pr-16 text-base text-text focus-visible:ring-0 focus-visible:ring-primary border-none focus:border-none focus-visible:ring-offset-0 rounded-[20px] h-[50px] placeholder:text-base  placeholder:font-medium shadow-sm ${
+        className={`bg-[#fff] pl-[70px] md:pl-[135px] pr-16 text-base text-text focus-visible:ring-0 focus-visible:ring-primary border-none focus:border-none focus-visible:ring-offset-0 rounded-[20px] h-[50px] placeholder:text-base  placeholder:font-medium shadow-sm ${
           errors.content
             ? "placeholder:text-error placeholder:text-sm "
             : "placeholder:text-subtle_text/30"
@@ -55,8 +57,7 @@ export default function CommentInput({
         ) : (
           <Send
             onClick={handleSubmit(handleSend)}
-            className="text-dark"
-            size="30"
+            className="text-dark text-xl md:text-[30px] "
             variant="Bold"
           />
         )}

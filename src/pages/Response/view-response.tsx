@@ -16,7 +16,7 @@ export default function ViewResponsepage() {
     useReportGetComments(reportId!);
 
   return (
-    <div className="min-h-screen px-12 pb-12 space-y-7">
+    <div className="min-h-screen px-4 pt-4 pb-12 md:pt-0 md:px-12 space-y-7">
       {isLoading && <FloatingLoader />}
       {data && (
         <>
