@@ -32,13 +32,11 @@ export default function LandingPage() {
       ref={parentRef}
       onScroll={handleScroll}
     >
-      {/* <div className="relative "> */}
       <img
         className="absolute top-0 w-full overflow-scroll"
         src="/images/landing/gradient1.svg"
         alt=""
       />
-      {/* <div className="relative z-10"> */}
       <NavBar
         scrollPosition={scrollPosition}
         onOpen={onOpen}
@@ -46,9 +44,7 @@ export default function LandingPage() {
         isOpen={isOpen}
       />
 
-      {/* </div> */}
-      {/* </div> */}
-      <div className="relative z-10 space-y-40">
+      <div className="relative z-10 space-y-20 md:space-y-40">
         <BannerSection />
         <AboutUsSection />
         <ServicesSection />

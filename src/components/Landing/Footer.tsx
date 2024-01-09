@@ -11,11 +11,11 @@ export default function Footer() {
     }
   };
   return (
-    <div className="px-40 footer-pattern bg-black/30">
-      <div className="flex justify-between py-24 text-white border-b border-white/10">
-        <h3 className="text-3xl">ASCEP</h3>
+    <div className="px-10 lg:px-40 footer-pattern bg-black/30">
+      <div className="justify-between space-y-6 text-white border-b py-14 lg:py-24 lg:flex border-white/10">
+        <h3 className="text-3xl text-center lg:text-start">ASCEP</h3>
 
-        <div className="flex gap-24">
+        <div className="flex justify-between max-w-[500px] mx-auto lg:justify-end lg:gap-24">
           {navLinks.map((link) => (
             <p
               className="font-normal text-white cursor-pointer"
@@ -26,7 +26,7 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex justify-center gap-3">
           <IconWrapper className="w-10 h-10 text-lg text-white rounded-full bg-dark">
             <FaFacebookF />
           </IconWrapper>
@@ -42,13 +42,17 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="flex py-10 text-lg font-light text-white justify-evenly">
-        <p>@ 2023 ASCEP. All rights reserved.</p>
+      <div className="flex flex-col items-center gap-5 py-10 text-base font-light text-white md:text-lg lg:flex-row justify-evenly">
+        <p className="font-light">@ 2023 ASCEP. All rights reserved.</p>
 
-        <div className="flex gap-4 ">
-          <p className="underline cursor-pointer">Privacy Policy</p>
-          <p className="underline cursor-pointer">Terms of Service </p>
-          <p className="underline cursor-pointer">Cookies Settings</p>
+        <div className="flex flex-col items-center gap-4 sm:flex-row ">
+          <p className="font-light underline cursor-pointer">Privacy Policy</p>
+          <p className="font-light underline cursor-pointer">
+            Terms of Service{" "}
+          </p>
+          <p className="font-light underline cursor-pointer">
+            Cookies Settings
+          </p>
         </div>
       </div>
     </div>

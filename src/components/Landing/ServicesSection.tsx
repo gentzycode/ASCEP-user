@@ -2,8 +2,11 @@ import { Button } from "../ui/button";
 
 export default function ServicesSection() {
   return (
-    <div id="services" className="grid grid-cols-10 px-[100px] gap-14">
-      <div className="col-span-4 text-center space-y-[30px] flex-col flex justify-center">
+    <div
+      id="services"
+      className="flex flex-col items-center w-full grid-cols-10 lg:grid section-padding gap-14"
+    >
+      <div className="col-span-4 max-w-[500px] xl:max-w-max text-center space-y-[30px] flex-col w-full flex justify-center">
         <div className="mb-2 text-lg text-center text-primary">
           OUR SERVICES
         </div>
@@ -19,10 +22,10 @@ export default function ServicesSection() {
         <p className="text-white text-[29px]">ASCEP Democracy</p>
       </div>
 
-      <div className="bg-[#7878781A] rounded-[40px] p-12 flex flex-col col-span-6 justify-center items-center">
+      <div className="bg-[#7878781A] rounded-3xl  lg:rounded-[40px] p-4  sm:p-12 flex flex-col col-span-6 justify-center items-center">
         <img
           src="images/landing/response-screenshot.png"
-          className="h-[290px]  mb-8 "
+          className="h-[200px] md:h-[290px] object-cover mb-8 "
           alt=""
         />
 
