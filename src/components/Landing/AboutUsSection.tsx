@@ -1,17 +1,16 @@
 export default function AboutUsSection() {
   return (
     <div id="about-us" className="px-[100px] grid grid-cols-11">
-      <div className="flex justify-center col-span-5 relative">
-        <img src="/images/landing/anambra_citizens.png" alt="" className="anambra-citizens-image" />
-        <div className="overlay"></div>
+      <div className="flex justify-center col-span-5">
+        <img src="/images/landing/large-logo.svg" alt="" />
       </div>
 
       <div className="col-span-6">
         <div className="w-full max-w-[633px]">
-          <p className="text-lg uppercase text-primary">ASCEP</p>
+          <p className="text-lg uppercase text-primary">About us</p>
 
           <p className="mt-3 font-bold mb-6 leading-tight text-[36px] text-white">
-            Anambra State Citizens Engagement Portal
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
           </p>
 
           <div className="text-xl text-subtitle_text">

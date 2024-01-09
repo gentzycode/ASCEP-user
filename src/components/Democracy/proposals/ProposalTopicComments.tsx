@@ -63,6 +63,7 @@ const ProposalTopicComments: React.FC<ProposalTopicCommentsCardProps> = () => {
     <>
       {!isLoggedIn ? (
         <div className="flex items-center justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10">
+
           <div className="flex justify-start items-center gap-1">
             <IconWrapper className="text-primary rounded-full">
               <Danger size="32" />
