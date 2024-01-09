@@ -32,13 +32,15 @@ const PaginationComponent: React.FC<PaginationComponentProp> = ({
   const numberOfPages = Math.ceil(total / per_page);
   return (
     <Pagination className="relative my-8">
-      <PaginationContent className="flex flex-wrap items-center justify-between w-full list-none">
-        <p className="text-base text-text">
+
+      <PaginationContent className="list-none flex justify-between w-full items-center flex-wrap">
+        <p className="text-text text-base">
           {page} - {numberOfPages} pages
         </p>
 
         <div className="flex items-center gap-3">
-          <p className="text-sm text-text">The page you are on</p>
+
+          <p className="text-text text-sm">The page you are on</p>
           <Select
             value={page}
             onValueChange={(value: number) => setPage(value)}
@@ -47,11 +49,12 @@ const PaginationComponent: React.FC<PaginationComponentProp> = ({
               <SelectValue placeholder={page} />
             </SelectTrigger>
             <SelectContent sideOffset={0} align="center" className="min-w-fit">
-              <SelectGroup className="p-0 m-0">
+
+              <SelectGroup className="m-0 p-0">
                 {Array.from({ length: numberOfPages }).map((_, i) => (
                   <SelectItem
                     value={1 + i}
-                    className="flex justify-center text-sm w-fit"
+                    className=" text-sm flex justify-center w-fit"
                     key={i}
                   >
                     {i + 1}
@@ -61,9 +64,9 @@ const PaginationComponent: React.FC<PaginationComponentProp> = ({
             </SelectContent>
           </Select>
 
-          <PaginationItem className="flex items-center h-fit">
+          <PaginationItem className="h-fit flex items-center">
             <Button
-              className="p-0 text-2xl bg-transparent rounded-lg h-fit w-fit text-dark "
+              className="h-fit w-fit p-0 rounded-lg text-dark bg-transparent text-2xl "
               isLoading={isFetching}
               disabled={isFetching || !previous_page_url}
               onClick={() => setPage(page - 1)}
@@ -71,9 +74,10 @@ const PaginationComponent: React.FC<PaginationComponentProp> = ({
               <IoIosArrowBack />
             </Button>
           </PaginationItem>
-          <PaginationItem className="flex items-center h-fit">
+
+          <PaginationItem className="h-fit flex items-center">
             <Button
-              className="p-0 text-2xl bg-transparent rounded-lg h-fit w-fit text-dark"
+              className="h-fit w-fit rounded-lg text-dark bg-transparent text-2xl p-0"
               isLoading={isFetching}
               disabled={isFetching || !next_page_url}
               onClick={() => setPage(page + 1)}

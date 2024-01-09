@@ -80,6 +80,7 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
         {/* LOADING */}
         {fetchingDebates && <PageLoader />}
 
+
         {/* CARD VIEW */}
         {view === "card-view" && fetchedDebatesData && (
           <div className="flex justify-start w-full">
@@ -93,7 +94,8 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
 
         {/* PAGINATION */}
         {fetchedDebatesData && fetchedDebatesData.debates.length === 0 && (
-          <h1 className="p-4 text-base text-dark md:text-lg bg-primary/10">
+
+          <h1 className="text-dark text-base md:text-lg bg-primary/10 p-4">
             No Debates meets the search criteria
           </h1>
         )}

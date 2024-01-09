@@ -30,6 +30,12 @@ interface WardsType {
   ward_code: string;
 }
 
+
+interface SelectOption {
+  value: string;
+  label: string;
+}
+
 interface CollectionData {
   id: number;
   name: string;

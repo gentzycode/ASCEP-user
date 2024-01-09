@@ -25,7 +25,8 @@ export default function ServicesSection() {
       <div className="bg-[#7878781A] rounded-3xl  lg:rounded-[40px] p-4  sm:p-12 flex flex-col col-span-6 justify-center items-center">
         <img
           src="images/landing/response-screenshot.png"
-          className="h-[200px] md:h-[290px] object-cover mb-8 "
+
+          className="h-[290px]  mb-8 "
           alt=""
         />
 

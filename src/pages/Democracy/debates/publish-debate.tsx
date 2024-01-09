@@ -80,7 +80,8 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
           <h2 className="text-[18px] md:text-[24px] -tracking-[0.48px] text-dark mb-2">
             Recommendations for creating a debate
           </h2>
-          <ul className="flex flex-col gap-4 pl-3 list-disc list-inside text-subtle_text">
+
+          <ul className="list-disc list-inside pl-3 text-subtle_text flex flex-col gap-4">
             <li className="text-[14px] md:text-[16px] -tracking-[0.32px]">
               Do not use capital letters for the debate title or for whole
               sentences. On the internet, this is considered shouting. And
@@ -131,47 +132,8 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
               Optional Fields
             </h2>
             {/* TAGS */}
-            <div>
-              <div className="flex items-end gap-2">
-                <Input
-                  onChange={(e) => setTagInput(e.target.value)}
-                  value={tagInput}
-                  className="h-12 text-dark focus-visible:ring-primary focus-visible:ring-offset-0 rounded-full  focus-visible:ring-1 bg-[#C4C4C41F]"
-                  placeholder="Enter the tag name you would like to use"
-                />
 
-                <Button
-                  className="rounded-md w-fit h-fit"
-                  type="button"
-                  onClick={addTag}
-                >
-                  Add tag
-                </Button>
-              </div>
-              {tags.length > 0 && (
-                <div className="my-4">
-                  <h5>Tags</h5>
-                  <div className="flex flex-wrap gap-2">
-                    {tags.map((tag, index) => (
-                      <Button
-                        type="button"
-                        className=" w-fit h-fit rounded-md bg-dark text-light hover:bg-dark flex justify-between items-center cursor-auto text-[14px] "
-                        key={index}
-                      >
-                        <span>{tag}</span>
-                        <CloseCircle
-                          size={18}
-                          onClick={() => removeTag(tag)}
-                          className="cursor-pointer"
-                          variant="Bold"
-                        />
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
+            <FormTags setTags={setTags} tags={tags} />
             {/* SDGs */}
             <div>
               <h5 className="text-[16px] md:text-[18px] text-dark -tracking-[0.36px] ">
@@ -186,38 +148,14 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
               <p className="text-[14px] md:text-[16px] text-subtle_text -tracking-[0.36px] my-2">
                 You can introduce the code of a specific goal/target or a text
                 to find one. For more information visit the
-                <Link to="#" className="ml-1 text-primary">
+
+                <Link to="#" className="text-primary ml-1">
                   SDG help page.
                 </Link>
               </p>
             </div>
             {/* TARGETS */}
-            <div>
-              <FormComboboxTarget setTarget={setTarget} />
-
-              {targets.length > 0 && (
-                <div className="my-4">
-                  <h5>Targets</h5>
-                  <div className="flex flex-wrap gap-2">
-                    {targets.map((target, index) => (
-                      <Button
-                        type="button"
-                        className=" w-fit h-fit rounded-md bg-dark text-light hover:bg-dark flex justify-between items-center cursor-auto text-[14px] "
-                        key={target.id}
-                      >
-                        Target <span>{target.code}</span>
-                        <CloseCircle
-                          size={18}
-                          onClick={() => removeTarget(target.id)}
-                          className="cursor-pointer"
-                          variant="Bold"
-                        />
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+            <TargetsMultiSelect selected={targets} setSelected={setTargets} />
             <Button
               type="submit"
               className="w-full max-w-[400px] p-0 h-fit py-3"
