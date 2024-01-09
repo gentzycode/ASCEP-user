@@ -1,6 +1,7 @@
 import { useGetAllActivities } from "@/api/response";
 import { ActivityItem } from "@/components/Response";
-import { FloatingLoader } from "@/components/custom";
+import { EmptyState } from "@/components/custom";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useResponseContext } from "@/providers/ResponseProvider";
 
 export default function ActivityPage() {
@@ -8,7 +9,20 @@ export default function ActivityPage() {
   const { data, isLoading } = useGetAllActivities({ filtersString });
   return (
     <div className="space-y-1">
-      {data?.data &&
+      {isLoading ? (
+        <div className="space-y-10">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="flex space-x-4">
+              <Skeleton className="w-16 h-16 rounded-xl bg-slate-300" />
+              <div className="w-full space-y-4">
+                <Skeleton className="w-11/12 h-6 bg-slate-300" />
+                <Skeleton className="w-11/12 h-6 bg-slate-300" />
+                <Skeleton className="w-1/4 h-6 bg-slate-300" />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : data?.data.length ? (
         data.data.map((activity, i) => (
           <ActivityItem
             activity={activity}
@@ -23,8 +37,12 @@ export default function ActivityPage() {
             }
             key={i}
           />
-        ))}
-      {isLoading && <FloatingLoader />}
+        ))
+      ) : (
+        <div className="h-[80vh] ">
+          <EmptyState />
+        </div>
+      )}
     </div>
   );
 }

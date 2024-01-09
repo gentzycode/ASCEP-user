@@ -12,3 +12,4 @@ export { default as TargetsMultiSelect } from "./TargetsMultiSelect";
 export { default as FormCalendar } from "./FormCalendar";
 export { default as Pagination } from "./Pagination";
 export { default as FloatingLoader } from "./FloatingLoader";
+export { default as EmptyState } from "./EmptyState";
