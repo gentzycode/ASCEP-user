@@ -94,3 +94,17 @@ export const usePostComment = () => {
     }
   );
 };
+
+export const useReportGetComments = (id: string) => {
+  return useQuery(
+    ["report-comments", id],
+    (): Promise<ReportCommentsResponse> => {
+      return axios
+        .get(`${baseUrl}/report/comments?report=${id}`)
+        .then((res) => res.data.data);
+    },
+    {
+      retry: false,
+    }
+  );
+};
