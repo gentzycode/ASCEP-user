@@ -23,3 +23,11 @@ export const commentSchema = z.object({
   debate_id: z.number({ required_error: "debate id is required" }),
   comment_reference: z.number().optional(),
 });
+
+export const commentInputSchema = z.object({
+  content: z
+    .string({ required_error: "Comment text is required" })
+    .refine((data) => data.trim() !== "", {
+      message: "Comment text cannot be empty",
+    }),
+});

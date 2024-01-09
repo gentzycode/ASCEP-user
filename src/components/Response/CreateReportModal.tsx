@@ -9,7 +9,7 @@ import { FaPlus } from "react-icons/fa";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Gps } from "iconsax-react";
 import FormTextArea from "../custom/FormTextArea";
-import { createPostSchema } from "@/schemas/ResoonseSchema";
+import { createPostSchema } from "@/schemas/ResponseSchema";
 import { appendObjectToFormData } from "@/utils/helper";
 import { useCreateReport } from "@/api/response";
 

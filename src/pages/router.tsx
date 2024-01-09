@@ -121,7 +121,7 @@ const Router = () => {
         <Route path="" element={<MainLayout />}>
           {pageRoutes}
           <Route
-            path="response/view-response/1"
+            path="response/view-response/:reportId"
             element={<ViewResponsePage />}
           ></Route>
           <Route
