@@ -17,22 +17,34 @@ interface CreateTopicModalProps {
   isOpen: boolean;
   onOpenChange: () => void;
   onClose: () => void;
-  propsalId: number;
+  propsalId: string;
+  isEditing?: boolean;
+  topicId?: string;
+  title?: string;
+  content?: string;
 }
+
 const CreateTopicModal: React.FC<CreateTopicModalProps> = ({
   isOpen,
   onOpenChange,
   onClose,
   propsalId,
+  isEditing,
+  topicId,
+  title,
+  content,
 }) => {
+  
   const { mutateAsync: publishTopic, isLoading: isPublishing } =
     usePublishProposalTopic();
+
   const form = useForm<z.infer<typeof proposalTopicSchema>>({
     resolver: zodResolver(proposalTopicSchema),
     defaultValues: {
-      title: "",
-      content: "",
-      proposal_id: propsalId,
+      title: title ?? "",
+      content: content ?? "",
+      proposal_id: "",
+      id: undefined,
     },
   });
 
@@ -42,11 +54,12 @@ const CreateTopicModal: React.FC<CreateTopicModalProps> = ({
     handleSubmit,
     formState: { errors },
   } = form;
+
   async function onSubmit(values: z.infer<typeof proposalTopicSchema>) {
-    console.log(values);
-    await publishTopic(values);
+    await publishTopic({ ...values, proposal_id: propsalId, id: topicId });
     onClose();
   }
+
   return (
     <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
       <AlertDialogContent className="max-w-[900px] w-[98%] px-1 md:px-6">
@@ -101,7 +114,7 @@ const CreateTopicModal: React.FC<CreateTopicModalProps> = ({
                 isLoading={isPublishing}
                 disabled={isPublishing}
               >
-                Create topic
+                {isEditing ? "Update topic" : "Create topic"}
               </Button>
               <Button
                 className="w-full max-w-[150px] text-base p-0 h-fit py-3 bg-transparent border border-primary"

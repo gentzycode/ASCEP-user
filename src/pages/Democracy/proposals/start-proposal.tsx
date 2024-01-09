@@ -1,4 +1,3 @@
-import DemocracyLayout from "@/layouts/DemocracyLayout";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
@@ -9,23 +8,21 @@ import {
   FormDocumentInput,
   FormImageInput,
   FormInput,
-  FormSelectCategory,
+  FormSelectMultipleCategory,
   FormSelectWard,
+  FormTags,
   TextEditor,
 } from "@/components/Democracy";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Input } from "@/components/ui/input";
 import { startProposalSchema } from "@/schemas/ProposalSchema";
 import FormTextArea from "@/components/Democracy/common/FormTextArea";
 import { usePublishProposal } from "@/api/democracy/proposals";
 import TargetsMultiSelect from "@/components/custom/TargetsMultiSelect";
-import { IoClose } from "react-icons/io5";
 
 interface StartProposalPageProps {}
 const StartProposalPage: React.FC<StartProposalPageProps> = () => {
   const { mutateAsync: publishProposal, isLoading } = usePublishProposal();
-  const [tagInput, setTagInput] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
   const [targets, setTargets] = useState<SDGTarget[]>([]);
   const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -124,22 +121,10 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
     trigger("documents");
   }, [selectedDocuments]);
 
-  const addTag = () => {
-    if (tagInput && tagInput !== "") {
-      if (!tags.includes(tagInput)) {
-        setTags((tag) => [...tag, tagInput]);
-        setTagInput("");
-      }
-    }
-  };
-
-  const removeTag = (value: string) =>
-    setTags((tags) => tags.filter((tag) => value !== tag));
-
   const editorContent = watch("content");
 
   return (
-    <DemocracyLayout>
+    <>
       <div className="flex flex-col gap-8 max-w-[800px]">
         {/* HEADING */}
         <div>
@@ -228,7 +213,17 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
               min={1}
               onChange={(e) => {
                 setValue("support_needed", Number(e.target.value));
+                trigger("support_needed");
               }}
+            />
+            {/* CATEGORIES */}
+            <FormSelectMultipleCategory
+              errors={errors}
+              control={control}
+              label="Select categories"
+              name="categories"
+              setSelected={setCategories}
+              selected={categories}
             />
             {/* OPTIONAL FIELDS */}
             <h2 className="text-[20px] md:text-[24px] text-dark -tracking-[0.48px]">
@@ -287,41 +282,7 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
             </div>
 
             {/* TAGS */}
-            <div>
-              <div className="flex gap-2 items-end">
-                <Input
-                  onChange={(e) => setTagInput(e.target.value)}
-                  value={tagInput}
-                  className="h-12 text-dark focus-visible:ring-primary focus-visible:ring-offset-0 rounded-full  focus-visible:ring-1 bg-[#C4C4C41F]"
-                  placeholder="Enter the tag name you would like to use"
-                />
-
-                <Button
-                  className="w-fit h-fit rounded-md"
-                  type="button"
-                  onClick={addTag}
-                >
-                  Add tag
-                </Button>
-              </div>
-              {tags.length > 0 && (
-                <div className="my-4">
-                  <h5>Tags</h5>
-                  <div className="flex gap-2 flex-wrap">
-                    {tags.map((tag, index) => (
-                      <div className="top-0 left-0 z-10 flex h-full gap-1 p-1 px-2 text-xs text-white transition-all duration-300 ease-in-out rounded-lg bg-dark w-fit" key={index}>
-                        <span>{tag}</span>
-                        <IoClose
-                          onClick={() => removeTag(tag)}
-                          className="text-base cursor-pointer"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
+            <FormTags tags={tags} setTags={setTags} />
             {/* SDGs */}
             <div>
               <h5 className="text-[16px] md:text-[18px] text-dark -tracking-[0.36px] ">
@@ -344,10 +305,6 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
 
             {/* TARGETS */}
             <TargetsMultiSelect selected={targets} setSelected={setTargets} />
-            <FormSelectCategory
-              setSelected={setCategories}
-              selected={categories}
-            />
             <Button
               type="submit"
               className="w-full max-w-[400px] p-0 h-fit py-3"
@@ -358,7 +315,7 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
           </form>
         </Form>
       </div>
-    </DemocracyLayout>
+    </>
   );
 };
 

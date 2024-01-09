@@ -13,7 +13,6 @@ import {
 
 import { FormControl, FormField, FormItem, FormMessage } from "../../ui/form";
 import { InputProps } from "../../ui/input";
-import { useAppContext } from "@/contexts/AppContext";
 import React, { useState } from "react";
 import {
   Popover,
@@ -39,6 +38,7 @@ type FormSelectWardProps<TFormValues extends FieldValues = FieldValues> = {
   name: Path<TFormValues>;
   label?: string;
   errors?: Partial<DeepMap<TFormValues, FieldError>> | FieldErrors<TFormValues>;
+  selectedWard?: number;
 } & Omit<InputProps, "name">;
 
 const FormSelectWard = <TFormValues extends Record<string, unknown>>({
@@ -46,10 +46,13 @@ const FormSelectWard = <TFormValues extends Record<string, unknown>>({
   name,
   label,
   errors,
+  selectedWard,
 }: FormSelectWardProps<TFormValues>): JSX.Element => {
   const { data: wards, isLoading: isLoadingWards } = useGetAllWards();
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<string>();
+  const [value, setValue] = useState<string>(
+    wards?.find((ward) => ward.id === selectedWard)?.ward ?? ""
+  );
   const errorMessage = lodash.get(errors, name);
   const hasError = !!errors && errorMessage;
   return (

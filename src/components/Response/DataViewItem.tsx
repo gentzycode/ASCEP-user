@@ -1,48 +1,64 @@
 import { Location } from "iconsax-react";
+import { Link } from "react-router-dom";
 
-export default function DataViewItem({ type }: { type: "Public" | "Private" }) {
+interface DataViewItemProps {
+  report: ReportData;
+}
+
+export default function DataViewItem({ report }: DataViewItemProps) {
   return (
-    <div className="flex gap-3">
-      <img
-        src="/images/activity.png"
-        className="w-[165px] rounded-[20px] h-auto object-cover "
-        alt=""
-      />
+    <Link to={`/response/view-response/${report.id}`}>
+      <div className="flex gap-3 h-[160px] ">
+        <img
+          src={
+            report.reportImages.length > 0
+              ? report.reportImages[0].image_url
+              : "/images/activity.png"
+          }
+          className="hidden md:block w-20 md:w-[165px] rounded-[20px]  object-cover "
+          alt=""
+        />
 
-      <div className="py-6 px-[18px] bg-white w-full rounded-[20px] space-y-3  ">
-        <div className="flex items-center gap-3">
-          <h4 className="text-xl font-semibold">
-            Upgrade of the International Airport
-          </h4>
+        <div className="md:py-6 md:px-[18px]  p-3 bg-white w-full rounded-xl md:rounded-[20px] space-y-3  ">
+          <div className="flex items-center gap-3">
+            <h4 className="text-base font-semibold md:text-xl">
+              {report.title}
+            </h4>
 
-          <div
-            className={` py-1 px-5 rounded-full ${
-              type === "Public"
-                ? "text-[#31D0AA] bg-[#31D0AA]/10"
-                : "text-[#2F80ED] bg-[#2F80ED]/10"
-            } `}
-          >
-            Private
+            <div
+              className={` py-1 px-2 md:px-5 text-xs md:text-base rounded-full ${
+                report.reportStatus.name === "Public"
+                  ? "text-[#31D0AA] bg-[#31D0AA]/10"
+                  : "text-[#2F80ED] bg-[#2F80ED]/10"
+              } `}
+            >
+              {report.reportStatus.name}
+            </div>
           </div>
+
+          <div className="items-center gap-2 space-x-2 space-y-2 text-sm font-medium md:flex text-dark">
+            <div className="flex items-center gap-2">
+              <Location color="black" size={16} />
+
+              <p>{report.location_meta}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <p className="font-semibold text-link">Posted By</p>
+
+              <p>
+                {report.reporter?.firstname
+                  ? `${report.reporter?.firstname} ${report.reporter?.lastname}`
+                  : report.reporter.username}{" "}
+                on {new Date(report.submission_date).toDateString()}
+              </p>
+            </div>
+          </div>
+
+          <p className="text-sm text-ellipsis line-clamp-2 md:line-clamp-5 text-subtle_text ">
+            {report.description}
+          </p>
         </div>
-
-        <div className="flex items-center gap-2 text-sm font-medium text-dark">
-          <Location color="black" size={16} />
-
-          <p>Umuleri, Anambra State</p>
-
-          <p className="font-semibold text-link">Posted By</p>
-
-          <p>David Olaniyi on Oct 28, 2023</p>
-        </div>
-
-        <p className="text-sm text-subtle_text">
-          Soludo upgrades the international airport, increasing its hanger
-          capacity and the tarmac Soludo upgrades the international airport,
-          increasing its hanger capacity and the tarmacSoludo upgrades the
-          international airport, increasing its hanger capacity and the tarmac
-        </p>
       </div>
-    </div>
+    </Link>
   );
 }

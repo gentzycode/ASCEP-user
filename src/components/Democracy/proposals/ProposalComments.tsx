@@ -1,12 +1,6 @@
-import {
-  CommentsPagination,
-  DebateCommentCard,
-  FilterButtons,
-  FormInput,
-  ProposalCommentCard,
-} from "..";
+import { FilterButtons, FormInput, ProposalCommentCard } from "..";
 import { debateCommentFilterButtonOptions } from "@/utils/Democracy/Debates";
-import { IconWrapper } from "@/components/custom";
+import { IconWrapper, Pagination } from "@/components/custom";
 import { CloseCircle, Danger } from "iconsax-react";
 import { Link, useParams } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
@@ -40,14 +34,14 @@ const ProposalComments: React.FC<ProposalCommentsCardProps> = () => {
     isLoading: isLoadingComments,
     isFetching: isFetchingComments,
     refetch: refetchComments,
-  } = useGetProposalComments(parseInt(proposalId!), page, filter);
+  } = useGetProposalComments(proposalId!, page, filter);
 
   const form = useForm<z.infer<typeof proposalCommentSchema>>({
     resolver: zodResolver(proposalCommentSchema),
     mode: "onChange",
     defaultValues: {
       content: "",
-      proposal_id: parseInt(proposalId!),
+      proposal_id: proposalId!,
     },
   });
   const {
@@ -128,7 +122,7 @@ const ProposalComments: React.FC<ProposalCommentsCardProps> = () => {
       {commentsData?.comments?.length === 0 && (
         <div>
           <h1 className="text-dark text-[16px] md:text-[20px]">
-            This debate has no comments yet
+            This proposal has no comments
           </h1>
         </div>
       )}
@@ -152,9 +146,11 @@ const ProposalComments: React.FC<ProposalCommentsCardProps> = () => {
             <ProposalCommentCard comment={comment} key={comment.id} />
           ))}
 
-          <CommentsPagination
-            meta={commentsData.meta}
-            onPageChange={(page: number) => setPage(page)}
+          <Pagination
+            page={page}
+            setPage={setPage}
+            paginationData={commentsData.meta}
+            isFetching={isFetchingComments}
           />
         </div>
       )}

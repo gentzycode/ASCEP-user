@@ -11,12 +11,7 @@ import {
   Path,
 } from "react-hook-form";
 
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "../../ui/form";
+import { FormControl, FormField, FormItem, FormMessage } from "../../ui/form";
 import { InputProps } from "../../ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -26,6 +21,7 @@ type FormTextAreaProps<TFormValues extends FieldValues = FieldValues> = {
   label?: string;
   placeholder?: string;
   errors?: Partial<DeepMap<TFormValues, FieldError>> | FieldErrors<TFormValues>;
+  rows: number;
 } & Omit<InputProps, "name">;
 
 const FormTextArea = <TFormValues extends Record<string, unknown>>({
@@ -34,6 +30,7 @@ const FormTextArea = <TFormValues extends Record<string, unknown>>({
   name,
   placeholder,
   errors,
+  rows,
   ...props
 }: FormTextAreaProps<TFormValues>): JSX.Element => {
   const errorMessage = lodash.get(errors, name);
@@ -53,10 +50,10 @@ const FormTextArea = <TFormValues extends Record<string, unknown>>({
                 hasError
                   ? "focus-visible:ring-red-500"
                   : "focus-visible:ring-primary"
-              } focus-visible:ring-offset-2 border-transparent`}
+              } focus-visible:ring-offset-2 border-transparent text-text`}
               {...field}
               {...props}
-              rows={4}
+              rows={rows}
             />
           </FormControl>
           <FormMessage className="text-xs md:text-sm" />

@@ -1,7 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { formattedDate } from "@/utils/helper";
 import { CloseCircle } from "iconsax-react";
 import { useState } from "react";
 import * as z from "zod";
@@ -12,8 +9,13 @@ import { useParams } from "react-router-dom";
 import { CommentCard, FormInput, ProposalCommentResponse } from "..";
 import { IconWrapper } from "@/components/custom";
 import { useClickAway } from "@uidotdev/usehooks";
-import { usePublishProposalComment, useVoteProposalComment } from "@/api/democracy/proposals";
+import {
+  useGetProposalCommentResponses,
+  usePublishProposalComment,
+  useVoteProposalComment,
+} from "@/api/democracy/proposals";
 import { proposalCommentSchema } from "@/schemas/ProposalSchema";
+import { Separator } from "@/components/ui/separator";
 
 interface ProposalCommentCardProps {
   comment: CommentType;
@@ -21,31 +23,45 @@ interface ProposalCommentCardProps {
 const ProposalCommentCard: React.FC<ProposalCommentCardProps> = ({
   comment,
 }) => {
-  const [dynamicPadding] = useState(24);
+  const [dynamicPadding] = useState(20);
+
   const { proposalId } = useParams();
+
   const [showResponse, setShowResponse] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
 
   const { mutateAsync: publishResponse, isLoading: isPublishingComment } =
     usePublishProposalComment();
+
+  const {
+    data: Data,
+    isRefetching: isLoadingResponses,
+    refetch: getResponses,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useGetProposalCommentResponses(comment.id);
+
   const { mutate: voteComment, isLoading: isVotingComment } =
     useVoteProposalComment();
 
+  // CLose responses on click away
   const ref = useClickAway<HTMLDivElement>(() => {
     setTimeout(() => {
       setIsReplying(false);
       setShowResponse(false);
     }, 500);
   });
+
   const form = useForm<z.infer<typeof proposalCommentSchema>>({
     resolver: zodResolver(proposalCommentSchema),
     mode: "onChange",
     defaultValues: {
       content: "",
-      proposal_id: parseInt(proposalId!),
-      comment_reference: comment.id,
+      proposal_id: "",
+      comment_reference: "",
     },
   });
+
   const {
     control,
     handleSubmit,
@@ -54,29 +70,42 @@ const ProposalCommentCard: React.FC<ProposalCommentCardProps> = ({
   } = form;
 
   async function onSubmit(values: z.infer<typeof proposalCommentSchema>) {
-    await publishResponse(values);
+    await publishResponse({
+      ...values,
+      proposal_id: proposalId!,
+      comment_reference: comment.id,
+    });
     closeResponse();
   }
 
+  //close response
   const closeResponse = () => {
     reset();
     setIsReplying(false);
+  };
+
+  // like comment
+  const handleLike = () => {
+    voteComment({ type: "like", comment_id: comment.id });
+  };
+
+  // dislike comment
+  const handleDislike = () => {
+    voteComment({ type: "dislike", comment_id: comment.id });
   };
 
   return (
     <div className="bg-[#fff] p-6 rounded-xl" ref={ref}>
       <CommentCard
         comment={comment}
-        isVotingComment={isVotingComment}
-        likeComment={() =>
-          voteComment({ type: "like", comment_id: comment.id })
-        }
-        dislikeComment={() =>
-          voteComment({ type: "dislike", comment_id: comment.id })
-        }
         setIsReplying={setIsReplying}
         setShowResponse={setShowResponse}
         showResponse={showResponse}
+        getResponses={getResponses}
+        isLoadingResponses={isLoadingResponses}
+        isVotingComment={isVotingComment}
+        handleLike={handleLike}
+        handleDislike={handleDislike}
       />
 
       {/* REPLY INPUT */}
@@ -100,6 +129,7 @@ const ProposalCommentCard: React.FC<ProposalCommentCardProps> = ({
                   type="submit"
                   className="w-fit h-fit text-[12px] font-[500]"
                   isLoading={isPublishingComment}
+                  disabled={isPublishingComment}
                 >
                   Publish response
                 </Button>
@@ -115,19 +145,32 @@ const ProposalCommentCard: React.FC<ProposalCommentCardProps> = ({
         </div>
       )}
 
-      {/* RESPONSE */}
       <div
-        className={` ${
-          showResponse ? "" : "h-0  overflow-hidden"
-        } duration-300`}
+        className={`${showResponse ? "" : "h-0  overflow-hidden"} ${
+          isLoadingResponses && "opacity-50 pointer-events-none"
+        }`}
       >
-        {comment.responses.map((response) => (
-          <ProposalCommentResponse
-            key={response.response_id}
-            response={response}
-            paddingLeft={dynamicPadding + 20}
-          />
+        {Data?.pages.map((commentsData, i) => (
+          <div key={i}>
+            {commentsData.comments.map((response) => (
+              <ProposalCommentResponse
+                key={response.id}
+                response={response}
+                paddingLeft={dynamicPadding + 20}
+              />
+            ))}
+          </div>
         ))}
+        <Separator orientation="horizontal" className="bg-base-500 my-1" />
+        {Data?.pages[Data.pages.length - 1].meta.next_page_url && (
+          <Button
+            className="w-full h-fit bg-transparent py-4 hover:bg-transparent -mb-5"
+            onClick={() => fetchNextPage()}
+            isLoading={isFetchingNextPage}
+          >
+            Load more
+          </Button>
+        )}
       </div>
     </div>
   );

@@ -1,60 +1,67 @@
 import { Location } from "iconsax-react";
 import { CommentInput } from "../custom";
+import { usePostComment } from "@/api/response";
 
-export default function ResponseDetails() {
+interface ResponseDetailsProps {
+  report: ReportData;
+}
+
+export default function ResponseDetails({ report }: ResponseDetailsProps) {
+  const { mutate, isLoading, isSuccess } = usePostComment();
   return (
     <div>
-      <h3>Upgrade of the International Airport</h3>
-      <div className="flex items-center gap-1 text-sm">
-        <Location color="black" size={14} />
-        <p>Umuleri, Anambra State</p>
-        <p className="font-bold text-link">Posted by</p>
-        <p>David Olaniyi on Oct 28, 2023/</p>
+      <h3>{report.title}</h3>
+      <div className="items-center gap-1 space-y-2 text-sm md:flex">
+        <div className="flex items-center gap-1">
+          <Location color="black" size={14} />
+          <p>{report.location_meta}</p>
+        </div>
+
+        <div className="flex items-center gap-1">
+          <p className="font-bold text-link">Posted by</p>
+          <p>
+            {report.reporter.firstname
+              ? `${report.reporter.firstname} ${report.reporter.lastname}`
+              : report.reporter.username}{" "}
+            on {new Date(report.createdAt).toDateString()}
+          </p>
+        </div>
       </div>
 
       <div className="my-5 font-medium text-dark">
-        <p>
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. "Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-          exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat."Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-          enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-          ut aliquip ex ea commodo consequat."Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua.
-        </p>
-
-        <p>
-          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-          nisi ut aliquip ex ea commodo consequat."Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-          exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat."Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-          enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-          ut aliquip ex ea commodo consequat.
-        </p>
+        <p>{report.description}</p>
       </div>
 
       <div className="flex gap-6">
-        <img src="/images/SDG/image 19.png" alt="" />
-        <img src="/images/SDG/image 20.png" alt="" />
-        <img src="/images/SDG/image 21.png" alt="" />
-        <img src="/images/SDG/image 22.png" alt="" />
-        <img src="/images/SDG/image 23.png" alt="" />
+        {report.reportSDGs.map((sdg) => (
+          <img
+            src={sdg.sdg.banner}
+            className="w-16 h-16 rounded-lg "
+            key={sdg.sdg_id}
+            alt="sdg"
+          />
+        ))}
       </div>
 
       <div className="h-[210px] bg-cover relative my-5 shadow-sm rounded-[40px] ">
-        <img src="/images/anambra.png" className="object-fill" alt="" />
+        {/* <GoogleMapReact
+          // bootstrapURLKeys={{ key: "" }}
+          defaultCenter={defaultProps.center}
+          defaultZoom={defaultProps.zoom}
+        ></GoogleMapReact> */}
+        <img
+          src="/images/anambra.png"
+          className="object-cover w-full h-full"
+          alt=""
+        />
 
-        <div className="absolute w-full px-20 bottom-10 ">
-          <CommentInput placeholder="Type your comment here" />
+        <div className="absolute w-full px-2 md:px-20 bottom-3 md:bottom-10 ">
+          <CommentInput
+            isLoading={isLoading}
+            handleSend={(data) => mutate({ ...data, report_id: report.id })}
+            placeholder="Type your comment here"
+            isSent={isSuccess}
+          />
         </div>
       </div>
     </div>

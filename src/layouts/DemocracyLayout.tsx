@@ -1,14 +1,11 @@
 import { DemocracyNavigation } from "@/components/Democracy";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft2 } from "iconsax-react";
-import { ReactNode } from "react";
 import { useNavigationContext } from "@/contexts/NavigationContext";
-import { useNavigate } from "react-router-dom";
-interface DemocracyLayoutProps {
-  children: ReactNode;
-}
+import { Outlet, useNavigate } from "react-router-dom";
+interface DemocracyLayoutProps {}
 
-const DemocracyLayout: React.FC<DemocracyLayoutProps> = ({ children }) => {
+const DemocracyLayout: React.FC<DemocracyLayoutProps> = () => {
   const { location } = useNavigationContext();
   const navigate = useNavigate();
 
@@ -30,7 +27,9 @@ const DemocracyLayout: React.FC<DemocracyLayoutProps> = ({ children }) => {
             Go Back
           </Button>
         )}
-        <div className="w-full min-h-[70vh]">{children}</div>
+        <div className="w-full min-h-[70vh]">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

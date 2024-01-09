@@ -34,19 +34,10 @@ interface DebateContextType {
     }
   >;
   perPage: number;
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 }
-const initialFilter = {
-  sdgs: [],
-  specificSDG: undefined,
-  specificTarget: undefined,
-  targets: [],
-  tags: [],
-  mostactive: false,
-  text: "",
-  highestrating: false,
-  newest: true,
-  datetimeSpecific: "",
-};
+
 const DebateContext = createContext<DebateContextType>({
   view: "",
   setView: () => {},
@@ -55,15 +46,30 @@ const DebateContext = createContext<DebateContextType>({
   fetchedDebatesData: undefined,
   refetchDebates: () => {},
   filterByButton: () => {},
-  filterOptions: initialFilter,
+  filterOptions: {},
   setFilterOptions: () => {},
   getAllDebates: () => {},
   perPage: 0,
+  page: 0,
+  setPage: () => {},
 });
 
 export const useDebateContext = () => useContext(DebateContext);
 
 export default function DebateProvider({ children }: PropsWithChildren) {
+  const initialFilter = {
+    sdgs: [],
+    specificSDG: undefined,
+    specificTarget: undefined,
+    targets: [],
+    tags: [],
+    mostactive: false,
+    text: "",
+    highestrating: false,
+    newest: true,
+    datetimeSpecific: "",
+  };
+
   const {
     mutate: getAllDebates,
     isLoading: fetchingDebates,
@@ -74,12 +80,12 @@ export default function DebateProvider({ children }: PropsWithChildren) {
   const [view, setView] = useState<string>("card-view");
   const [filterOptions, setFilterOptions] =
     useState<z.infer<typeof filterSchema>>(initialFilter);
-  const [page] = useState<number>(1);
+  const [page, setPage] = useState<number>(1);
   const [perPage] = useState<number>(10);
 
   const getFiltersWithValues = () => {
     const entries = Object.entries(filterOptions);
-    const filteredEntries = entries.filter(([key, value]) => {
+    const filteredEntries = entries.filter(([_, value]) => {
       if (value) {
         if (Array.isArray(value)) {
           return value.length > 0;
@@ -91,7 +97,6 @@ export default function DebateProvider({ children }: PropsWithChildren) {
       }
     });
     const filteredObject = Object.fromEntries(filteredEntries);
-
     return filteredObject;
   };
 
@@ -119,11 +124,12 @@ export default function DebateProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     getAllDebates({ page, perPage, filter: getFiltersWithValues() });
-  }, [filterOptions]);
+  }, [filterOptions, page]);
 
   const refetchDebates = () => {
     getAllDebates({ page, perPage, filter: getFiltersWithValues() });
   };
+
   return (
     <DebateContext.Provider
       value={{
@@ -138,6 +144,8 @@ export default function DebateProvider({ children }: PropsWithChildren) {
         setFilterOptions,
         getAllDebates,
         perPage,
+        page,
+        setPage,
       }}
     >
       {children}

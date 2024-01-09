@@ -1,18 +1,16 @@
 import {
   AdvancedSearch,
+  FetchingError,
   ListViewCard,
   PagesHeroSection,
-  Pagination,
   ProposalCardViewCard,
 } from "@/components/Democracy";
-import { IconWrapper } from "@/components/custom";
+import { PageLoader, Pagination } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { useProposalContext } from "@/contexts/ProposalContext";
-import DemocracyLayout from "@/layouts/DemocracyLayout";
+import { useAuthContext } from "@/providers/AuthProvider";
 import { proposalFilterButtonOptions } from "@/utils/Democracy/Proposals";
 import ROUTES from "@/utils/routesNames";
-import { Danger } from "iconsax-react";
-import { FaSpinner } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 interface ProposalsHomePageProps {}
@@ -25,22 +23,26 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
     fetchedProposalData,
     refetchProposals,
     filterByButton,
-    getAllProposals,
     filterOptions,
-    perPage,
+    page,
     setFilterOptions,
+    setPage,
   } = useProposalContext();
   const pageDescription =
     "Citizens' proposals are an opportunity for neighbours and collectivesto decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.";
+  const { isLoggedIn } = useAuthContext();
 
   return (
-    <DemocracyLayout>
+    <>
       {/* HEADING */}
       <PagesHeroSection title="proposals" description={pageDescription} />
-      <Link to={ROUTES.START_PROPOSAL_ROUTE}>
-        <Button className="w-[175px] mb-4">Start a proposal</Button>
-      </Link>
+      {isLoggedIn && (
+        <Link to={ROUTES.START_PROPOSAL_ROUTE}>
+          <Button className="w-[175px] mb-4">Start a proposal</Button>
+        </Link>
+      )}
       <div className=" flex flex-col gap-16 mt-[50px] w-full max-w-[1200px]">
+        {/* ADVANCED SEARCH */}
         <AdvancedSearch
           filterButtonOptions={proposalFilterButtonOptions}
           filterByButton={filterByButton}
@@ -48,15 +50,21 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
           view={view}
           filterOptions={filterOptions}
           setFilterOptions={setFilterOptions}
+          isSearching={fetchingProposals}
+          defaultFilterButtonValue="newest"
         />
 
-        {fetchingProposals && (
-          <div className="w-full flex justify-center">
-            <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
-              <FaSpinner className="animate-spin text-[100px]" />
-            </IconWrapper>
-          </div>
+        {/* ERROR */}
+        {fetchingProposalError && !fetchingProposals && (
+          <FetchingError
+            message="Error fetching Proposals"
+            refetching={fetchingProposals}
+            retryFunction={() => refetchProposals()}
+          />
         )}
+
+        {/* LOADING */}
+        {fetchingProposals && <PageLoader />}
 
         {/* LIST VIEW */}
         {view === "list-view" && fetchedProposalData && (
@@ -83,28 +91,14 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
         {/* PAGINATION */}
         {fetchedProposalData && (
           <Pagination
-            meta={fetchedProposalData?.meta}
-            onPageChange={getAllProposals}
-            filterOptions={filterOptions}
-            perPage={perPage}
+            page={page}
+            paginationData={fetchedProposalData.meta}
+            isFetching={fetchingProposals}
+            setPage={setPage}
           />
         )}
-
-        {fetchingProposalError && (
-          <div className="flex items-center flex-wrap justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10 my-10">
-            <div className="flex justify-start items-center gap-1">
-              <IconWrapper className="text-primary rounded-full">
-                <Danger size="32" />
-              </IconWrapper>
-              <p className="text-[16px]">Error fetching proposal</p>
-            </div>
-            <Button className="w-fit h-fit" onClick={refetchProposals}>
-              Retry
-            </Button>
-          </div>
-        )}
       </div>
-    </DemocracyLayout>
+    </>
   );
 };
 export default ProposalsHomePage;

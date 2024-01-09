@@ -4,65 +4,61 @@ import {
   useGetProposalInfo,
 } from "@/api/democracy/proposals";
 import {
-  CommentsPagination,
   CreateTopicModal,
   FilterButtons,
+  NotFound,
   ProposalParticipantCard,
   ProposalTopicCard,
 } from "@/components/Democracy";
-import { IconWrapper } from "@/components/custom";
+import { PageLoader, Pagination } from "@/components/custom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import useDisclosure from "@/hooks/useDisclosure";
-import DemocracyLayout from "@/layouts/DemocracyLayout";
 import { proposalTopicFilterButtonOptions } from "@/utils/Democracy/Proposals";
 import { formattedDate } from "@/utils/helper";
-import { Danger, Messages1 } from "iconsax-react";
+import { Messages1 } from "iconsax-react";
 import { useEffect, useState } from "react";
-import { FaSpinner } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 
 const ProposalCommuntityHomePage = () => {
   const { proposalId } = useParams();
+
   const { isOpen: isModalOpen, onClose, onOpen } = useDisclosure();
+
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState("newest");
-  const { data: proposal, isError: noProposalError } = useGetProposalInfo(
-    parseInt(proposalId!)
-  );
+
+  const {
+    data: proposal,
+    isError: noProposalError,
+    isLoading: isLoadingProposal,
+  } = useGetProposalInfo(proposalId!);
+
   const {
     refetch: refetchProposalTopics,
     data: proposalTopicData,
     isLoading: isLoadingProposalTopics,
     isFetching: isFetchingProposalTopics,
-  } = useGetAllProposalTopics(page, parseInt(proposalId!), filter);
-  const {
-    isLoading: isLoadingMembers,
-    data: communityMembers,
-    refetch: refetchCommunityMembers,
-  } = useGetProposalCommunityMembers(parseInt(proposalId!));
+  } = useGetAllProposalTopics(page, proposalId!, filter);
+
+  const { data: communityMembers } = useGetProposalCommunityMembers(
+    proposalId!
+  );
 
   useEffect(() => {
     refetchProposalTopics();
   }, [page, filter]);
 
   return (
-    <DemocracyLayout>
-      <h4 className="text-xl md:text-2xl text-primary font-semibold">
+    <>
+      <h4 className="text-xl md:text-2xl text-primary font-semibold mb-10">
         Proposal community
       </h4>
+
       {/* ERROR */}
-      {noProposalError && (
-        <div className="flex items-center flex-wrap justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10 my-10">
-          <div className="flex justify-start items-center gap-1">
-            <IconWrapper className="text-primary rounded-full">
-              <Danger size="32" />
-            </IconWrapper>
-            <p className="text-[16px]">No proposal found</p>
-          </div>
-        </div>
-      )}
+      {noProposalError && !proposal && <NotFound message="No proposal found" />}
+
       {/* PROPOSAL INFO */}
       {proposal && (
         <div>
@@ -114,23 +110,25 @@ const ProposalCommuntityHomePage = () => {
         </div>
       )}
 
+      {/* *********************************************************************** PROPOSAL TOPICS ********************************************************************************/}
+
+      {isLoadingProposal && <PageLoader />}
+
       {/* FILTER BUTTONS */}
       {communityMembers?.length !== 0 && (
         <FilterButtons
           filterButtonOptions={proposalTopicFilterButtonOptions}
-          filterByButton={async (value) => await setFilter(value)}
+          filterByButton={(value) => setFilter(value)}
+          defaultFilterButtonValue="newest"
+          isFiltering={isFetchingProposalTopics}
         />
       )}
-      {isLoadingProposalTopics && (
-        <div className="w-full flex justify-center">
-          <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
-            <FaSpinner className="animate-spin text-[100px]" />
-          </IconWrapper>
-        </div>
-      )}
+
+      {/* LOADING TOPICS */}
+      {isLoadingProposalTopics && <PageLoader />}
 
       {/* TOPICS */}
-      {proposalTopicData?.data && proposalTopicData?.data.length > 0 ? (
+      {proposalTopicData?.data && proposalTopicData?.data.length > 0 && (
         <div
           className={`${
             isFetchingProposalTopics
@@ -142,7 +140,9 @@ const ProposalCommuntityHomePage = () => {
             <ProposalTopicCard key={topic.id} topic={topic} />
           ))}
         </div>
-      ) : (
+      )}
+
+      {proposalTopicData?.data.length === 0 && !noProposalError && (
         <h1 className="text-xl">
           No topics created, Create the first community topic
         </h1>
@@ -150,9 +150,11 @@ const ProposalCommuntityHomePage = () => {
 
       {/* PAGINATION */}
       {proposalTopicData?.meta && proposalTopicData.data.length > 0 && (
-        <CommentsPagination
-          onPageChange={(page: number) => setPage(page)}
-          meta={proposalTopicData?.meta}
+        <Pagination
+          page={page}
+          setPage={setPage}
+          paginationData={proposalTopicData.meta}
+          isFetching={isFetchingProposalTopics}
         />
       )}
       {/* PARTICIPANTS */}
@@ -180,7 +182,7 @@ const ProposalCommuntityHomePage = () => {
           propsalId={proposal.id}
         />
       )}
-    </DemocracyLayout>
+    </>
   );
 };
 

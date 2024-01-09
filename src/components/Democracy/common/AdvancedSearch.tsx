@@ -24,6 +24,8 @@ interface AdvancedSearchProps {
   setFilterOptions: React.Dispatch<
     React.SetStateAction<z.infer<typeof filterSchema>>
   >;
+  isSearching: boolean;
+  defaultFilterButtonValue: string;
 }
 
 const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
@@ -33,6 +35,8 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
   filterByButton,
   setFilterOptions,
   filterOptions,
+  isSearching,
+  defaultFilterButtonValue,
 }) => {
   const [advanceSearch, setAdvanceSearch] = useState(false);
 
@@ -57,7 +61,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
   // GET FILTER OBJECT WITH VALUES
   const getFiltersWithValues = (filters: any) => {
     const entries = Object.entries(filters);
-    const filteredEntries = entries.filter(([key, value]) => {
+    const filteredEntries = entries.filter(([_, value]) => {
       if (value) {
         if (Array.isArray(value)) {
           return value.length > 0;
@@ -74,8 +78,6 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
 
   async function onSubmit(values: z.infer<typeof filterSchema>) {
     const filteredObject = getFiltersWithValues(filterOptions);
-    console.log("filteredObject", filteredObject);
-
     let formattedDate;
     let numericFilterOptions;
 
@@ -113,7 +115,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
         </div>
         {!advanceSearch ? (
           <Button
-            className="text-[18px] font-400 text-right md:w-fit bg-transparent p-0 hover:bg-transparent"
+            className="text-lg text-text font-400 text-right md:w-fit bg-transparent p-0 hover:bg-transparent"
             onClick={() => {
               setAdvanceSearch(!advanceSearch);
             }}
@@ -122,11 +124,11 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
           </Button>
         ) : (
           <Button
-            className="text-[18px] font-400 text-right md:w-fit bg-transparent p-0 hover:bg-transparent"
+            className="text-lg font-400 text-right md:w-fit bg-transparent p-0 hover:bg-transparent text-text"
             onClick={() => {
               reset();
               setAdvanceSearch(!advanceSearch);
-              setFilterOptions({});
+              setFilterOptions({ newest: true });
             }}
           >
             Reset Search
@@ -139,6 +141,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
         <FilterButtons
           filterButtonOptions={filterButtonOptions}
           filterByButton={filterByButton}
+          defaultFilterButtonValue={defaultFilterButtonValue}
         />
         {/* View type */}
         <div className="hidden md:block">
@@ -177,46 +180,22 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
                 type="date"
               />
             </div>
-            {/* SDG */}
-            {/* <div className="col-span-1">
-              <FormSelectSDG name="specificSDG" control={control} />
-            </div> */}
             {/* Target */}
             <div className="col-span-1">
               <FormSelectTarget name="specificTarget" control={control} />
             </div>
-
-            {/* <div className="flex flex-wrap col-span-3 gap-[15px] justify-stretch">
-              {sdgData?.map((sdg) => (
-                <div
-                  className="h-14 p-0 flex justify-start relative overflow-hidden rounded-md"
-                  key={sdg.id}
-                >
-                  <Checkbox
-                    className="border-dark absolute top-0 left-0 w-full h-full border-transparent  
-                        opacity-60 checked:bg-primary appearance-none rounded-lg
-                      "
-                    // onCheckedChange={(checked) => {
-                    //   return checked
-                    //     ? setSdg((values) => [...values, { ...item }])
-                    //     : setSdg((values) => {
-                    //         return values.filter(
-                    //           (value) => value.id !== item.id
-                    //         );
-                    //       });
-                    // }}
-                    name="sdgs"
-                  />
-                  <img src={sdg.banner} alt={sdg.title} />
-                </div>
-              ))}
-            </div> */}
+            {/* SDG */}
             <div className="col-span-3 flex flex-col">
               <FormLabel className="mb-2">Select SDGs</FormLabel>
               <FormCheckBoxSDG control={control} name="sdgs" />
             </div>
 
-            <Button type="submit" className="w-[175px] col-span-2">
+            <Button
+              type="submit"
+              className="w-[175px] col-span-2"
+              isLoading={isSearching}
+              disabled={isSearching}
+            >
               Filter
               <IconWrapper className="bg-transparent">
                 <Filter size="25" color="#292925" variant="Bold" />

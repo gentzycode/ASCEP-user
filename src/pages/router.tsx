@@ -1,16 +1,26 @@
-import { Outlet, Route, Routes, Navigate } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
 import axios from "axios";
 
 import routes, {
+  democracyRoutes,
+  dialogueRoutes,
   landingPages,
   responseRoutes,
   unauthenticatedRoutes,
 } from "./routes";
-import { AuthPagesLayout, MainLayout, ResponseLayout } from "@/layouts";
+import {
+  AuthPagesLayout,
+  MainLayout,
+  ResponseLayout,
+  DemocracyLayout,
+  DialogueLayout,
+} from "@/layouts";
 import config from "@/utils/config";
 import { useToast } from "@/components/ui/use-toast";
 import useAutoLogout from "@/hooks/useAuthoLogout";
 import { ViewResponsePage } from "./Response";
+import SmoothScroll from "@/components/custom/ScrollToTop";
+import RepsonseProvider from "@/providers/ResponseProvider";
 
 const Router = () => {
   const pageRoutes = routes.map(({ path, title, element }: RouterType) => {
@@ -18,6 +28,18 @@ const Router = () => {
   });
 
   const responsePages = responseRoutes.map(
+    ({ path, title, element }: RouterType) => {
+      return <Route key={title} path={`/${path}`} element={element} />;
+    }
+  );
+
+  const democracyPages = democracyRoutes.map(
+    ({ path, title, element }: RouterType) => {
+      return <Route key={title} path={`/${path}`} element={element} />;
+    }
+  );
+
+  const dialoguePages = dialogueRoutes.map(
     ({ path, title, element }: RouterType) => {
       return <Route key={title} path={`/${path}`} element={element} />;
     }
@@ -43,7 +65,9 @@ const Router = () => {
   axios.interceptors.request.use(
     (axiosConfig) => {
       const token = localStorage.getItem(config.key.accessToken);
-      axiosConfig.headers.Authorization = `Bearer ${token}`;
+      if (token) {
+        axiosConfig.headers.Authorization = `Bearer ${token}`;
+      }
       return axiosConfig;
     },
     (error) => {
@@ -86,29 +110,41 @@ const Router = () => {
   // }, []);
 
   return (
-    <Routes>
-      {/* Redirect from base URL to /home */}
-      <Route path="/" element={<Navigate to="/home" replace />} />
-
-      <Route path="/home" element={<Outlet />}>
-        {landingRoutes}
-      </Route>
-      <Route path="/auth" element={<AuthPagesLayout />}>
-        {authRoutes}
-      </Route>
-      <Route path="" element={<MainLayout />}>
-        {pageRoutes}
-        <Route
-          path="response/view-response/1"
-          element={<ViewResponsePage />}
-        ></Route>
-        <Route path="" element={<ResponseLayout />}>
-          {responsePages}
+    <SmoothScroll>
+      <Routes>
+        <Route path="/home" element={<Outlet />}>
+          {landingRoutes}
         </Route>
-      </Route>
+        <Route path="/auth" element={<AuthPagesLayout />}>
+          {authRoutes}
+        </Route>
+        <Route path="" element={<MainLayout />}>
+          {pageRoutes}
+          <Route
+            path="response/view-response/:reportId"
+            element={<ViewResponsePage />}
+          ></Route>
+          <Route
+            path=""
+            element={
+              <RepsonseProvider>
+                <ResponseLayout />
+              </RepsonseProvider>
+            }
+          >
+            {responsePages}
+          </Route>
+          <Route path="" element={<DemocracyLayout />}>
+            {democracyPages}
+          </Route>
+          <Route path="" element={<DialogueLayout />}>
+            {dialoguePages}
+          </Route>
+        </Route>
 
-      <Route path="*" element={<div>Route Not Found</div>} />
-    </Routes>
+        <Route path="*" element={<div>Route Not Found</div>} />
+      </Routes>
+    </SmoothScroll>
   );
 };
 

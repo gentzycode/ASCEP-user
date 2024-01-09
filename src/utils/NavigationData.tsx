@@ -7,7 +7,26 @@ import {
   Facebook,
   Youtube,
 } from "iconsax-react";
+import { FaLinkedin, FaTwitter } from "react-icons/fa";
 
+export const DialogueLinks: NavLinkType[] = [
+  {
+    title: "Make a request",
+    path: "/dialogue/make-a-request",
+  },
+  {
+    title: "Browse requests",
+    path: "/dialogue/browse-request",
+  },
+  {
+    title: "View Authorities",
+    path: "/dialogue/view-authorities",
+  },
+  {
+    title: "Help",
+    path: "/dialogue/dialogue-help",
+  },
+];
 export const DemocracyLinks: NavLinkType[] = [
   {
     title: "Debates",
@@ -23,11 +42,11 @@ export const DemocracyLinks: NavLinkType[] = [
   },
   {
     title: "Voting",
-    path: "#",
+    path: "/democracy/voting",
   },
   {
     title: "Participatory Budgeting",
-    path: "#",
+    path: "/democracy/budgeting",
   },
   {
     title: "SDG",
@@ -88,21 +107,21 @@ export const SocialLinks: NavLinkType[] = [
   {
     title: "Facebook",
     path: "#",
-    Icon: <Facebook />,
+    Icon: <Facebook variant="Bold" />,
   },
   {
     title: "X",
     path: "#",
-    Icon: <Facebook />,
+    Icon: <FaTwitter />,
   },
   {
     title: "Youtube",
     path: "#",
-    Icon: <Youtube />,
+    Icon: <Youtube variant="Bold" />,
   },
   {
     title: "Linkedin",
     path: "#",
-    Icon: <Facebook />,
+    Icon: <FaLinkedin />,
   },
 ];

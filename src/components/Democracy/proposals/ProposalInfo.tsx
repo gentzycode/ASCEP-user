@@ -5,42 +5,66 @@ import { formattedDate } from "@/utils/helper";
 import {
   CardEdit,
   Copy,
-  DocumentCopy,
-  Facebook,
   Flag,
   Messages1,
   PlayCircle,
-  Whatsapp,
+  Trash,
 } from "iconsax-react";
 import { Link } from "react-router-dom";
-import { SDGCard } from "..";
+import { CategoryDisplay, SDGCard, Share, TagDisplay, TargetDisplay } from "..";
 import ROUTES from "@/utils/routesNames";
 import { useEffect, useState } from "react";
-import { useSupportProposal } from "@/api/democracy/proposals";
+import {
+  useDeleteProposal,
+  useSupportProposal,
+} from "@/api/democracy/proposals";
+import useDisclosure from "@/hooks/useDisclosure";
+import ALert from "@/components/custom/Alert";
+import { useAuthContext } from "@/providers/AuthProvider";
+import { frontendURL } from "@/api/baseUrl";
 
 interface ProposalInfoProps {
   proposal: ProposalType;
   scrollToComments: () => void;
 }
+
 const ProposalInfo: React.FC<ProposalInfoProps> = ({
   proposal,
   scrollToComments,
 }) => {
+  const { isLoggedIn } = useAuthContext();
+
   const { mutate: supportProposal, isLoading: isSupportingProposal } =
     useSupportProposal(proposal.id);
+
   const [copied, setCopied] = useState(false);
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       setCopied(false);
     }, 500);
-
     return () => {
       clearTimeout(timeout);
     };
   }, [copied]);
+
   const handleCopyLink = () => {
     navigator.clipboard.writeText(proposal.external_video_url);
     setCopied(true);
+  };
+
+  const { mutateAsync: deleteProposal, isLoading: isDeletingProposal } =
+    useDeleteProposal(proposal.id);
+
+  const {
+    isOpen: alertOpen,
+    onOpen: openAlert,
+    onClose: closeAlert,
+  } = useDisclosure();
+
+  const handleDelete = async () => {
+    await deleteProposal();
+    close();
   };
   return (
     <div className="flex justify-start gap-10 xl:flex-row flex-col">
@@ -75,14 +99,18 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
               {proposal.total_comments_cache} Comments
             </div>
           </div>
+
           {/* IMAGE */}
-          <div className="w-full max-w-[700px] relative h-[300px] lg:h-[400px] rounded-2xl overflow-hidden my-8">
-            <img
-              src={proposal.descriptive_image}
-              alt={proposal.title}
-              className="absolute top-0 left-0 w-full h-full object-cover"
-            />
-          </div>
+          {proposal.descriptive_image && (
+            <div className="w-full max-w-[700px] relative h-[300px] lg:h-[400px] rounded-2xl overflow-hidden my-8">
+              <img
+                src={proposal.descriptive_image}
+                alt={proposal.title}
+                className="absolute top-0 left-0 w-full h-full object-cover"
+              />
+            </div>
+          )}
+
           {/* SUMMARY */}
           <div className="border-t-2 border-subtle_text py-4">
             <h2 className="text-base">
@@ -90,6 +118,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
             </h2>
             <p className="text-sm md:text-base py-2">{proposal.summary}</p>
           </div>
+
           {/* BODY */}
           <div className="border-t-2 border-subtle_text py-4 whitespace-pre-wrap w-full  overflow-hidden">
             <div
@@ -97,13 +126,15 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
               className=""
             />
           </div>
+
           {/* MAP */}
           <div>
-            <h3 className="text-base underline underline-offset-8 decoration-primary py-2">
+            <h2 className="pb-2  pl-0 my-6 border-b-4 text-[18px] font-medium border-primary w-fit">
               Map view
-            </h3>
+            </h2>
             <div className="bg-subtle_text h-[400px] rounded-2xl w-full max-w-[700px] my-2"></div>
           </div>
+
           {/* VIDEO */}
           <div className="py-4 my-8 px-2 max-w-[700px] flex-wrap bg-light border border-primary rounded-lg flex justify-between items-center">
             <div className="flex items-center gap-2 flex-wrap">
@@ -140,8 +171,8 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
         {/* SDGs */}
         {proposal.proposalSDGs.length > 0 && (
           <div className="flex gap-2 flex-wrap">
-            {proposal.proposalSDGs.map((SDGs) => (
-              <SDGCard SDGs={SDGs.sdgs} key={SDGs.sdgs_id} />
+            {proposal.proposalSDGs.map((SDGs, i) => (
+              <SDGCard SDG={SDGs.sdgs} key={SDGs.sdgs_id} index={i} />
             ))}
           </div>
         )}
@@ -149,14 +180,12 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
         {/* TARGETS */}
         {proposal.proposalTarget.length > 0 && (
           <div className="flex gap-[8px] flex-wrap">
-            {proposal.proposalTarget.map((target) => (
-              <Button
+            {proposal.proposalTarget.map((target, i) => (
+              <TargetDisplay
+                target={target.targetInfo}
                 key={target.target_id}
-                className="h-fit text-[12px] text-dark bg-light_grey px-[25px] disabled:opacity-100"
-                disabled
-              >
-                Traget {target.targetInfo.code}
-              </Button>
+                index={i}
+              />
             ))}
           </div>
         )}
@@ -164,53 +193,76 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
         {/* TAGS */}
         {proposal.proposalTag.length > 0 && (
           <div className="flex gap-[8px] flex-wrap">
-            {proposal.proposalTag.map((tag) => (
-              <Button
-                key={tag.id}
-                className="h-fit text-[12px] text-dark bg-light_grey px-[20px] disabled:opacity-100"
-                disabled
-              >
-                {tag.tag_name}
-              </Button>
+            {proposal.proposalTag.map((tag, i) => (
+              <TagDisplay tag={tag.tag_name} key={tag.id} index={i} />
+            ))}
+          </div>
+        )}
+
+        {/* CATEGORIES */}
+        {proposal.proposalCategory.length > 0 && (
+          <div className="flex gap-[8px] flex-wrap">
+            {proposal.proposalCategory.map((category, i) => (
+              <CategoryDisplay
+                category={category.categoryDetail.name}
+                index={i}
+              />
             ))}
           </div>
         )}
       </div>
 
       <div className="w-full  md:w-[300px] flex justify-start flex-col gap-10">
-        <div className="flex gap-2">
-          <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
-            <Flag size="25" />
-          </Button>
-
-          <Separator
-            orientation="vertical"
-            className="h-5  text-dark bg-base-500"
-          />
-          <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
-            Hide
-          </Button>
-          <Separator
-            orientation="vertical"
-            className="h-5  text-dark bg-base-500"
-          />
-          <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
-            Block Author
-          </Button>
-        </div>
-        {/* AUTHOR */}
-        {proposal.user_id === proposal.author.id && (
-          <div>
-            <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
-              Author
-            </h2>
-            <Link to={ROUTES.EDIT_DEBATE_ROUTE(proposal.id)}>
-              <Button className="text-dark text-[16px] h-fit w-fit my-4 px-8 justify-center gap-3 flex rounded-lg">
-                <span>Edit</span>
-                <CardEdit />
+        {isLoggedIn && (
+          <>
+            <div className="flex gap-2">
+              <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
+                <Flag size="25" />
               </Button>
-            </Link>
-          </div>
+
+              <Separator
+                orientation="vertical"
+                className="h-5  text-dark bg-base-500"
+              />
+              <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
+                Hide
+              </Button>
+              <Separator
+                orientation="vertical"
+                className="h-5  text-dark bg-base-500"
+              />
+              <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
+                Block Author
+              </Button>
+            </div>
+
+            {/* AUTHOR */}
+            {proposal.user_id === proposal.author.id && (
+              <div>
+                <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
+                  Author
+                </h2>
+                <Link to={ROUTES.EDIT_PROPOSAL_ROUTE(proposal.id)}>
+                  <Button
+                    className="text-dark text-base h-fit my-4 px-8 py-3 w-full justify-center
+               gap-3 flex rounded-lg max-w-[220px]"
+                  >
+                    <span>Edit</span>
+                    <CardEdit />
+                  </Button>
+                </Link>
+                <Button
+                  className="text-red-500 border border-red-500
+                 hover:text-light text-base  bg-transparent hover:bg-red-400 h-fit my-4 px-8 py-3 
+                 justify-center gap-1 flex rounded-lg w-full max-w-[220px]"
+                  onClick={openAlert}
+                >
+                  <span>Delete Proposal</span>
+                  <Trash />
+                </Button>
+              </div>
+            )}
+          </>
         )}
 
         {/* SUPPORT */}
@@ -237,7 +289,8 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
                   : proposal.supportGotten > 40 && proposal.supportGotten < 70
                   ? "text-[#DDA63A]"
                   : "text-[#4C9F38]"
-              } w-[74px] h-[74px] hover:bg-inherit `}
+              } w-[74px] h-[74px] disabled:opacity-100 `}
+              disabled
             >
               {proposal.supportGotten}%
             </Button>
@@ -248,59 +301,70 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
               <Messages1 size="25" />
               <span>{proposal.supportNeeded} support needed</span>
             </Button>
-            <Button
-              className="h-fit  max-w-[200px] py-4 text-lg w-full rounded-full"
-              isLoading={isSupportingProposal}
-              onClick={() => supportProposal()}
-            >
-              Support
-            </Button>
+            {isLoggedIn ? (
+              <Button
+                className="h-12  max-w-[200px] py-4 text-lg w-full rounded-full"
+                isLoading={isSupportingProposal}
+                onClick={() => supportProposal()}
+              >
+                Support
+              </Button>
+            ) : (
+              <Link to={ROUTES.SIGNIN_ROUTE}>
+                <Button className="bg-transparent border-dark border-2 w-[175px]">
+                  Log in
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
         {/* SHARE */}
-        <div>
-          <div className="flex justify-start items-start gap-8">
-            <h2 className="pb-2  border-b-4 text-[18px] font-medium border-primary w-fit">
-              Share
-            </h2>
-            <Button className="bg-transparent p-0 w-fit hover:bg-transparent text-dark text-[14px] flex justify-center  gap-1">
-              <DocumentCopy size={20} />
-              <span>Copy link</span>
-            </Button>
-          </div>
-          <div className="flex gap-2 my-4">
-            <Link to="#" className="text-subtle_text">
-              <Whatsapp size={35} variant="Bold" />
-            </Link>
-            <Link to="#" className=" text-subtle_text">
-              <Facebook size={35} variant="Bold" />
-            </Link>
-          </div>
-        </div>
+        <Share
+          shareableURL={
+            frontendURL +
+            `/democracy/proposal/share/${proposal.proposal_code}`
+          }
+        />
+
         {/* FOLLOW */}
-        <div>
-          <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
-            Follow
-          </h2>
-          <Button className="bg-transparent border border-primary mt-3 text-primary hover:text-light">
-            Follow citizen Proposal
-          </Button>
-        </div>
-        {/* COMMUNITY */}
-        <div>
-          <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
-            Community
-          </h2>
-          <Link
-            to={ROUTES.PROPOSAL_COMMUNITY_ROUTE(proposal.id)}
-            state={{ proposal: proposal }}
-          >
-            <Button className="bg-transparent border border-primary mt-3 text-primary hover:text-light">
-              Access the Community
-            </Button>
-          </Link>
-        </div>
+        {isLoggedIn && (
+          <>
+            <div>
+              <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
+                Follow
+              </h2>
+              <Button className="bg-transparent border border-primary mt-3 text-primary hover:text-light h-12">
+                Follow citizen Proposal
+              </Button>
+            </div>
+
+            {/* COMMUNITY */}
+            <div>
+              <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
+                Community
+              </h2>
+              <Link
+                to={ROUTES.PROPOSAL_COMMUNITY_ROUTE(proposal.id)}
+                state={{ proposal: proposal }}
+              >
+                <Button className="h-12 bg-transparent border border-primary mt-3 text-primary hover:text-light">
+                  Access the Community
+                </Button>
+              </Link>
+            </div>
+          </>
+        )}
       </div>
+
+      {/* DELETE ALERT */}
+      <ALert
+        message="Are you sure you want to delete this proposal"
+        description="This action cannot be undone. This will permanently delete your proposal."
+        action={handleDelete}
+        isOpen={alertOpen}
+        close={closeAlert}
+        loadingAction={isDeletingProposal}
+      />
     </div>
   );
 };

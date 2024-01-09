@@ -1,7 +1,6 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { AddSquare, CloseCircle, Flag, MinusSquare } from "iconsax-react";
+import { CloseCircle } from "iconsax-react";
 import { useState } from "react";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
@@ -9,39 +8,55 @@ import { debateCommentSchema } from "@/schemas/DebateSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { usePublishDebateComment } from "@/api/democracy/debates";
-import { FormInput } from "..";
+import {
+  usePublishDebateComment,
+  useVoteDebateComment,
+} from "@/api/democracy/debates";
+import {
+  CommentCardFooter,
+  CommentCardHeader,
+  FormInput,
+  VoteCommentButtons,
+} from "..";
 import { IconWrapper } from "@/components/custom";
 import { useClickAway } from "@uidotdev/usehooks";
 
 interface DebateCommentResponseProps {
-  response: CommentResponseType;
+  response: CommentType;
   paddingLeft: number;
 }
 const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
   response,
   paddingLeft,
 }) => {
+  const { debateId } = useParams();
+
   const { mutateAsync: publishResponse, isLoading: isPublishingComment } =
     usePublishDebateComment();
-  const { debateId } = useParams();
+
+  const { mutate: voteComment, isLoading: isVotingComment } =
+    useVoteDebateComment();
+
   const [showResponse, setShowResponse] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
+
   const ref = useClickAway<HTMLDivElement>(() => {
     setTimeout(() => {
       setIsReplying(false);
       setShowResponse(false);
     }, 500);
   });
+
   const form = useForm<z.infer<typeof debateCommentSchema>>({
     resolver: zodResolver(debateCommentSchema),
     mode: "onChange",
     defaultValues: {
       content: "",
-      debate_id: parseInt(debateId!),
-      comment_reference: response.response_id,
+      debate_id: "",
+      comment_reference: "",
     },
   });
+
   const {
     control,
     handleSubmit,
@@ -50,7 +65,11 @@ const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
   } = form;
 
   async function onSubmit(values: z.infer<typeof debateCommentSchema>) {
-    await publishResponse(values);
+    await publishResponse({
+      ...values,
+      debate_id: debateId!,
+      comment_reference: response.id,
+    });
     closeResponse();
   }
 
@@ -62,102 +81,41 @@ const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
   return (
     <>
       <div ref={ref}>
-        <div className=" border-t-2 border-base-500 mt-2" />
+        <Separator orientation="horizontal" className="bg-base-500 my-1" />
         <div
           className={`pl-[${paddingLeft}px]`}
           style={{ paddingLeft: `${paddingLeft}px` }}
         >
-          <div className="flex justify-start items-center gap-6 my-4 flex-wrap pt-2 ">
-            <Avatar className="h-12 w-12">
-              <AvatarImage
-                src={
-                  response.commentDetail.user.profile_picture
-                    ? response.commentDetail.user.profile_picture
-                    : undefined
-                }
-              />
-              <AvatarFallback className="uppercase font-[700]">
-                AB
-              </AvatarFallback>
-            </Avatar>
-            <h2 className="text-dark text-[14px] -ml-4">
-              {response.commentDetail.user.username}
-            </h2>
-            {/* <p className="text-[12px] text-base-400 my-3 ">{formattedDate(response.commentDetail.)}</p> */}
-          </div>
-          <p className=" pb-2 text-base-500">
-            {response.commentDetail.content}
-          </p>
+          <CommentCardHeader
+            username={response.author.username}
+            content={response.content}
+            createdAt={response.createdAt}
+            profilePicture={response.author.profile_picture}
+          />
 
           {/* FOOTER */}
           <div className="flex justify-between items-center flex-wrap-reverse gap-2">
-            <div className="flex justify-start  gap-2 items-center pt-4 flex-wrap">
-              <Button
-                className="bg-transparent hover:bg-transparent h-fit w-fit p-0  text-[14px]"
-                onClick={() => setShowResponse(!showResponse)}
-              >
-                {showResponse ? (
-                  <MinusSquare size={25} />
-                ) : (
-                  <AddSquare size={25} />
-                )}
-                <span>
-                  {response.commentDetail?.responses?.length} responses
-                </span>
-              </Button>
-
-              <Separator
-                orientation="vertical"
-                className="h-5  text-dark bg-base-500"
-              />
-
-              <Button
-                className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]"
-                onClick={() => setIsReplying(true)}
-              >
-                Reply
-              </Button>
-
-              <Separator
-                orientation="vertical"
-                className="h-5  text-dark bg-base-500"
-              />
-
-              <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
-                <Flag size="25" />
-              </Button>
-
-              <Separator
-                orientation="vertical"
-                className="h-5  text-dark bg-base-500"
-              />
-              <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
-                Hide
-              </Button>
-              <Separator
-                orientation="vertical"
-                className="h-5  text-dark bg-base-500"
-              />
-              <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
-                Block Author
-              </Button>
-            </div>
-
-            {/* <div className="flex justify-start items-center  gap-2 pt-4">
-              <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
-                13 Votes
-              </Button>
-              <Separator
-                orientation="vertical"
-                className="h-5  text-dark bg-base-500"
-              />
-              <Button className="text-[#31D0AA] gap-1 bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
-                <Like1 variant="Bold" /> <span>10</span>
-              </Button>
-              <Button className="text-[#E43F40] gap-1 bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
-                <Dislike variant="Bold" /> <span>3</span>
-              </Button>
-            </div> */}
+            <CommentCardFooter
+              numberOfResponses={0}
+              setIsReplying={setIsReplying}
+              setShowResponse={setShowResponse}
+              showResponse={showResponse}
+              fetchResponse={() => {}}
+              isLoadingResponses={false}
+              loading={false}
+            />
+            <VoteCommentButtons
+              dislikeComment={() =>
+                voteComment({ type: "dislike", comment_id: response.id })
+              }
+              likeComment={() =>
+                voteComment({ type: "like", comment_id: response.id })
+              }
+              dislikes={response.dislikes}
+              isVoting={isVotingComment}
+              likes={response.likes}
+              reactionType={response.userVoted.reactionType}
+            />
           </div>
 
           {/* REPLY INPUT */}
@@ -197,12 +155,8 @@ const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
           )}
         </div>
 
-        <div
-          className={` ${
-            showResponse ? "" : "h-0  overflow-hidden"
-          } duration-300`}
-        >
-          {response?.commentDetail?.responses?.map((response) => (
+        <div className={` ${showResponse ? "" : "h-0  overflow-hidden"}`}>
+          {response?.responses?.map((response) => (
             <DebateCommentResponse
               key={response.response_id}
               response={response}

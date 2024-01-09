@@ -4,7 +4,7 @@ export const debateFilterButtonOptions: FilterButtonOptionsType[] = [
   { label: "Newest", value: "newest" },
 ];
 export const debateCommentFilterButtonOptions: FilterButtonOptionsType[] = [
+  { label: "Newest", value: "newest" },
   { label: "Most active", value: "most-active" },
   { label: "Highest rated", value: "most-rated" },
-  { label: "Newest", value: "newest" },
 ];

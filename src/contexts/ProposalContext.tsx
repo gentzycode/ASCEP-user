@@ -34,19 +34,10 @@ interface ProposalContextType {
     }
   >;
   perPage: number;
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 }
-const initialFilter = {
-  sdgs: [],
-  specificSDG: undefined,
-  specificTarget: undefined,
-  targets: [],
-  tags: [],
-  mostactive: false,
-  text: "",
-  highestrating: false,
-  newest: true,
-  datetimeSpecific: "",
-};
+
 const ProposalContext = createContext<ProposalContextType>({
   view: "",
   setView: () => {},
@@ -55,15 +46,30 @@ const ProposalContext = createContext<ProposalContextType>({
   fetchedProposalData: undefined,
   refetchProposals: () => {},
   filterByButton: () => {},
-  filterOptions: initialFilter,
+  filterOptions: {},
   setFilterOptions: () => {},
   getAllProposals: () => {},
   perPage: 0,
+  page: 0,
+  setPage: () => {},
 });
 
 export const useProposalContext = () => useContext(ProposalContext);
 
 export default function ProposalProvider({ children }: PropsWithChildren) {
+  const initialFilter = {
+    sdgs: [],
+    specificSDG: undefined,
+    specificTarget: undefined,
+    targets: [],
+    tags: [],
+    mostactive: false,
+    text: "",
+    highestrating: false,
+    newest: true,
+    datetimeSpecific: "",
+  };
+
   const {
     mutate: getAllProposals,
     isLoading: fetchingProposals,
@@ -74,12 +80,12 @@ export default function ProposalProvider({ children }: PropsWithChildren) {
   const [view, setView] = useState<string>("card-view");
   const [filterOptions, setFilterOptions] =
     useState<z.infer<typeof filterSchema>>(initialFilter);
-  const [page] = useState<number>(1);
+  const [page, setPage] = useState<number>(1);
   const [perPage] = useState<number>(10);
 
   const getFiltersWithValues = () => {
     const entries = Object.entries(filterOptions);
-    const filteredEntries = entries.filter(([key, value]) => {
+    const filteredEntries = entries.filter(([_, value]) => {
       if (value) {
         if (Array.isArray(value)) {
           return value.length > 0;
@@ -119,10 +125,10 @@ export default function ProposalProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     getAllProposals({ page, perPage, filter: getFiltersWithValues() });
-  }, [filterOptions]);
+  }, [filterOptions, page]);
 
   const refetchProposals = () => {
-    getAllProposals({ page, perPage, filter: {} });
+    getAllProposals({ page, perPage, filter: getFiltersWithValues() });
   };
   return (
     <ProposalContext.Provider
@@ -138,6 +144,8 @@ export default function ProposalProvider({ children }: PropsWithChildren) {
         setFilterOptions,
         getAllProposals,
         perPage,
+        page,
+        setPage,
       }}
     >
       {children}

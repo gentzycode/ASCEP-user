@@ -1,16 +1,6 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { formattedDate } from "@/utils/helper";
-import {
-  AddSquare,
-  CloseCircle,
-  Dislike,
-  Flag,
-  Like1,
-  MinusSquare,
-} from "iconsax-react";
-import { useState } from "react";
+import { CloseCircle } from "iconsax-react";
+import React, { useState } from "react";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
 import { debateCommentSchema } from "@/schemas/DebateSchema";
@@ -18,41 +8,59 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import {
+  useGetDebateCommentResponses,
   usePublishDebateComment,
   useVoteDebateComment,
 } from "@/api/democracy/debates";
 import { CommentCard, DebateCommentResponse, FormInput } from "..";
 import { IconWrapper } from "@/components/custom";
 import { useClickAway } from "@uidotdev/usehooks";
+import { Separator } from "@/components/ui/separator";
 
 interface DebateCommentCardProps {
   comment: CommentType;
 }
+
 const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
-  const [dynamicPadding] = useState(24);
+  const [dynamicPadding] = useState(20);
+
+  const { debateId } = useParams();
+
+  const [showResponse, setShowResponse] = useState(false);
+  const [isReplying, setIsReplying] = useState(false);
 
   const { mutateAsync: publishResponse, isLoading: isPublishingComment } =
     usePublishDebateComment();
+
+  const {
+    data: Data,
+    isRefetching: isLoadingResponses,
+    refetch: getResponses,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useGetDebateCommentResponses(comment.id);
+
   const { mutate: voteComment, isLoading: isVotingComment } =
     useVoteDebateComment();
-  const { debateId } = useParams();
-  const [showResponse, setShowResponse] = useState(false);
-  const [isReplying, setIsReplying] = useState(false);
+
+  // CLose responses on click away
   const ref = useClickAway<HTMLDivElement>(() => {
     setTimeout(() => {
       setIsReplying(false);
       setShowResponse(false);
     }, 500);
   });
+
   const form = useForm<z.infer<typeof debateCommentSchema>>({
     resolver: zodResolver(debateCommentSchema),
     mode: "onChange",
     defaultValues: {
       content: "",
-      debate_id: parseInt(debateId!),
-      comment_reference: comment.id,
+      debate_id: "",
+      comment_reference: "",
     },
   });
+
   const {
     control,
     handleSubmit,
@@ -61,29 +69,42 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
   } = form;
 
   async function onSubmit(values: z.infer<typeof debateCommentSchema>) {
-    await publishResponse(values);
+    await publishResponse({
+      ...values,
+      debate_id: debateId!,
+      comment_reference: comment.id,
+    });
     closeResponse();
   }
 
+  //close response
   const closeResponse = () => {
     reset();
     setIsReplying(false);
+  };
+
+  // like comment
+  const handleLike = () => {
+    voteComment({ type: "like", comment_id: comment.id });
+  };
+
+  // dislike comment
+  const handleDislike = () => {
+    voteComment({ type: "dislike", comment_id: comment.id });
   };
 
   return (
     <div className="bg-[#fff] p-6 rounded-xl" ref={ref}>
       <CommentCard
         comment={comment}
-        isVotingComment={isVotingComment}
-        likeComment={() =>
-          voteComment({ type: "like", comment_id: comment.id })
-        }
-        dislikeComment={() =>
-          voteComment({ type: "dislike", comment_id: comment.id })
-        }
         setIsReplying={setIsReplying}
         setShowResponse={setShowResponse}
         showResponse={showResponse}
+        getResponses={getResponses}
+        isLoadingResponses={isLoadingResponses}
+        isVotingComment={isVotingComment}
+        handleLike={handleLike}
+        handleDislike={handleDislike}
       />
 
       {/* REPLY INPUT */}
@@ -107,6 +128,7 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
                   type="submit"
                   className="w-fit h-fit text-[12px] font-[500]"
                   isLoading={isPublishingComment}
+                  disabled={isPublishingComment}
                 >
                   Publish response
                 </Button>
@@ -122,19 +144,32 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
         </div>
       )}
 
-      {/* RESPONSE */}
       <div
-        className={` ${
-          showResponse ? "" : "h-0  overflow-hidden"
-        } duration-300`}
+        className={`${showResponse ? "" : "h-0  overflow-hidden"} ${
+          isLoadingResponses && "opacity-50 pointer-events-none"
+        }`}
       >
-        {comment.responses.map((response) => (
-          <DebateCommentResponse
-            key={response.response_id}
-            response={response}
-            paddingLeft={dynamicPadding + 20}
-          />
+        {Data?.pages.map((commentsData, i) => (
+          <div key={i}>
+            {commentsData.comments.map((response) => (
+              <DebateCommentResponse
+                key={response.id}
+                response={response}
+                paddingLeft={dynamicPadding + 20}
+              />
+            ))}
+          </div>
         ))}
+        <Separator orientation="horizontal" className="bg-base-500 my-1" />
+        {Data?.pages[Data.pages.length - 1].meta.next_page_url && (
+          <Button
+            className="w-full h-fit bg-transparent py-4 hover:bg-transparent -mb-5"
+            onClick={() => fetchNextPage()}
+            isLoading={isFetchingNextPage}
+          >
+            Load more
+          </Button>
+        )}
       </div>
     </div>
   );

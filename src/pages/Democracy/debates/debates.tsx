@@ -1,18 +1,16 @@
 import {
   AdvancedSearch,
   DebatesCardViewCard,
+  FetchingError,
   ListViewCard,
   PagesHeroSection,
-  Pagination,
 } from "@/components/Democracy";
-import { IconWrapper } from "@/components/custom";
+import { PageLoader, Pagination } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { useDebateContext } from "@/contexts/DebateContext";
-import DemocracyLayout from "@/layouts/DemocracyLayout";
+import { useAuthContext } from "@/providers/AuthProvider";
 import { debateFilterButtonOptions } from "@/utils/Democracy/Debates";
 import ROUTES from "@/utils/routesNames";
-import { Danger } from "iconsax-react";
-import { FaSpinner } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 interface DebatesProps {}
@@ -25,23 +23,27 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
     fetchedDebatesData,
     refetchDebates,
     filterByButton,
-    getAllDebates,
-    perPage,
     filterOptions,
     setFilterOptions,
+    setPage,
+    page,
   } = useDebateContext();
   const pageDescription =
     "Citizens' proposals are an opportunity for neighbours and collectives to decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.";
+  const { isLoggedIn } = useAuthContext();
 
   return (
-    <DemocracyLayout>
+    <>
       {/* HEADING */}
       <PagesHeroSection title="debates" description={pageDescription} />
-      <Link to={ROUTES.PUBLISH_DEBATE_ROUTE}>
-        <Button className="w-[175px] mb-4">Start debate</Button>
-      </Link>
+      {isLoggedIn && (
+        <Link to={ROUTES.PUBLISH_DEBATE_ROUTE}>
+          <Button className="w-[175px] mb-4">Start debate</Button>
+        </Link>
+      )}
+
       {/* ADVANCED SEARCH */}
-      <div className="max-w-[1000px]">
+      <div className="max-w-[1000px] mt-8">
         <AdvancedSearch
           filterButtonOptions={debateFilterButtonOptions}
           setView={setView}
@@ -49,7 +51,18 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
           filterByButton={filterByButton}
           filterOptions={filterOptions}
           setFilterOptions={setFilterOptions}
+          isSearching={fetchingDebates}
+          defaultFilterButtonValue="newest"
         />
+
+        {/* ERROR */}
+        {fetchingDebatesError && !fetchingDebates && (
+          <FetchingError
+            message="Error fetching Debates"
+            refetching={fetchingDebates}
+            retryFunction={() => refetchDebates()}
+          />
+        )}
 
         {/* LIST VIEW */}
         {view === "list-view" && fetchedDebatesData && (
@@ -64,14 +77,11 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
           </div>
         )}
 
+        {/* LOADING */}
+        {fetchingDebates && <PageLoader />}
+
+        
         {/* CARD VIEW */}
-        {fetchingDebates && (
-          <div className="w-full flex justify-center">
-            <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
-              <FaSpinner className="animate-spin text-[100px]" />
-            </IconWrapper>
-          </div>
-        )}
         {view === "card-view" && fetchedDebatesData && (
           <div className="w-full flex justify-start">
             <div className="grid grid-col-1 lg:grid-cols-2  justify-start my-10 gap-10">
@@ -83,30 +93,21 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
         )}
 
         {/* PAGINATION */}
+        {fetchedDebatesData && fetchedDebatesData.debates.length === 0 && (
+          <h1 className="text-dark text-base md:text-lg bg-primary/10 p-4">
+            No Debates meets the search criteria
+          </h1>
+        )}
         {fetchedDebatesData && (
           <Pagination
-            meta={fetchedDebatesData?.meta}
-            onPageChange={getAllDebates}
-            filterOptions={filterOptions}
-            perPage={perPage}
+            paginationData={fetchedDebatesData?.meta}
+            page={page}
+            setPage={setPage}
+            isFetching={fetchingDebates}
           />
         )}
-
-        {fetchingDebatesError && (
-          <div className="flex items-center flex-wrap justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10 my-10">
-            <div className="flex justify-start items-center gap-1">
-              <IconWrapper className="text-primary rounded-full">
-                <Danger size="32" />
-              </IconWrapper>
-              <p className="text-[16px]">Error fetching debates</p>
-            </div>
-            <Button className="w-fit h-fit" onClick={refetchDebates}>
-              Retry
-            </Button>
-          </div>
-        )}
       </div>
-    </DemocracyLayout>
+    </>
   );
 };
 export default DebatesHomePage;

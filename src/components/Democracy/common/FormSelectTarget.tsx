@@ -39,18 +39,17 @@ const FormSelectTarget = <TFormValues extends Record<string, unknown>>({
       name={name}
       render={({ field }) => (
         <FormItem className="flex-1">
-          <FormLabel>By Target</FormLabel>
+          <FormLabel className="text-text text-base">By Target</FormLabel>
           <FormControl>
             <Select
               {...field}
               onValueChange={(value) => field.onChange(Number(value))}
               value={field.value && Number(field.value)}
             >
-              <SelectTrigger className="rounded-full bg-transparent h-12 border-subtle_text text-[12px] text-subtle_text focus:ring-0 focus:ring-offset-0">
+              <SelectTrigger className="rounded-full bg-transparent h-12 border-subtle_text text-base text-text focus:ring-0 focus:ring-offset-0">
                 <SelectValue placeholder="Select a goal" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="0" />
                 {targets?.map((target) => (
                   <SelectItem value={target.id} key={target.id}>
                     Target {target.code}
