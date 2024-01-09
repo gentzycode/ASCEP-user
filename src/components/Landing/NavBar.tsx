@@ -1,21 +1,20 @@
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { CloseCircle, HambergerMenu } from "iconsax-react";
-import { useEffect } from "react";
 
 interface NavBarProps {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
+  scrollPosition: number;
 }
 
-export default function NavBar({ isOpen, onOpen, onClose }: NavBarProps) {
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else document.body.style.overflow = "";
-  }, [isOpen]);
-
+export default function NavBar({
+  isOpen,
+  onOpen,
+  onClose,
+  scrollPosition,
+}: NavBarProps) {
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
 
@@ -25,7 +24,11 @@ export default function NavBar({ isOpen, onOpen, onClose }: NavBarProps) {
   };
 
   return (
-    <div className="flex sticky top-0 z-10 py-8 justify-between items-center px-4 md:px-10 lg:px-[100px]">
+    <div
+      className={`flex sticky top-0 z-[100] py-5 md:pt-8 md:pb-0 justify-between items-center px-4 md:px-10 lg:px-[100px] ${
+        scrollPosition > 70 ? "backdrop-blur-sm " : ""
+      } `}
+    >
       <Link to="/home" className="flex items-center">
         <img src="/images/logopic.png" className="w-12 md:w-24" alt="" />
         <p className="mb-4 text-xl font-bold text-white">ASCEP</p>
@@ -55,13 +58,13 @@ export default function NavBar({ isOpen, onOpen, onClose }: NavBarProps) {
       {/* MOBILE NAV */}
 
       <div
-        className={` absolute top-0 left-0 w-[100vw] backdrop-blur-sm bg-black/30 ${
+        className={` absolute z-[100] top-0 left-0 w-[100vw] backdrop-blur-sm bg-black/30 ${
           isOpen ? "h-screen " : "h-0"
         } `}
       >
         <div
           className={` ${
-            isOpen ? "w-[80vw]" : "w-0 overflow-hidden"
+            isOpen ? "w-[80vw]" : "w-0"
           } duration-300 fixed top-0 left-0 h-screen z-20 bg-dark py-8 overflow-y-scroll`}
           // onClick={toggleMobileNav}
         >
