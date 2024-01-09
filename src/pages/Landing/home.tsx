@@ -8,10 +8,17 @@ import {
   ServicesSection,
   Testimonials,
 } from "@/components/Landing";
+import useDisclosure from "@/hooks/useDisclosure";
 
 export default function LandingPage() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
-    <div className="w-full h-screen space-y-40 overflow-y-auto bg-dark">
+    <div
+      className={`w-full h-screen space-y-40 bg-dark ${
+        isOpen ? "overflow-y-hidden" : "overflow-y-auto"
+      } `}
+    >
       <div className="relative ">
         <img
           className="absolute top-0 w-full"
@@ -19,7 +26,7 @@ export default function LandingPage() {
           alt=""
         />
         <div className="relative z-10">
-          <NavBar />
+          <NavBar onOpen={onOpen} onClose={onClose} isOpen={isOpen} />
           <BannerSection />
         </div>
       </div>
