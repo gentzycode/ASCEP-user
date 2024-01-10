@@ -1,19 +1,21 @@
-import { useGetReportInfo, useReportGetComments } from "@/api/response";
+import { useGetReportInfo, useGetReportComments } from "@/api/response";
 import {
   ResponseComment,
   ResponseDetails,
   ResponseImageSelect,
 } from "@/components/Response";
-import { FloatingLoader } from "@/components/custom";
+import { FloatingLoader, Pagination } from "@/components/custom";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 export default function ViewResponsepage() {
   const { reportId } = useParams();
+  const [page, setPage] = useState(1);
 
   const { data, isLoading } = useGetReportInfo(reportId!);
   const { data: commentsData, isLoading: loadingComments } =
-    useReportGetComments(reportId!);
+    useGetReportComments({ id: reportId!, page });
 
   return (
     <div className="min-h-screen px-4 pt-4 pb-12 md:pt-0 md:px-12 space-y-7">
@@ -47,6 +49,13 @@ export default function ViewResponsepage() {
                 />
               ))}
 
+          {!!commentsData?.comments.length && (
+            <Pagination
+              setPage={setPage}
+              page={page}
+              paginationData={commentsData?.meta}
+            />
+          )}
           {/* <ResponseComment /> */}
         </>
       )}

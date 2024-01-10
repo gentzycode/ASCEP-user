@@ -1,19 +1,16 @@
 import { AddSquare, CloseCircle } from "iconsax-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { CommentInput } from "../custom";
 import { usePostComment } from "@/api/response";
+import CommentResponses from "./CommentResponses";
 
 interface ResponseCommentProps {
   comment: ReportComment;
   reportId: string;
 }
 
-export default function ResponseComment({
-  comment,
-  reportId,
-}: ResponseCommentProps) {
+const ResponseComment = ({ comment, reportId }: ResponseCommentProps) => {
   const [showInput, setShowInput] = useState(false);
-
   const { mutate, isLoading, isSuccess } = usePostComment();
 
   return (
@@ -38,11 +35,14 @@ export default function ResponseComment({
 
         <p className="text-sm text-dark">{comment.content}</p>
 
-        <div className="border-[1px] border-dark/20"></div>
+        {comment.comment_response_cache > 0 && (
+          <CommentResponses comment={comment} reportId={reportId} />
+        )}
+        <div className="border-[1px] border-dark/10"></div>
 
         <div
           onClick={() => setShowInput(!showInput)}
-          className="flex items-center gap-2 font-medium cursor-pointer w-fit"
+          className="flex items-center gap-2 ml-4 font-medium cursor-pointer sm:ml-8 w-fit"
         >
           {showInput ? (
             <CloseCircle color="black" />
@@ -69,4 +69,6 @@ export default function ResponseComment({
       )}
     </div>
   );
-}
+};
+
+export default React.memo(ResponseComment);
