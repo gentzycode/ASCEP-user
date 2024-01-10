@@ -120,10 +120,10 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
                 control={control}
                 name="content"
                 errors={errors}
-                className="h-8 focus-visible:ring-primary focus-visible:ring-1 rounded-full focus-visible:ring-offset-0"
+                className="h-8 rounded-full focus-visible:ring-primary focus-visible:ring-1 focus-visible:ring-offset-0"
               />
 
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <Button
                   type="submit"
                   className="w-fit h-fit text-[12px] font-[500]"
@@ -133,7 +133,7 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
                   Publish response
                 </Button>
                 <IconWrapper
-                  className="text-dark p-0 cursor-pointer"
+                  className="p-0 cursor-pointer text-dark"
                   onClick={closeResponse}
                 >
                   <CloseCircle size={20} />
@@ -160,10 +160,10 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
             ))}
           </div>
         ))}
-        <Separator orientation="horizontal" className="bg-base-500 my-1" />
+        <Separator orientation="horizontal" className="my-1 bg-base-500" />
         {Data?.pages[Data.pages.length - 1].meta.next_page_url && (
           <Button
-            className="w-full h-fit bg-transparent py-4 hover:bg-transparent -mb-5"
+            className="w-full py-4 -mb-5 bg-transparent h-fit hover:bg-transparent"
             onClick={() => fetchNextPage()}
             isLoading={isFetchingNextPage}
           >

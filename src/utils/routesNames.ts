@@ -3,6 +3,7 @@ const ROUTES = {
   SIGNUP_ROUTE: "/auth/signup",
   MAIN_ROUTE: "/main",
 
+
   // DEBATE
   DEBATES_HOME_ROUTE: "/democracy/debates",
   DEBATE_INFO_ROUTE: (debateId: string) => `/democracy/debates/${debateId}`,

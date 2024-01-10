@@ -61,6 +61,10 @@
     @apply text-[#4B4DED] text-[16px] underline font-semibold;
   }
 
+  .section-padding {
+    @apply px-4 sm:px-12 lg:px-[100px];
+  }
+
   .tesimonial-pagination {
     @apply rounded-full flex justify-center items-center hover:bg-primary hover:text-dark w-[56px] h-[56px] text-primary border-2 border-primary transition-all duration-300 ease-in-out;
   }
@@ -119,6 +123,28 @@
   justify-content: center;
   align-items: center;
   width: 140%;
+}
+
+.anambra-citizens-image {
+  width: 420px; 
+  height: auto; 
+}
+
+.flex.justify-center.col-span-5 {
+  position: relative; 
+}
+
+.flex.justify-center.col-span-5::after {
+  content: '';
+  position: absolute; 
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 200px; 
+  background-color: rgba(0, 0, 0, 0.035); 
+  mix-blend-mode: overlay;
+  pointer-events: none; 
 }
 
 .swiper-slide img {

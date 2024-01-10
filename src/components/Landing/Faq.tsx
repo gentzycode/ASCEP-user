@@ -3,11 +3,11 @@ import FaqItem from "./FaqItem";
 
 export default function Faq() {
   return (
-    <div id="faq" className="px-[100px] ">
+    <div id="faq" className="section-padding ">
       <div className="flex justify-center text-center mb-[60px]">
-        <div className="w-full max-w-[735px] ">
+        <div className="w-full px-10 lg:max-w-[735px] ">
           <p className="text-lg text-primary">FAQs</p>
-          <p className="text-2xl text-subtle_text">
+          <p className="text-lg sm:text-2xl text-subtle_text">
             Find answers to common questions about our citizen engagement
             platform and its features.
           </p>
