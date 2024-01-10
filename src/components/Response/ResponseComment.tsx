@@ -5,7 +5,6 @@ import { usePostComment } from "@/api/response";
 
 import { DeleteComment } from "./DeleteComment";
 import CommentResponses from "./CommentResponses";
-import { useAuthContext } from "@/providers/AuthProvider";
 import { useAppContext } from "@/contexts/AppContext";
 
 interface ResponseCommentProps {
