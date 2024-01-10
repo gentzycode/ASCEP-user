@@ -117,3 +117,23 @@ interface Author {
   profile_picture: string;
   id: number;
 }
+
+interface GetReportCommentsQueryArgs {
+  id: string;
+  page: number;
+}
+
+interface GetAllReportsQueryArgs {
+  filtersString: string;
+}
+
+interface GetReportCommentsResonponsesQueryArgs {
+  id: number;
+  perPage: number;
+}
+
+interface PostCommentPayload {
+  content: string;
+  report_id: string;
+  comment_reference?: number;
+}

@@ -16,7 +16,7 @@ export default function ResponseLayout() {
     setSelectedPage(
       responsePages?.filter((page) => page.path === location.pathname)[0]?.title
     );
-  }, []);
+  }, [location]);
 
   return (
     <div className="relative w-full min-h-[calc(100%-93px)] px-2 md:px-8 overflow-y-auto pt-4 md:pt-0 pb-12 ">
