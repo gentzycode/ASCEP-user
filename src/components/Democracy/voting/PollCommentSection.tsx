@@ -106,7 +106,7 @@ const PollCommentSection: React.FC<PollCommentSectionProp> = () => {
 
               <Button
                 type="submit"
-                className="w-fit"
+                className="w-full max-w-[200px] h-12"
                 isLoading={isPublishingComment}
                 disabled={isPublishingComment}
               >
@@ -125,6 +125,7 @@ const PollCommentSection: React.FC<PollCommentSectionProp> = () => {
             setFilter(value);
             setPage(1);
           }}
+          defaultFilterButtonValue="newest"
         />
       </div>
 

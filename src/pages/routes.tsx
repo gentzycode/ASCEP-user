@@ -36,6 +36,8 @@ import {
   ResolveInitiativeSharedIdPage,
   ResolveProposalSharedIdPage,
   ResolvePollSharedIdPage,
+  StateInvestmentProjectsPage,
+  InvestmentInfoPage,
 } from "./Democracy";
 import { ActivityPage, DataView, MapView } from "./Response";
 import DebateProvider from "@/contexts/DebateContext";
@@ -279,6 +281,16 @@ export const democracyRoutes: RouterType[] = [
     path: "/democracy/budgeting/ward-project/:wardId",
     element: <WardProjectsHomePage />,
     title: "democracy-budgeting-ward-project",
+  },
+  {
+    path: "/democracy/budgeting/state-investment-projects",
+    element: <StateInvestmentProjectsPage />,
+    title: "democracy-budgeting-state-investment-projects",
+  },
+  {
+    path: "/democracy/budgeting/investment-info/:investmentId",
+    element: <InvestmentInfoPage />,
+    title: "democracy-budgeting-investment-info",
   },
 ];
 

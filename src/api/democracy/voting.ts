@@ -82,11 +82,9 @@ export const usePublishPollComment = () => {
         .then((res) => res.data as ResponseDataType);
     },
     {
-      onSuccess: (res, variables) => {
+      onSuccess: (res) => {
         queryClient.invalidateQueries("poll-comments");
-        queryClient.invalidateQueries({
-          queryKey: ["proposal-info", variables.voting_id],
-        });
+        queryClient.invalidateQueries("poll-info");
         toast({
           title: "Success!",
           variant: "success",
@@ -158,7 +156,7 @@ export const useGetPollComments = (
 // GET POLL COMMENT RESPONSES
 export const useGetPollCommentResponses = (commentId: string) => {
   return useInfiniteQuery(
-    ["poll-comments-responses"],
+    ["poll-comments-responses", commentId],
     (
       context: QueryFunctionContext<string[], number>
     ): Promise<CommentDataType> => {
@@ -171,7 +169,7 @@ export const useGetPollCommentResponses = (commentId: string) => {
       staleTime: 0,
       refetchOnWindowFocus: false,
       enabled: false,
-      getNextPageParam: (lastPage, pages) => pages.length + 1,
+      getNextPageParam: (_, pages) => pages.length + 1,
     }
   );
 };

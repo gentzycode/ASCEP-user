@@ -8,7 +8,7 @@ const SearchAuthoritiesList: React.FC<SearchAuthoritiesListProp> = () => {
     <div className="my-10">
       <div className="flex items-start justify-start gap-4 flex-wrap flex-col min-[500px]:flex-row">
         <Input
-          placeholder="e.g Ministry of health"
+          placeholder="e.g Ministry of ..."
           className="flex-1 h-11 rounded-full"
         />
         <Button className="h-11 text-base text-dark w-[150px]">Search</Button>
