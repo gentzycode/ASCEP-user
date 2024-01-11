@@ -184,7 +184,7 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
               label="Proposal summary (maximum of 200 characters)"
               control={control}
               errors={errors}
-              rows={4}
+              rows={6}
             />
             
             {/* PROPOSAL TEXT */}
@@ -309,8 +309,9 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
             <TargetsMultiSelect selected={targets} setSelected={setTargets} />
             <Button
               type="submit"
-              className="w-full max-w-[400px] p-0 h-fit py-3"
+              className="w-full max-w-[400px] p-0 h-12"
               isLoading={isLoading}
+              disabled={isLoading}
             >
               Start A Proposal
             </Button>

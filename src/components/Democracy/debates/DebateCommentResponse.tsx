@@ -118,7 +118,7 @@ const DebateCommentResponse: React.FC<DebateCommentResponseProps> = ({
         >
           <Separator orientation="horizontal" className="bg-base-500 my-1" />
           <CommentCardHeader
-            username={response.author.username}
+            username={response.author.username ?? response.author.firstname}
             content={response.content}
             createdAt={response.createdAt}
             profilePicture={response.author.profile_picture}

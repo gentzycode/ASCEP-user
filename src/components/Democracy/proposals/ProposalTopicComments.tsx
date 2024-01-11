@@ -1,4 +1,9 @@
-import { FilterButtons, FormInput, ProposalTopicCommentCard } from "..";
+import {
+  FilterButtons,
+  FormInput,
+  LoginSigninPrompt,
+  ProposalTopicCommentCard,
+} from "..";
 import { debateCommentFilterButtonOptions } from "@/utils/Democracy/Debates";
 import { IconWrapper, PageLoader, Pagination } from "@/components/custom";
 import { CloseCircle, Danger } from "iconsax-react";
@@ -62,28 +67,7 @@ const ProposalTopicComments: React.FC<ProposalTopicCommentsCardProps> = () => {
   return (
     <>
       {!isLoggedIn ? (
-        <div className="flex items-center justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10">
-
-          <div className="flex justify-start items-center gap-1">
-            <IconWrapper className="text-primary rounded-full">
-              <Danger size="32" />
-            </IconWrapper>
-            <p className="text-[16px]">
-              You must{" "}
-              <Link to={ROUTES.SIGNIN_ROUTE} className="underline">
-                sign in
-              </Link>{" "}
-              or{" "}
-              <Link to={ROUTES.SIGNIN_ROUTE} className="underline">
-                sign up
-              </Link>{" "}
-              to leave a comment.
-            </p>
-          </div>
-          <Button className="bg-transparent hover:bg-transparent w-fit h-fit">
-            <CloseCircle size="32" />
-          </Button>
-        </div>
+        <LoginSigninPrompt />
       ) : (
         <div>
           <Form {...form}>

@@ -39,6 +39,7 @@ import {
   VOTE_PROPOSAL_COMMENT_ENDPOINT,
   VOTE_PROPOSAL_TOPIC_COMMENT_ENDPOINT,
 } from ".";
+import { useAuthContext } from "@/providers/AuthProvider";
 
 // PUBLISH PROPOSAL
 export const usePublishProposal = () => {
@@ -193,6 +194,7 @@ export const useVoteProposalComment = () => {
 export const useSupportProposal = (proposalId: string) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { logout } = useAuthContext();
   return useMutation(
     (): Promise<ResponseDataType> => {
       return axios
@@ -206,6 +208,19 @@ export const useSupportProposal = (proposalId: string) => {
           title: "Success!",
           variant: "success",
           description: res.message,
+        });
+      },
+      onError: (error: any) => {
+        const errors = error.response.data.errors;
+        errors.map((error: { message: string }) => {
+          if (error.message === "E_UNAUTHORIZED_ACCESS: Unauthorized access") {
+            toast({
+              title: "Error!",
+              variant: "error",
+              description: "Please login to perform this action",
+            });
+            return logout();
+          }
         });
       },
     }
@@ -401,7 +416,10 @@ export const useGetProposalTopicCommentResponses = (commentId: string) => {
       const { pageParam = 1 } = context;
       return axios
         .get(
-          GET_PROPOSAL_TOPIC_COMMENTS_RESPONSES_ENDPOINT(commentId, Number(pageParam))
+          GET_PROPOSAL_TOPIC_COMMENTS_RESPONSES_ENDPOINT(
+            commentId,
+            Number(pageParam)
+          )
         )
         .then((res) => res.data.data);
     },

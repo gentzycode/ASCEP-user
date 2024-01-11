@@ -40,11 +40,11 @@ const VotingHomePage: React.FC<VotingHomePageProp> = () => {
       )}
 
       {/* FILTER BUTTONS */}
-      <div className="my-8">
+      <div className="mb-8 mt-20">
         <FilterButtons
           filterButtonOptions={votingFilterButtonOptions}
           filterByButton={filterByButton}
-          defaultFilterButtonValue="active"
+          defaultFilterButtonValue="upcoming"
         />
       </div>
 
@@ -64,7 +64,12 @@ const VotingHomePage: React.FC<VotingHomePageProp> = () => {
       {fetchedPollsData?.polls && <PollLIst polls={fetchedPollsData.polls} />}
 
       {/* PAGINATION */}
-      {fetchedPollsData && (
+      {fetchedPollsData && fetchedPollsData.polls.length === 0 && (
+        <h1 className="text-text text-base md:text-lg bg-primary/10 p-4 rounded-xl">
+          No Polls
+        </h1>
+      )}
+      {fetchedPollsData && fetchedPollsData.polls.length !== 0 && (
         <Pagination
           page={page}
           setPage={setPage}

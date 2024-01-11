@@ -48,7 +48,7 @@ const initialFilter = {
   highestrating: false,
   newest: false,
   datetimeSpecific: "",
-  status: "active",
+  status: "upcoming",
 };
 const VotingContext = createContext<VotingContextType>({
   view: "",
@@ -86,7 +86,7 @@ export default function VotingProvider({ children }: PropsWithChildren) {
 
   const getFiltersWithValues = () => {
     const entries = Object.entries(filterOptions);
-    const filteredEntries = entries.filter(([key, value]) => {
+    const filteredEntries = entries.filter(([_, value]) => {
       if (value) {
         if (Array.isArray(value)) {
           return value.length > 0;
@@ -129,7 +129,7 @@ export default function VotingProvider({ children }: PropsWithChildren) {
   }, [filterOptions, page]);
 
   const refetchPolls = () => {
-    getAllPolls({ page, perPage, filter: { status: "active" } });
+    getAllPolls({ page, perPage, filter: { status: "upcoming" } });
   };
   return (
     <VotingContext.Provider

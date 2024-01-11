@@ -28,6 +28,7 @@ export { default as CategoryDisplay } from "./common/CategoryDisplay";
 export { default as VoteCommentButtons } from "./common/VoteCommentButtons";
 export { default as CommentCardFooter } from "./common/CommentCardFooter";
 export { default as CommentCardHeader } from "./common/CommentCardHeader";
+export { default as LoginSigninPrompt } from "./common/LoginSigninPrompt";
 
 // DEBATES
 export { default as DebatesCardViewCard } from "./debates/DebatesCardViewCard";

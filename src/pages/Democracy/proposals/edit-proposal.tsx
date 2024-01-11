@@ -209,6 +209,7 @@ const EditProposalPage: React.FC<EditProposalPageProps> = () => {
                 label="Proposal summary (maximum of 200 characters)"
                 control={control}
                 errors={errors}
+                rows={6}
               />
               {/* PROPOSAL TEXT */}
               <TextEditor

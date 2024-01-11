@@ -92,13 +92,20 @@ const InitiativesHomePage = () => {
         )}
 
         {/* PAGINATION */}
-        {fetchedInitiativeData && (
-          <Pagination
-            paginationData={fetchedInitiativeData.meta}
-            page={page}
-            setPage={setPage}
-          />
-        )}
+        {fetchedInitiativeData &&
+          fetchedInitiativeData.initiatives.length === 0 && (
+            <h1 className="text-text text-base md:text-lg bg-primary/10 p-4 rounded-xl">
+              No Initiatives
+            </h1>
+          )}
+        {fetchedInitiativeData &&
+          fetchedInitiativeData.initiatives.length !== 0 && (
+            <Pagination
+              paginationData={fetchedInitiativeData.meta}
+              page={page}
+              setPage={setPage}
+            />
+          )}
       </div>
     </>
   );
