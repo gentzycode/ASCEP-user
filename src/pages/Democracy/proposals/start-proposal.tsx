@@ -184,7 +184,9 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
               label="Proposal summary (maximum of 200 characters)"
               control={control}
               errors={errors}
+              rows={4}
             />
+            
             {/* PROPOSAL TEXT */}
             <TextEditor
               name="content"

@@ -107,7 +107,7 @@ const ProposalCommentSection: React.FC<ProposalCommentSectionProp> = () => {
 
               <Button
                 type="submit"
-                className="w-fit"
+                className="w-full max-w-[200px] h-10"
                 isLoading={isPublishingComment}
                 disabled={isPublishingComment}
               >
@@ -125,10 +125,12 @@ const ProposalCommentSection: React.FC<ProposalCommentSectionProp> = () => {
             setFilter(value);
             setPage(1);
           }}
+          isFiltering={isFetchingComments}
           defaultFilterButtonValue="newest"
         />
       </div>
-
+      
+      {/* LOADING */}
       {isLoadingComments && <PageLoader />}
       {commentsData?.comments?.length === 0 && (
         <div>

@@ -19,11 +19,11 @@ import { debateCommentSchema } from "@/schemas/DebateSchema";
 
 interface DebateCommentSectionProp {}
 const DebateCommentSection: React.FC<DebateCommentSectionProp> = () => {
-  const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState("newest");
-
   const { isLoggedIn } = useAuthContext();
   const { debateId } = useParams();
+
+  const [page, setPage] = useState(1);
+  const [filter, setFilter] = useState("newest");
 
   const { mutateAsync: publishComment, isLoading: isPublishingComment } =
     usePublishDebateComment();
@@ -105,11 +105,11 @@ const DebateCommentSection: React.FC<DebateCommentSectionProp> = () => {
                 name="content"
                 errors={errors}
               />
-
               <Button
                 type="submit"
-                className="w-fit"
+                className="w-full max-w-[200px] h-12"
                 isLoading={isPublishingComment}
+                disabled={isPublishingComment}
               >
                 Publish Comment
               </Button>

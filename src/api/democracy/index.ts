@@ -91,6 +91,14 @@ export const GET_PROPOSAL_TOPIC_COMMENTS_ENDPOINT = (
 ) =>
   baseUrl +
   `/proposal/topic/comments?page=${page}&perPage=${perPage}&filter=${filter}&proposalTopic=${topicId}`;
+
+  export const GET_PROPOSAL_TOPIC_COMMENTS_RESPONSES_ENDPOINT = (
+    commentId: string,
+    page: number
+  ) =>
+    baseUrl +
+    `/proposal/topic/comment-responses?page=${page}&perPage=${perPage}&comment=${commentId}`;
+
 export const PUBLISH_PROPOSAL_TOPIC_COMMENT_ENDPOINT =
   baseUrl + "/proposal/topic/comment";
 export const VOTE_PROPOSAL_TOPIC_COMMENT_ENDPOINT = (

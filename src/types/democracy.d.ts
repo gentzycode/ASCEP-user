@@ -268,6 +268,8 @@ interface CommentType {
     reactionType: "like" | "dislike";
   };
   createdAt: string;
+  comment_response_cache: number;
+  comment_vote_cache: number;
 }
 
 interface CommentResponseDataType {

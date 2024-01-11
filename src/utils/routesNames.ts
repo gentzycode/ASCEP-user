@@ -3,7 +3,6 @@ const ROUTES = {
   SIGNUP_ROUTE: "/auth/signup",
   MAIN_ROUTE: "/main",
 
-
   // DEBATE
   DEBATES_HOME_ROUTE: "/democracy/debates",
   DEBATE_INFO_ROUTE: (debateId: string) => `/democracy/debates/${debateId}`,
@@ -47,6 +46,10 @@ const ROUTES = {
   BUDGETING_HOME_ROUTE: "/democracy/budgeting",
   WARD_PROJECTS_HOME_ROUTE: (wardId: string) =>
     `/democracy/budgeting/ward-project/${wardId}`,
+
+  STATE_INVESTMENT_PROJECTS_ROUTE: `/democracy/budgeting/state-investment-projects`,
+  INVESTMENT_INFO_ROUTE: (investmentId: string) =>
+    `/democracy/budgeting/investment-info/${investmentId}`,
 
   //MAKE A REQUEST
   MAKE_A_REQUEST_HOME_ROUTE: "/dialogue/make-a-request",

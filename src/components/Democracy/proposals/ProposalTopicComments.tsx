@@ -100,8 +100,9 @@ const ProposalTopicComments: React.FC<ProposalTopicCommentsCardProps> = () => {
 
               <Button
                 type="submit"
-                className="w-fit"
+                className="w-full max-w-[200px] h-12"
                 isLoading={isPublishingComment}
+                disabled={isPublishingComment}
               >
                 Publish Comment
               </Button>
@@ -124,7 +125,7 @@ const ProposalTopicComments: React.FC<ProposalTopicCommentsCardProps> = () => {
       {commentsData?.comments?.length === 0 && (
         <div>
           <h1 className="text-dark text-[16px] md:text-[20px]">
-            This topic has no comments
+            This Topic has no comments
           </h1>
         </div>
       )}

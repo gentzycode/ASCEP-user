@@ -127,7 +127,7 @@ const ProposalCommentCard: React.FC<ProposalCommentCardProps> = ({
               <div className="flex justify-between items-center">
                 <Button
                   type="submit"
-                  className="w-fit h-fit text-[12px] font-[500]"
+                  className="w-full max-w-[200px] h-10"
                   isLoading={isPublishingComment}
                   disabled={isPublishingComment}
                 >
@@ -157,6 +157,7 @@ const ProposalCommentCard: React.FC<ProposalCommentCardProps> = ({
                 key={response.id}
                 response={response}
                 paddingLeft={dynamicPadding + 20}
+                refetchParentResponses={getResponses}
               />
             ))}
           </div>

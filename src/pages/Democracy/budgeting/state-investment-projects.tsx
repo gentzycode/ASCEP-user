@@ -1,32 +1,38 @@
-import { AdvancedSearch, InvestmentCard } from "@/components/Democracy";
+import {
+  AdvancedSearch,
+  InvestmentCard,
+  ListViewCard,
+} from "@/components/Democracy";
 import IconWrapper from "@/components/custom/IconWrapper 2";
 import PaginationComponent from "@/components/custom/Pagination";
 import { wardFilterButtonOptions } from "@/utils/Democracy/Budgets";
+import ROUTES from "@/utils/routesNames";
 import { Moneys } from "iconsax-react";
+import { useState } from "react";
 
-interface WardProjectsHomePageProp {}
-const WardProjectsHomePage: React.FC<WardProjectsHomePageProp> = () => {
+const StateInvestmentProjectsPage = () => {
+  const [view, setView] = useState("list-view");
+
   return (
     <div>
-      {/* HEADING */}
       <header className="flex justify-between items-start mb-28">
         <div>
           <h1 className="text-text text-2xl lg:text-3xl">
-            Investments' proposals located in Ward:
+            Investment projects with scope:
           </h1>
           <h3 className="text-primary lg:text-4xl text-2xl py-3">
-            Achina Ward
+            Anambra State
           </h3>
         </div>
         <div className="w-[300px] space-y-3">
           <p className="text-subtle_text text-lg md:text-xl">
-            Total budget for Ward
+            Total budget for State
           </p>
           <div className="bg-dark rounded-xl p-3 flex justify-between items-center gap-3 w-full">
             <div>
-              <h3 className="text-lg text-light">Achina I</h3>
+              <h3 className="text-lg text-light">Anambra</h3>
               <h3 className="text-base text-[#F9F6FB] font-normal">
-                ₦ 600, 000
+                ₦600, 000,000
               </h3>
             </div>
             <IconWrapper className="p-4 w-fit h-fit bg-[#FFC334]/10 text-primary">
@@ -41,21 +47,45 @@ const WardProjectsHomePage: React.FC<WardProjectsHomePageProp> = () => {
           filterButtonOptions={wardFilterButtonOptions}
           filterByButton={() => {}}
           filterOptions={{ newest: true }}
-          setView={() => {}}
-          view="card-view"
+          setView={setView}
+          view={view}
           setFilterOptions={() => {}}
-          defaultFilterButtonValue="newest"
+          defaultFilterButtonValue="random"
           isSearching={false}
         />
 
         {/* PROJECTS */}
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 my-10">
-          <InvestmentCard />
-          <InvestmentCard />
-          <InvestmentCard />
-          <InvestmentCard />
-        </div>
+        {view === "card-view" && (
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 my-10">
+            <InvestmentCard />
+            <InvestmentCard />
+            <InvestmentCard />
+            <InvestmentCard />
+          </div>
+        )}
 
+        {view === "list-view" && (
+          <div className="grid grid-cols-1 gap-8 my-10">
+            <ListViewCard
+              route={ROUTES.INITIATIVE_INFO_ROUTE("2")}
+              title="Strategic plan for a 100% green city"
+            />
+            <ListViewCard
+              route={ROUTES.INITIATIVE_INFO_ROUTE("2")}
+              title="Strategic plan for a 100% green city"
+            />
+            <ListViewCard
+              route={ROUTES.INITIATIVE_INFO_ROUTE("2")}
+              title="Strategic plan for a 100% green city"
+            />
+            <ListViewCard
+              route={ROUTES.INITIATIVE_INFO_ROUTE("2")}
+              title="Strategic plan for a 100% green city"
+            />
+          </div>
+        )}
+
+        {/* PAGINATION */}
         <PaginationComponent
           page={1}
           setPage={() => {}}
@@ -77,4 +107,4 @@ const WardProjectsHomePage: React.FC<WardProjectsHomePageProp> = () => {
   );
 };
 
-export default WardProjectsHomePage;
+export default StateInvestmentProjectsPage;

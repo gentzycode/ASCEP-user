@@ -206,6 +206,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
               <CategoryDisplay
                 category={category.categoryDetail.name}
                 index={i}
+                key={category.category_id}
               />
             ))}
           </div>

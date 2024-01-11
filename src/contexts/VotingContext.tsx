@@ -48,7 +48,7 @@ const initialFilter = {
   highestrating: false,
   newest: false,
   datetimeSpecific: "",
-  status: "upcoming",
+  status: "active",
 };
 const VotingContext = createContext<VotingContextType>({
   view: "",
@@ -129,7 +129,7 @@ export default function VotingProvider({ children }: PropsWithChildren) {
   }, [filterOptions, page]);
 
   const refetchPolls = () => {
-    getAllPolls({ page, perPage, filter: { status: "upcoming" } });
+    getAllPolls({ page, perPage, filter: { status: "active" } });
   };
   return (
     <VotingContext.Provider

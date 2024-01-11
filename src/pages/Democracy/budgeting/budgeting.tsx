@@ -4,6 +4,9 @@ import {
   PagesHeroSection,
   WardProjects,
 } from "@/components/Democracy";
+import { Button } from "@/components/ui/button";
+import ROUTES from "@/utils/routesNames";
+import { Link } from "react-router-dom";
 
 interface BudgetingHomePageProp {}
 const BudgetingHomePage: React.FC<BudgetingHomePageProp> = () => {
@@ -23,6 +26,9 @@ const BudgetingHomePage: React.FC<BudgetingHomePageProp> = () => {
 
       {/* INVESTMENTS */}
       <Investments />
+      <Link to={ROUTES.STATE_INVESTMENT_PROJECTS_ROUTE}>
+        <Button className="mx-auto block">View all Investments</Button>
+      </Link>
     </>
   );
 };

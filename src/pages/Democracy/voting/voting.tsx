@@ -44,6 +44,7 @@ const VotingHomePage: React.FC<VotingHomePageProp> = () => {
         <FilterButtons
           filterButtonOptions={votingFilterButtonOptions}
           filterByButton={filterByButton}
+          defaultFilterButtonValue="active"
         />
       </div>
 

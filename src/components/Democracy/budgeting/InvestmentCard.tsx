@@ -1,7 +1,9 @@
 import { IconWrapper } from "@/components/custom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import ROUTES from "@/utils/routesNames";
 import { Messages1, Moneys } from "iconsax-react";
+import { Link } from "react-router-dom";
 
 interface InvestmentCardProp {}
 const InvestmentCard: React.FC<InvestmentCardProp> = () => {
@@ -26,9 +28,11 @@ const InvestmentCard: React.FC<InvestmentCardProp> = () => {
           </IconWrapper>
         </div>
         <div className="bg-[#fff] p-4">
-          <h1 className="text-[20px] text-dark hover:underline">
-            Strategic plan for a 100% green city
-          </h1>
+          <Link to={ROUTES.INVESTMENT_INFO_ROUTE("1")}>
+            <h1 className="text-[20px] text-dark hover:underline">
+              Strategic plan for a 100% green city
+            </h1>
+          </Link>
           {/* user info */}
           <div className="flex gap-3 my-2">
             <Avatar className="h-12 w-12">
