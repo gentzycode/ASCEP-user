@@ -1,4 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+interface ReportResponse {
+  status: string;
+  message: string;
+  reports: ReportData;
+}
 interface ReportData {
   id: number;
   user_id: number;
@@ -17,6 +23,7 @@ interface ReportData {
   reportCategory: ReportCategory;
   reporter: Reporter;
   reportImages: ReportImage[];
+  reportStatus: ReportStatus;
 }
 
 interface ReportSdg {
@@ -53,4 +60,80 @@ interface Reporter {
 interface ReportImage {
   image_url: string;
   report_id: number;
+}
+
+interface ReportStatus {
+  name: string;
+  slug: string;
+  description: string;
+  id: number;
+}
+
+// ACTIVITIES
+interface ActivityResponse {
+  meta: MetaDataType;
+  data: ActivityData[];
+}
+interface ActivityData {
+  report_id: number;
+  action: "CREATE" | "READ" | "DELETE" | "DELETE-COMMENT" | "COMMENT";
+  ref_user: number;
+  refUser: RefUser;
+  report: ActivityReport;
+}
+
+interface RefUser {
+  firstname: string;
+  lastname: string;
+  profile_picture: string;
+  id: number;
+}
+
+interface ActivityReport {
+  title: string;
+  user_id: number;
+  id: number;
+}
+
+// RESPONSE COMMENTS
+
+interface ReportCommentsResponse {
+  meta: MetaDataType;
+  comments: ReportComment[];
+}
+
+interface ReportComment {
+  content: string;
+  id: number;
+  user_id: number;
+  comment_vote_cache: number;
+  comment_response_cache: number;
+  createdAt: string;
+  author: Author;
+}
+
+interface Author {
+  username: string;
+  profile_picture: string;
+  id: number;
+}
+
+interface GetReportCommentsQueryArgs {
+  id: string;
+  page: number;
+}
+
+interface GetAllReportsQueryArgs {
+  filtersString: string;
+}
+
+interface GetReportCommentsResonponsesQueryArgs {
+  id: number;
+  perPage: number;
+}
+
+interface PostCommentPayload {
+  content: string;
+  report_id: string;
+  comment_reference?: number;
 }

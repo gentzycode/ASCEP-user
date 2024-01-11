@@ -80,11 +80,11 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
         {/* LOADING */}
         {fetchingDebates && <PageLoader />}
 
-        
+
         {/* CARD VIEW */}
         {view === "card-view" && fetchedDebatesData && (
-          <div className="w-full flex justify-start">
-            <div className="grid grid-col-1 lg:grid-cols-2  justify-start my-10 gap-10">
+          <div className="flex justify-start w-full">
+            <div className="grid justify-start gap-10 my-10 grid-col-1 lg:grid-cols-2">
               {fetchedDebatesData.debates.map((debate: DebateType) => (
                 <DebatesCardViewCard debate={debate} key={debate.id} />
               ))}
@@ -94,6 +94,7 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
 
         {/* PAGINATION */}
         {fetchedDebatesData && fetchedDebatesData.debates.length === 0 && (
+
           <h1 className="text-dark text-base md:text-lg bg-primary/10 p-4">
             No Debates meets the search criteria
           </h1>

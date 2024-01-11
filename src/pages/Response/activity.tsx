@@ -1,36 +1,48 @@
-import { Location } from "iconsax-react";
-import { Link } from "react-router-dom";
+import { useGetAllActivities } from "@/api/response";
+import { ActivityItem } from "@/components/Response";
+import { EmptyState } from "@/components/custom";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useResponseContext } from "@/providers/ResponseProvider";
 
 export default function ActivityPage() {
+  const { filtersString } = useResponseContext();
+  const { data, isLoading } = useGetAllActivities({ filtersString });
   return (
     <div className="space-y-1">
-      {array.map((activity, i) => (
-        <Link
-          to="/response/view-response/1"
-          className={`bg-white hover:bg-[#FFF9F1] shadow-sm flex items-center justify-between py-[10px] px-[14px] ${
-            i === 0
-              ? "rounded-t-[20px]"
-              : i === array.length - 1
-              ? "rounded-b-[20px]"
-              : ""
-          } `}
-          key={activity}
-        >
-          <div className="space-y-1">
-            <p className="text-sm">
-              New <strong>Response</strong> created “Topic here”
-            </p>
-            <div className="flex items-center gap-1">
-              <Location size={14} />
-              <p className="text-xs">Umuleri, Anambra State</p>
+      {isLoading ? (
+        <div className="space-y-10">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="flex space-x-4">
+              <Skeleton className="w-16 h-16 rounded-xl bg-slate-300" />
+              <div className="w-full space-y-4">
+                <Skeleton className="w-11/12 h-6 bg-slate-300" />
+                <Skeleton className="w-11/12 h-6 bg-slate-300" />
+                <Skeleton className="w-1/4 h-6 bg-slate-300" />
+              </div>
             </div>
-          </div>
-
-          <p className="text-xs text-subtle_text">5 mins ago</p>
-        </Link>
-      ))}
+          ))}
+        </div>
+      ) : data?.data.length ? (
+        data.data.map((activity, i) => (
+          <ActivityItem
+            activity={activity}
+            position={
+              data.data.length === 1
+                ? "only"
+                : i === 0
+                ? "first"
+                : i === data.data.length - 1
+                ? "last"
+                : "mid"
+            }
+            key={i}
+          />
+        ))
+      ) : (
+        <div className="h-[80vh] ">
+          <EmptyState />
+        </div>
+      )}
     </div>
   );
 }
-
-const array = [1, 2, 3, 4, 5];
