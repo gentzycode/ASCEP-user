@@ -1,34 +1,42 @@
-import { Location } from "iconsax-react";
+// import { Location } from "iconsax-react";
 
-export default function ResponseActivity() {
+export interface Activity {
+  title: string;
+  subtitle: string;
+  img: string;
+}
+[];
+
+interface ResponseActivityProps {
+  activity: Activity;
+}
+
+export default function ResponseActivity({ activity }: ResponseActivityProps) {
   return (
-    <div className=" rounded-[40px] bg-white w-[288px] ">
+    <div className=" rounded-[40px] bg-white min-w-[280px] max-w-[280px]  ">
       <img
-        src="/images/activity.png"
-        className="h-[147px] object-cover rounded-t-[20px]"
+        src={activity.img}
+        className="h-[147px] w-full object-cover rounded-t-[20px]"
         alt=""
       />
 
       <div className="px-4 py-3">
         <div className="flex justify-between gap-5">
-          <p className="font-semibold text-dark ">
-            Upgrade of the International Airport
-          </p>
+          <p className="font-semibold text-dark ">{activity.title}</p>
 
-          <p className="text-[10px] w-full whitespace-nowrap flex-1 ml-auto">
+          {/* <p className="text-[10px] w-full whitespace-nowrap flex-1 ml-auto">
             2h ago
-          </p>
+          </p> */}
         </div>
 
-        <div className="mt-2 mb-4 text-sm text-subtle_text">
-          Soludo upgrades the international airport, increasing its hanger
-          capacity and the tarmac
+        <div className="mt-2 mb-4 text-sm text-subtle_text line-clamp-4">
+          {activity.subtitle}
         </div>
 
-        <div className="flex items-center gap-2 text-sm font-medium">
+        {/* <div className="flex items-center gap-2 text-sm font-medium">
           <Location size={14} />
           Umuleri, Anambra State
-        </div>
+        </div> */}
       </div>
     </div>
   );
