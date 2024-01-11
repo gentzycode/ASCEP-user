@@ -1,3 +1,4 @@
+import { useGetUserProfile } from "@/api/auth";
 import { useGetAllCategories } from "@/api/category";
 import { useGetAllSDGs } from "@/api/democracy/debates";
 import { useGetAllWards } from "@/api/locale";
@@ -11,6 +12,8 @@ import {
 
 interface AppContextType {
   fetchingSdgs: boolean;
+  user: UserData | null;
+  fetchingUser: boolean;
   sdgData: SDGsType[];
   targets: SDGTarget[];
   setTargets: React.Dispatch<React.SetStateAction<SDGTarget[]>>;
@@ -22,6 +25,8 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType>({
   fetchingSdgs: false,
+  fetchingUser: false,
+  user: null,
   sdgData: [],
   targets: [],
   setTargets: () => {},
@@ -39,6 +44,12 @@ export default function AppProvider({ children }: PropsWithChildren) {
   const { isLoading: fetchingCategories, data: categories } =
     useGetAllCategories();
   const [targets, setTargets] = useState<SDGTarget[]>([]);
+  const [user, setUser] = useState<UserData | null>(null);
+
+  const { data, isLoading: fetchingUser } = useGetUserProfile();
+  useEffect(() => {
+    if (data) setUser(data);
+  }, [data]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -54,6 +65,8 @@ export default function AppProvider({ children }: PropsWithChildren) {
   return (
     <AppContext.Provider
       value={{
+        user,
+        fetchingUser,
         sdgData: sdgData ?? [],
         fetchingSdgs,
         setTargets,
