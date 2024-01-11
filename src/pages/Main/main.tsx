@@ -12,7 +12,7 @@ export default function MainPage() {
     <div className="w-full px-8 pt-8  bg-[#F9F6FB] overflow-x-hidden  pb-12 ">
       <div className="mt-8 space-y-5">
         {/* MAIN STATS */}
-        <div className="grid grid-cols-3 gap-6 ">
+        <div className="grid gap-6 lg:grid-cols-3 ">
           <MainStatsCard
             icon={<Messages1 />}
             title="ASCEP Response"

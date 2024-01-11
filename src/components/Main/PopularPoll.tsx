@@ -5,7 +5,7 @@ import PollParty from "./PollParty";
 export default function PopularPoll() {
   return (
     <div className="grid grid-cols-12 gap-4">
-      <div className="col-span-10 bg-white p-6 rounded-[40px] ">
+      <div className="col-span-12 lg:col-span-10 bg-white p-3 py-6 md:p-6 rounded-[40px] ">
         <div className="mb-11">
           <h4 className="text-dark">
             Metro at night (on weekends). Is it positive?
@@ -22,7 +22,7 @@ export default function PopularPoll() {
           at night
         </p>
 
-        <div className="flex items-center gap-8 mt-4">
+        <div className="flex flex-wrap items-center gap-8 mt-4">
           <div className="flex gap-[6px]">
             <PollParty text="NP" className="bg-[#E84356]/10 text-[#E84356]" />
             <PollParty text="ZH" className="bg-[#DDA63A]/10 text-[#DDA63A]" />
@@ -43,17 +43,17 @@ export default function PopularPoll() {
           </div>
         </div>
       </div>
-      <div className="col-span-2 bg-white p-6 rounded-[40px] flex flex-col items-center gap-4 ">
-        <IconWrapper className="w-[72px] h-[72px] bg-[#31D0AA]/10 text-[#31D0AA]  ">
-          <div className="flex items-center gap-1">
-            <Like1 />
+      <div className="lg:col-span-2 col-span-12 bg-white p-6 rounded-[40px] flex flex-row lg:flex-col lg:justify-center items-center gap-4 ">
+        <IconWrapper className="w-16 md:w-[72px] h-16 md:h-[72px] bg-[#31D0AA]/10 text-[#31D0AA]  ">
+          <div className="flex items-center justify-center gap-1">
+            <Like1 className="h-4 md:h-12" />
             83%
           </div>
         </IconWrapper>
 
-        <IconWrapper className="w-[72px] h-[72px] bg-[#E43F40]/10 text-[#E43F40]  ">
-          <div className="flex items-center gap-1">
-            <Dislike />
+        <IconWrapper className="w-16 md:w-[72px] h-16 md:h-[72px] bg-[#E43F40]/10 text-[#E43F40]  ">
+          <div className="flex items-center justify-center gap-1">
+            <Dislike className="h-4 md:h-12" />
             83%
           </div>
         </IconWrapper>
