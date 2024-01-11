@@ -1,7 +1,5 @@
 import { useAuthContext } from "@/providers/AuthProvider";
 import { Button } from "../../ui/button";
-import { Link } from "react-router-dom";
-import ROUTES from "@/utils/routesNames";
 
 interface HeroSectionProps {
   title: string;
@@ -9,7 +7,7 @@ interface HeroSectionProps {
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({ title, description }) => {
-  const { isLoggedIn } = useAuthContext();
+  const { isLoggedIn, logout } = useAuthContext();
   return (
     <>
       <h1 className="tracking-[1px]  text-left font-sans text-text text-3xl md:text-6xl capitalize">
@@ -21,11 +19,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({ title, description }) => {
       {!isLoggedIn && (
         <div className="flex justify-start items-center gap-8 md:flex-row">
           <Button className="w-[175px]">Get started</Button>
-          <Link to={ROUTES.SIGNIN_ROUTE}>
-            <Button className="bg-transparent border-dark border-2 w-[175px]">
-              Log in
-            </Button>
-          </Link>
+          <Button
+            className="bg-transparent border-dark border-2 w-[175px]"
+            onClick={logout}
+          >
+            Log in
+          </Button>
         </div>
       )}
     </>

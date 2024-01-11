@@ -96,7 +96,7 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
   return (
     <div className="bg-[#fff] p-6 rounded-xl" ref={ref}>
       <CommentCard
-        comment={comment}
+        comment={comment} 
         setIsReplying={setIsReplying}
         setShowResponse={setShowResponse}
         showResponse={showResponse}

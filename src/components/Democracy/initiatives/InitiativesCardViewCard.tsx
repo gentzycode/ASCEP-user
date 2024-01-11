@@ -5,7 +5,6 @@ import { Notification, Messages1 } from "iconsax-react";
 import { CategoryDisplay, TagDisplay, TargetDisplay } from "..";
 import { Link } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
-import { useAuthContext } from "@/providers/AuthProvider";
 import { useSupportInitiative } from "@/api/democracy/initiatives";
 import { useInitiativeContext } from "@/contexts/InitiativeContext";
 
@@ -16,7 +15,6 @@ interface InitiativesCardViewCardProps {
 const InitiativesCardViewCard: React.FC<InitiativesCardViewCardProps> = ({
   initiative,
 }) => {
-  const { isLoggedIn } = useAuthContext();
   const { mutateAsync: supportInitiative, isLoading: isSupporting } =
     useSupportInitiative(initiative.id);
   const { refetchInitiatives } = useInitiativeContext();
@@ -142,22 +140,14 @@ const InitiativesCardViewCard: React.FC<InitiativesCardViewCardProps> = ({
             <Messages1 size="20" />
             <span>{initiative.support_needed} support needed</span>
           </Button>
-          {isLoggedIn ? (
-            <Button
-              className="h-11 text-[16px] w-full rounded-full"
-              onClick={handleSupport}
-              isLoading={isSupporting}
-              disabled={isSupporting}
-            >
-              Support
-            </Button>
-          ) : (
-            <Link to={ROUTES.SIGNIN_ROUTE}>
-              <Button className="bg-transparent border-dark border-2 w-[175px]">
-                Log in
-              </Button>
-            </Link>
-          )}
+          <Button
+            className="h-11 text-[16px] w-full rounded-full"
+            onClick={handleSupport}
+            isLoading={isSupporting}
+            disabled={isSupporting}
+          >
+            Support
+          </Button>
         </div>
       </div>
     </div>

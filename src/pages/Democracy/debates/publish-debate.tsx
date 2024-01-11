@@ -148,7 +148,6 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
               <p className="text-[14px] md:text-[16px] text-subtle_text -tracking-[0.36px] my-2">
                 You can introduce the code of a specific goal/target or a text
                 to find one. For more information visit the
-
                 <Link to="#" className="text-primary ml-1">
                   SDG help page.
                 </Link>
@@ -158,8 +157,9 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
             <TargetsMultiSelect selected={targets} setSelected={setTargets} />
             <Button
               type="submit"
-              className="w-full max-w-[400px] p-0 h-fit py-3"
+              className="w-full max-w-[400px] p-0 h-12"
               isLoading={isLoading}
+              disabled={isLoading}
             >
               Start A Debate
             </Button>

@@ -31,6 +31,7 @@ import {
   SUPPORT_INITIATIVE_ENDPOINT,
   VOTE_INITIATIVE_COMMENT_ENDPOINT,
 } from ".";
+import { useAuthContext } from "@/providers/AuthProvider";
 
 // PUBLISH INITIATIVE
 export const usePublishInitiative = () => {
@@ -88,7 +89,10 @@ export const usePublishInitiativeComment = () => {
           queryKey: ["initiative-info", variables.initiative_id],
         });
         queryClient.invalidateQueries({
-          queryKey: ["initiative-comments-responses", variables.comment_reference],
+          queryKey: [
+            "initiative-comments-responses",
+            variables.comment_reference,
+          ],
         });
         toast({
           title: "Success!",
@@ -171,7 +175,7 @@ export const useGetInitiativeCommentResponses = (commentId: string) => {
     }
   );
 };
-// VOTE PROPOSAL COMMENT
+// VOTE INITIATIVE COMMENT
 export const useVoteInitiativeComment = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -185,7 +189,7 @@ export const useVoteInitiativeComment = () => {
     },
     {
       onSuccess: (res) => {
-        // queryClient.invalidateQueries({ queryKey: ["initiative-comments"] });
+        queryClient.invalidateQueries("initiative-comments");
         toast({
           title: "Success!",
           variant: "success",
@@ -199,6 +203,7 @@ export const useVoteInitiativeComment = () => {
 export const useSupportInitiative = (initiativeId: string) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { logout } = useAuthContext();
   return useMutation(
     (): Promise<ResponseDataType> => {
       return axios
@@ -215,6 +220,20 @@ export const useSupportInitiative = (initiativeId: string) => {
           description: res.message,
         });
       },
+      onError: (error: any) => {
+        const errors = error.response.data.errors;
+
+        errors.map((error: { message: string }) => {
+          if (error.message === "E_UNAUTHORIZED_ACCESS: Unauthorized access") {
+            toast({
+              title: "Error!",
+              variant: "error",
+              description: "Please login to perform this action",
+            });
+            return logout();
+          }
+        });
+      },
     }
   );
 };
@@ -223,6 +242,7 @@ export const useSupportInitiative = (initiativeId: string) => {
 export const useFollowInitiative = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { logout } = useAuthContext();
   return useMutation(
     (
       values: z.infer<typeof followInitiativeSchema>
@@ -238,6 +258,19 @@ export const useFollowInitiative = () => {
           title: "Success!",
           variant: "success",
           description: res.message,
+        });
+      },
+      onError: (error: any) => {
+        const errors = error.response.data.errors;
+        errors.map((error: { message: string }) => {
+          if (error.message === "E_UNAUTHORIZED_ACCESS: Unauthorized access") {
+            toast({
+              title: "Error!",
+              variant: "error",
+              description: "Please login to perform this action",
+            });
+            return logout();
+          }
         });
       },
     }

@@ -27,7 +27,6 @@ const PollInfo: React.FC<PollInfoProp> = ({ scrollToComments, poll }) => {
     votingTarget,
     description,
     descriptive_image,
-    shareable_id,
     questions,
   } = poll;
   const { isLoggedIn } = useAuthContext();

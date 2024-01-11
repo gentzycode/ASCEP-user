@@ -283,22 +283,13 @@ const InitiativeInfo: React.FC<InitiativeInfoProps> = ({
               <Messages1 size="25" />
               <span>{initiative.supportNeeded} support needed</span>
             </Button>
-
-            {isLoggedIn ? (
-              <Button
-                className="h-12  max-w-[200px] py-4 text-lg w-full rounded-full"
-                isLoading={isSupportingProposal}
-                onClick={() => supportProposal()}
-              >
-                Support
-              </Button>
-            ) : (
-              <Link to={ROUTES.SIGNIN_ROUTE}>
-                <Button className="bg-transparent border-dark border-2 w-[175px] h-12">
-                  Log in
-                </Button>
-              </Link>
-            )}
+            <Button
+              className="h-12  max-w-[200px] py-4 text-lg w-full rounded-full"
+              isLoading={isSupportingProposal}
+              onClick={() => supportProposal()}
+            >
+              Support
+            </Button>
           </div>
         </div>
 

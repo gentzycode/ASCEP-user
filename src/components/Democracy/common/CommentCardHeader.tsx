@@ -13,6 +13,8 @@ const CommentCardHeader: React.FC<CommentCardHeaderProp> = ({
   createdAt,
   content,
 }) => {
+  console.log(username);
+  
   return (
     <>
       <div className="flex justify-start items-center gap-6 my-4 flex-wrap pt-2 ">

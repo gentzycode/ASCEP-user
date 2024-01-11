@@ -1,7 +1,6 @@
 import { Messages1 } from "iconsax-react";
 import { SDGCard, TargetDisplay } from "..";
 import { Button } from "@/components/ui/button";
-import { useAuthContext } from "@/providers/AuthProvider";
 import ROUTES from "@/utils/routesNames";
 import { Link } from "react-router-dom";
 import { formattedDate } from "@/utils/helper";
@@ -10,7 +9,6 @@ interface PollListCardProp {
   poll: VotingType;
 }
 const PollListCard: React.FC<PollListCardProp> = ({ poll }) => {
-  const { isLoggedIn } = useAuthContext();
   const {
     id,
     title,
@@ -67,19 +65,10 @@ const PollListCard: React.FC<PollListCardProp> = ({ poll }) => {
       </div>
       {/* BOTTOM */}
       <div className="bg-[#FFFFFF] shadow-xl flex justify-start items-center  rounded-xl p-6 gap-2 flex-wrap">
-        {isLoggedIn ? (
-          <Link to={ROUTES.VOTING_INFO_ROUTE(id)}>
-            <Button className="h-fit text-base">
-              Participate in this poll
-            </Button>
-          </Link>
-        ) : (
-          <Link to={ROUTES.SIGNIN_ROUTE}>
-            <Button className="bg-transparent border-dark border-2 w-[150px]">
-              Log in
-            </Button>
-          </Link>
-        )}
+        <Link to={ROUTES.VOTING_INFO_ROUTE(id)}>
+          <Button className="h-fit text-base">Participate in this poll</Button>
+        </Link>
+
         <div className="flex items-center gap-2 rounded-[10px] px-2 py-1 text-white bg-dark text-[14px]">
           <Messages1 />
           {total_comments_cache} Comments

@@ -128,12 +128,12 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
           </div>
 
           {/* MAP */}
-          <div>
+          {/* <div>
             <h2 className="pb-2  pl-0 my-6 border-b-4 text-[18px] font-medium border-primary w-fit">
               Map view
             </h2>
             <div className="bg-subtle_text h-[400px] rounded-2xl w-full max-w-[700px] my-2"></div>
-          </div>
+          </div> */}
 
           {/* VIDEO */}
           <div className="py-4 my-8 px-2 max-w-[700px] flex-wrap bg-light border border-primary rounded-lg flex justify-between items-center">
@@ -302,28 +302,19 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
               <Messages1 size="25" />
               <span>{proposal.supportNeeded} support needed</span>
             </Button>
-            {isLoggedIn ? (
-              <Button
-                className="h-12  max-w-[200px] py-4 text-lg w-full rounded-full"
-                isLoading={isSupportingProposal}
-                onClick={() => supportProposal()}
-              >
-                Support
-              </Button>
-            ) : (
-              <Link to={ROUTES.SIGNIN_ROUTE}>
-                <Button className="bg-transparent border-dark border-2 w-[175px]">
-                  Log in
-                </Button>
-              </Link>
-            )}
+            <Button
+              className="h-12  max-w-[200px] py-4 text-lg w-full rounded-full"
+              isLoading={isSupportingProposal}
+              onClick={() => supportProposal()}
+            >
+              Support
+            </Button>
           </div>
         </div>
         {/* SHARE */}
         <Share
           shareableURL={
-            frontendURL +
-            `/democracy/proposal/share/${proposal.proposal_code}`
+            frontendURL + `/democracy/proposal/share/${proposal.proposal_code}`
           }
         />
 
