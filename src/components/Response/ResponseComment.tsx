@@ -6,6 +6,7 @@ import { usePostComment } from "@/api/response";
 import { DeleteComment } from "./DeleteComment";
 import CommentResponses from "./CommentResponses";
 import { useAppContext } from "@/contexts/AppContext";
+import { useAuthContext } from "@/providers/AuthProvider";
 
 interface ResponseCommentProps {
   comment: ReportComment;
@@ -16,6 +17,7 @@ const ResponseComment = ({ comment, reportId }: ResponseCommentProps) => {
   const [showInput, setShowInput] = useState(false);
   const { mutate, isLoading, isSuccess } = usePostComment();
   const { user } = useAppContext();
+  const { isLoggedIn, logout } = useAuthContext();
 
   return (
     <div className="space-y-4">
@@ -48,7 +50,7 @@ const ResponseComment = ({ comment, reportId }: ResponseCommentProps) => {
         <div className="border-[1px] border-dark/10"></div>
 
         <div
-          onClick={() => setShowInput(!showInput)}
+          onClick={() => (isLoggedIn ? setShowInput(!showInput) : logout())}
           className="flex items-center gap-2 ml-4 font-medium cursor-pointer sm:ml-8 w-fit"
         >
           {showInput ? (

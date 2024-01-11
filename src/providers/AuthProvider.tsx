@@ -1,5 +1,6 @@
 import config from "@/utils/config";
 import { PropsWithChildren, createContext, useContext, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -26,6 +27,10 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     !!localStorage.getItem(config.key.isLoggedIn)
   );
   const [token] = useState(localStorage.getItem(config.key.accessToken) || "");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // console.log(location);
 
   const [email, setEmail] = useState("");
 
@@ -36,14 +41,21 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     localStorage.setItem(config.key.isLoggedIn, "true");
 
     setIsLoggedIn(true);
+
+    const redirect = localStorage.getItem(config.key.redirect);
+    if (redirect) {
+      navigate(redirect);
+    } else navigate("/main");
   };
 
   const logout = () => {
+    console.log("Logout");
     localStorage.removeItem(config.key.accessToken);
     localStorage.removeItem(config.key.refreshToken);
     localStorage.removeItem(config.key.isLoggedIn);
     localStorage.removeItem(config.key.expiresAt);
-
+    localStorage.setItem(config.key.redirect, location.pathname);
+    navigate("/auth/login");
     setIsLoggedIn(false);
   };
 

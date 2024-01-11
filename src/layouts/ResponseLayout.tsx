@@ -2,12 +2,14 @@ import { CreateReportModal, ResponseFilters } from "@/components/Response";
 import GroupedFiltersButton from "@/components/custom/GroupedFiltersButton";
 import { Button } from "@/components/ui/button";
 import useDisclosure from "@/hooks/useDisclosure";
+import { useAuthContext } from "@/providers/AuthProvider";
 import { Add } from "iconsax-react";
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 export default function ResponseLayout() {
   const [selectedPage, setSelectedPage] = useState("");
+  const { isLoggedIn, logout } = useAuthContext();
 
   const location = useLocation();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -18,6 +20,13 @@ export default function ResponseLayout() {
     );
   }, [location]);
 
+  const handleOpen = () => {
+    if (isLoggedIn) {
+      onOpen();
+    } else logout();
+    // else
+  };
+
   return (
     <div className="relative w-full min-h-[calc(100%-93px)] px-2 md:px-8 overflow-y-auto pt-4 md:pt-0 pb-12 ">
       <div className="flex items-center justify-between h-full mb-8 ">
@@ -26,7 +35,7 @@ export default function ResponseLayout() {
         <div className="flex gap-4">
           <Button
             className="hidden md:block"
-            onClick={onOpen}
+            onClick={handleOpen}
             size="xs"
             variant="primary"
           >
