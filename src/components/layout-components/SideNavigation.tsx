@@ -20,7 +20,7 @@ const SideNavigation: React.FC<SideNavigationProps> = () => {
       }`}
     >
       <button
-        className="absolute -right-3 top-12 z-20 text-primary "
+        className="absolute z-20 -right-3 top-12 text-primary "
         onClick={toggleSidebar}
       >
         {openSidebar ? (
@@ -29,10 +29,13 @@ const SideNavigation: React.FC<SideNavigationProps> = () => {
           <ArrowSquareRight size={30} />
         )}
       </button>
-      <div className="w-full mx-auto flex justify-center flex-wrap my-8 items-center duration-700">
+      <Link
+        to="/"
+        className="flex flex-wrap items-center justify-center w-full mx-auto my-8 duration-700"
+      >
         <img src="/images/logopic.png" alt="logo" className="h-[70px] -mb-3 " />
         <h1 className="text-[18px] text-[#6B6B6B]">ASCEP</h1>
-      </div>
+      </Link>
       <div className="flex flex-col justify-start w-full items-start mt-[50px]">
         <div className="flex flex-col gap-[20px]">
           {sidebarLinks.map((links: NavLinkType, index) => {
@@ -62,7 +65,7 @@ const SideNavigation: React.FC<SideNavigationProps> = () => {
                     {!openSidebar && (
                       <TooltipContent
                         side="right"
-                        className=" bg-primary text-dark ml-2 border-none"
+                        className="ml-2 border-none  bg-primary text-dark"
                       >
                         <p className="text-[14px] font-[500] capitalize">
                           {links.module}
