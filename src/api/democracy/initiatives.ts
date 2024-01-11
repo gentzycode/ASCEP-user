@@ -67,7 +67,7 @@ export const usePublishInitiative = () => {
   );
 };
 
-// PUBLISH PROPOSAL COMMENT
+// PUBLISH INITIATIVE COMMENT
 export const usePublishInitiativeComment = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -87,6 +87,9 @@ export const usePublishInitiativeComment = () => {
         queryClient.invalidateQueries({
           queryKey: ["initiative-info", variables.initiative_id],
         });
+        queryClient.invalidateQueries({
+          queryKey: ["initiative-comments-responses", variables.comment_reference],
+        });
         toast({
           title: "Success!",
           variant: "success",
@@ -96,6 +99,7 @@ export const usePublishInitiativeComment = () => {
     }
   );
 };
+
 // GET INITIATIVES
 export const useGetAllInitiatives = () => {
   return useMutation(
@@ -145,7 +149,7 @@ export const useGetInitiativeComments = (
 // GET INITIATIVE COMMENT RESPONSES
 export const useGetInitiativeCommentResponses = (commentId: string) => {
   return useInfiniteQuery(
-    ["initiative-comments-responses"],
+    ["initiative-comments-responses", commentId],
     (
       context: QueryFunctionContext<string[], number>
     ): Promise<CommentDataType> => {
@@ -163,7 +167,7 @@ export const useGetInitiativeCommentResponses = (commentId: string) => {
       staleTime: 0,
       refetchOnWindowFocus: false,
       enabled: false,
-      getNextPageParam: (lastPage, pages) => pages.length + 1,
+      getNextPageParam: (_, pages) => pages.length + 1,
     }
   );
 };
@@ -181,7 +185,7 @@ export const useVoteInitiativeComment = () => {
     },
     {
       onSuccess: (res) => {
-        queryClient.invalidateQueries({ queryKey: ["initiative-comments"] });
+        // queryClient.invalidateQueries({ queryKey: ["initiative-comments"] });
         toast({
           title: "Success!",
           variant: "success",

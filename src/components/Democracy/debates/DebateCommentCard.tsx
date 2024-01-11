@@ -126,11 +126,11 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
               <div className="flex justify-between items-center">
                 <Button
                   type="submit"
-                  className="w-fit h-fit text-[12px] font-[500]"
+                  className="w-full max-w-[200px] h-10"
                   isLoading={isPublishingComment}
                   disabled={isPublishingComment}
                 >
-                  Publish response
+                  Publish Comment
                 </Button>
                 <IconWrapper
                   className="text-dark p-0 cursor-pointer"
@@ -155,7 +155,8 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
               <DebateCommentResponse
                 key={response.id}
                 response={response}
-                paddingLeft={dynamicPadding + 20}
+                paddingLeft={dynamicPadding + 10}
+                refetchParentResponses={getResponses}
               />
             ))}
           </div>

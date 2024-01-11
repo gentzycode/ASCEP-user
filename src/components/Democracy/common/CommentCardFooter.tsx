@@ -38,7 +38,7 @@ const CommentCardFooter: React.FC<CommentCardFooterProp> = ({
       ) : (
         <Button
           className="bg-transparent hover:bg-transparent h-fit w-fit p-0  text-[14px] disabled:opacity-100"
-          onClick={() => fetchResponse()}
+          onClick={ fetchResponse }
           isLoading={loading}
           disabled={isLoadingResponses || numberOfResponses === 0}
         >

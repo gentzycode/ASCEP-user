@@ -62,7 +62,6 @@ const InitiativeCommentSection: React.FC<InitiativeCommentSectionProp> = () => {
 
   return (
     <>
-      {/*COMMENTS */}
       <div className="w-full">
         <h2 className="pb-2 mb-4 pt-0 pl-0 border-b-4 text-lg text-text font-medium border-primary w-fit">
           Comments
@@ -106,8 +105,9 @@ const InitiativeCommentSection: React.FC<InitiativeCommentSectionProp> = () => {
 
               <Button
                 type="submit"
-                className="w-fit"
+                className="w-full max-w-[200px] h-12"
                 isLoading={isPublishingComment}
+                disabled={isPublishingComment}
               >
                 Publish Comment
               </Button>
@@ -115,6 +115,7 @@ const InitiativeCommentSection: React.FC<InitiativeCommentSectionProp> = () => {
           </Form>
         </div>
       )}
+
       {/* FILTER BUTTONS */}
       <div className="my-8">
         <FilterButtons
@@ -128,15 +129,19 @@ const InitiativeCommentSection: React.FC<InitiativeCommentSectionProp> = () => {
         />
       </div>
 
+      {/* LOADING */}
       {isLoadingComments && <PageLoader />}
+
+      {/* NO COMMENTS */}
       {commentsData?.comments?.length === 0 && (
         <div>
           <h1 className="text-text text-base md:text-xl">
-            This Proposal has no comments yet
+            This Initiative has no comments yet
           </h1>
         </div>
       )}
 
+      {/* COMMENT CARD */}
       {commentsData && commentsData.comments.length > 0 && (
         <div
           className={`${

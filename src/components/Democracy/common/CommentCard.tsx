@@ -47,7 +47,7 @@ const Comment: React.FC<CommentsCardProps> = ({
       {/* FOOTER */}
       <div className="flex justify-between items-center flex-wrap-reverse gap-2 py-2">
         <CommentCardFooter
-          numberOfResponses={comment.responses.length}
+          numberOfResponses={comment.comment_response_cache}
           setIsReplying={setIsReplying}
           setShowResponse={setShowResponse}
           showResponse={showResponse}

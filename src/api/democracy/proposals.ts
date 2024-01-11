@@ -28,6 +28,7 @@ import {
   GET_PROPOSAL_COMMUNITY_MEMBERS_ENDPOINT,
   GET_PROPOSAL_INFO_ENDPOINT,
   GET_PROPOSAL_TOPIC_COMMENTS_ENDPOINT,
+  GET_PROPOSAL_TOPIC_COMMENTS_RESPONSES_ENDPOINT,
   GET_PROPOSAL_TOPIC_INFO_ENDPOINT,
   PUBLISH_PROPOSALS_ENDPOINT,
   PUBLISH_PROPOSAL_COMMENT_ENDPOINT,
@@ -66,6 +67,7 @@ export const usePublishProposal = () => {
     }
   );
 };
+
 // PUBLISH PROPOSAL COMMENT
 export const usePublishProposalComment = () => {
   const queryClient = useQueryClient();
@@ -81,11 +83,9 @@ export const usePublishProposalComment = () => {
         .then((res) => res.data as ResponseDataType);
     },
     {
-      onSuccess: (res, variables) => {
+      onSuccess: (res) => {
         queryClient.invalidateQueries("proposal-comments");
-        queryClient.invalidateQueries({
-          queryKey: ["proposal-info", variables.proposal_id],
-        });
+        queryClient.invalidateQueries("proposal-info");
         toast({
           title: "Success!",
           variant: "success",
@@ -95,6 +95,7 @@ export const usePublishProposalComment = () => {
     }
   );
 };
+
 // GET PROPOSAL
 export const useGetAllProposals = () => {
   return useMutation(
@@ -143,7 +144,7 @@ export const useGetProposalComments = (
 // GET PROPOSAL COMMENT RESPONSES
 export const useGetProposalCommentResponses = (commentId: string) => {
   return useInfiniteQuery(
-    ["proposal-comments-responses"],
+    ["proposal-comments-responses", commentId],
     (
       context: QueryFunctionContext<string[], number>
     ): Promise<CommentDataType> => {
@@ -158,11 +159,10 @@ export const useGetProposalCommentResponses = (commentId: string) => {
       staleTime: 0,
       refetchOnWindowFocus: false,
       enabled: false,
-      getNextPageParam: (lastPage, pages) => pages.length + 1,
+      getNextPageParam: (_, pages) => pages.length + 1,
     }
   );
 };
-
 
 // VOTE PROPOSAL COMMENT
 export const useVoteProposalComment = () => {
@@ -389,6 +389,29 @@ export const useGetProposalTopicComments = (
     staleTime: 0,
     refetchOnWindowFocus: false,
   });
+};
+
+// GET PROPOSAL TOPIC COMMENT RESPONSES
+export const useGetProposalTopicCommentResponses = (commentId: string) => {
+  return useInfiniteQuery(
+    ["proposal-topic-comment-responses", commentId],
+    (
+      context: QueryFunctionContext<string[], number>
+    ): Promise<CommentDataType> => {
+      const { pageParam = 1 } = context;
+      return axios
+        .get(
+          GET_PROPOSAL_TOPIC_COMMENTS_RESPONSES_ENDPOINT(commentId, Number(pageParam))
+        )
+        .then((res) => res.data.data);
+    },
+    {
+      staleTime: 0,
+      refetchOnWindowFocus: false,
+      enabled: false,
+      getNextPageParam: (_, pages) => pages.length + 1,
+    }
+  );
 };
 
 // vote proposal topic comment

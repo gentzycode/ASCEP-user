@@ -5,10 +5,9 @@ import {
   ProposalTopicComments,
   ProposalTopicInfo,
 } from "@/components/Democracy";
-import { IconWrapper } from "@/components/custom";
+import { PageLoader } from "@/components/custom";
 import useDisclosure from "@/hooks/useDisclosure";
 import { useRef } from "react";
-import { FaSpinner } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 
 interface ProposalTopicInfoPageProps {}
@@ -34,13 +33,7 @@ const ProposalTopicInfoPage: React.FC<ProposalTopicInfoPageProps> = () => {
       {isError && !topic && <NotFound message="No Topic found" />}
 
       {/* LOADING */}
-      {isLoadingTopic && (
-        <div className="w-full flex justify-center">
-          <IconWrapper className=" text-primary my-10 w-fit h-full rounded-full">
-            <FaSpinner className="animate-spin text-[100px]" />
-          </IconWrapper>
-        </div>
-      )}
+      {isLoadingTopic && <PageLoader />}
 
       {/* TOPIC INFO */}
       {topic && (
