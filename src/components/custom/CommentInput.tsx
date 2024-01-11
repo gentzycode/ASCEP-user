@@ -27,6 +27,9 @@ export default function CommentInput({
     resetField,
   } = useForm<z.infer<typeof commentInputSchema>>({
     resolver: zodResolver(commentInputSchema),
+    defaultValues: {
+      content: props.defaultValue as string,
+    },
   });
 
   useEffect(() => {

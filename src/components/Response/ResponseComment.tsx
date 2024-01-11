@@ -2,7 +2,11 @@ import { AddSquare, CloseCircle } from "iconsax-react";
 import React, { useState } from "react";
 import { CommentInput } from "../custom";
 import { usePostComment } from "@/api/response";
+
+import { DeleteComment } from "./DeleteComment";
 import CommentResponses from "./CommentResponses";
+import { useAppContext } from "@/contexts/AppContext";
+import { useAuthContext } from "@/providers/AuthProvider";
 
 interface ResponseCommentProps {
   comment: ReportComment;
@@ -12,6 +16,8 @@ interface ResponseCommentProps {
 const ResponseComment = ({ comment, reportId }: ResponseCommentProps) => {
   const [showInput, setShowInput] = useState(false);
   const { mutate, isLoading, isSuccess } = usePostComment();
+  const { user } = useAppContext();
+  const { isLoggedIn, logout } = useAuthContext();
 
   return (
     <div className="space-y-4">
@@ -31,6 +37,9 @@ const ResponseComment = ({ comment, reportId }: ResponseCommentProps) => {
           <p className="text-sm md:text-base text-subtle_text">
             {new Date(comment.createdAt).toDateString()}
           </p>
+          {comment.user_id === user?.id && (
+            <DeleteComment commentId={comment.id} />
+          )}
         </div>
 
         <p className="text-sm text-dark">{comment.content}</p>
@@ -41,7 +50,7 @@ const ResponseComment = ({ comment, reportId }: ResponseCommentProps) => {
         <div className="border-[1px] border-dark/10"></div>
 
         <div
-          onClick={() => setShowInput(!showInput)}
+          onClick={() => (isLoggedIn ? setShowInput(!showInput) : logout())}
           className="flex items-center gap-2 ml-4 font-medium cursor-pointer sm:ml-8 w-fit"
         >
           {showInput ? (

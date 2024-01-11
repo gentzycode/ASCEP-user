@@ -71,6 +71,11 @@ export const landingPages: RouterType[] = [
 
 const routes: RouterType[] = [
   {
+    path: "",
+    element: <Navigate to="/home" />,
+    title: "home",
+  },
+  {
     path: "/main",
     element: <MainPage />,
     title: "main",

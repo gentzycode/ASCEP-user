@@ -10,18 +10,24 @@ export default function AboutUsSection() {
           <p className="text-lg uppercase text-primary">About us</p>
 
           <p className="mt-3 font-bold mb-6 leading-tight text-[36px] text-white">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+            What is ASCEP all about?
           </p>
 
           <div className="text-xl text-subtitle_text">
-              <p>
-                Governor Soludo has initiated a pioneering step to revolutionize governance by actively engaging Anambra's citizens. Recognizing the transformative power of digital platforms, he has launched this portal to bridge the gap between the government and its people, ensuring every voice can be heard.
-              </p>
-              <p>
-                This solution is more than a platform; it's a commitment to participatory democracy, enabling transparent dialogue, fostering collaborative decision-making, and allowing citizens to contribute constructively to state development.
-              </p>
+            <p>
+              Governor Soludo has initiated a pioneering step to revolutionize
+              governance by actively engaging Anambra's citizens. Recognizing
+              the transformative power of digital platforms, he has launched
+              this portal to bridge the gap between the government and its
+              people, ensuring every voice can be heard.
+            </p>
+            <p>
+              This solution is more than a platform; it's a commitment to
+              participatory democracy, enabling transparent dialogue, fostering
+              collaborative decision-making, and allowing citizens to contribute
+              constructively to state development.
+            </p>
           </div>
-
         </div>
       </div>
     </div>

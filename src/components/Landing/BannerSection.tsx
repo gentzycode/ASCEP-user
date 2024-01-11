@@ -10,17 +10,18 @@ export default function BannerSection() {
         </h1>
 
         <p className="text-2xl text-subtitle_text">
-        Connect, voice opinions, and influence policy decisions in a unified, accessible digital democracy platform.
+          Connect, voice opinions, and influence policy decisions in a unified,
+          accessible digital democracy platform.
         </p>
 
         <div className="flex justify-center gap-6 sm:justify-start md:gap-8">
           <Link to="/auth/signup">
             <Button className="w-[175px]">Get Started</Button>
           </Link>
-
+          {/* 
           <Button className="w-[175px]" variant="outline-primary">
             Learn more
-          </Button>
+          </Button> */}
         </div>
       </div>
 

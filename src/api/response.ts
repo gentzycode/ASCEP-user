@@ -138,3 +138,32 @@ export const useGetReportCommentsResonponses = ({
     }
   );
 };
+
+export const useDeleteComment = () => {
+  const { toast } = useToast();
+
+  const queryClient = useQueryClient();
+  let commentResponseId: undefined | number;
+  return useMutation(
+    (id: number) => {
+      commentResponseId = id;
+      return axios
+        .delete(`${baseUrl}/report/comment/${id}`)
+        .then((res) => res.data);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("report-comments");
+        if (commentResponseId) {
+          //@ts-ignore
+          queryClient.invalidateQueries(commentResponseId);
+        }
+        toast({
+          title: "Success!",
+          variant: "success",
+          description: `Comment deleted`,
+        });
+      },
+    }
+  );
+};

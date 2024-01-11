@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Location } from "iconsax-react";
 import { CommentInput } from "../custom";
 import { usePostComment } from "@/api/response";
+import { useAuthContext } from "@/providers/AuthProvider";
+// import { useState } from "react";
 
 interface ResponseDetailsProps {
   report: ReportData;
@@ -8,6 +11,17 @@ interface ResponseDetailsProps {
 
 export default function ResponseDetails({ report }: ResponseDetailsProps) {
   const { mutate, isLoading, isSuccess } = usePostComment();
+  const { isLoggedIn, logout } = useAuthContext();
+  // const [defaultVaule, setDefaultValue] = useState("Hoola my nigga");
+
+  const handleSend = (data: { content: string }) => {
+    if (isLoggedIn) {
+      mutate({ ...data, report_id: report.id.toString() });
+    } else {
+      // localStorage.setItem( 'temporary-comment',  data.content);
+      logout();
+    }
+  };
   return (
     <div>
       <h3>{report.title}</h3>
@@ -58,9 +72,10 @@ export default function ResponseDetails({ report }: ResponseDetailsProps) {
         <div className="absolute w-full px-2 md:px-20 bottom-3 md:bottom-10 ">
           <CommentInput
             isLoading={isLoading}
-            handleSend={(data) => mutate({ ...data, report_id: report.id })}
+            handleSend={(data) => handleSend(data)}
             placeholder="Type your comment here"
             isSent={isSuccess}
+            // defaultValue={defaultVaule}
           />
         </div>
       </div>
