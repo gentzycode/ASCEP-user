@@ -53,7 +53,7 @@ export default function AppProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     if (isSuccess) {
-      let newTargets: SDGTarget[] = [];
+      const newTargets: SDGTarget[] = [];
       if (sdgData) {
         sdgData.forEach((sdg: SDGsType) => {
           newTargets.push(...sdg.sdgTarget);
