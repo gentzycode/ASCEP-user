@@ -69,7 +69,7 @@ const FormInput = <TFormValues extends Record<string, unknown>>({
                 onFocus={() => setShowLabel(true)}
                 onBlurCapture={() => setShowLabel(false)}
                 // onBlur={() => setShowLabel(false)}
-                className={`bg-[#F5F5F5] text-base text-text focus-visible:ring-0 focus-visible:ring-primary border-none focus:border-none focus-visible:ring-offset-0 rounded-[20px] h-[50px] placeholder:text-base placeholder:text-subtle_text/30 placeholder:font-medium
+                className={`bg-[#F5F5F5] text-base text-text focus-visible:ring-0 focus-visible:ring-primary border-none focus:border-none focus-visible:ring-offset-0 rounded-[20px] h-11 sm:h-[50px] placeholder:text-base placeholder:text-subtle_text/30 placeholder:font-medium
                  
                 ${leftElement ? "pl-12" : "pl-[18px]"}  ${
                   rightElement ? "pr-12" : "pr-[18px]"
