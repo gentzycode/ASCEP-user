@@ -46,7 +46,7 @@ export default function TwoFactorAuthOTP() {
       </p>
 
       <form className="space-y-6">
-        <div className="flex items-center justify-between ">
+        <div className="flex flex-col justify-between gap-4 lg:items-center lg:flex-row ">
           <p className="text-subtle_text">Verify OTP</p>
           <div className=" w-full max-w-[350px] flex justify-center">
             <CustomPinInput

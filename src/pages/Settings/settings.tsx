@@ -15,7 +15,7 @@ export default function SettingsPage() {
       {isLoading ? (
         <PageLoader />
       ) : data !== null ? (
-        <div className="w-full px-8 py-8 space-y-5  bg-[#F9F6FB] overflow-x-hidden  overflow-y-auto">
+        <div className="w-full px-4 md:px-8 py-8 space-y-5  bg-[#F9F6FB] overflow-x-hidden  overflow-y-auto">
           <ProfileHeader />
 
           <div className="relative grid grid-cols-12 gap-6 pt-28 ">
