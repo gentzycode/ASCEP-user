@@ -1,4 +1,4 @@
-import { Outlet, Route, Routes, Navigate } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
 import axios from "axios";
 
 import routes, {
@@ -17,7 +17,7 @@ import {
 } from "@/layouts";
 import config from "@/utils/config";
 import { useToast } from "@/components/ui/use-toast";
-import useAutoLogout from "@/hooks/useAuthoLogout";
+// import useAutoLogout from "@/hooks/useAuthoLogout";
 import { ViewResponsePage } from "./Response";
 import SmoothScroll from "@/components/custom/ScrollToTop";
 import RepsonseProvider from "@/providers/ResponseProvider";
@@ -59,7 +59,7 @@ const Router = () => {
 
   const { toast } = useToast();
 
-  useAutoLogout();
+  // useAutoLogout();
 
   // useEffect(() => {
   axios.interceptors.request.use(

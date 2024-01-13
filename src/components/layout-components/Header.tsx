@@ -2,6 +2,8 @@ import { ArrowDown2, Notification, SearchNormal1 } from "iconsax-react";
 import { IconWrapper } from "../custom";
 import { useNavigationContext } from "@/contexts/NavigationContext";
 import { useAppContext } from "@/contexts/AppContext";
+import { Button } from "../ui/button";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const { activeModule } = useNavigationContext();
@@ -20,7 +22,7 @@ const Header = () => {
         </p>
       </div>
 
-      {user && (
+      {user ? (
         <div className="flex items-center gap-6">
           <IconWrapper className="rounded-full cursor-pointer">
             <SearchNormal1 size="20" color="black" />
@@ -42,6 +44,13 @@ const Header = () => {
             <ArrowDown2 size="20" color="black" />
           </div>
         </div>
+      ) : (
+        <Link to="/auth/login">
+          <Button size="sm" className="w-[120px] rounded-lg">
+            {" "}
+            Login
+          </Button>
+        </Link>
       )}
     </div>
   );

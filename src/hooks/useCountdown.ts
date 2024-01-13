@@ -17,10 +17,14 @@ const useCountdown = (seconds: number) => {
     };
   }, [time]);
 
+  const resetCountdown = () => {
+    setTime(seconds);
+  };
+
   const minutes = Math.floor(time / 60);
   const remainingSeconds = time % 60;
 
-  return { minutes, remainingSeconds, time };
+  return { minutes, remainingSeconds, time, resetCountdown };
 };
 
 export default useCountdown;

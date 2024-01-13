@@ -23,7 +23,7 @@ export default function SettingsOptions() {
   return (
     <>
       <div className="col-span-12 md:col-span-5 bg-white p-4 md:p-6 rounded-[24px] md:rounded-[40px] h-fit ">
-        <div className="hidden md:inline-block">
+        <div className="hidden w-full md:inline-block">
           {options?.map((option) => (
             <div
               key={option.title}

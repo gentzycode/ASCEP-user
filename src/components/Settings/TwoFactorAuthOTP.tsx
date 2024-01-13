@@ -1,6 +1,6 @@
 import { Button } from "../ui/button";
 import { CustomPinInput } from "../custom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSettingsContext } from "@/providers/SettingsProvider";
 import useCountdown from "@/hooks/useCountdown";
 import {
@@ -17,11 +17,12 @@ export default function TwoFactorAuthOTP() {
   const { timeLimit } = useSettingsContext();
 
   const { data } = useGetUserProfile();
-  const { minutes, remainingSeconds, time } = useCountdown(timeLimit);
+  const { minutes, remainingSeconds, time, resetCountdown } =
+    useCountdown(timeLimit);
 
   const { mutate: resend, isLoading: resending } = useResend2faToken();
 
-  const { mutate: verify, isLoading } = useVerify2faToken();
+  const { mutate: verify, isLoading, isSuccess } = useVerify2faToken();
   const { mutate: verifyDisable, isLoading: disabling } =
     useVerifyDisable2faToken();
 
@@ -29,6 +30,10 @@ export default function TwoFactorAuthOTP() {
     setOtpError(null);
     setotp(value);
   };
+
+  useEffect(() => {
+    resetCountdown();
+  }, [isSuccess]);
 
   function onSubmit() {
     if (otp.length < 6) {
@@ -38,6 +43,10 @@ export default function TwoFactorAuthOTP() {
       data?.twoFA?.verified ? verifyDisable(otp) : verify(otp);
     }
   }
+
+  const handleResend = () => {
+    resend();
+  };
 
   return (
     <div className="space-y-6">
@@ -71,7 +80,7 @@ export default function TwoFactorAuthOTP() {
           ) : (
             <Button
               isLoading={resending}
-              onClick={() => resend()}
+              onClick={handleResend}
               size="xs"
               type="button"
             >
