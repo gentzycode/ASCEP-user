@@ -1,68 +1,39 @@
-import { Dislike, Like1 } from "iconsax-react";
-import { IconWrapper } from "../custom";
-import PollParty from "./PollParty";
+import { Link } from "react-router-dom";
 
-export default function PopularPoll() {
+export default function PopularPoll({ poll }: { poll: PollType }) {
   return (
-    <div className="grid grid-cols-12 gap-4">
-      <div className="col-span-12 lg:col-span-10 bg-white p-3 py-6 md:p-6 rounded-[40px] ">
+    <div className="bg-white p-4 py-6 md:p-6 rounded-[40px] ">
+      <Link to={`/democracy/voting/${poll.id}`}>
         <div className="mb-11">
-          <h4 className="text-dark">
-            Metro at night (on weekends). Is it positive?
-          </h4>
-          <p className="text-sm font-light text-subtle_text">2023-10-28</p>
+          <h4 className="text-dark">{poll.title}</h4>
+          <p className="text-sm font-light text-subtle_text">
+            {new Date(poll.createdAt).toDateString()}
+          </p>
         </div>
 
-        <p className="text-[#64748B] font-medium text-sm ">
-          This is a debate that has been going on for a long time and it is the
-          possibility of opening the metro on weekends at night. It would be
-          important to know if it is a positive measure or too expensive for
-          what it reports to the city. is a debate that has been going on for a
-          long time and it is the possibility of opening the metro on weekends
-          at night
+        <p className="text-[#64748B] font-medium text-sm line-clamp-4 ">
+          {poll.description}
         </p>
 
         <div className="flex flex-wrap items-center gap-8 mt-4">
           <div className="flex gap-[6px]">
-            <PollParty text="NP" className="bg-[#E84356]/10 text-[#E84356]" />
-            <PollParty text="ZH" className="bg-[#DDA63A]/10 text-[#DDA63A]" />
-            <PollParty text="GHAW" className="bg-[#4C9F38]/10 text-[#4C9F38]" />
-            <PollParty text="+3" className="ml-1 text-white bg-dark" />
+            {poll.votingSDGs.length > 0 &&
+              poll.votingSDGs.map((sdg) => (
+                <img
+                  src={sdg.sdg.banner}
+                  key={sdg.sdg_id}
+                  alt="sdg"
+                  className="w-12"
+                />
+              ))}
           </div>
 
-          <div className="flex gap-2 font-semibold text-dark">
-            <div className="bg-dark/10 rounded-[10px] px-5 py-[6px] text-xs ">
-              Urbanism
-            </div>
-            <div className="bg-dark/10 rounded-[10px] px-5 py-[6px] text-xs ">
-              Transport
-            </div>
-            <div className="bg-dark/10 rounded-[10px] px-5 py-[6px] text-xs ">
-              Metro
-            </div>
+          <div className="flex items-center gap-2 rounded-[10px] whitespace-nowrap px-2 py-1 text-white bg-dark text-xs ">
+            <span className="text-sm material-symbols-outlined">forum</span>
+            {poll.total_comments_cache} Comments
           </div>
         </div>
-      </div>
-      <div className="lg:col-span-2 col-span-12 bg-white p-6 rounded-[40px] flex flex-row lg:flex-col lg:justify-center items-center gap-4 ">
-        <IconWrapper className="w-16 md:w-[72px] h-16 md:h-[72px] bg-[#31D0AA]/10 text-[#31D0AA]  ">
-          <div className="flex items-center justify-center gap-1">
-            <Like1 className="h-4 md:h-12" />
-            83%
-          </div>
-        </IconWrapper>
-
-        <IconWrapper className="w-16 md:w-[72px] h-16 md:h-[72px] bg-[#E43F40]/10 text-[#E43F40]  ">
-          <div className="flex items-center justify-center gap-1">
-            <Dislike className="h-4 md:h-12" />
-            83%
-          </div>
-        </IconWrapper>
-
-        <div className="flex items-center gap-2 rounded-[10px] px-2 py-1 text-white bg-dark text-xs ">
-          <span className="text-sm material-symbols-outlined">forum</span>
-          Comments
-        </div>
-      </div>
+      </Link>
     </div>
   );
 }
