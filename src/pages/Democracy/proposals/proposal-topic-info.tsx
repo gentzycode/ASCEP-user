@@ -7,11 +7,13 @@ import {
 } from "@/components/Democracy";
 import { PageLoader } from "@/components/custom";
 import useDisclosure from "@/hooks/useDisclosure";
-import { useRef } from "react";
+import useScrollToComments from "@/hooks/useScrollToComments";
 import { useParams } from "react-router-dom";
 
 interface ProposalTopicInfoPageProps {}
 const ProposalTopicInfoPage: React.FC<ProposalTopicInfoPageProps> = () => {
+  const { commentsSectionRef, scrollToComments } = useScrollToComments();
+
   const { isOpen: isModalOpen, onClose, onOpen } = useDisclosure();
 
   const { topicId } = useParams();
@@ -21,11 +23,6 @@ const ProposalTopicInfoPage: React.FC<ProposalTopicInfoPageProps> = () => {
     isLoading: isLoadingTopic,
     isError,
   } = useGetProposalTopicInfo(topicId!);
-
-  const commentsSectionRef = useRef<HTMLDivElement | null>(null);
-  const scrollToComments = () => {
-    commentsSectionRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
     <div>

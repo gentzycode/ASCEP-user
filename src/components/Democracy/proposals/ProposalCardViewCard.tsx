@@ -5,7 +5,7 @@ import { CategoryDisplay, SDGCard, TagDisplay, TargetDisplay } from "..";
 import { Link } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
 import { useSupportProposal } from "@/api/democracy/proposals";
-import { useInitiativeContext } from "@/contexts/InitiativeContext";
+import { useProposalContext } from "@/contexts/ProposalContext";
 
 interface ProposalCardViewCardProps {
   proposal: ProposalType;
@@ -17,11 +17,11 @@ const ProposalCardViewCard: React.FC<ProposalCardViewCardProps> = ({
   const { mutateAsync: supportInitiative, isLoading: isSupporting } =
     useSupportProposal(proposal.id);
 
-  const { refetchInitiatives } = useInitiativeContext();
+  const { refetchProposals } = useProposalContext();
 
   const handleSupport = async () => {
     await supportInitiative();
-    refetchInitiatives();
+    refetchProposals();
   };
   return (
     <div className="flex flex-col  gap-1">

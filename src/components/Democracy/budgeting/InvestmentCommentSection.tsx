@@ -1,52 +1,32 @@
 import { PageLoader, Pagination } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { useAuthContext } from "@/providers/AuthProvider";
-import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
 import {
-  DebateCommentCard,
   FilterButtons,
   FormInput,
   LoginSigninPrompt,
+  ProposalCommentCard,
 } from "..";
 import { commentFilterButtonOptions } from "@/utils/Democracy/General";
-import {
-  useGetDebateComments,
-  usePublishDebateComment,
-} from "@/api/democracy/debates";
-import { useEffect, useState } from "react";
-import { debateCommentSchema } from "@/schemas/DebateSchema";
+import { investmentCommentSchema } from "@/schemas/InvestmentSchema";
 
-interface DebateCommentSectionProp {}
-const DebateCommentSection: React.FC<DebateCommentSectionProp> = () => {
+interface InvestmentCommentSectionProp {}
+
+const InvestmentCommentSection: React.FC<InvestmentCommentSectionProp> = () => {
   const { isLoggedIn } = useAuthContext();
-  const { debateId } = useParams();
 
-  const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState("newest");
-
-  const { mutateAsync: publishComment, isLoading: isPublishingComment } =
-    usePublishDebateComment();
-
-  const {
-    data: commentsData,
-    isLoading: isLoadingComments,
-    refetch,
-    isFetching: isFetchingComments,
-  } = useGetDebateComments(debateId!, page, filter);
-
-  const form = useForm<z.infer<typeof debateCommentSchema>>({
-    resolver: zodResolver(debateCommentSchema),
+  const form = useForm<z.infer<typeof investmentCommentSchema>>({
+    resolver: zodResolver(investmentCommentSchema),
     mode: "onChange",
     defaultValues: {
       content: "",
-      debate_id: debateId,
+      investment_id: "1",
     },
   });
-
   const {
     control,
     handleSubmit,
@@ -54,16 +34,9 @@ const DebateCommentSection: React.FC<DebateCommentSectionProp> = () => {
     formState: { errors },
   } = form;
 
-  async function onSubmit(values: z.infer<typeof debateCommentSchema>) {
-    await publishComment(values);
-    if (commentsData) {
-      reset();
-    }
+  async function onSubmit(values: z.infer<typeof investmentCommentSchema>) {
+    console.log(values);
   }
-  
-  useEffect(() => {
-    refetch();
-  }, [page, filter]);
 
   return (
     <>
@@ -88,11 +61,12 @@ const DebateCommentSection: React.FC<DebateCommentSectionProp> = () => {
                 name="content"
                 errors={errors}
               />
+
               <Button
                 type="submit"
-                className="w-full max-w-[200px] h-12"
-                isLoading={isPublishingComment}
-                disabled={isPublishingComment}
+                className="w-full max-w-[200px] h-10"
+                isLoading={false}
+                disabled={false}
               >
                 Publish Comment
               </Button>
@@ -100,31 +74,28 @@ const DebateCommentSection: React.FC<DebateCommentSectionProp> = () => {
           </Form>
         </div>
       )}
-
       {/* FILTER BUTTONS */}
       <div className="my-8">
         <FilterButtons
           filterButtonOptions={commentFilterButtonOptions}
           filterByButton={(value: string) => {
-            setFilter(value);
-            setPage(1);
           }}
-          isFiltering={isFetchingComments}
+          isFiltering={false}
           defaultFilterButtonValue="newest"
         />
       </div>
 
       {/* LOADING */}
-      {isLoadingComments && <PageLoader />}
+      {/* {isLoadingComments && <PageLoader />}
       {commentsData?.comments?.length === 0 && (
         <div>
-          <h1 className="text-text text-base md:text-xl">
-            This debate has no comments yet
+          <h1 className="text-dark text-[16px] md:text-[20px]">
+            This Proposal has no comments yet
           </h1>
         </div>
-      )}
+      )} */}
 
-      {commentsData && commentsData.comments.length > 0 && (
+      {/* {commentsData && commentsData.comments.length > 0 && (
         <div
           className={`${
             isFetchingComments
@@ -133,20 +104,20 @@ const DebateCommentSection: React.FC<DebateCommentSectionProp> = () => {
           } flex flex-col gap-6`}
         >
           {commentsData.comments.map((comment: CommentType) => (
-            <DebateCommentCard comment={comment} key={comment.id} />
-          ))}
+            <ProposalCommentCard comment={comment} key={comment.id} />
+          ))} */}
 
           {/* PAGINATION */}
-          <Pagination
+          {/* <Pagination
             page={page}
             setPage={setPage}
             paginationData={commentsData.meta}
             isFetching={isFetchingComments}
-          />
-        </div>
-      )}
+          /> */}
+        {/* </div>
+      )} */}
     </>
   );
 };
 
-export default DebateCommentSection;
+export default InvestmentCommentSection;

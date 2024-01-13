@@ -5,11 +5,12 @@ import {
   NotFound,
 } from "@/components/Democracy";
 import { PageLoader } from "@/components/custom";
-import { useRef } from "react";
+import useScrollToComments from "@/hooks/useScrollToComments";
 import { useParams } from "react-router-dom";
 
 interface DebatesInfoPageProps {}
 const DebatesInfoPage: React.FC<DebatesInfoPageProps> = () => {
+  const { commentsSectionRef, scrollToComments } = useScrollToComments();
   const { debateId } = useParams();
   const {
     data: debate,
@@ -17,18 +18,10 @@ const DebatesInfoPage: React.FC<DebatesInfoPageProps> = () => {
     isLoading: isLoadingDebate,
   } = useGetDebateInfo(debateId!);
 
-  const commentsSectionRef = useRef<HTMLDivElement | null>(null);
-
-  const scrollToComments = () => {
-    commentsSectionRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
     <>
       {/* LOADING */}
-      <div className="w-full flex justify-center">
-        {isLoadingDebate && <PageLoader />}
-      </div>
+      {isLoadingDebate && <PageLoader />}
 
       {/* ERROR */}
       {isError && !debate && <NotFound message="Debate not found" />}

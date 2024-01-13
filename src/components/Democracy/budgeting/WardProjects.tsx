@@ -51,6 +51,8 @@ const WardProjects: React.FC<WardProjectsProp> = () => {
         Budget investments' proposals located geographically
       </h4>
       {/* <div className="w-full max-w-[900px] rounded-3xl bg-dark h-[500px]"> */}
+      
+      {/* MAP */}
       <div className="w-full max-w-[900px] rounded-3xl bg-dark h-[500px] relative">
         <img
           src="/images/democracy/map.png"

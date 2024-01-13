@@ -19,6 +19,7 @@ import ALert from "@/components/custom/Alert";
 import useDisclosure from "@/hooks/useDisclosure";
 import { frontendURL } from "@/api/baseUrl";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { useAppContext } from "@/contexts/AppContext";
 
 interface DebateInfoProps {
   debate: DebateType;
@@ -29,6 +30,7 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
   scrollToComments,
 }) => {
   const { isLoggedIn,  } = useAuthContext();
+  const { user } = useAppContext();
 
   const { mutate: voteDebate, isLoading: isVoting } = useVoteDebate();
 
@@ -57,6 +59,7 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
     userVoted,
     total_comments_cache,
   } = debate;
+  const createdByUser = user?.id === Number(debate.author.id);
 
   return (
     <div className="flex justify-start gap-10 lg:flex-row flex-col">
@@ -147,7 +150,7 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
             </div>
 
             {/* AUTHOR */}
-            {debate.user_id === debate.author.id && (
+            {createdByUser && (
               <div>
                 <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
                   Author
