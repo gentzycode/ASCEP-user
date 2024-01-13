@@ -1,9 +1,8 @@
-import { ArrowDown2, Notification, SearchNormal1 } from "iconsax-react";
-import { IconWrapper } from "../custom";
 import { useNavigationContext } from "@/contexts/NavigationContext";
 import { useAppContext } from "@/contexts/AppContext";
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
+import UserDropdown from "./UserDropdown";
 
 const Header = () => {
   const { activeModule } = useNavigationContext();
@@ -23,27 +22,7 @@ const Header = () => {
       </div>
 
       {user ? (
-        <div className="flex items-center gap-6">
-          <IconWrapper className="rounded-full cursor-pointer">
-            <SearchNormal1 size="20" color="black" />
-          </IconWrapper>
-          <IconWrapper className="rounded-full cursor-pointer">
-            <Notification size="20" color="black" />
-          </IconWrapper>
-
-          <div className="flex items-center gap-3 cursor-pointer">
-            <img src="/images/profile-pic.png" className="w-10 h-10" alt="" />
-            <div>
-              <p className="text-sm font-bold">
-                {user?.firstname
-                  ? `${user.firstname} ${user.lastname}`
-                  : user?.username}
-              </p>
-              <p className="text-sm text-subtle_text">{user.email}</p>
-            </div>
-            <ArrowDown2 size="20" color="black" />
-          </div>
-        </div>
+        <UserDropdown />
       ) : (
         <Link to="/auth/login">
           <Button size="sm" className="w-[120px] rounded-lg">
