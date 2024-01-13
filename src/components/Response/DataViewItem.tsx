@@ -15,7 +15,7 @@ export default function DataViewItem({ report }: DataViewItemProps) {
               ? report.reportImages[0].image_url
               : "/images/activity.png"
           }
-          className="hidden md:block w-20 md:w-[165px] rounded-[20px]  object-cover "
+          className="hidden md:block w-full max-w-20 md:max-w-[165px] rounded-[20px]  object-cover "
           alt=""
         />
 
@@ -54,7 +54,7 @@ export default function DataViewItem({ report }: DataViewItemProps) {
             </div>
           </div>
 
-          <p className="text-sm text-ellipsis line-clamp-2 md:line-clamp-5 text-subtle_text ">
+          <p className="text-sm line-clamp-2 md:line-clamp-2 xl:line-clamp-5 text-subtle_text ">
             {report.description}
           </p>
         </div>

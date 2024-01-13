@@ -5,7 +5,6 @@ import { useResponseContext } from "@/providers/ResponseProvider";
 
 export default function DataView() {
   const { isLoading, reports } = useResponseContext();
-  console.log("Reports:", reports);
   return (
     <div className="grid gap-4 min-h-80vh ">
       {isLoading ? (
