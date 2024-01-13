@@ -60,7 +60,7 @@ interface Service {
 
 const services = [
   {
-    title: "ASEP Response",
+    title: "ASCEP Response",
     subtitle:
       "Empowering Citizens to Report Incidents, Share Valuable Info, and Participate in Surveys",
     text: "ASCEP Response is a powerful crowdsourcing and incident reporting platform that allows citizens to report incidents and contribute to public safety. With its user-fiendly interfance and seamless integration, citizens can easily submit incident reports and provide valuable information to authorities.",
@@ -68,7 +68,7 @@ const services = [
     link: "/response",
   },
   {
-    title: "ASEP Dialogue",
+    title: "ASCEP Dialogue",
     subtitle:
       "Empowering Citizens to Report Incidents, Share Valuable Info, and Participate in Surveys",
     text: "ASCEP Response is a powerful crowdsourcing and incident reporting platform that allows citizens to report incidents and contribute to public safety. With its user-fiendly interfance and seamless integration, citizens can easily submit incident reports and provide valuable information to authorities.",
@@ -76,7 +76,7 @@ const services = [
     link: "/dialogue",
   },
   {
-    title: "ASEP Democracy",
+    title: "ASCEP Democracy",
     subtitle:
       "Empowering Citizens to Report Incidents, Share Valuable Info, and Participate in Surveys",
     text: "ASCEP Response is a powerful crowdsourcing and incident reporting platform that allows citizens to report incidents and contribute to public safety. With its user-fiendly interfance and seamless integration, citizens can easily submit incident reports and provide valuable information to authorities.",
