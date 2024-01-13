@@ -40,7 +40,6 @@ export { default as DebateCommentSection } from "./debates/DebateCommentSection"
 // PROPOSAL
 export { default as ProposalCardViewCard } from "./proposals/ProposalCardViewCard";
 export { default as ProposalInfo } from "./proposals/ProposalInfo";
-export { default as ProposalComments } from "./proposals/ProposalComments";
 export { default as ProposalCommentCard } from "./proposals/ProposalCommentCard";
 export { default as ProposalCommentResponse } from "./proposals/ProposalCommentResponse";
 export { default as ProposalCommentSection } from "./proposals/ProposalCommentSection";
@@ -74,6 +73,8 @@ export { default as WardProjects } from "./budgeting/WardProjects";
 export { default as WardProjectCard } from "./budgeting/WardProjectCard";
 export { default as Investments } from "./budgeting/Investments";
 export { default as InvestmentCard } from "./budgeting/InvestmentCard";
+export { default as InvestmentInfo } from "./budgeting/InvestmentInfo";
+export { default as InvestmentCommentSection } from "./budgeting/InvestmentCommentSection";
 
 //VOTING
 export { default as PollLIst } from "./voting/PollLIst";

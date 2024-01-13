@@ -22,6 +22,7 @@ import useDisclosure from "@/hooks/useDisclosure";
 import ALert from "@/components/custom/Alert";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { frontendURL } from "@/api/baseUrl";
+import { useAppContext } from "@/contexts/AppContext";
 
 interface ProposalInfoProps {
   proposal: ProposalType;
@@ -33,7 +34,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
   scrollToComments,
 }) => {
   const { isLoggedIn } = useAuthContext();
-
+  const { user } = useAppContext();
   const { mutate: supportProposal, isLoading: isSupportingProposal } =
     useSupportProposal(proposal.id);
 
@@ -66,6 +67,8 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
     await deleteProposal();
     close();
   };
+  const createdByUser = user?.id === Number(proposal.author.id);
+
   return (
     <div className="flex justify-start gap-10 xl:flex-row flex-col">
       <div className=" w-full xl:min-w-[700px] flex flex-col gap-6">
@@ -238,7 +241,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
             </div>
 
             {/* AUTHOR */}
-            {proposal.user_id === proposal.author.id && (
+            {createdByUser && (
               <div>
                 <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
                   Author

@@ -7,22 +7,19 @@ import {
   RelatedDebates,
 } from "@/components/Democracy";
 import { PageLoader } from "@/components/custom";
-import { useRef } from "react";
+import useScrollToComments from "@/hooks/useScrollToComments";
 import { useParams } from "react-router-dom";
 
 interface ProposalInfoPageProps {}
 const ProposalInfoPage: React.FC<ProposalInfoPageProps> = () => {
+  const { commentsSectionRef, scrollToComments } = useScrollToComments();
+
   const { proposalId } = useParams();
   const {
     data: proposal,
     isLoading: isLoadingProposal,
     isError,
   } = useGetProposalInfo(proposalId!);
-
-  const commentsSectionRef = useRef<HTMLDivElement | null>(null);
-  const scrollToComments = () => {
-    commentsSectionRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
     <>
@@ -42,7 +39,6 @@ const ProposalInfoPage: React.FC<ProposalInfoPageProps> = () => {
         </div>
       )}
 
-      
       {/* ***********************************RELATED CONTENT***************************************** */}
       {/* <div className="my-10 w-full max-w-[700px]">
         <RelatedDebates />

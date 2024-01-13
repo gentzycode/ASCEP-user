@@ -6,23 +6,19 @@ import {
   RelatedDebates,
 } from "@/components/Democracy";
 import { PageLoader } from "@/components/custom";
-import { useRef } from "react";
+import useScrollToComments from "@/hooks/useScrollToComments";
 import { useParams } from "react-router-dom";
 
 interface InitiativeInfoPageProps {}
 
 const InitiativeInfoPage: React.FC<InitiativeInfoPageProps> = () => {
+  const { commentsSectionRef, scrollToComments } = useScrollToComments();
   const { initiativeId } = useParams();
   const {
     data: initiative,
     isLoading: isLoadingProposal,
     isError,
   } = useGetInitiativeInfo(initiativeId!);
-
-  const commentsSectionRef = useRef<HTMLDivElement | null>(null);
-  const scrollToComments = () => {
-    commentsSectionRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
     <>

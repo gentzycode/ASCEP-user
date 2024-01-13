@@ -1,9 +1,7 @@
-import { IconWrapper, PageLoader, Pagination } from "@/components/custom";
+import { PageLoader, Pagination } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { useAuthContext } from "@/providers/AuthProvider";
-import ROUTES from "@/utils/routesNames";
-import { CloseCircle, Danger } from "iconsax-react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
