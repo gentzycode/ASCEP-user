@@ -53,13 +53,16 @@ const ROUTES = {
 
   //MAKE A REQUEST
   MAKE_A_REQUEST_HOME_ROUTE: "/dialogue/make-a-request",
-  CREATE_REQUEST_ROUTE: "/dialogue/make-a-request/create-request",
+  CREATE_REQUEST_ROUTE: (authorityId: string) =>
+    `/dialogue/make-a-request/create-request/${authorityId}`,
 
   //BROWSE REQUEST
   BROWSE_REQUEST_HOME_ROUTE: "/dialogue/browse-request",
 
   //VIEW AUTHORITIES
   VIEW_AUTHORITIES_HOME_ROUTE: "/dialogue/view-authorities",
+  AUTHORITY_INFO_ROUTE: (authorityId: string) =>
+    `/dialogue/authority-info/${authorityId}`,
 
   //DIALOGUE HELP
   DIALOGUE_HELP_HOME_ROUTE: "/dialogue/dialogue-help",

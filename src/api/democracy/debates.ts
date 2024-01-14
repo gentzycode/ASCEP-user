@@ -32,6 +32,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { useAppContext } from "@/contexts/AppContext";
 
 // PUBLISH DEBATE
 export const usePublishDebate = () => {
@@ -166,7 +167,7 @@ export const useGetDebateCommentResponses = (commentId: string) => {
 export const useVoteDebate = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  const { logout } = useAuthContext();
+  const { handleOpenModal } = useAppContext();
   return useMutation(
     (values: z.infer<typeof voteDebateSchema>) => {
       return axios
@@ -187,8 +188,8 @@ export const useVoteDebate = () => {
 
         errors.map((error: { message: string }) => {
           if (error.message === "E_UNAUTHORIZED_ACCESS: Unauthorized access") {
-            logout();
-            return toast({
+            handleOpenModal();
+            toast({
               title: "Error!",
               variant: "error",
               description: "Please login to perform this action",

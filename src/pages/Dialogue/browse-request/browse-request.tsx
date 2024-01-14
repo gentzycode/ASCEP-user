@@ -1,7 +1,31 @@
+import { useGetAllRequests } from "@/api/dialogue/requests";
 import { RequestList, SearchRequest } from "@/components/Dialogue";
+import { useEffect, useState } from "react";
 
 interface BrowseRequestHomePageProp {}
 const BrowseRequestHomePage: React.FC<BrowseRequestHomePageProp> = () => {
+  const [page, setPage] = useState(1);
+  const perPage = 10;
+  const filter = {
+    text: undefined,
+    newest: undefined,
+    datetimeSpecific: undefined,
+    // status: undefined,
+    status: "all",
+    authority: undefined,
+    privacy: undefined,
+  };
+
+  const {
+    data: allRequests,
+    isLoading,
+    mutateAsync: getRequests,
+  } = useGetAllRequests();
+
+  useEffect(() => {
+    getRequests({ page, perPage, filter });
+  }, []);
+
   return (
     <div className="max-w-[900px]">
       <div className=" space-y-2">

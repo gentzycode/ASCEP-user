@@ -14,8 +14,13 @@ interface DebatesCardViewCardProps {
 const DebatesCardViewCard: React.FC<DebatesCardViewCardProps> = ({
   debate,
 }) => {
-  const { mutateAsync: voteDebate, isLoading: isVotingDebate } =
-    useVoteDebate();
+  const {
+    mutateAsync: voteDebate,
+    isLoading: isVotingDebate,
+    isError,
+    error,
+    data,
+  } = useVoteDebate();
 
   const { refetchDebates } = useDebateContext();
 
@@ -25,7 +30,12 @@ const DebatesCardViewCard: React.FC<DebatesCardViewCardProps> = ({
   };
 
   const handleDislike = async () => {
+    console.log(data);
     await voteDebate({ type: "dislike", debate_id: debate.id });
+    // if (isError) {
+      console.log(data);
+      console.log(isError);
+    // }
     refetchDebates();
   };
 

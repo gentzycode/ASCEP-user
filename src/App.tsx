@@ -12,13 +12,13 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <APIProvider apiKey={""}>
-        <AppProvider>
-          <BrowserRouter>
+        <BrowserRouter>
+          <AppProvider>
             <AuthProvider>
               <Router />
             </AuthProvider>
-          </BrowserRouter>
-        </AppProvider>
+          </AppProvider>
+        </BrowserRouter>
         <Toaster />
       </APIProvider>
     </QueryClientProvider>

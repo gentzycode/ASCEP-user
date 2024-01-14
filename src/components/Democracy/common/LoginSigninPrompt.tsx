@@ -1,12 +1,12 @@
 import IconWrapper from "@/components/custom/IconWrapper 2";
 import { Button } from "@/components/ui/button";
-import { useAuthContext } from "@/providers/AuthProvider";
+import { useAppContext } from "@/contexts/AppContext";
 import ROUTES from "@/utils/routesNames";
 import { CloseCircle, Danger } from "iconsax-react";
 import { Link } from "react-router-dom";
 
 const LoginSigninPrompt = () => {
-  const { logout } = useAuthContext();
+  const { handleOpenModal } = useAppContext();
   return (
     <div className="flex items-center justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10">
       <div className="flex justify-start items-center gap-1">
@@ -15,7 +15,7 @@ const LoginSigninPrompt = () => {
         </IconWrapper>
         <p className="text-[16px]">
           You must{" "}
-          <span className="underline cursor-pointer" onClick={logout}>
+          <span className="underline cursor-pointer" onClick={handleOpenModal}>
             sign in
           </span>{" "}
           or{" "}
