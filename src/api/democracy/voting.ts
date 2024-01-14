@@ -33,7 +33,6 @@ import {
   pollQuestionAnswerSchema,
   votePollCommentSchema,
 } from "@/schemas/VotingSchema";
-import { useAuthContext } from "@/providers/AuthProvider";
 import { useAppContext } from "@/contexts/AppContext";
 import baseUrl from "../baseUrl";
 
