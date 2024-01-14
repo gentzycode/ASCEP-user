@@ -54,7 +54,7 @@ export default function DataViewItem({ report }: DataViewItemProps) {
             </div>
           </div>
 
-          <p className="text-sm line-clamp-2 md:line-clamp-2 xl:line-clamp-5 text-subtle_text ">
+          <p className="text-sm line-clamp-2 md:line-clamp-2 xl:line-clamp-2 text-subtle_text ">
             {report.description}
           </p>
         </div>
