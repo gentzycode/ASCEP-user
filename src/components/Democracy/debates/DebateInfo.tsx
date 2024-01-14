@@ -29,7 +29,7 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
   debate,
   scrollToComments,
 }) => {
-  const { isLoggedIn,  } = useAuthContext();
+  const { isLoggedIn } = useAuthContext();
   const { user } = useAppContext();
 
   const { mutate: voteDebate, isLoading: isVoting } = useVoteDebate();
@@ -66,7 +66,7 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
       <div className=" w-full xl:min-w-[700px] flex flex-col gap-6">
         {/* MAIN INFO */}
         <div>
-          <h1 className="text-[20px] text-dark">{title}</h1>
+          <h1 className="text-2xl lg:text-3xl text-dark py-3">{title}</h1>
           <div className="flex justify-start items-center gap-6 my-4 flex-wrap">
             <Avatar className="h-12 w-12">
               <AvatarImage
@@ -155,15 +155,25 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
                 <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
                   Author
                 </h2>
-                <Link to={ROUTES.EDIT_DEBATE_ROUTE(debate.id)}>
-                  <Button className="text-dark text-base h-fit my-4 px-8 py-3 w-full   justify-center gap-3 flex rounded-lg max-w-[200px]">
+                <Button
+                  className="text-dark text-base h-fit my-4  w-full p-0  justify-center gap-3 flex rounded-lg max-w-[200px]"
+                  disabled={
+                    debate.total_comments_cache > 0 ||
+                    debate.total_comments_cache > 0
+                  }
+                >
+                  <Link to={ROUTES.EDIT_DEBATE_ROUTE(debate.id)} className="justify-center gap-3 flex w-full h-full px-8 py-3">
                     <span>Edit</span>
                     <CardEdit />
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
                 <Button
                   className="text-red-500 border border-red-500 hover:text-light text-base bg-transparent hover:bg-red-400 h-fit my-4 px-8 py-3 justify-center gap-3 flex rounded-lg w-full max-w-[200px]"
                   onClick={openAlert}
+                  disabled={
+                    debate.total_comments_cache > 0 ||
+                    debate.total_comments_cache > 0
+                  }
                 >
                   <span>Delete Debate</span>
                   <Trash />
@@ -223,7 +233,6 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
               </IconWrapper>
             </Button>
           </div>
-
         </div>
 
         {/* SHARE */}

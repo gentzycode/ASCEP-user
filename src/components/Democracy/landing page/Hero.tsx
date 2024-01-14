@@ -1,13 +1,15 @@
 import { DemocracyNavigation } from "@/components/Democracy";
 import HeroImage from "/images/democracy/hero-image.png";
 import { Button } from "@/components/ui/button";
+import { useAuthContext } from "@/providers/AuthProvider";
+import { useAppContext } from "@/contexts/AppContext";
 import { Link } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
-import { useAuthContext } from "@/providers/AuthProvider";
 
 interface HeroProp {}
 const Hero: React.FC<HeroProp> = () => {
   const { isLoggedIn } = useAuthContext();
+  const { handleOpenModal } = useAppContext();
   return (
     <div className="w-full relative px-3 min-[600px]:px-6 pt-10 pb-16">
       <DemocracyNavigation />
@@ -29,12 +31,15 @@ const Hero: React.FC<HeroProp> = () => {
 
       {!isLoggedIn && (
         <div className="flex justify-center items-center gap-8 md:flex-row w-full flex-wrap my-6">
-          <Button className="w-[175px]">Get started</Button>
-          <Link to={ROUTES.SIGNIN_ROUTE}>
-            <Button className="bg-transparent border-primary border-2 w-[175px]">
-              Log in
-            </Button>
+          <Link to={ROUTES.SIGNUP_ROUTE}>
+            <Button className="w-[175px]">Sign Up</Button>
           </Link>
+          <Button
+            className="bg-transparent border-primary border-2 w-[175px] text-light"
+            onClick={handleOpenModal}
+          >
+            Log in
+          </Button>
         </div>
       )}
     </div>

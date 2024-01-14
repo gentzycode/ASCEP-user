@@ -21,7 +21,7 @@ const FilterButtons: React.FC<FilterButtonsProps> = ({
           filterByButton(value);
         }
       }}
-      className="flex"
+      className="flex flex-wrap"
     >
       {filterButtonOptions.map((button, i) => (
         <Button

@@ -74,7 +74,9 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
       <div className=" w-full xl:min-w-[700px] flex flex-col gap-6">
         {/* MAIN INFO */}
         <div className="flex flex-col w-full">
-          <h1 className="text-[20px] text-dark">{proposal.title}</h1>
+          <h1 className="text-2xl lg:text-3xl text-dark py-3">
+            {proposal.title}
+          </h1>
           <div className="flex justify-start items-center gap-6 flex-wrap">
             <Avatar className="h-12 w-12">
               <AvatarImage
@@ -246,20 +248,30 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
                 <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
                   Author
                 </h2>
-                <Link to={ROUTES.EDIT_PROPOSAL_ROUTE(proposal.id)}>
-                  <Button
-                    className="text-dark text-base h-fit my-4 px-8 py-3 w-full justify-center
-               gap-3 flex rounded-lg max-w-[220px]"
+                <Button
+                  className="text-dark text-base h-fit my-4  w-full p-0  justify-center gap-3 flex rounded-lg max-w-[200px]"
+                  disabled={
+                    proposal.total_comments_cache > 0 ||
+                    proposal.total_comments_cache > 0
+                  }
+                >
+                  <Link
+                    to={ROUTES.EDIT_PROPOSAL_ROUTE(proposal.id)}
+                    className="justify-center gap-3 flex w-full h-full px-8 py-3"
                   >
                     <span>Edit</span>
                     <CardEdit />
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
                 <Button
                   className="text-red-500 border border-red-500
                  hover:text-light text-base  bg-transparent hover:bg-red-400 h-fit my-4 px-8 py-3 
                  justify-center gap-1 flex rounded-lg w-full max-w-[220px]"
                   onClick={openAlert}
+                  disabled={
+                    proposal.total_comments_cache > 0 ||
+                    proposal.total_comments_cache > 0
+                  }
                 >
                   <span>Delete Proposal</span>
                   <Trash />

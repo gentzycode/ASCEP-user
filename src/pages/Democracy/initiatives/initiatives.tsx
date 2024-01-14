@@ -30,8 +30,7 @@ const InitiativesHomePage = () => {
 
   const { isLoggedIn } = useAuthContext();
 
-  const pageDescription =
-    "Citizens' proposals are an opportunity for neighbours and collectivesto decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.";
+  const pageDescription = "Citizens' Initiatives are an opportunity for neighbours and collectives to decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote."
   return (
     <>
       {/* HEADING */}

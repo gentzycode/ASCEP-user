@@ -21,7 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-type FormSelecteResponseTypeProps<
+type FormSelectPublicIdentifierProps<
   TFormValues extends FieldValues = FieldValues
 > = {
   control?: Control<TFormValues>;
@@ -32,7 +32,9 @@ type FormSelecteResponseTypeProps<
   errors?: Partial<DeepMap<TFormValues, FieldError>> | FieldErrors<TFormValues>;
 } & Omit<InputProps, "name">;
 
-const FormSelecteResponseType = <TFormValues extends Record<string, unknown>>({
+const FormSelectPublicIdentifier = <
+  TFormValues extends Record<string, unknown>
+>({
   control,
   label,
   name,
@@ -40,7 +42,7 @@ const FormSelecteResponseType = <TFormValues extends Record<string, unknown>>({
   errors,
   description,
   ...props
-}: FormSelecteResponseTypeProps<TFormValues>): JSX.Element => {
+}: FormSelectPublicIdentifierProps<TFormValues>): JSX.Element => {
   const errorMessage = lodash.get(errors, name);
   const hasError = !!errors && errorMessage;
   return (
@@ -53,7 +55,7 @@ const FormSelecteResponseType = <TFormValues extends Record<string, unknown>>({
           <Select
             onValueChange={field.onChange}
             // @ts-ignore
-            defaultValue={field.value!}
+            defaultValue={field.value}
             {...props}
           >
             <FormControl>
@@ -62,14 +64,14 @@ const FormSelecteResponseType = <TFormValues extends Record<string, unknown>>({
                   hasError
                     ? "focus-visible:ring-red-500 focus:ring-red-500"
                     : "focus-visible:ring-primary focus:ring-primary"
-                } focus-visible:ring-offset-2 border-transparent ring-transparent  focus:ring-1 h-12 rounded-full px-4 text-sm md:text-base`}
+                } focus-visible:ring-offset-2 border-transparent ring-transparent text-text  focus:ring-1 h-12 rounded-full px-4 text-sm md:text-base`}
               >
-                <SelectValue placeholder="Select answer type" />
+                <SelectValue placeholder="Select type" />
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              <SelectItem value="single">Single answer</SelectItem>
-              <SelectItem value="multi_choice">Multiple answers</SelectItem>
+              <SelectItem value="private">Private</SelectItem>
+              <SelectItem value="public">Public</SelectItem>
             </SelectContent>
           </Select>
           <FormMessage />
@@ -79,4 +81,4 @@ const FormSelecteResponseType = <TFormValues extends Record<string, unknown>>({
   );
 };
 
-export default FormSelecteResponseType;
+export default FormSelectPublicIdentifier;

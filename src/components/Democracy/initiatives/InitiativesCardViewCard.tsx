@@ -38,8 +38,12 @@ const InitiativesCardViewCard: React.FC<InitiativesCardViewCardProps> = ({
             {/* user info */}
             <div className="flex gap-3 my-2">
               <Avatar className="h-12 w-12">
-                <AvatarImage src="/images/avatar.png" />
-                <AvatarFallback>CN</AvatarFallback>
+                <AvatarImage
+                  src={initiative.author.profile_picture ?? undefined}
+                />
+                <AvatarFallback className="uppercase font-extrabold">
+                  {initiative.author.username.slice(0, 2)}
+                </AvatarFallback>
               </Avatar>
               <div>
                 <h2 className="text-dark text-[14px]">
@@ -57,9 +61,9 @@ const InitiativesCardViewCard: React.FC<InitiativesCardViewCardProps> = ({
               <p
                 className={`${
                   initiative.status === "in review"
-                    ? "text-primary"
-                    : "text-[#31D0AA]"
-                } text-sm my-3 capitalize`}
+                    ? "text-primary bg-primary/10"
+                    : "text-[#31D0AA] bg-[#31D0AA]/10"
+                } text-base font-extrabold my-3 capitalize px-4 rounded-full`}
               >
                 {initiative.status}
               </p>
@@ -122,34 +126,47 @@ const InitiativesCardViewCard: React.FC<InitiativesCardViewCardProps> = ({
       </div>
 
       {/* BOTTOM CON */}
-      <div
-        className="bg-[#FFFFFF] shadow-xl flex
+      {initiative.status !== "in review" ? (
+        <div
+          className="bg-[#FFFFFF] shadow-xl flex
        justify-center items-center  rounded-xl px-4 gap-4 py-4 "
-      >
-        <Button
-          className={`h-[74px] hover:bg-inherit px-8 w-fit disabled:opacity-100`}
-          disabled
         >
-          {initiative.total_support_cache}/ {initiative.supportNeeded}
-        </Button>
-        <div className="flex flex-col gap-2">
           <Button
-            className="h-fit py-2 text-[12px] bg-dark text-light disabled:opacity-100"
+            className={`h-[74px] hover:bg-inherit px-8 w-fit disabled:opacity-100`}
             disabled
           >
-            <Messages1 size="20" />
-            <span>{initiative.support_needed} support needed</span>
+            {initiative.total_support_cache}/ {initiative.supportNeeded}
           </Button>
-          <Button
-            className="h-11 text-[16px] w-full rounded-full"
-            onClick={handleSupport}
-            isLoading={isSupporting}
-            disabled={isSupporting}
-          >
-            Support
-          </Button>
+          <div className="flex flex-col gap-2">
+            <Button
+              className="h-fit py-2 text-[12px] bg-dark text-light disabled:opacity-100"
+              disabled
+            >
+              <Messages1 size="20" />
+              <span>{initiative.support_needed} support needed</span>
+            </Button>
+            <Button
+              className="h-11 text-[16px] w-full rounded-full"
+              onClick={handleSupport}
+              isLoading={isSupporting}
+              disabled={isSupporting}
+            >
+              Support
+            </Button>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div
+          className="bg-[#FFFFFF] shadow-xl 
+      rounded-xl px-4 gap-4 py-4 "
+        >
+          <Link to={ROUTES.INITIATIVE_INFO_ROUTE(initiative.id)}>
+            <Button className="h-11 text-[16px] w-full rounded-full">
+              Check it out
+            </Button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

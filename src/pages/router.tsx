@@ -21,8 +21,12 @@ import { useToast } from "@/components/ui/use-toast";
 import { ViewResponsePage } from "./Response";
 import SmoothScroll from "@/components/custom/ScrollToTop";
 import RepsonseProvider from "@/providers/ResponseProvider";
+import { useAppContext } from "@/contexts/AppContext";
+import { LoginModal } from "@/components/custom";
 
 const Router = () => {
+  const { isLoginModalOpen, onLoginModalClose } = useAppContext();
+
   const pageRoutes = routes.map(({ path, title, element }: RouterType) => {
     return <Route key={title} path={`/${path}`} element={element} />;
   });
@@ -144,6 +148,7 @@ const Router = () => {
 
         <Route path="*" element={<div>Route Not Found</div>} />
       </Routes>
+      <LoginModal isOpen={isLoginModalOpen} onClose={onLoginModalClose} />
     </SmoothScroll>
   );
 };

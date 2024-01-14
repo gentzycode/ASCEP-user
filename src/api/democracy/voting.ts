@@ -33,7 +33,7 @@ import {
   pollQuestionAnswerSchema,
   votePollCommentSchema,
 } from "@/schemas/VotingSchema";
-import { useAuthContext } from "@/providers/AuthProvider";
+import { useAppContext } from "@/contexts/AppContext";
 import baseUrl from "../baseUrl";
 
 // PUBLISH POLL
@@ -256,7 +256,7 @@ export const useLinkProposal = () => {
 export const usePublishQuestionAnswers = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  const { logout } = useAuthContext();
+  const { handleOpenModal } = useAppContext();
   return useMutation(
     (
       values: z.infer<typeof pollQuestionAnswerSchema>
@@ -281,12 +281,12 @@ export const usePublishQuestionAnswers = () => {
 
         errors.map((error: { message: string }) => {
           if (error.message === "E_UNAUTHORIZED_ACCESS: Unauthorized access") {
+            handleOpenModal();
             toast({
               title: "Error!",
               variant: "error",
               description: "Please login to perform this action",
             });
-            return logout();
           }
         });
       },

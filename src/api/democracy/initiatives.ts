@@ -32,6 +32,7 @@ import {
   VOTE_INITIATIVE_COMMENT_ENDPOINT,
 } from ".";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { useAppContext } from "@/contexts/AppContext";
 
 // PUBLISH INITIATIVE
 export const usePublishInitiative = () => {
@@ -203,7 +204,7 @@ export const useVoteInitiativeComment = () => {
 export const useSupportInitiative = (initiativeId: string) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  const { logout } = useAuthContext();
+  const { handleOpenModal } = useAppContext();
   return useMutation(
     (): Promise<ResponseDataType> => {
       return axios
@@ -225,12 +226,12 @@ export const useSupportInitiative = (initiativeId: string) => {
 
         errors.map((error: { message: string }) => {
           if (error.message === "E_UNAUTHORIZED_ACCESS: Unauthorized access") {
+            handleOpenModal();
             toast({
               title: "Error!",
               variant: "error",
               description: "Please login to perform this action",
             });
-            return logout();
           }
         });
       },
@@ -242,7 +243,7 @@ export const useSupportInitiative = (initiativeId: string) => {
 export const useFollowInitiative = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  const { logout } = useAuthContext();
+  const { handleOpenModal } = useAppContext();
   return useMutation(
     (
       values: z.infer<typeof followInitiativeSchema>
@@ -264,12 +265,12 @@ export const useFollowInitiative = () => {
         const errors = error.response.data.errors;
         errors.map((error: { message: string }) => {
           if (error.message === "E_UNAUTHORIZED_ACCESS: Unauthorized access") {
+            handleOpenModal();
             toast({
               title: "Error!",
               variant: "error",
               description: "Please login to perform this action",
             });
-            return logout();
           }
         });
       },

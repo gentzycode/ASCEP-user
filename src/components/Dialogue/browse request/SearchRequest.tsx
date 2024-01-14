@@ -69,6 +69,7 @@ const SearchRequest: React.FC<SearchRequestProp> = () => {
       <FilterButtons
         filterButtonOptions={browseRequestFilterButtonOptions}
         filterByButton={() => {}}
+        defaultFilterButtonValue="all"
       />
     </div>
   );

@@ -47,6 +47,7 @@ import InitiativeProvider from "@/contexts/InitiativeContext";
 import DemocracyLandingePage from "./Democracy/landing-page";
 import VotingProvider from "@/contexts/VotingContext";
 import {
+  AuthorityInfoPage,
   BrowseRequestHomePage,
   CreateRequestPage,
   DialoguLandingPage,
@@ -109,7 +110,7 @@ export const dialogueRoutes: RouterType[] = [
     title: "dailogue",
   },
   {
-    path: "/dialogue/make-a-request/create-request",
+    path: "/dialogue/make-a-request/create-request/:authorityId",
     element: <CreateRequestPage />,
     title: "dailogue-create-request",
   },
@@ -126,7 +127,12 @@ export const dialogueRoutes: RouterType[] = [
   {
     path: "/dialogue/view-authorities",
     element: <ViewAuthoritiesHomePage />,
-    title: "dailogue",
+    title: "dailogue-authority",
+  },
+  {
+    path: "/dialogue/authority-info/:authorityId",
+    element: <AuthorityInfoPage />,
+    title: "dailogue-authority-info",
   },
   {
     path: "/dialogue/dialogue-help",

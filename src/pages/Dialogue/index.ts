@@ -10,6 +10,7 @@ export { default as RequestInfoPage } from "./browse-request/request-info";
 
 //VIEW AUTHORITIES
 export { default as ViewAuthoritiesHomePage } from "./view-authorities/view-authorities";
+export { default as AuthorityInfoPage } from "./view-authorities/authority-info";
 
 //HELP
 export { default as DialogueHelpHomePage } from "./help/help";

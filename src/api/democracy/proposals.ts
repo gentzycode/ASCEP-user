@@ -40,6 +40,7 @@ import {
   VOTE_PROPOSAL_TOPIC_COMMENT_ENDPOINT,
 } from ".";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { useAppContext } from "@/contexts/AppContext";
 
 // PUBLISH PROPOSAL
 export const usePublishProposal = () => {
@@ -194,7 +195,7 @@ export const useVoteProposalComment = () => {
 export const useSupportProposal = (proposalId: string) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  const { logout } = useAuthContext();
+  const { handleOpenModal } = useAppContext();
   return useMutation(
     (): Promise<ResponseDataType> => {
       return axios
@@ -214,12 +215,12 @@ export const useSupportProposal = (proposalId: string) => {
         const errors = error.response.data.errors;
         errors.map((error: { message: string }) => {
           if (error.message === "E_UNAUTHORIZED_ACCESS: Unauthorized access") {
+            handleOpenModal();
             toast({
               title: "Error!",
               variant: "error",
               description: "Please login to perform this action",
             });
-            return logout();
           }
         });
       },
