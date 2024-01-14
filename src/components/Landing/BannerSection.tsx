@@ -15,7 +15,7 @@ export default function BannerSection() {
         </p>
 
         <div className="flex justify-center gap-6 sm:justify-start md:gap-8">
-          <Link to="/auth/signup">
+          <Link to="/main">
             <Button className="w-[175px]">Get Started</Button>
           </Link>
           {/* 

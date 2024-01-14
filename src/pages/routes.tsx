@@ -83,7 +83,7 @@ const routes: RouterType[] = [
   },
   {
     path: "/response",
-    element: <Navigate to="/response/map-view" />,
+    element: <Navigate to="/response/data-view" />,
     title: "response",
   },
   {

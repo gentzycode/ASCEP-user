@@ -35,6 +35,7 @@ import {
 } from "@/schemas/VotingSchema";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { useAppContext } from "@/contexts/AppContext";
+import baseUrl from "../baseUrl";
 
 // PUBLISH POLL
 export const usePublishPoll = () => {
@@ -326,6 +327,20 @@ export const useResolvePollShareID = (shareableId: string) => {
     },
     {
       refetchOnWindowFocus: false,
+      retry: false,
+    }
+  );
+};
+
+export const useGetPopularPolls = () => {
+  return useQuery(
+    ["popular-polls"],
+    (): Promise<PollType[]> => {
+      return axios
+        .get(`${baseUrl}/voting/popular`)
+        .then((res) => res.data.data.polls);
+    },
+    {
       retry: false,
     }
   );

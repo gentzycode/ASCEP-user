@@ -82,15 +82,15 @@ export default function ResponseLayout() {
 
 const responsePages: NavLinkType[] = [
   {
-    title: "Map View",
-    path: "/response/map-view",
-  },
-  {
     title: "Data View",
     path: "/response/data-view",
   },
   {
     title: "Activity",
     path: "/response/activity",
+  },
+  {
+    title: "Map View",
+    path: "/response/map-view",
   },
 ];

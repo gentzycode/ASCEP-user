@@ -67,7 +67,7 @@ const FormTextArea = <TFormValues extends Record<string, unknown>>({
             </FormControl>
           </div>
           {hasError && (
-            <FormMessage className="px-4 text-[11px] font-normal">
+            <FormMessage className="px-4 text-[11px] font-normal text-red-500">
               {errorMessage.message}
             </FormMessage>
           )}

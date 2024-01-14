@@ -5,12 +5,9 @@ import {
 } from "@/components/layout-components";
 import { Toaster } from "@/components/ui/toaster";
 import NavigationContextProvider from "@/contexts/NavigationContext";
-// import { useAuthContext } from "@/providers/AuthProvider";
 import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
 export default function MainLayout() {
-  // const { isLoggedIn } = useAuthContext();
-
   // if (!isLoggedIn) return <Navigate to="/auth/login" />;
   return (
     <NavigationContextProvider>

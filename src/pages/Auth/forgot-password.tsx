@@ -7,11 +7,13 @@ export default function ForgotPasswordPage() {
     <div>
       <img src="/images/logo.png" alt="logo" className="h-[70px]   mb-12" />
 
-      <FormCard>
-        <ForgotPasswordProvider>
-          <ForgotPasswordSteps />
-        </ForgotPasswordProvider>
-      </FormCard>
+      <div className="flex justify-center md:justify-start">
+        <FormCard>
+          <ForgotPasswordProvider>
+            <ForgotPasswordSteps />
+          </ForgotPasswordProvider>
+        </FormCard>
+      </div>
     </div>
   );
 }

@@ -24,7 +24,7 @@ export default function UserProfile() {
 
 function ProfileRow({ title, value }: { title: string; value: string }) {
   return (
-    <div className="flex items-center justify-between font-medium">
+    <div className="flex flex-col justify-between font-medium md:items-center md:flex-row">
       <p className="text-subtle_text ">{title}</p>
       <p className="text-dark">{value}</p>
     </div>

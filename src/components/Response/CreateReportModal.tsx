@@ -7,11 +7,11 @@ import { Form } from "../ui/form";
 import { CategoriesMultiSelect, FormInput, SDGMultiSelect } from "../custom";
 import { FaPlus } from "react-icons/fa";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { Gps } from "iconsax-react";
 import FormTextArea from "../custom/FormTextArea";
 import { createPostSchema } from "@/schemas/ResponseSchema";
 import { appendObjectToFormData } from "@/utils/helper";
 import { useCreateReport } from "@/api/response";
+import SelectLocation from "./SelectLocation";
 
 interface CreatePostModalProps {
   onClose: () => void;
@@ -32,6 +32,10 @@ export default function CreateReportModal({
     CollectionData[]
   >([]);
   const [selectedSDGs, setSelectedSDGs] = useState<SDGData[]>([]);
+  const [selectedLocation, setSelectedLocation] = useState<WardsType | null>(
+    null
+  );
+  const [locationError, setLocationError] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof createPostSchema>>({
     resolver: zodResolver(createPostSchema),
@@ -50,15 +54,20 @@ export default function CreateReportModal({
   }, [isSuccess]);
 
   function onSubmit(values: z.infer<typeof createPostSchema>) {
+    if (!selectedLocation) {
+      setLocationError("Select a location to continue");
+      return;
+    }
     const payload = {
       ...values,
       location: {
-        latitude: 5.957062146,
-        longitude: 7.115944668,
+        latitude: selectedLocation?.latitude,
+        longitude: selectedLocation?.longitude,
       },
       images: selectedImages.map((image) => image.image),
       categories: selectedCategories.map((category) => category.id),
       sdgs: selectedSDGs.map((sdg) => sdg.id),
+      location_meta: `${selectedLocation?.lga}, ${selectedLocation.state}`,
     };
     const formData = new FormData();
 
@@ -155,15 +164,12 @@ export default function CreateReportModal({
 
               <div className="items-center justify-between space-y-2 md:flex ">
                 <p className="text-subtle_text">Location</p>
+
                 <div className=" w-full max-w-[350px]">
-                  <FormInput
-                    name="location_meta"
-                    label="Location"
-                    control={control}
-                    placeholder="Enter location"
-                    errors={errors}
-                    rightElement={<Gps size={24} color="#000" />}
-                  />
+                  <SelectLocation onSelect={setSelectedLocation} />
+                  <p className="px-4 text-[11px] font-normal text-red-500">
+                    {locationError}
+                  </p>
                 </div>
               </div>
               <div className="items-center justify-between space-y-2 md:flex ">

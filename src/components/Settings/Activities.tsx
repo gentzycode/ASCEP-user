@@ -18,7 +18,7 @@ export const columns: ColumnDef<Payment>[] = [
     header: "Device",
     cell: ({ row }) => {
       return (
-        <div className="flex items-start gap-1 text-sm">
+        <div className="flex items-start text-sm sm:gap-1">
           <div className="mt-1 text-subtle_text">
             {row.original.deviceType === "Mobile" ? (
               <PiDeviceMobileCamera />

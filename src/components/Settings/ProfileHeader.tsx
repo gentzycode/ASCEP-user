@@ -1,10 +1,12 @@
 import { useSettingsContext } from "@/providers/SettingsProvider";
 import { Button } from "../ui/button";
-import { useGetUserProfile } from "@/api/auth";
+import useScreenWidth from "@/hooks/useScreenWidth";
+import { useAppContext } from "@/contexts/AppContext";
 
 export default function ProfileHeader() {
   const { setActiveOption } = useSettingsContext();
-  const { data } = useGetUserProfile();
+  const { user: data } = useAppContext();
+  const { screenWidth } = useScreenWidth();
 
   return (
     <div
@@ -15,34 +17,40 @@ export default function ProfileHeader() {
         backgroundPosition: "center",
       }}
     >
-      <Button onClick={() => setActiveOption("Edit Profile")} className="px-12">
+      <Button
+        size={screenWidth > 758 ? "default" : "sm"}
+        onClick={() => setActiveOption("Edit Profile")}
+        className="px-12"
+      >
         Edit Profile
       </Button>
 
-      <div className="absolute -bottom-[120px] left-16 flex gap-5 items-end">
-        <div className="rounded-full border-[#F9F6FB] border-[10px] w-[200px] h-[200px] ">
-          {data?.profile_picture ? (
-            <img
-              src={data.profile_picture}
-              className="object-cover w-full h-full rounded-full"
-              alt="profile-photo"
-            />
-          ) : (
-            <div className="flex items-center justify-center w-full h-full rounded-full bg-primary ">
-              <p className="h3">
-                {data?.firstname[0]} {data?.lastname[0]}
-              </p>
-            </div>
-          )}
-        </div>
+      {data && (
+        <div className="absolute top-[50px] sm:-bottom-[120px] left-0  sm:left-16 flex flex-col sm:flex-row gap-2 sm:gap-5 sm:items-end">
+          <div className="rounded-full border-[#F9F6FB] border-[6px] sm:border-[10px] w-[120px] sm:w-[200px] h-[120px] sm:h-[200px] ">
+            {data?.profile_picture ? (
+              <img
+                src={data.profile_picture}
+                className="object-cover w-full h-full rounded-full"
+                alt="profile-photo"
+              />
+            ) : (
+              <div className="flex items-center justify-center w-full h-full rounded-full bg-primary ">
+                {/* <p className="h3">
+                  {data?.firstname[0]} {data?.lastname[0]}
+                </p> */}
+              </div>
+            )}
+          </div>
 
-        <div className="pb-12">
-          <p className="text-3xl font-bold text-text">
-            {data?.firstname} {data?.lastname}
-          </p>
-          <p className="text-sm text-subtle_text">{data?.email}</p>
+          <div className="pb-12">
+            <p className="text-3xl font-bold text-text">
+              {data?.firstname} {data?.lastname}
+            </p>
+            <p className="text-sm text-subtle_text">{data?.email}</p>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

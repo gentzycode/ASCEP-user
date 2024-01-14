@@ -33,7 +33,7 @@ export default function ChangePassword() {
   return (
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div className="flex items-center justify-between ">
+        <div className="flex flex-col justify-between md:items-center md:flex-row ">
           <p className="text-subtle_text">Old Password</p>
           <div className=" w-full max-w-[350px]">
             <FormInput
@@ -46,7 +46,7 @@ export default function ChangePassword() {
             />
           </div>
         </div>
-        <div className="flex items-center justify-between ">
+        <div className="flex flex-col justify-between md:items-center md:flex-row ">
           <p className="text-subtle_text">New Password</p>
           <div className=" w-full max-w-[350px]">
             <FormInput
@@ -59,7 +59,7 @@ export default function ChangePassword() {
             />
           </div>
         </div>
-        <div className="flex items-center justify-between ">
+        <div className="flex flex-col justify-between md:items-center md:flex-row ">
           <p className="text-subtle_text">Re-enter New Password</p>
           <div className=" w-full max-w-[350px]">
             <FormInput
@@ -73,7 +73,7 @@ export default function ChangePassword() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col justify-between gap-2 md:flex-row md:items-center">
           <p className="font-medium underline text-primary">Reset password</p>
 
           <Button>Update Password</Button>

@@ -39,30 +39,32 @@ export default function TwoFactorAuthLogin() {
         <img src="/images/logo.png" alt="logo" className="h-[70px] " />
       </div>
 
-      <FormCard className="my-auto space-y-6">
-        <CardBackBtn onClick={() => navigate(-1)} />
-        <div className="space-y-7 mb-7">
-          <h2 className="text-[30px] text-center text-dark">
-            Two Factor Authentication
-          </h2>
-          <p className="font-medium text-center text-text">
-            Enter the token sent to your email to login
-          </p>
-        </div>
-        <div className="space-y-6">
-          <form className="space-y-6">
-            <CustomPinInput
-              length={6}
-              onChange={(e) => handleOtpChange(e)}
-              error={otpError}
-            />
-          </form>
+      <div className="flex justify-center md:justify-start">
+        <FormCard className="my-auto space-y-6">
+          <CardBackBtn onClick={() => navigate(-1)} />
+          <div className="space-y-7 mb-7">
+            <h2 className="text-[30px] text-center text-dark">
+              Two Factor Authentication
+            </h2>
+            <p className="font-medium text-center text-text">
+              Enter the token sent to your email to login
+            </p>
+          </div>
+          <div className="space-y-6">
+            <form className="space-y-6">
+              <CustomPinInput
+                length={6}
+                onChange={(e) => handleOtpChange(e)}
+                error={otpError}
+              />
+            </form>
 
-          <Button isLoading={isLoading} onClick={onSubmit} className="w-full">
-            Login
-          </Button>
-        </div>
-      </FormCard>
+            <Button isLoading={isLoading} onClick={onSubmit} className="w-full">
+              Login
+            </Button>
+          </div>
+        </FormCard>
+      </div>
     </div>
   );
 }
