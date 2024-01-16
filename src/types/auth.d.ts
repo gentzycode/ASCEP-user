@@ -20,3 +20,7 @@ interface TwoFALoginPayload {
   email: string;
   token: string;
 }
+
+interface ChangePasswordPayload {
+  newPassword: string;
+}

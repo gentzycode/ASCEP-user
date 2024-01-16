@@ -16,6 +16,7 @@ import { useLocation } from "react-router-dom";
 interface AppContextType {
   fetchingSdgs: boolean;
   user: UserData | null;
+  setUser: React.Dispatch<React.SetStateAction<UserData | null>>;
   fetchingUser: boolean;
   sdgData: SDGsType[];
   targets: SDGTarget[];
@@ -34,6 +35,7 @@ const AppContext = createContext<AppContextType>({
   fetchingSdgs: false,
   fetchingUser: false,
   user: null,
+  setUser: () => {},
   sdgData: [],
   targets: [],
   setTargets: () => {},
@@ -103,6 +105,7 @@ export default function AppProvider({ children }: PropsWithChildren) {
         onLoginModalClose,
         onLoginModalOpen,
         handleOpenModal,
+        setUser,
       }}
     >
       {children}
