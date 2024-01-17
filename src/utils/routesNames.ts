@@ -3,6 +3,7 @@ const ROUTES = {
   SIGNUP_ROUTE: "/auth/signup",
   MAIN_ROUTE: "/main",
 
+  DEMOCRACY_LANDING_PAGE: "/democracy",
   // DEBATE
   DEBATES_HOME_ROUTE: "/democracy/debates",
   DEBATE_INFO_ROUTE: (debateId: string) => `/democracy/debates/${debateId}`,
@@ -58,6 +59,8 @@ const ROUTES = {
 
   //BROWSE REQUEST
   BROWSE_REQUEST_HOME_ROUTE: "/dialogue/browse-request",
+  REQUEST_INFO_ROUTE: (requestId: string) =>
+    `/dialogue/browse-request/info/${requestId}`,
 
   //VIEW AUTHORITIES
   VIEW_AUTHORITIES_HOME_ROUTE: "/dialogue/view-authorities",

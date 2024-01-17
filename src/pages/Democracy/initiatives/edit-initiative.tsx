@@ -15,8 +15,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import FormTextArea from "@/components/Democracy/common/FormTextArea";
 import TargetsMultiSelect from "@/components/custom/TargetsMultiSelect";
-import { IconWrapper, PageLoader } from "@/components/custom";
-import { FaSpinner } from "react-icons/fa";
+import { PageLoader } from "@/components/custom";
 import { useAppContext } from "@/contexts/AppContext";
 import { useGetAllCategories } from "@/api/category";
 import {
@@ -70,7 +69,6 @@ const EditInitiativePage: React.FC<EditInitiativePageProps> = () => {
   } = form;
 
   async function onSubmit(values: z.infer<typeof startInitiativeSchema>) {
-    console.log({ ...values, id: initiative?.id });
     await UpdateInitiative({ ...values, id: initiative?.id });
   }
 
@@ -212,6 +210,7 @@ const EditInitiativePage: React.FC<EditInitiativePageProps> = () => {
                 label="Initiative summary (maximum of 200 characters)"
                 control={control}
                 errors={errors}
+                rows={4}
               />
 
               {/* WARD */}

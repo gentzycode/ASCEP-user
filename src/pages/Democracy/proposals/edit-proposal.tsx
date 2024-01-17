@@ -56,11 +56,11 @@ const EditProposalPage: React.FC<EditProposalPageProps> = () => {
   const form = useForm<z.infer<typeof startProposalSchema>>({
     resolver: zodResolver(startProposalSchema),
     defaultValues: {
-      title: proposal?.title,
-      summary: proposal?.summary,
-      content: proposal?.content,
-      external_video_url: proposal?.external_video_url,
-      ward_id: proposal?.ward_id,
+      title: undefined,
+      summary: undefined,
+      content: undefined,
+      external_video_url: undefined,
+      ward_id: undefined,
       tags: [],
       categories: proposal?.proposalCategory.map((item) => item.category_id),
       sdgs: proposal?.proposalSDGs.map((item) => item.sdgs_id),
@@ -82,7 +82,45 @@ const EditProposalPage: React.FC<EditProposalPageProps> = () => {
   } = form;
 
   async function onSubmit(values: z.infer<typeof startProposalSchema>) {
-    console.log({ ...values, id: proposal?.id });
+    const formData = new FormData();
+    formData.append("id", proposal?.id!);
+    formData.append("title", values.title!);
+    formData.append("summary", values.summary!);
+    formData.append("content", values.content!);
+    formData.append("ward_id", JSON.stringify(values.ward_id!));
+    formData.append("support_needed", JSON.stringify(values.support_needed!));
+    formData.append("external_video_url", String(values.external_video_url!));
+
+    if (values.image) {
+      formData.append("image", values.image);
+    }
+    if (values.documents && values.documents.length > 0) {
+      values.documents.forEach((doc, index) => {
+        formData.append(`documents[${index}]`, doc);
+      });
+    }
+    if (values.sdgs && values.sdgs.length > 0) {
+      values.sdgs.forEach((sdg, index) => {
+        formData.append(`sdgs[${index}]`, JSON.stringify(sdg));
+      });
+    }
+
+    if (values.tags && values.tags.length > 0) {
+      values.tags.forEach((tag, index) => {
+        formData.append(`tags[${index}]`, tag);
+      });
+    }
+    if (values.targets && values.targets.length > 0) {
+      values.targets.forEach((target, index) => {
+        formData.append(`targets[${index}]`, JSON.stringify(target));
+      });
+    }
+    if (values.categories && values.categories.length > 0) {
+      values.categories.forEach((category, index) => {
+        formData.append(`categories[${index}]`, JSON.stringify(category));
+      });
+    }
+    await UpdateProposal(formData);
   }
 
   useEffect(() => {
@@ -339,9 +377,9 @@ const EditProposalPage: React.FC<EditProposalPageProps> = () => {
                 type="submit"
                 className="w-full max-w-[300px] p-0 h-12"
                 isLoading={isUpdatingProposal}
-                disabled
+                disabled={isUpdatingProposal}
               >
-                Coming soon
+                Update proposal
               </Button>
             </form>
           </Form>

@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 interface BudgetingHomePageProp {}
 const BudgetingHomePage: React.FC<BudgetingHomePageProp> = () => {
   const pageDescription =
-    " Suggest initiatives, interact with investment mappings, and participate in polls with deadlines. Understand the budgeting phases, and utilize the opportunity to suggest city-specific budget items that allows for localized and impactful contributions.";
+    "Budget is a key feature that introduces the concept of participatory budgeting to the community. It allows citizens to have a direct say in how a portion of the public budget is allocated. Users can propose, discuss, and vote on budget allocations for various community projects and initiatives. This feature promotes transparency and accountability in financial governance, as it empowers citizens to make informed decisions about public spending. The Budget feature is a testament to the platform's commitment to fostering a sense of ownership and responsibility among citizens regarding community development and financial stewardship.";
 
   return (
     <>

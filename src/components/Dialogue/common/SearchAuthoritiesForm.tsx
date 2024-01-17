@@ -8,11 +8,17 @@ import { useSearchAuthorities } from "@/api/authorities";
 import { useEffect } from "react";
 
 interface SearchAuthoritiesFormProp {
-  setsearchResult: React.Dispatch<React.SetStateAction<AuthorityType[] | undefined>>;
+  setsearchResult: React.Dispatch<
+    React.SetStateAction<AuthorityType[] | undefined>
+  >;
+  resetButton: boolean;
+  cancelButton: boolean;
 }
 
 const SearchAuthoritiesForm: React.FC<SearchAuthoritiesFormProp> = ({
   setsearchResult,
+  resetButton,
+  cancelButton,
 }) => {
   const SearchAuthoritiesSchema = z.object({
     searchTerm: z
@@ -31,6 +37,7 @@ const SearchAuthoritiesForm: React.FC<SearchAuthoritiesFormProp> = ({
 
   const {
     control,
+    setValue,
     handleSubmit,
     watch,
     formState: { errors, isValid },
@@ -55,6 +62,15 @@ const SearchAuthoritiesForm: React.FC<SearchAuthoritiesFormProp> = ({
     }
   }, [searchResult]);
 
+  const resetSearch = async () => {
+    await setValue("searchTerm", "");
+    refetchSearch();
+  };
+  const handleCancel = async () => {
+    await setValue("searchTerm", "");
+    setsearchResult([]);
+  };
+
   return (
     <div className="my-10">
       <Form {...form}>
@@ -71,22 +87,38 @@ const SearchAuthoritiesForm: React.FC<SearchAuthoritiesFormProp> = ({
               control={control}
             />
           </div>
-          <Button
-            className="h-12 text-base text-dark w-[150px] mt-2"
-            disabled={!isValid || isSearching}
-            isLoading={isSearching}
-          >
-            Search
-          </Button>
+          <div className="flex gap-4 flex-wrap">
+            <Button
+              className="h-12 text-base text-dark w-[150px] mt-2"
+              disabled={!isValid || isSearching}
+              isLoading={isSearching}
+            >
+              Search
+            </Button>
+            {resetButton && (
+              <Button
+                className="h-12 text-base text-dark w-[150px] mt-2 bg-transparent border border-dark"
+                disabled={isSearching}
+                type="button"
+                onClick={resetSearch}
+              >
+                Reset Search
+              </Button>
+            )}
+            {cancelButton && (
+              <Button
+                className="h-12 text-base text-dark w-[150px] mt-2 bg-transparent border border-dark"
+                disabled={isSearching}
+                type="button"
+                onClick={handleCancel}
+              >
+                Cancel
+              </Button>
+            )}
+          </div>
         </form>
       </Form>
       <div className="mt-20">
-        {/* {searchResult && (
-          <p className="text-base text-text">
-            {searchResult.length} matching authorities
-          </p>
-        )} */}
-
         {/* ERROR */}
         {errorSearching && !searchResult && (
           <FetchingError

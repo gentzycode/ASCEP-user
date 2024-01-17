@@ -29,6 +29,7 @@ interface AppContextType {
   onLoginModalClose: () => void;
   onLoginModalOpen: () => void;
   handleOpenModal: () => void;
+  refetchUser: () => void;
 }
 
 const AppContext = createContext<AppContextType>({
@@ -47,6 +48,7 @@ const AppContext = createContext<AppContextType>({
   onLoginModalClose: () => {},
   onLoginModalOpen: () => {},
   handleOpenModal: () => {},
+  refetchUser: () => {},
 });
 
 export const useAppContext = () => useContext(AppContext);
@@ -61,7 +63,6 @@ export default function AppProvider({ children }: PropsWithChildren) {
 
   const handleOpenModal = () => {
     localStorage.setItem(config.key.redirect, location.pathname);
-    console.log("called");
     return onLoginModalOpen();
   };
 
@@ -72,7 +73,11 @@ export default function AppProvider({ children }: PropsWithChildren) {
   const [targets, setTargets] = useState<SDGTarget[]>([]);
   const [user, setUser] = useState<UserData | null>(null);
 
-  const { data, isLoading: fetchingUser } = useGetUserProfile();
+  const {
+    data,
+    isLoading: fetchingUser,
+    refetch: refetchUser,
+  } = useGetUserProfile();
   useEffect(() => {
     if (data) setUser(data);
   }, [data]);
@@ -105,6 +110,7 @@ export default function AppProvider({ children }: PropsWithChildren) {
         onLoginModalClose,
         onLoginModalOpen,
         handleOpenModal,
+        refetchUser,
         setUser,
       }}
     >

@@ -29,7 +29,7 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
     setPage,
   } = useProposalContext();
   const pageDescription =
-    "Citizens' proposals are an opportunity for neighbours and collectivesto decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.";
+    "Proposals is a participatory feature where community members can submit suggestions or plans for new projects, policies, or changes within the community. This platform encourages users to present their ideas, which are then open for discussion, refinement, and voting by the community. It's a space where innovative ideas are nurtured and developed through collective wisdom. The Proposals feature plays a critical role in ensuring that governance is responsive and inclusive, allowing citizens to directly influence the agenda and priorities of their community.";
   const { isLoggedIn } = useAuthContext();
 
   return (

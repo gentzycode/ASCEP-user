@@ -20,19 +20,24 @@ export const createRequestSchema = z.object({
 });
 
 export const searchRequestSchema = z.object({
-  words: z.string().optional(),
-  authority: z.string().optional(),
+  text: z.string().optional(),
+  authority: z.number().optional(),
   privacy: z.string().optional(),
-  from: z.coerce
-    .date({
-      invalid_type_error: "That's not a date!",
+  datetimeRange: z
+    .object({
+      startDate: z.coerce
+        .date({
+          invalid_type_error: "That's not a date!",
+        })
+        .optional(),
+      endDate: z.coerce
+        .date({
+          invalid_type_error: "That's not a date!",
+        })
+        .optional(),
     })
     .optional(),
-  to: z.coerce
-    .date({
-      invalid_type_error: "That's not a date!",
-    })
-    .optional(),
+  status: z.string().optional(),
 });
 
 export const getRequestsSchema = z.object({
@@ -40,10 +45,23 @@ export const getRequestsSchema = z.object({
   perPage: z.number(),
   filter: z.object({
     text: z.string().optional(),
-    newest: z.boolean().optional(),
-    datetimeSpecific: z.string().optional(),
     status: z.string().optional(),
     authority: z.number().optional(),
-    privacy: z.number().optional(),
+    privacy: z.string().optional(),
+
+    datetimeRange: z
+      .object({
+        startDate: z.coerce
+          .date({
+            invalid_type_error: "That's not a date!",
+          })
+          .optional(),
+        endDate: z.coerce
+          .date({
+            invalid_type_error: "That's not a date!",
+          })
+          .optional(),
+      })
+      .optional(),
   }),
 });

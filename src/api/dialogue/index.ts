@@ -11,3 +11,7 @@ export const GET_ALL_AUTHORITIES_REQUESTS_COUNT_ENDPOINT =
   baseUrl + "/dialogue/authority-request-count";
 export const CREATE_REQUEST_ENDPOINT = baseUrl + "/dialogue/compose";
 export const GET_ALL_REQUESTS_ENDPOINT = baseUrl + "/dialogue/all";
+export const GET_REQUEST_INFO_ENDPOINT = (requestId: string) =>
+  baseUrl + `/dialogue/info/${requestId}`;
+export const RESOLVE_REQUEST_SHARE_ID_ENDPOINT = (requestId: string) =>
+  baseUrl + `/dialogue/resolve-link/${requestId}`;

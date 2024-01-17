@@ -14,9 +14,10 @@ const SearchedAuthoritiesList: React.FC<SearchedAuthoritiesListProp> = ({
         </p>
       )}
       <div className="flex flex-col gap-10">
-        {searchResult?.map((authority) => (
-          <SearchAuthoritiesCard authority={authority} key={authority.name} />
-        ))}
+        {searchResult &&
+          searchResult?.map((authority) => (
+            <SearchAuthoritiesCard authority={authority} key={authority.name} />
+          ))}
       </div>
     </div>
   );

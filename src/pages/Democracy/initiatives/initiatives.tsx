@@ -30,7 +30,8 @@ const InitiativesHomePage = () => {
 
   const { isLoggedIn } = useAuthContext();
 
-  const pageDescription = "Citizens' Initiatives are an opportunity for neighbours and collectives to decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote."
+  const pageDescription =
+    "Initiatives is a citizen-driven feature that empowers individuals and groups to propose and promote actions or projects aimed at community improvement and development. Mirroring the essence of grassroots activism, this platform allows users to create and support initiatives, gather endorsements, and work towards bringing about tangible change. It provides a structured pathway for turning ideas into action, ensuring that community needs and aspirations are directly addressed. The Initiatives feature embodies the spirit of collaborative problem-solving and civic engagement, enabling citizens to take an active role in shaping their community's future.";
   return (
     <>
       {/* HEADING */}
