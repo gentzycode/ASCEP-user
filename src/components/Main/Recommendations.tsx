@@ -1,5 +1,5 @@
 import { useGetRecommendations } from "@/api/main";
-import Recommendation from "./Recommendation 2";
+import Recommendation from "./Recommendation";
 import { Skeleton } from "../ui/skeleton";
 
 export default function Recommendations() {
