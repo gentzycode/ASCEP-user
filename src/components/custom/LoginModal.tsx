@@ -17,7 +17,7 @@ interface LoginModalProp {
 }
 
 export const LoginModal: React.FC<LoginModalProp> = ({ isOpen, onClose }) => {
-  const { onLoginModalClose } = useAppContext();
+  const { onLoginModalClose, refetchUser } = useAppContext();
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -33,6 +33,7 @@ export const LoginModal: React.FC<LoginModalProp> = ({ isOpen, onClose }) => {
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
     await login(values);
+    refetchUser();
     onLoginModalClose();
   }
 
@@ -82,14 +83,14 @@ export const LoginModal: React.FC<LoginModalProp> = ({ isOpen, onClose }) => {
                 <Button
                   isLoading={isLoading}
                   type="submit"
-                  className="w-full lg:max-w-[250px]"
+                  className="w-full lg:max-w-[230px]"
                   disabled={isLoading}
                 >
                   Login
                 </Button>
                 <Button
                   disabled={isLoading}
-                  className="w-full bg-transparent border-dark border lg:max-w-[250px]"
+                  className="w-full bg-transparent border-dark border lg:max-w-[230px]"
                   onClick={onClose}
                   type="button"
                 >

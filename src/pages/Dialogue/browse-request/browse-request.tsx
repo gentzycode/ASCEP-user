@@ -1,31 +1,40 @@
 import { useGetAllRequests } from "@/api/dialogue/requests";
+import { FetchingError, NotFound } from "@/components/Democracy";
 import { RequestList, SearchRequest } from "@/components/Dialogue";
+import { PageLoader } from "@/components/custom";
+import PaginationComponent from "@/components/custom/Pagination";
+import { searchRequestSchema } from "@/schemas/MakeARequestSchema";
 import { useEffect, useState } from "react";
+import * as z from "zod";
 
 interface BrowseRequestHomePageProp {}
 const BrowseRequestHomePage: React.FC<BrowseRequestHomePageProp> = () => {
-  const [page, setPage] = useState(1);
-  const perPage = 10;
-  const filter = {
+  const initialFilter = {
     text: undefined,
-    newest: undefined,
-    datetimeSpecific: undefined,
-    // status: undefined,
-    status: "all",
     authority: undefined,
     privacy: undefined,
+    status: "all",
+    datetimeRange: undefined,
   };
+  const perPage = 10;
+  const [page, setPage] = useState(1);
+  const [filterOptions, setFilterOptions] =
+    useState<z.infer<typeof searchRequestSchema>>(initialFilter);
 
   const {
-    data: allRequests,
+    data: requestData,
     isLoading,
     mutateAsync: getRequests,
+    isError,
   } = useGetAllRequests();
 
   useEffect(() => {
-    getRequests({ page, perPage, filter });
-  }, []);
+    getRequests({ page, perPage, filter: filterOptions });
+  }, [filterOptions, page]);
 
+  const refetch = () => {
+    getRequests({ page, perPage, filter: filterOptions });
+  };
   return (
     <div className="max-w-[900px]">
       <div className=" space-y-2">
@@ -38,8 +47,39 @@ const BrowseRequestHomePage: React.FC<BrowseRequestHomePageProp> = () => {
           information from.
         </p>
       </div>
-      <SearchRequest />
-      <RequestList />
+      <SearchRequest
+        isLoading={isLoading}
+        setFilterOptions={setFilterOptions}
+      />
+
+      {/* ERROR */}
+      {isError && !isLoading && (
+        <FetchingError
+          message="Error fetching Authorities"
+          refetching={isError}
+          retryFunction={refetch}
+        />
+      )}
+
+      {/* LOADING */}
+      {isLoading && <PageLoader />}
+
+      {requestData && <RequestList requests={requestData.foi_requests} />}
+
+      {/* NO REQUEST FOUND */}
+      {requestData && requestData.foi_requests.length === 0 && (
+        <NotFound message="No Requests found" />
+      )}
+
+      {/* PAGINATION */}
+      {requestData && requestData.foi_requests.length !== 0 && (
+        <PaginationComponent
+          page={page}
+          paginationData={requestData.meta}
+          setPage={setPage}
+          isFetching={isLoading}
+        />
+      )}
     </div>
   );
 };

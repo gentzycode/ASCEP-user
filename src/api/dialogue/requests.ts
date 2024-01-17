@@ -4,6 +4,8 @@ import {
   CREATE_REQUEST_ENDPOINT,
   GET_ALL_AUTHORITIES_REQUESTS_COUNT_ENDPOINT,
   GET_ALL_REQUESTS_ENDPOINT,
+  GET_REQUEST_INFO_ENDPOINT,
+  RESOLVE_REQUEST_SHARE_ID_ENDPOINT,
 } from ".";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
@@ -15,11 +17,11 @@ import * as z from "zod";
 // GET AUTHORITY REQUEST COUNT
 export const useGetAuthoritiesAndRequestCount = () => {
   return useQuery({
-    queryKey: ["all-authorities"],
-    queryFn: (): Promise<RequestType> => {
+    queryKey: ["request-counts"],
+    queryFn: (): Promise<RequestAuthorityCountType> => {
       return axios
         .get(GET_ALL_AUTHORITIES_REQUESTS_COUNT_ENDPOINT)
-        .then((res) => res.data.data.debate);
+        .then((res) => res.data.data);
     },
     staleTime: 0,
     retry: false,
@@ -43,18 +45,13 @@ export const useCreateRequest = () => {
         .then((res) => res.data);
     },
     {
-      onSuccess: (res, variables) => {
-        const id = variables.get("id") as string;
+      onSuccess: (res) => {
         toast({
           title: "Success!",
           variant: "success",
           description: res.message,
         });
-        if (id) {
-          navigate(ROUTES.BROWSE_REQUEST_HOME_ROUTE, { replace: true });
-        } else {
-          navigate(ROUTES.CREATE_REQUEST_ROUTE(id), { replace: true });
-        }
+        navigate(ROUTES.BROWSE_REQUEST_HOME_ROUTE, { replace: true });
       },
     }
   );
@@ -68,6 +65,31 @@ export const useGetAllRequests = () => {
       return axios
         .post(GET_ALL_REQUESTS_ENDPOINT, { ...values })
         .then((res) => res.data.data);
+    }
+  );
+};
+
+// GET  REQUEST INFo
+export const useGetRequestInfo = (requestId: string) => {
+  return useQuery(["request-info"], (): Promise<RequestType> => {
+    return axios
+      .get(GET_REQUEST_INFO_ENDPOINT(requestId))
+      .then((res) => res.data.data.foirequest);
+  });
+};
+
+//SHARE ID
+export const useResolveRequestShareID = (shareableId: string) => {
+  return useQuery(
+    ["debate-shareID"],
+    (): Promise<string> => {
+      return axios
+        .get(RESOLVE_REQUEST_SHARE_ID_ENDPOINT(shareableId))
+        .then((res) => res.data.data.id);
+    },
+    {
+      refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };

@@ -54,6 +54,7 @@ import {
   DialogueHelpHomePage,
   MakeARequestHomePage,
   RequestInfoPage,
+  ResolveRequestSharedIdPage,
   ViewAuthoritiesHomePage,
 } from "./Dialogue";
 
@@ -120,9 +121,14 @@ export const dialogueRoutes: RouterType[] = [
     title: "dailogue-request",
   },
   {
-    path: "/dialogue/browse-request/:requestId",
+    path: "/dialogue/browse-request/info/:requestId",
     element: <RequestInfoPage />,
     title: "dailogue-request-info",
+  },
+  {
+    path: "/dialogue/share/:shareableId",
+    element: <ResolveRequestSharedIdPage />,
+    title: "democracy-debate-shared-id",
   },
   {
     path: "/dialogue/view-authorities",

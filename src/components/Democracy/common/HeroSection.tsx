@@ -19,7 +19,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ title, description }) => {
       <h1 className="tracking-[1px]  text-left font-sans text-text text-3xl md:text-6xl capitalize">
         {title}
       </h1>
-      <p className="text-[24px] text-subtitle_text my-6 max-w-[800px] text-justify ">
+      <p className="text-[24px] text-subtitle_text my-6 max-w-[1000px] text-justify ">
         {description}
       </p>
       {!isLoggedIn && (

@@ -59,7 +59,7 @@ const SDGHomePage: React.FC<SDGProps> = () => {
         <div className="flex flex-wrap justify-start items-start gap-4  w-fit mt-5 max-w-[900px]">
           {sdgData.map((sdg) => (
             <Link to={ROUTES.SDGs_DETAILS_ROUTE} state={{ sdg }} key={sdg.id}>
-              <Button className="bg-transparent h-fit w-fit md:h-[60px] md:w-[60px] p-0 hover:bg-transparent rounded-md overflow-hidden">
+              <Button className="bg-transparent h-[60px] w-[60px] md:h-[60px] md:w-[60px] p-0 hover:bg-transparent rounded-md overflow-hidden">
                 <img
                   src={sdg.banner}
                   alt={sdg.description}
@@ -89,7 +89,9 @@ const SDGHomePage: React.FC<SDGProps> = () => {
             the support and when you have enough support, your proposal will be
             debated in the municipal plenary.
           </p>
-          <Button className="bg-dark text-light">Make a Proposal</Button>
+          <Link to={ROUTES.PROPOSALS_HOME_ROUTE}>
+            <Button className="bg-dark text-light">Make a Proposal</Button>
+          </Link>
         </div>
         <div className="flex flex-col justify-between items-center gap-[19px] w-full max-w-[400px] mx-auto">
           <IconWrapper className="w-[135px] h-[135px] rounded-xl bg-light text-subtle_text shadow-xl">
@@ -108,7 +110,9 @@ const SDGHomePage: React.FC<SDGProps> = () => {
             participate by engaging in polls and votes that matters to a better
             place
           </p>
-          <Button className="bg-dark text-light">Participate</Button>
+          <Link to={ROUTES.DEMOCRACY_LANDING_PAGE}>
+            <Button className="bg-dark text-light">Participate</Button>
+          </Link>
         </div>
 
         <div className="flex flex-col justify-between items-center gap-[19px] w-full max-w-[400px] mx-auto">

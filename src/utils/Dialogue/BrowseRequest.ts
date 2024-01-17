@@ -1,6 +1,6 @@
 export const browseRequestFilterButtonOptions: FilterButtonOptionsType[] = [
-  { label: "Suceesful Requests", value: "successfull" },
   { label: "All Requests", value: "all" },
+  { label: "Suceesful Requests", value: "successfull" },
   { label: "Unsuccessful Requests", value: "unsuccessfull" },
   { label: "Unresolved Requests", value: "unresolved" },
 ];

@@ -16,7 +16,9 @@ import { InputProps } from "../../ui/input";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -64,14 +66,24 @@ const FormSelectPublicIdentifier = <
                   hasError
                     ? "focus-visible:ring-red-500 focus:ring-red-500"
                     : "focus-visible:ring-primary focus:ring-primary"
-                } focus-visible:ring-offset-2 border-transparent ring-transparent text-text  focus:ring-1 h-12 rounded-full px-4 text-sm md:text-base`}
+                } focus-visible:ring-offset-2 border-transparent ring-transparent text-text  focus:ring-1 h-12 rounded-full px-4 text-base`}
               >
-                <SelectValue placeholder="Select type" />
+                <SelectValue
+                  placeholder="Select type"
+                  className="text-text text-base"
+                />
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              <SelectItem value="private">Private</SelectItem>
-              <SelectItem value="public">Public</SelectItem>
+              <SelectGroup>
+                <SelectLabel>Privacy</SelectLabel>
+                <SelectItem value="private" className="text-text text-base">
+                  Private
+                </SelectItem>
+                <SelectItem value="public" className="text-text text-base">
+                  Public
+                </SelectItem>
+              </SelectGroup>
             </SelectContent>
           </Select>
           <FormMessage />

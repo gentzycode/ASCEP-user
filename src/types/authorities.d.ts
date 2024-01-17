@@ -28,6 +28,10 @@ interface RequestDataType {
   foi_requests: RequestType[];
 }
 
+interface RequestAuthorityCountType {
+  totalAuthorities: string;
+  totalRequests: string;
+}
 interface RequestType {
   id: string;
   user_id: string;

@@ -97,6 +97,7 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
     await publishProposal(formData);
   }
 
+
   useEffect(() => {
     const IDs = targets.map((target) => target.id);
     setValue("targets", IDs);

@@ -1,9 +1,11 @@
+import { useGetAuthoritiesAndRequestCount } from "@/api/dialogue/requests";
 import { UserRequestSummary } from "@/components/Dialogue";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 interface FreedomOfInformationProp {}
 const FreedomOfInformation: React.FC<FreedomOfInformationProp> = () => {
+  const { data } = useGetAuthoritiesAndRequestCount();
   return (
     <div className="mt-16">
       {/* USER REQUEST */}
@@ -12,7 +14,7 @@ const FreedomOfInformation: React.FC<FreedomOfInformationProp> = () => {
           What information has been released?
         </h2>
         <p className="text-subtle_text py-4 text-xl xl:text-2xl">
-          Users have made 1,006,241 requests, including:
+          Users have made {data?.totalRequests} requests, including:
         </p>
         <UserRequestSummary />
       </div>

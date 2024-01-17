@@ -1,4 +1,5 @@
 import { useGetAllAuthorities } from "@/api/authorities";
+import { FetchingError } from "@/components/Democracy";
 import {
   FilterAuthorities,
   MakeARequestHeading,
@@ -8,30 +9,59 @@ import {
 } from "@/components/Dialogue";
 import { PageLoader } from "@/components/custom";
 import PaginationComponent from "@/components/custom/Pagination";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface ViewAuthoritiesHomePageProp {}
 const ViewAuthoritiesHomePage: React.FC<ViewAuthoritiesHomePageProp> = () => {
-  const { data: allAuthorities, isLoading } = useGetAllAuthorities();
+  const {
+    data: allAuthorities,
+    isLoading,
+    isFetching,
+    refetch,
+    isError,
+  } = useGetAllAuthorities();
 
   const [searchResult, setsearchResult] = useState<AuthorityType[] | undefined>(
-    allAuthorities
+    undefined
   );
 
+  useEffect(() => {
+    if (allAuthorities && !isLoading) {
+      setsearchResult(allAuthorities);
+    }
+  }, [allAuthorities]);
+
+  useEffect(() => {
+    refetch();
+  }, []);
   return (
     <div>
       <div className="max-w-[900px] mb-16">
         <MakeARequestHeading />
         {/* SEARCH FIELD */}
-        <SearchAuthoritiesForm setsearchResult={setsearchResult} />
+        <SearchAuthoritiesForm
+          setsearchResult={setsearchResult}
+          resetButton={true}
+          cancelButton={false}
+        />
       </div>
 
       {/* LOADING */}
       {isLoading && <PageLoader />}
 
-      {searchResult && (
+      {/* ERROR */}
+      {isError && !isLoading && (
+        <FetchingError
+          message="Error fetching Authorities"
+          refetching={isFetching}
+          retryFunction={refetch}
+        />
+      )}
+
+      {searchResult && !isLoading && (
         <div className="flex justify-start gap-10 lg:flex-row flex-col-reverse">
           <div className=" w-full xl:min-w-[700px] flex flex-col gap-6">
+            {/* SEARCH LIST */}
             <SearchedAuthoritiesList searchResult={searchResult} />
 
             {/* PAGINATION */}

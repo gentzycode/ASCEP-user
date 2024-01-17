@@ -29,7 +29,7 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
     page,
   } = useDebateContext();
   const pageDescription =
-    "Citizens' proposals are an opportunity for neighbours and collectives to decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.";
+    "Debates is a dynamic feature designed to engage the community in meaningful and structured discussions on a wide range of topics. This interactive platform allows citizens to voice their opinions, share insights, and engage in healthy debate on issues that matter to them and their community. Users can initiate debates, contribute to ongoing discussions, and even respond to others' viewpoints, fostering a culture of open dialogue and informed discourse. The Debates feature is instrumental in creating a participatory environment where diverse perspectives are welcomed and valued, ultimately contributing to more inclusive decision-making processes.";
   const { isLoggedIn } = useAuthContext();
 
   return (

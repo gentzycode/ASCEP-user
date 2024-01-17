@@ -9,7 +9,6 @@ import axios from "axios";
 // GET ALL AUTHORITIES
 export const useGetAllAuthorities = () => {
   return useQuery({
-    queryKey: ["all-authorities"],
     queryFn: (): Promise<AuthorityType[]> => {
       return axios
         .get(GET_ALL_AUTHORITIES_ENDPOINT)
@@ -18,6 +17,7 @@ export const useGetAllAuthorities = () => {
     staleTime: 0,
     retry: false,
     refetchOnWindowFocus: false,
+    cacheTime: 0,
   });
 };
 

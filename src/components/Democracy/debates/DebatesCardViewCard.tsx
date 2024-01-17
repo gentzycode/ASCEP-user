@@ -18,7 +18,6 @@ const DebatesCardViewCard: React.FC<DebatesCardViewCardProps> = ({
     mutateAsync: voteDebate,
     isLoading: isVotingDebate,
     isError,
-    error,
     data,
   } = useVoteDebate();
 
