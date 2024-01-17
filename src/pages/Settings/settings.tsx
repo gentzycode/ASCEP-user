@@ -5,10 +5,21 @@ import {
   SettingsOptions,
 } from "@/components/Settings";
 import { PageFetchError, PageLoader } from "@/components/custom";
+import { useAuthContext } from "@/providers/AuthProvider";
 import SettingsProvider from "@/providers/SettingsProvider";
 
 export default function SettingsPage() {
-  const { data, isLoading } = useGetUserProfile();
+  const { data, isLoading, isError } = useGetUserProfile();
+  const { isLoggedIn } = useAuthContext();
+
+  console.log(isLoggedIn);
+
+  if (!isLoggedIn)
+    return (
+      <div className="items-center justify-center h-screen">
+        <h1>Login to access settings</h1>
+      </div>
+    );
 
   return (
     <SettingsProvider>
@@ -24,7 +35,7 @@ export default function SettingsPage() {
           </div>
         </div>
       ) : (
-        <PageFetchError />
+        isError && <PageFetchError />
       )}
     </SettingsProvider>
   );

@@ -11,7 +11,7 @@ import { useAuthContext } from "@/providers/AuthProvider";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
-export default function ViewResponsepage() {
+export default function ViewReportPage() {
   const { reportId } = useParams();
   const [page, setPage] = useState(1);
 

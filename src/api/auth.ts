@@ -33,6 +33,7 @@ export const useRegister = () => {
 export const useLogin = () => {
   const { login } = useAuthContext();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (values: z.infer<typeof loginSchema>) => {
@@ -51,7 +52,10 @@ export const useLogin = () => {
           navigate("/auth/2fa-login", {
             state: res.data,
           });
-        } else login(res.data);
+        } else {
+          login(res.data);
+          queryClient.invalidateQueries("user-profile");
+        }
       },
     }
   );
@@ -74,6 +78,26 @@ export const useVerifyEmail = () => {
           description: `Email verification successful`,
         });
         navigate("/auth/login");
+      },
+    }
+  );
+};
+
+export const useChangePassword = () => {
+  const { toast } = useToast();
+
+  return useMutation(
+    (values: ChangePasswordPayload) =>
+      axios
+        .patch(`${baseUrl}/user/change-password`, values)
+        .then((res) => res.data),
+    {
+      onSuccess: () => {
+        toast({
+          title: "Success",
+          description: "Password has been changed",
+          variant: "success",
+        });
       },
     }
   );
@@ -154,17 +178,9 @@ export const useResetPassword = () => {
 };
 
 export const useGetUserProfile = () => {
-  return useQuery(
-    ["user-profile"],
-    (): Promise<UserData> => {
-      return axios
-        .get(`${baseUrl}/user/profile`)
-        .then((res) => res.data.data[0]);
-    },
-    {
-      retry: false,
-    }
-  );
+  return useQuery(["user-profile"], (): Promise<UserData> => {
+    return axios.get(`${baseUrl}/user/profile`).then((res) => res.data.data[0]);
+  });
 };
 
 export const useUpdateProfile = () => {

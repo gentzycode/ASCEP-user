@@ -63,3 +63,28 @@ interface UserAnswered {
   user_responded: boolean;
   response: any;
 }
+
+interface Recommendation {
+  id: number;
+  title: string;
+  description: string;
+  createdBy: RecommendationCreatedBy;
+  createdAt: string;
+  entity_type:
+    | "proposal"
+    | "debate"
+    | "initiative"
+    | "budget"
+    | "foirequest"
+    | "voting"
+    | "report"
+    | "survey";
+  recommendation_id: number;
+}
+
+interface RecommendationCreatedBy {
+  firstname: string;
+  lastname: string;
+  profile_picture: any;
+  id: number;
+}

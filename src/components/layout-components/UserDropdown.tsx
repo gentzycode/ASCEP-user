@@ -1,4 +1,3 @@
-import { useAuthContext } from "@/providers/AuthProvider";
 import {
   Popover,
   PopoverContent,
@@ -12,10 +11,12 @@ import {
 } from "iconsax-react";
 import { IconWrapper } from "../custom";
 import { useAppContext } from "@/contexts/AppContext";
+import useLogout from "@/hooks/useLogout";
 
 export default function UserDropdown() {
-  const { logout } = useAuthContext();
+  const logout = useLogout();
   const { user } = useAppContext();
+
   return (
     <Popover>
       <PopoverTrigger asChild>

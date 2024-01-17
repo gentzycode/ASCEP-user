@@ -7,33 +7,40 @@ import { changePasswordSchema } from "@/schemas/SettingsSchema";
 import { Form } from "../ui/form";
 import { FormInput } from "../custom";
 import { Button } from "../ui/button";
-import { useToast } from "../ui/use-toast";
+import { useChangePassword } from "@/api/auth";
+import { useEffect } from "react";
+import { useSettingsContext } from "@/providers/SettingsProvider";
 
 export default function ChangePassword() {
   const form = useForm<z.infer<typeof changePasswordSchema>>({
     resolver: zodResolver(changePasswordSchema),
   });
 
-  const { toast } = useToast();
+  const { mutate, isLoading, isSuccess } = useChangePassword();
+
+  const { setActiveOption } = useSettingsContext();
+
   const {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = form;
 
-  function onSubmit(values: z.infer<typeof changePasswordSchema>) {
-    console.log(values);
+  useEffect(() => {
+    if (isSuccess) {
+      reset();
+      setActiveOption("User Profile");
+    }
+  }, [isSuccess]);
 
-    toast({
-      title: "Success",
-      description: "Password has been changed",
-      variant: "success",
-    });
+  function onSubmit(values: z.infer<typeof changePasswordSchema>) {
+    mutate({ newPassword: values.newPassword });
   }
   return (
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div className="flex flex-col justify-between md:items-center md:flex-row ">
+        {/* <div className="flex flex-col justify-between md:items-center md:flex-row ">
           <p className="text-subtle_text">Old Password</p>
           <div className=" w-full max-w-[350px]">
             <FormInput
@@ -45,7 +52,7 @@ export default function ChangePassword() {
               errors={errors}
             />
           </div>
-        </div>
+        </div> */}
         <div className="flex flex-col justify-between md:items-center md:flex-row ">
           <p className="text-subtle_text">New Password</p>
           <div className=" w-full max-w-[350px]">
@@ -76,7 +83,7 @@ export default function ChangePassword() {
         <div className="flex flex-col justify-between gap-2 md:flex-row md:items-center">
           <p className="font-medium underline text-primary">Reset password</p>
 
-          <Button>Update Password</Button>
+          <Button isLoading={isLoading}>Update Password</Button>
         </div>
       </form>
     </Form>
