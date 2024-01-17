@@ -7,7 +7,7 @@ interface DataViewItemProps {
 
 export default function DataViewItem({ report }: DataViewItemProps) {
   return (
-    <Link to={`/response/view-response/${report.id}`}>
+    <Link to={`/response/view-report/${report.id}`}>
       <div className="flex gap-3 h-[160px] ">
         <img
           src={

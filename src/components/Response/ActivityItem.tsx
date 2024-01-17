@@ -38,7 +38,7 @@ export default function ActivityItem({
 
   return (
     <Link
-      to={`/response/view-response/${activity.report.id}`}
+      to={`/response/view-report/${activity.report.id}`}
       className={`bg-white hover:bg-[#FFF9F1] shadow-sm flex items-center justify-between py-[10px] px-[14px] ${
         position === "first"
           ? "rounded-t-[20px]"

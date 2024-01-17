@@ -1,5 +1,4 @@
-import { FormCard } from "@/components/Auth";
-import ForgotPasswordSteps from "@/components/Auth/ForgotPasswordSteps";
+import { ForgotPasswordSteps, FormCard } from "@/components/Auth";
 import ForgotPasswordProvider from "@/providers/ForgotPasswordProvider";
 
 export default function ForgotPasswordPage() {
