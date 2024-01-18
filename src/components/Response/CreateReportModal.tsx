@@ -12,6 +12,7 @@ import { createPostSchema } from "@/schemas/ResponseSchema";
 import { appendObjectToFormData } from "@/utils/helper";
 import { useCreateReport } from "@/api/response";
 import SelectLocation from "./SelectLocation";
+import { useToast } from "../ui/use-toast";
 
 interface CreatePostModalProps {
   onClose: () => void;
@@ -75,8 +76,20 @@ export default function CreateReportModal({
     mutate(formData);
   }
 
+  const { toast } = useToast();
+
   const handleFileSelection = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files![0];
+
+    if (file.size > 1024 * 1024) {
+      toast({
+        title: "Error",
+        description: "File to large",
+        variant: "error",
+      });
+
+      return;
+    }
 
     if (file) {
       const reader = new FileReader();
@@ -119,6 +132,7 @@ export default function CreateReportModal({
                     onClick={() => inputRef.current?.click()}
                     className="w-14 "
                     type="button"
+                    disabled={selectedImages.length > 4}
                   >
                     <FaPlus />
                   </Button>

@@ -30,13 +30,13 @@ const ResponseContext = createContext<ResponseContextType>({
 export const useResponseContext = () => useContext(ResponseContext);
 
 interface ResponseFilter {
-  location: string | null;
+  longitude: string | null;
   start_date: string | null;
   category: string | null;
 }
 
 const filtersDefault: ResponseFilter = {
-  location: null,
+  longitude: null,
   start_date: null,
   category: null,
 };
@@ -79,7 +79,7 @@ export default function RepsonseProvider({ children }: PropsWithChildren) {
   };
 
   const filterLocation = (arg: string | null) => {
-    setFilters({ ...filters, location: arg });
+    setFilters({ ...filters, longitude: arg });
   };
 
   const filterCategory = (arg: string | null) => {
