@@ -7,8 +7,12 @@ import { Button } from "../ui/button";
 
 const dateRange: FilterOption[] = [
   {
-    label: "Today",
+    label: "All",
     value: "",
+  },
+  {
+    label: "Today",
+    value: getPastDays(0),
   },
   {
     label: "Past One Week",

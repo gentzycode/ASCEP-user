@@ -13,24 +13,22 @@ export default function AllSurveys() {
   return (
     <div className="grid gap-4 lg:grid-cols-2 min-h-80vh ">
       {isLoading ? (
-        <div className="space-y-10">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="flex space-x-4">
-              <Skeleton className="w-16 h-16 rounded-xl bg-slate-300" />
-              <div className="w-full space-y-4">
-                <Skeleton className="w-11/12 h-6 bg-slate-300" />
-                <Skeleton className="w-11/12 h-6 bg-slate-300" />
-                <Skeleton className="w-1/4 h-6 bg-slate-300" />
-              </div>
+        Array.from({ length: 12 }).map((_, i) => (
+          <div key={i} className="flex space-x-4">
+            <Skeleton className="w-16 h-16 rounded-xl bg-slate-300" />
+            <div className="w-full space-y-4">
+              <Skeleton className="w-11/12 h-6 bg-slate-300" />
+              <Skeleton className="w-11/12 h-6 bg-slate-300" />
+              <Skeleton className="w-1/4 h-6 bg-slate-300" />
             </div>
-          ))}
-        </div>
+          </div>
+        ))
       ) : data && data.length ? (
         data?.map((survey) => (
           <SurveyListItem key={survey.id} survey={survey} />
         ))
       ) : (
-        <div className="h-[80vh] ">
+        <div className="h-[80vh] col-span-full  ">
           <EmptyState />
         </div>
       )}
