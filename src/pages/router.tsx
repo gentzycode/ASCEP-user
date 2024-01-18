@@ -18,7 +18,7 @@ import {
 import config from "@/utils/config";
 import { useToast } from "@/components/ui/use-toast";
 // import useAutoLogout from "@/hooks/useAuthoLogout";
-import { ViewResponsePage } from "./Response";
+import { ReportDetailsPage, SurveyDetailsPage } from "./Response";
 import SmoothScroll from "@/components/custom/ScrollToTop";
 import RepsonseProvider from "@/providers/ResponseProvider";
 import { useAppContext } from "@/contexts/AppContext";
@@ -125,9 +125,13 @@ const Router = () => {
         <Route path="" element={<MainLayout />}>
           {pageRoutes}
           <Route
-            path="response/view-report/:reportId"
-            element={<ViewResponsePage />}
-          ></Route>
+            path="response/reports/:reportId"
+            element={<ReportDetailsPage />}
+          />
+          <Route
+            path="response/surveys/:surveyId"
+            element={<SurveyDetailsPage />}
+          />
           <Route
             path=""
             element={
@@ -138,6 +142,7 @@ const Router = () => {
           >
             {responsePages}
           </Route>
+
           <Route path="" element={<DemocracyLayout />}>
             {democracyPages}
           </Route>

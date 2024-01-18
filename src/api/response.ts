@@ -59,7 +59,7 @@ export const useGetAllActivities = ({
 
 export const useGetReportInfo = (id: string) => {
   return useQuery(
-    ["all-activities", id],
+    ["report-info", id],
     (): Promise<ReportData> => {
       return axios
         .get(`${baseUrl}/report/info/${id}`)

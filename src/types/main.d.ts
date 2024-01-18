@@ -19,7 +19,7 @@ interface PollType {
   votingSDGs: VotingSdg[];
   author: Author;
   userParticipated: boolean;
-  questions: Question[];
+  questions: PollQuestion[];
 }
 
 interface VotingTarget {
@@ -51,15 +51,15 @@ interface Author {
   profile_picture: any;
 }
 
-interface Question {
+interface PollQuestion {
   id: number;
   response_type: string;
   question: string;
   options: string[];
-  userAnswered: UserAnswered;
+  userAnswered: PollUserAnswered;
 }
 
-interface UserAnswered {
+interface PollUserAnswered {
   user_responded: boolean;
   response: any;
 }

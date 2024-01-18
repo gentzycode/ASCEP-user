@@ -25,11 +25,11 @@ export default function Recommendation({
       redirectLink = `/democracy/proposals/${recommendation.id}`;
       break;
     case "report":
-      redirectLink = `/response/view-report/${recommendation.id}`;
+      redirectLink = `/response/reports/${recommendation.id}`;
 
       break;
     case "survey":
-      redirectLink = `/response/view-survey/${recommendation.id}`;
+      redirectLink = `/response/surveys/${recommendation.id}`;
       break;
     case "voting":
       redirectLink = `/democracy/voting/${recommendation.id}`;
