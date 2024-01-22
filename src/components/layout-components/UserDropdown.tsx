@@ -6,12 +6,13 @@ import {
 import {
   ArrowDown2,
   ArrowRight2,
-  Notification,
-  SearchNormal1,
+  // Notification,
+  // SearchNormal1,
 } from "iconsax-react";
-import { IconWrapper } from "../custom";
+// import { IconWrapper } from "../custom";
 import { useAppContext } from "@/contexts/AppContext";
 import useLogout from "@/hooks/useLogout";
+import { UserAvatar } from "../custom";
 
 export default function UserDropdown() {
   const logout = useLogout();
@@ -21,16 +22,16 @@ export default function UserDropdown() {
     <Popover>
       <PopoverTrigger asChild>
         <div className="flex items-center gap-6">
-          <IconWrapper className="rounded-full cursor-pointer">
+          {/* <IconWrapper className="rounded-full cursor-pointer">
             <SearchNormal1 size="20" color="black" />
           </IconWrapper>
           <IconWrapper className="rounded-full cursor-pointer">
             <Notification size="20" color="black" />
-          </IconWrapper>
+          </IconWrapper> */}
 
           {user && (
             <div className="flex items-center gap-3 cursor-pointer">
-              <img src="/images/profile-pic.png" className="w-10 h-10" alt="" />
+              <UserAvatar user={user} size={40} />
               <div>
                 <p className="text-sm font-bold">
                   {user?.firstname

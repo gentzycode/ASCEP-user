@@ -125,6 +125,7 @@ interface GetReportCommentsQueryArgs {
 
 interface GetAllReportsQueryArgs {
   filtersString: string;
+  page?: number;
 }
 
 interface GetReportCommentsResonponsesQueryArgs {

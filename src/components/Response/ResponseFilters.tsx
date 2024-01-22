@@ -7,8 +7,12 @@ import { Button } from "../ui/button";
 
 const dateRange: FilterOption[] = [
   {
-    label: "Today",
+    label: "All",
     value: "",
+  },
+  {
+    label: "Today",
+    value: getPastDays(0),
   },
   {
     label: "Past One Week",
@@ -29,15 +33,8 @@ export default function ResponseFilters() {
   const [locationFilters, setLocationFilters] = useState<FilterOption[]>([]);
 
   const { categories, wards } = useAppContext();
-  const {
-    filterCategory,
-    filterDate,
-    filterLocation,
-    clearFilter,
-    filtersString,
-  } = useResponseContext();
-
-  console.log("Filter", filtersString);
+  const { filterCategory, filterDate, filterLocation, clearFilter } =
+    useResponseContext();
 
   useEffect(() => {
     if (categories) {
@@ -52,8 +49,8 @@ export default function ResponseFilters() {
 
     if (wards) {
       const locationsOptions: FilterOption[] = wards.map((ward) => ({
-        label: ward.ward,
-        value: `longitude=${ward.longitude}&latitude=${ward.latitude}`,
+        label: `${ward.ward}, ${ward.lga}`,
+        value: `${ward.longitude}&latitude=${ward.latitude}`,
       }));
       locationsOptions.unshift({ label: "Everywhere", value: "" });
       setLocationFilters(locationsOptions);

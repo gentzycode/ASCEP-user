@@ -10,7 +10,7 @@ export default function ProfileHeader() {
 
   return (
     <div
-      className="relative h-[141px] w-full flex justify-end items-center p-5 "
+      className="relative h-[141px] w-full flex justify-end items-center p-5  rounded-[40px]"
       style={{
         backgroundImage: `url("/images/cover-photo.png")`,
         backgroundSize: "cover",
@@ -36,9 +36,11 @@ export default function ProfileHeader() {
               />
             ) : (
               <div className="flex items-center justify-center w-full h-full rounded-full bg-primary ">
-                {/* <p className="h3">
-                  {data?.firstname[0]} {data?.lastname[0]}
-                </p> */}
+                {data?.firstname && data?.lastname && (
+                  <p className="h3">
+                    {data?.firstname[0]} {data?.lastname[0]}
+                  </p>
+                )}
               </div>
             )}
           </div>

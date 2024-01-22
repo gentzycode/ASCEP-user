@@ -41,9 +41,9 @@ export default function ResponseLayout() {
           >
             + Add new report
           </Button>
-          <Button size="xs" variant="pill">
+          {/* <Button size="xs" variant="pill">
             Post history
-          </Button>
+          </Button> */}
           <GroupedFiltersButton variant="pill">
             <ResponseFilters />
           </GroupedFiltersButton>
@@ -75,7 +75,7 @@ export default function ResponseLayout() {
           ))}
         </div>
       </div>
-      <CreateReportModal isOpen={isOpen} onClose={onClose} />
+      {isOpen && <CreateReportModal isOpen={isOpen} onClose={onClose} />}
     </div>
   );
 }

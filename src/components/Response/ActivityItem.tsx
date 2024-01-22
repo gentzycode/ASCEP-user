@@ -1,4 +1,3 @@
-import { Location } from "iconsax-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -38,8 +37,8 @@ export default function ActivityItem({
 
   return (
     <Link
-      to={`/response/view-report/${activity.report.id}`}
-      className={`bg-white hover:bg-[#FFF9F1] shadow-sm flex items-center justify-between py-[10px] px-[14px] ${
+      to={`/response/reports/${activity.report.id}`}
+      className={`bg-white hover:bg-[#FFF9F1] shadow-sm gap-2 md:gap-4 flex items-start justify-between py-[10px] px-[14px] ${
         position === "first"
           ? "rounded-t-[20px]"
           : position === "last"
@@ -49,20 +48,17 @@ export default function ActivityItem({
           : ""
       } `}
     >
-      <div className="space-y-1">
-        <p className="text-sm">
-          {description} “{activity.report.title}” by{" "}
-          <strong>
-            {activity?.refUser?.firstname} {activity?.refUser?.lastname}
-          </strong>
-        </p>
-        <div className="flex items-center gap-1">
-          <Location size={14} />
-          <p className="text-xs">Umuleri, Anambra State</p>
-        </div>
-      </div>
-
-      <p className="text-xs text-subtle_text">5 mins ago</p>
+      <img
+        src={activity.refUser.profile_picture}
+        alt=""
+        className="w-8 h-8 rounded-full"
+      />
+      <p className="flex-1 text-sm">
+        {description} “{activity.report.title}” by{" "}
+        <strong>
+          {activity?.refUser?.firstname} {activity?.refUser?.lastname}
+        </strong>
+      </p>
     </Link>
   );
 }

@@ -39,3 +39,33 @@ export function getPastDays(days: number) {
 
   return isoDate;
 }
+
+export function getAlphabetLetter(number: number) {
+  // Check if the number is in the valid range (1 to 26)
+  if (number >= 1 && number <= 26) {
+    // Convert the number to its corresponding ASCII code for 'a'
+    const asciiCodeForA = "a".charCodeAt(0);
+
+    // Calculate the ASCII code for the corresponding alphabet letter
+    const asciiCodeForLetter = asciiCodeForA + number - 1;
+
+    // Convert the ASCII code back to a character (alphabet letter)
+    const alphabetLetter = String.fromCharCode(asciiCodeForLetter);
+
+    return alphabetLetter;
+  } else {
+    // Handle the case when the number is outside the valid range
+    console.error("Invalid number. Please provide a number between 1 and 26.");
+    return null;
+  }
+}
+
+export const formatStringWithLineBreaks = (textAreaValue: string) => {
+  // Split the textarea value using the newline character
+  const lines = textAreaValue.split("\n");
+
+  // Map through the lines and create a new array with <p> tags for each line
+  const formattedLines = lines.map((line) => `<p>${line}</p>`);
+
+  return formattedLines;
+};

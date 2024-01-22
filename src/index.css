@@ -16,16 +16,16 @@
 }
 @layer base {
   h1 {
-    @apply text-5xl md:text-[64px] font-bold;
+    @apply text-5xl md:text-[64px] font-bold leading-normal;
   }
   h2 {
-    @apply text-3xl md:text-[40px] font-bold;
+    @apply text-3xl md:text-[40px] font-bold leading-normal;
   }
   h3 {
-    @apply text-xl md:text-[40px] font-bold;
+    @apply text-xl md:text-[40px] font-bold leading-normal;
   }
   h4 {
-    @apply text-[24px] font-bold;
+    @apply text-[24px] font-bold leading-normal;
   }
   body {
     @apply bg-light;
@@ -71,6 +71,10 @@
   ol,
   ul {
     @apply list-decimal list-inside;
+  }
+
+  .input-style {
+    @apply bg-[#fff] text-base text-text focus-visible:ring-0 focus-visible:ring-primary border-none focus:border-none focus-visible:ring-offset-0 rounded-[20px] h-[50px] placeholder:text-base  placeholder:font-medium shadow-sm;
   }
 }
 
@@ -126,25 +130,25 @@
 }
 
 .anambra-citizens-image {
-  width: 420px; 
-  height: auto; 
+  width: 420px;
+  height: auto;
 }
 
 .flex.justify-center.col-span-5 {
-  position: relative; 
+  position: relative;
 }
 
 .flex.justify-center.col-span-5::after {
-  content: '';
-  position: absolute; 
+  content: "";
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  border-radius: 200px; 
-  background-color: rgba(0, 0, 0, 0.035); 
+  border-radius: 200px;
+  background-color: rgba(0, 0, 0, 0.035);
   mix-blend-mode: overlay;
-  pointer-events: none; 
+  pointer-events: none;
 }
 
 .swiper-slide img {

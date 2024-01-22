@@ -43,12 +43,19 @@ export const useGetAllReports = ({ filtersString }: GetAllReportsQueryArgs) => {
 
 export const useGetAllActivities = ({
   filtersString,
+  page,
 }: GetAllReportsQueryArgs) => {
   return useQuery(
-    ["all-activities", filtersString],
+    ["all-activities", filtersString, page],
     (): Promise<ActivityResponse> => {
       return axios
-        .get(`${baseUrl}/report/activities${filtersString}`)
+        .get(
+          `${baseUrl}/report/activities${filtersString}${
+            filtersString
+              ? `&page=${page}&perPage=10`
+              : `?page=${page}&perPage=10`
+          }`
+        )
         .then((res) => res.data.data);
     },
     {
@@ -59,7 +66,7 @@ export const useGetAllActivities = ({
 
 export const useGetReportInfo = (id: string) => {
   return useQuery(
-    ["all-activities", id],
+    ["report-info", id],
     (): Promise<ReportData> => {
       return axios
         .get(`${baseUrl}/report/info/${id}`)

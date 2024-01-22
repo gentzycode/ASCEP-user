@@ -14,3 +14,4 @@ export { default as Pagination } from "./Pagination";
 export { default as FloatingLoader } from "./FloatingLoader";
 export { default as EmptyState } from "./EmptyState";
 export { default as LoginModal } from "./LoginModal";
+export { default as UserAvatar } from "./UserAvatar";

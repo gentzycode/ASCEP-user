@@ -72,11 +72,11 @@ export default function SDGMultiSelect({
             <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="p-0 ">
+        <PopoverContent className="p-0 max-h-[400px] overflow-y-scroll ">
           <Command>
             <CommandInput placeholder="Search SDGs..." />
             <CommandEmpty>No SDG found.</CommandEmpty>
-            <CommandGroup>
+            <CommandGroup className="">
               {renderedItems?.length > 0 &&
                 renderedItems.map((renderedItem) => (
                   <CommandItem

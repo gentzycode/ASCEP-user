@@ -1,12 +1,15 @@
 import { useGetAllActivities } from "@/api/response";
 import { ActivityItem } from "@/components/Response";
-import { EmptyState } from "@/components/custom";
+import { EmptyState, Pagination } from "@/components/custom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useResponseContext } from "@/providers/ResponseProvider";
+import { useState } from "react";
 
 export default function ActivityPage() {
   const { filtersString } = useResponseContext();
-  const { data, isLoading } = useGetAllActivities({ filtersString });
+  const [page, setPage] = useState(1);
+
+  const { data, isLoading } = useGetAllActivities({ filtersString, page });
   return (
     <div className="space-y-1">
       {isLoading ? (
@@ -23,21 +26,28 @@ export default function ActivityPage() {
           ))}
         </div>
       ) : data?.data.length ? (
-        data.data.map((activity, i) => (
-          <ActivityItem
-            activity={activity}
-            position={
-              data.data.length === 1
-                ? "only"
-                : i === 0
-                ? "first"
-                : i === data.data.length - 1
-                ? "last"
-                : "mid"
-            }
-            key={i}
+        <>
+          {data.data.map((activity, i) => (
+            <ActivityItem
+              activity={activity}
+              position={
+                data.data.length === 1
+                  ? "only"
+                  : i === 0
+                  ? "first"
+                  : i === data.data.length - 1
+                  ? "last"
+                  : "mid"
+              }
+              key={i}
+            />
+          ))}
+          <Pagination
+            page={page}
+            setPage={setPage}
+            paginationData={data.meta}
           />
-        ))
+        </>
       ) : (
         <div className="h-[80vh] ">
           <EmptyState />

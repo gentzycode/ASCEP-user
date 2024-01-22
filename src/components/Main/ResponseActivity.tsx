@@ -16,7 +16,7 @@ interface ResponseActivityProps {
 export default function ResponseActivity({ activity }: ResponseActivityProps) {
   return (
     <Link
-      to={`/response/view-report/${activity.id}`}
+      to={`/response/reports/${activity.id}`}
       className=" rounded-[40px] bg-white min-w-[280px] max-w-[280px]  "
     >
       {activity.reportImages.length > 0 ? (
