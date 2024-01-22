@@ -31,7 +31,6 @@ import {
   SUPPORT_INITIATIVE_ENDPOINT,
   VOTE_INITIATIVE_COMMENT_ENDPOINT,
 } from ".";
-import { useAuthContext } from "@/providers/AuthProvider";
 import { useAppContext } from "@/contexts/AppContext";
 
 // PUBLISH INITIATIVE

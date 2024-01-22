@@ -18,17 +18,22 @@ import { IconWrapper } from "@/components/custom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowDown2 } from "iconsax-react";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 interface DialogueHelpHomePageProp {}
 const DialogueHelpHomePage: React.FC<DialogueHelpHomePageProp> = () => {
   const [menu, setMenu] = useState(false);
+  const location = useLocation();
+  const tab = location?.state?.helpTab;
+  const [currentTab] = useState(tab ? tab : "introduction");
 
   const handleTabSwitch = () => {
     setMenu(false);
   };
+
   return (
     <Tabs
-      defaultValue="introduction"
+      defaultValue={currentTab}
       className="w-full flex flex-row-reverse gap-6 relative"
       orientation="vertical"
       onValueChange={handleTabSwitch}
@@ -52,6 +57,7 @@ const DialogueHelpHomePage: React.FC<DialogueHelpHomePageProp> = () => {
             <TabsTrigger
               value={item.value}
               className=" !bg-transparent !text-left px-0 py-1 text-base justify-start !shadow-none aria-[selected=true]:!text-primary"
+              key={item.value}
             >
               {item.title}
             </TabsTrigger>
@@ -64,6 +70,7 @@ const DialogueHelpHomePage: React.FC<DialogueHelpHomePageProp> = () => {
             <TabsTrigger
               value={item.value}
               className="!bg-transparent !text-left px-0 py-1 text-base justify-start !shadow-none aria-[selected=true]:!text-primary"
+              key={item.value}
             >
               {item.title}
             </TabsTrigger>

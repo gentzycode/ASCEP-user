@@ -1,14 +1,26 @@
 import { useGetAuthorityInfo } from "@/api/authorities";
 import { PageLoader } from "@/components/custom";
 import { Button } from "@/components/ui/button";
+import { useAppContext } from "@/contexts/AppContext";
+import { useAuthContext } from "@/providers/AuthProvider";
 import ROUTES from "@/utils/routesNames";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 interface AuthorityInfoPageProp {}
 const AuthorityInfoPage: React.FC<AuthorityInfoPageProp> = () => {
   const { authorityId } = useParams();
+  const navigate = useNavigate();
+  const { handleOpenModal } = useAppContext();
+  const { isLoggedIn } = useAuthContext();
   const { data: authority, isLoading } = useGetAuthorityInfo(authorityId!);
 
+  const handleMakeRequest = () => {
+    if (isLoggedIn) {
+      navigate(ROUTES.CREATE_REQUEST_ROUTE(authorityId!));
+    } else {
+      handleOpenModal();
+    }
+  };
   return (
     <div className="w-full max-w-[900px] space-y-9">
       {/* LOADING */}
@@ -25,9 +37,9 @@ const AuthorityInfoPage: React.FC<AuthorityInfoPageProp> = () => {
               <p className="text-primary text-base md:text-lg">
                 {authority.information.total_request_cache} requests
               </p>
-              <Link to={ROUTES.CREATE_REQUEST_ROUTE(authority.information.id)}>
-                <Button className=" h-12">Make a request</Button>
-              </Link>
+              <Button className=" h-12" onClick={handleMakeRequest}>
+                Make a request
+              </Button>
             </div>
           </header>
 

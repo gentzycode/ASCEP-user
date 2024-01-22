@@ -15,12 +15,12 @@ const SideNavigation: React.FC<SideNavigationProps> = () => {
   const { openSidebar, toggleSidebar, activeModule } = useNavigationContext();
   return (
     <div
-      className={`bg-[#EBE5F0] h-screen relative hidden md:block duration-300 px-4 ${
+      className={`sticky top-0 z-20 bg-[#EBE5F0] h-screen  hidden md:block duration-300 px-4 ${
         openSidebar ? "w-[285px]" : "w-[100px]"
       }`}
     >
       <button
-        className="absolute z-20 -right-3 top-12 text-primary "
+        className="absolute z-50 -right-3 top-12 text-primary "
         onClick={toggleSidebar}
       >
         {openSidebar ? (

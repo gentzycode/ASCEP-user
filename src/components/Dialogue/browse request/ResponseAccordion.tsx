@@ -4,31 +4,30 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Separator } from "@/components/ui/separator";
-import { AccordionHeader } from "@radix-ui/react-accordion";
-import { More } from "iconsax-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ReactNode } from "react";
 import useDisclosure from "@/hooks/useDisclosure";
-import { format } from "date-fns";
+import { AccordionHeader } from "@radix-ui/react-accordion";
+import { ReactNode } from "react";
 import { ReplyModal } from "..";
+import { Separator } from "@/components/ui/separator";
+import { More } from "iconsax-react";
+import { format } from "date-fns";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { useAppContext } from "@/contexts/AppContext";
 
-interface RequestInfoAccordionListProp {
-  request: RequestType;
+interface ResponseAccordionProp {
+  response: RequestResponseType;
 }
-const RequestInfoAccordionList: React.FC<RequestInfoAccordionListProp> = ({
-  request,
-}) => {
+
+const ResponseAccordion: React.FC<ResponseAccordionProp> = ({ response }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { author, createdAt, description, id } = request;
+  const { authority, createdAt, response_text, id, user } = response;
   return (
-    <div className="mt-10">
+    <div>
       <Accordion type="multiple" className="w-full space-y-10 pt-9 ">
         <AccordionItem
           value={id}
@@ -37,7 +36,7 @@ const RequestInfoAccordionList: React.FC<RequestInfoAccordionListProp> = ({
           <AccordionHeader className="flex justify-between items-center px-4">
             <p className="text-text text-base">
               <span className="group-even:text-primary odd:text-royal_blue">
-                {author.username}
+                {user.username}
               </span>{" "}
               on {format(new Date(createdAt), "do  MMMM yyyy")}
             </p>
@@ -57,7 +56,7 @@ const RequestInfoAccordionList: React.FC<RequestInfoAccordionListProp> = ({
           <AccordionContent className="py-4">
             <Separator className="group-even:bg-primary group-odd:bg-royal_blue" />
             <p className="text-base text-text text-justify p-4">
-              {description}
+              {response_text}
             </p>
           </AccordionContent>
         </AccordionItem>
@@ -67,21 +66,20 @@ const RequestInfoAccordionList: React.FC<RequestInfoAccordionListProp> = ({
   );
 };
 
-export default RequestInfoAccordionList;
-
-interface ActionOptionProp {
-  trigger: ReactNode;
-  openModal: () => void;
-}
+export default ResponseAccordion;
 
 export const actions = [
   "Write a reply",
   " Report",
   "Request review",
-  // "delete request ",
-  // "Collapse all",
-  // "copy link ",
+  //   "delete request ",
+  //   "Collapse all",
+  //   "copy link ",
 ];
+interface ActionOptionProp {
+  trigger: ReactNode;
+  openModal: () => void;
+}
 export const ActionOption: React.FC<ActionOptionProp> = ({
   trigger,
   openModal,
@@ -89,14 +87,13 @@ export const ActionOption: React.FC<ActionOptionProp> = ({
   const { isLoggedIn } = useAuthContext();
   const { handleOpenModal } = useAppContext();
 
-  const ModalOpen = () => {
+  const handleModalOpen = () => {
     if (!isLoggedIn) {
-      handleOpenModal();
+        handleOpenModal();
     } else {
       openModal();
     }
   };
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
@@ -106,7 +103,7 @@ export const ActionOption: React.FC<ActionOptionProp> = ({
             <li
               key={i}
               className="border-b last:border-none border-text py-2 cursor-pointer"
-              onClick={action === "Write a reply" ? ModalOpen : () => {}}
+              onClick={action === "Write a reply" ? handleModalOpen : () => {}}
             >
               {action}
             </li>

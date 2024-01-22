@@ -11,8 +11,6 @@ const CurrentPhaseCard: React.FC<CurrentPhaseCardProp> = ({
   index,
   active,
 }) => {
-  console.log(active, phase);
-
   return (
     <Button
       className={`${

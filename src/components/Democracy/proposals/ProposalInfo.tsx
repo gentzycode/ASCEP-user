@@ -249,10 +249,10 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
                   Author
                 </h2>
                 <Button
-                  className="text-dark text-base h-fit my-4  w-full p-0  justify-center gap-3 flex rounded-lg max-w-[200px]"
+                  className="text-dark text-base h-fit my-4  w-full p-0  justify-center gap-3 flex rounded-lg max-w-[220px]"
                   disabled={
                     proposal.total_comments_cache > 0 ||
-                    proposal.total_comments_cache > 0
+                    proposal.total_support_cache > 0
                   }
                 >
                   <Link
@@ -270,7 +270,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
                   onClick={openAlert}
                   disabled={
                     proposal.total_comments_cache > 0 ||
-                    proposal.total_comments_cache > 0
+                    proposal.total_support_cache > 0
                   }
                 >
                   <span>Delete Proposal</span>
@@ -336,14 +336,14 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
         {/* FOLLOW */}
         {isLoggedIn && (
           <>
-            <div>
+            {/* <div>
               <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
                 Follow
               </h2>
               <Button className="bg-transparent border border-primary mt-3 text-primary hover:text-light h-12">
                 Follow citizen Proposal
               </Button>
-            </div>
+            </div> */}
 
             {/* COMMUNITY */}
             <div>

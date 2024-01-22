@@ -92,12 +92,12 @@ export const GET_PROPOSAL_TOPIC_COMMENTS_ENDPOINT = (
   baseUrl +
   `/proposal/topic/comments?page=${page}&perPage=${perPage}&filter=${filter}&proposalTopic=${topicId}`;
 
-  export const GET_PROPOSAL_TOPIC_COMMENTS_RESPONSES_ENDPOINT = (
-    commentId: string,
-    page: number
-  ) =>
-    baseUrl +
-    `/proposal/topic/comment-responses?page=${page}&perPage=${perPage}&comment=${commentId}`;
+export const GET_PROPOSAL_TOPIC_COMMENTS_RESPONSES_ENDPOINT = (
+  commentId: string,
+  page: number
+) =>
+  baseUrl +
+  `/proposal/topic/comment-responses?page=${page}&perPage=${perPage}&comment=${commentId}`;
 
 export const PUBLISH_PROPOSAL_TOPIC_COMMENT_ENDPOINT =
   baseUrl + "/proposal/topic/comment";
@@ -181,6 +181,12 @@ export const DELETE_POLL_ENDPOINT = (pollId: string) =>
 
 export const RESOLVE_POLL_SHARE_ID_ENDPOINT = (shareableId: string) =>
   baseUrl + `/voting/resolve-link/${shareableId}`;
+
+//BUDGETING
+export const GET_ALL_BUDGET_ENDPOINT = (page: string) =>
+  baseUrl + `/budget/all/${page}/${perPage}`;
+export const GET_CURRENT_BUDGET_ENDPOINT = baseUrl + "/budget/current";
+export const GET_BUDGET_PHASES_ENDPOINT = baseUrl + "/budget/phase-modules";
 
 //SDG
 export const GET_ALL_SDGs_ENDPOINT = baseUrl + "/sdg/all";

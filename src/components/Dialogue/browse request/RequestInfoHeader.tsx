@@ -26,8 +26,8 @@ const RequestInfoHeader: React.FC<RequestInfoHeaderProp> = ({ request }) => {
           {" "}
           <span className="text-royal_blue">{authority.name}</span>
         </Link>{" "}
-        by <span className="text-primary">{author.username}</span> . Annotated
-        by <span className="text-primary">J Roberts </span> on 30 December 2023.
+        by <span className="text-primary">{author.username}</span> 
+        {/* . Annotated by <span className="text-primary">J Roberts </span> on 30 December 2023. */}
       </p>
       <footer className="flex gap-3">
         <Button className="h-fit w-fit text-green-500 bg-green-500/10 pointer-events-none">

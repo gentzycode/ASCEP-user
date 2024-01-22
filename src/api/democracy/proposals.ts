@@ -39,7 +39,6 @@ import {
   VOTE_PROPOSAL_COMMENT_ENDPOINT,
   VOTE_PROPOSAL_TOPIC_COMMENT_ENDPOINT,
 } from ".";
-import { useAuthContext } from "@/providers/AuthProvider";
 import { useAppContext } from "@/contexts/AppContext";
 
 // PUBLISH PROPOSAL
@@ -58,13 +57,19 @@ export const usePublishProposal = () => {
         .then((res) => res.data);
     },
     {
-      onSuccess: (res) => {
+      onSuccess: (res, variables) => {
+        const id = variables.get("id") as string;
         toast({
           title: "Success!",
           variant: "success",
           description: res.message,
         });
-        navigate(ROUTES.PROPOSALS_HOME_ROUTE);
+
+        if (id) {
+          navigate(ROUTES.PROPOSAL_INFO_ROUTE(id));
+        } else {
+          navigate(ROUTES.PROPOSALS_HOME_ROUTE);
+        }
       },
     }
   );

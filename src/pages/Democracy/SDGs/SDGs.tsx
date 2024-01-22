@@ -26,7 +26,7 @@ const SDGHomePage: React.FC<SDGProps> = () => {
         <h3 className="text-[20px] lg:text-[24px] my-3 text-text">
           What are the Sustainable Development Goals?
         </h3>
-        <p className="text-justify text-subtitle_text">
+        <p className="text-justify text-subtitle_text text-base xl:text-xl">
           The Sustainable Development Goals (SDGs), also known as the Global
           Goals, were adopted by the United Nations in 2015 as a universal call
           to action to end poverty, protect the planet, and ensure that by 2030
@@ -115,7 +115,7 @@ const SDGHomePage: React.FC<SDGProps> = () => {
           </Link>
         </div>
 
-        <div className="flex flex-col justify-between items-center gap-[19px] w-full max-w-[400px] mx-auto">
+        {/* <div className="flex flex-col justify-between items-center gap-[19px] w-full max-w-[400px] mx-auto">
           <IconWrapper className="w-[135px] h-[135px] rounded-xl bg-light text-subtle_text shadow-xl">
             <Scanning size="60" variant="Bold" />
           </IconWrapper>
@@ -132,7 +132,7 @@ const SDGHomePage: React.FC<SDGProps> = () => {
             100% green city
           </p>
           <Button className="bg-dark text-light">See comments</Button>
-        </div>
+        </div> */}
       </div>
     </>
   );

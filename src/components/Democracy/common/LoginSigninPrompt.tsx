@@ -19,15 +19,15 @@ const LoginSigninPrompt = () => {
             sign in
           </span>{" "}
           or{" "}
-          <Link to={ROUTES.SIGNIN_ROUTE} className="underline">
+          <Link to={ROUTES.SIGNUP_ROUTE} className="underline">
             sign up
           </Link>{" "}
           to leave a comment.
         </p>
       </div>
-      <Button className="bg-transparent hover:bg-transparent w-fit h-fit">
+      {/* <Button className="bg-transparent hover:bg-transparent w-fit h-fit">
         <CloseCircle size="32" />
-      </Button>
+      </Button> */}
     </div>
   );
 };

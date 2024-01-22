@@ -136,7 +136,7 @@ export const dialogueRoutes: RouterType[] = [
     title: "dailogue-authority",
   },
   {
-    path: "/dialogue/authority-info/:authorityId",
+    path: "/dialogue/view-authorities/:authorityId",
     element: <AuthorityInfoPage />,
     title: "dailogue-authority-info",
   },

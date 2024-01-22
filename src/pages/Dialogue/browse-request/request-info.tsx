@@ -1,27 +1,43 @@
 import { frontendURL } from "@/api/baseUrl";
-import { useGetRequestInfo } from "@/api/dialogue/requests";
+import {
+  useGetRequestInfo,
+  useGetRequestResponses,
+} from "@/api/dialogue/requests";
 import { Share } from "@/components/Democracy";
 import {
   RequestInfoAccordionList,
   RequestInfoHeader,
+  ResponseAccordion,
 } from "@/components/Dialogue";
 import { PageLoader } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { ArrowCircleDown2 } from "iconsax-react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 interface RequestInfoPageProp {}
 const RequestInfoPage: React.FC<RequestInfoPageProp> = () => {
   const { requestId } = useParams();
+  const [page] = useState(1);
+  const { data: responseData, isLoading: loadingResponses } =
+    useGetRequestResponses(page, requestId!);
+
   const { data: request, isLoading } = useGetRequestInfo(requestId!);
   return (
     <>
       {isLoading && <PageLoader />}
       {request && (
         <div className="flex justify-start gap-10 xl:flex-row flex-col">
-          <div className=" w-full xl:min-w-[700px] flex flex-col gap-6">
+          <div className=" w-full xl:min-w-[700px]">
             <RequestInfoHeader request={request} />
-            <RequestInfoAccordionList />
+            {isLoading && <PageLoader />}
+            {request && <RequestInfoAccordionList request={request} />}
+
+            <div>
+              {responseData?.responses.map((response) => (
+                <ResponseAccordion response={response} />
+              ))}
+            </div>
           </div>
 
           <div className="w-full  md:w-[300px] space-y-10">

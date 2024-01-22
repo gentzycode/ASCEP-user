@@ -26,6 +26,8 @@ export { default as RequestList } from "./browse request/RequestList";
 export { default as RequestListCard } from "./browse request/RequestListCard";
 export { default as RequestInfoHeader } from "./browse request/RequestInfoHeader";
 export { default as RequestInfoAccordionList } from "./browse request/RequestInfoAccordionList";
+export { default as ReplyModal } from "./browse request/ReplyModal";
+export { default as ResponseAccordion } from "./browse request/ResponseAccordion";
 
 // VIEW AUTHORITIES
 export { default as FilterAuthorities } from "./view authorities/FilterAuthorities";
