@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { usePublishDebate } from "@/api/democracy/debates";
 import TargetsMultiSelect from "@/components/custom/TargetsMultiSelect";
+import ROUTES from "@/utils/routesNames";
 
 interface PublishDebateProps {}
 const PublishDebatePage: React.FC<PublishDebateProps> = () => {
@@ -148,7 +149,11 @@ const PublishDebatePage: React.FC<PublishDebateProps> = () => {
               <p className="text-[14px] md:text-[16px] text-subtle_text -tracking-[0.36px] my-2">
                 You can introduce the code of a specific goal/target or a text
                 to find one. For more information visit the
-                <Link to="#" className="text-primary ml-1">
+                <Link
+                  to={ROUTES.SDGs_HOME_ROUTE}
+                  className="text-primary ml-1"
+                  target="_blank"
+                >
                   SDG help page.
                 </Link>
               </p>

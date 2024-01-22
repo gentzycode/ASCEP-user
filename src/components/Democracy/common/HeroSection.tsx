@@ -11,9 +11,7 @@ interface HeroSectionProps {
 
 const HeroSection: React.FC<HeroSectionProps> = ({ title, description }) => {
   const { isLoggedIn } = useAuthContext();
-  const { handleOpenModal, isLoginModalOpen } = useAppContext();
-  console.log(isLoginModalOpen);
-
+  const { handleOpenModal } = useAppContext();
   return (
     <>
       <h1 className="tracking-[1px]  text-left font-sans text-text text-3xl md:text-6xl capitalize">

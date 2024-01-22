@@ -11,12 +11,17 @@ const MakeRequestPageFooter = () => {
         <p>
           <Link
             to={ROUTES.DIALOGUE_HELP_HOME_ROUTE}
+            state={{ helpTab: "making-request" }}
             className="text-primary underline"
           >
             Get help making a request
           </Link>{" "}
           or{" "}
-          <Link to="#" className="text-primary underline">
+          <Link
+            to={ROUTES.DIALOGUE_HELP_HOME_ROUTE}
+            state={{ helpTab: "beginner-guide" }}
+            className="text-primary underline"
+          >
             see our beginner’s guide
           </Link>{" "}
         </p>

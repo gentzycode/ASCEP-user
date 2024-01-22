@@ -18,6 +18,14 @@ export const createRequestSchema = z.object({
       message: "Please select request type",
     }),
 });
+export const CreateRequestResponseSchema = z.object({
+  content: z
+    .string({ required_error: "Please enter your request title" })
+    .refine((value) => value.trim() !== "", {
+      message: "Please enter your request title",
+    }),
+  request_id: z.string({ required_error: "Request Id is required" }),
+});
 
 export const searchRequestSchema = z.object({
   text: z.string().optional(),

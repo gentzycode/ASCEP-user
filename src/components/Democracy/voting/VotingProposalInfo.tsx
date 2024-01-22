@@ -34,7 +34,6 @@ const VotingProposalInfo: React.FC<VotingProposalInfoProps> = ({
     external_video_url,
     id,
     proposalDocuments,
-    proposal_code,
     summary,
   } = proposal;
   return (

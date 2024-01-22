@@ -48,9 +48,9 @@ const FormDocumentInput = <TFormValues extends Record<string, unknown>>({
           <FormItem>
             <p className="text-dark text-[14px]">{description}</p>
             <FormControl>
-              <Button
-                type="button"
-                className="w-full max-w-[300px] p-0 flex justify-center items-center"
+              <div
+                // type="button"
+                className="w-full max-w-[300px] p-0 flex justify-center items-center bg-primary py-3 rounded-2xl"
               >
                 <input
                   type="file"
@@ -61,7 +61,7 @@ const FormDocumentInput = <TFormValues extends Record<string, unknown>>({
                   multiple
                   ref={field.ref}
                   {...props}
-                  key={v4()}
+                  // key={v4()}
                 />
                 <label
                   htmlFor="fileInputDoc"
@@ -72,7 +72,7 @@ const FormDocumentInput = <TFormValues extends Record<string, unknown>>({
                     Add Document
                   </span>
                 </label>
-              </Button>
+              </div>
             </FormControl>
             <FormMessage />
           </FormItem>

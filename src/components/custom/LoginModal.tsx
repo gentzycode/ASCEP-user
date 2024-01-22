@@ -2,7 +2,7 @@ import { AlertDialog, AlertDialogContent } from "@/components/ui/alert-dialog";
 import { Button } from "../ui/button";
 import { useLogin } from "@/api/auth";
 import { FormCard } from "@/components/Auth";
-import { FormInput } from "@/components/custom";
+import { FormInput, IconWrapper } from "@/components/custom";
 import { Form } from "@/components/ui/form";
 import { loginSchema } from "@/schemas/AuthSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useAppContext } from "@/contexts/AppContext";
+import { CloseCircle } from "iconsax-react";
 
 interface LoginModalProp {
   isOpen: boolean;
@@ -44,8 +45,14 @@ export const LoginModal: React.FC<LoginModalProp> = ({ isOpen, onClose }) => {
 
   return (
     <AlertDialog open={isOpen}>
-      <AlertDialogContent className="max-w-[600px] w-[98%] px-3 md:px-6">
-        <FormCard className=" !w-full !p-2">
+      <AlertDialogContent className="max-w-[600px] w-[98%] !px-4">
+        <IconWrapper
+          className="absolute top-2 right-2 bg-transparent cursor-pointer"
+          onClick={onClose}
+        >
+          <CloseCircle size={35} />
+        </IconWrapper>
+        <FormCard className=" !max-w-none !p-2">
           <div className="space-y-7 mb-7">
             <h2 className="text-[30px] text-center text-dark">
               Welcome back 😊
@@ -79,24 +86,14 @@ export const LoginModal: React.FC<LoginModalProp> = ({ isOpen, onClose }) => {
                 Forgot Password?
               </div>
 
-              <div className="flex gap-3 flex-wrap">
-                <Button
-                  isLoading={isLoading}
-                  type="submit"
-                  className="w-full lg:max-w-[230px]"
-                  disabled={isLoading}
-                >
-                  Login
-                </Button>
-                <Button
-                  disabled={isLoading}
-                  className="w-full bg-transparent border-dark border lg:max-w-[230px]"
-                  onClick={onClose}
-                  type="button"
-                >
-                  Cancel
-                </Button>
-              </div>
+              <Button
+                isLoading={isLoading}
+                type="submit"
+                className="w-full"
+                disabled={isLoading}
+              >
+                Login
+              </Button>
 
               <div className="flex items-center justify-center w-full gap-1 text-xs text-center">
                 <p>Don’t have an account? </p>

@@ -1,10 +1,12 @@
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 import {
   CREATE_REQUEST_ENDPOINT,
+  CREATE_REQUEST_RESPONSE_ENDPOINT,
   GET_ALL_AUTHORITIES_REQUESTS_COUNT_ENDPOINT,
   GET_ALL_REQUESTS_ENDPOINT,
   GET_REQUEST_INFO_ENDPOINT,
+  GET_REQUEST_RESPONSE_ENDPOINT,
   RESOLVE_REQUEST_SHARE_ID_ENDPOINT,
 } from ".";
 import { useToast } from "@/components/ui/use-toast";
@@ -13,6 +15,7 @@ import { configOptions } from "../config";
 import ROUTES from "@/utils/routesNames";
 import { getRequestsSchema } from "@/schemas/MakeARequestSchema";
 import * as z from "zod";
+import { useAppContext } from "@/contexts/AppContext";
 
 // GET AUTHORITY REQUEST COUNT
 export const useGetAuthoritiesAndRequestCount = () => {
@@ -56,6 +59,63 @@ export const useCreateRequest = () => {
     }
   );
 };
+// CREATE REQUEST RESPONSE
+export const useCreateRequestResponse = () => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const { handleOpenModal } = useAppContext();
+  return useMutation(
+    (values: FormData): Promise<ResponseDataType> => {
+      return axios
+        .post(CREATE_REQUEST_RESPONSE_ENDPOINT, values, {
+          headers: {
+            ...configOptions(),
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => res.data);
+    },
+    {
+      onSuccess: (res) => {
+        toast({
+          title: "Success!",
+          variant: "success",
+          description: res.message,
+        });
+        queryClient.invalidateQueries("get-request-responses");
+      },
+      onError: (error: any) => {
+        const errors = error.response.data.errors;
+        errors.map((error: { message: string }) => {
+          if (error.message === "E_UNAUTHORIZED_ACCESS: Unauthorized access") {
+            handleOpenModal();
+            toast({
+              title: "Error!",
+              variant: "error",
+              description: "Please login to perform this action",
+            });
+          }
+        });
+      },
+    }
+  );
+};
+
+// GET ALL REQUEST RESPONSES
+export const useGetRequestResponses = (page: number, request_id: string) => {
+  return useQuery(
+    ["get-request-responses"],
+    async (): Promise<RequestResponseDataType> => {
+      return axios
+        .get(GET_REQUEST_RESPONSE_ENDPOINT(page, request_id))
+        .then((res) => res.data.data);
+    },
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
 
 // GET ALL REQUESTS
 export const useGetAllRequests = () => {
@@ -71,11 +131,18 @@ export const useGetAllRequests = () => {
 
 // GET  REQUEST INFo
 export const useGetRequestInfo = (requestId: string) => {
-  return useQuery(["request-info"], (): Promise<RequestType> => {
-    return axios
-      .get(GET_REQUEST_INFO_ENDPOINT(requestId))
-      .then((res) => res.data.data.foirequest);
-  });
+  return useQuery(
+    ["request-info"],
+    (): Promise<RequestType> => {
+      return axios
+        .get(GET_REQUEST_INFO_ENDPOINT(requestId))
+        .then((res) => res.data.data.foirequest);
+    },
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 //SHARE ID

@@ -77,7 +77,9 @@ const InitiativeInfo: React.FC<InitiativeInfoProps> = ({
       <div className=" w-full xl:min-w-[700px] flex flex-col gap-6">
         {/* MAIN INFO */}
         <div className="flex flex-col w-full">
-          <h1 className="text-2xl lg:text-3xl text-dark py-3">{initiative.title}</h1>
+          <h1 className="text-2xl lg:text-3xl text-dark py-3">
+            {initiative.title}
+          </h1>
           <div className="flex justify-start items-center gap-6 flex-wrap">
             <Avatar className="h-12 w-12">
               <AvatarImage
@@ -297,13 +299,15 @@ const InitiativeInfo: React.FC<InitiativeInfoProps> = ({
               <Messages1 size="25" />
               <span>{initiative.supportNeeded} support needed</span>
             </Button>
-            <Button
-              className="h-12  max-w-[200px] py-4 text-lg w-full rounded-full"
-              isLoading={isSupportingProposal}
-              onClick={() => supportProposal()}
-            >
-              Support
-            </Button>
+            {initiative.status !== "in review" && (
+              <Button
+                className="h-12  max-w-[200px] py-4 text-lg w-full rounded-full"
+                isLoading={isSupportingProposal}
+                onClick={() => supportProposal()}
+              >
+                Support
+              </Button>
+            )}
           </div>
         </div>
 

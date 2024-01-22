@@ -55,8 +55,8 @@ const BrowseRequestHomePage: React.FC<BrowseRequestHomePageProp> = () => {
       {/* ERROR */}
       {isError && !isLoading && (
         <FetchingError
-          message="Error fetching Authorities"
-          refetching={isError}
+          message="Error fetching Requests"
+          refetching={isLoading}
           retryFunction={refetch}
         />
       )}

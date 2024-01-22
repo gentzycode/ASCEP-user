@@ -34,7 +34,6 @@ const CreateTopicModal: React.FC<CreateTopicModalProps> = ({
   title,
   content,
 }) => {
-  
   const { mutateAsync: publishTopic, isLoading: isPublishing } =
     usePublishProposalTopic();
 
@@ -106,6 +105,7 @@ const CreateTopicModal: React.FC<CreateTopicModalProps> = ({
               label="Initial Text"
               control={control}
               errors={errors}
+              rows={4}
             />
             <div className="flex gap-3 flex-wrap">
               <Button

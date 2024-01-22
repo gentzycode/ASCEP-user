@@ -65,7 +65,7 @@ const ROUTES = {
   //VIEW AUTHORITIES
   VIEW_AUTHORITIES_HOME_ROUTE: "/dialogue/view-authorities",
   AUTHORITY_INFO_ROUTE: (authorityId: string) =>
-    `/dialogue/authority-info/${authorityId}`,
+    `/dialogue/view-authorities/${authorityId}`,
 
   //DIALOGUE HELP
   DIALOGUE_HELP_HOME_ROUTE: "/dialogue/dialogue-help",

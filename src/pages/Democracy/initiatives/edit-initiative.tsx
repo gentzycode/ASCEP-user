@@ -23,6 +23,7 @@ import {
   usePublishInitiative,
 } from "@/api/democracy/initiatives";
 import { startInitiativeSchema } from "@/schemas/InitiativesSchema";
+import ROUTES from "@/utils/routesNames";
 
 interface EditInitiativePageProps {}
 
@@ -247,12 +248,12 @@ const EditInitiativePage: React.FC<EditInitiativePageProps> = () => {
               </h2>
 
               {/* MAP */}
-              <div>
+              {/* <div>
                 <h4 className="text-[14px] text-dark ">Map location</h4>
                 <p className="text-subtle_text text-[14px]">
                   Navigate the map to the location and place the marker
                 </p>
-              </div>
+              </div> */}
 
               {/* TAGS */}
               <FormTags setTags={setTags} tags={tags} />
@@ -271,7 +272,11 @@ const EditInitiativePage: React.FC<EditInitiativePageProps> = () => {
                 <p className="text-[14px] md:text-[16px] text-subtle_text -tracking-[0.36px] my-2">
                   You can introduce the code of a specific goal/target or a text
                   to find one. For more information visit the
-                  <Link to="#" className="text-primary ml-1">
+                  <Link
+                    to={ROUTES.SDGs_HOME_ROUTE}
+                    className="text-primary ml-1"
+                    target="_blank"
+                  >
                     SDG help page.
                   </Link>
                 </p>

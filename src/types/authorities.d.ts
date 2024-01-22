@@ -22,7 +22,6 @@ interface AuthorityInfoType {
   total_request_cache: number;
 }
 
-//VOTING
 interface RequestDataType {
   meta: MetaDataType;
   foi_requests: RequestType[];
@@ -66,4 +65,35 @@ interface MetaDataType {
   last_page_url: string | null;
   next_page_url: string | null;
   previous_page_url: string | null;
+}
+
+interface RequestResponseDataType {
+  meta: MetaDataType;
+  responses: RequestResponseType[];
+}
+
+interface RequestResponseType {
+  id: string;
+  responder_id: string;
+  authority_id: string;
+  request_id: string;
+  response_text: string;
+  response_date: string;
+  is_public: boolean;
+  updatedAt: string;
+  createdAt: string;
+  is_user_response: boolean;
+  is_moderator_response: boolean;
+  attachments: any[];
+  authority: {
+    name: string;
+    id: string;
+  };
+  user: {
+    firstname: string;
+    lastname: string;
+    profile_picture: string;
+    username: string;
+    id: string;
+  };
 }
