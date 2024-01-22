@@ -49,7 +49,7 @@ export default function ResponseFilters() {
 
     if (wards) {
       const locationsOptions: FilterOption[] = wards.map((ward) => ({
-        label: ward.ward,
+        label: `${ward.ward}, ${ward.lga}`,
         value: `${ward.longitude}&latitude=${ward.latitude}`,
       }));
       locationsOptions.unshift({ label: "Everywhere", value: "" });

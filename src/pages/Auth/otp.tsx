@@ -33,7 +33,7 @@ export default function OTPPage() {
       setOtpError(null);
     }
     verifyEmail({
-      email: state.email,
+      email: "skinzybranc5@getnada.com",
       token: otp,
     });
   }

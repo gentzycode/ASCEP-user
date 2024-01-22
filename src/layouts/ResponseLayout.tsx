@@ -75,7 +75,7 @@ export default function ResponseLayout() {
           ))}
         </div>
       </div>
-      <CreateReportModal isOpen={isOpen} onClose={onClose} />
+      {isOpen && <CreateReportModal isOpen={isOpen} onClose={onClose} />}
     </div>
   );
 }

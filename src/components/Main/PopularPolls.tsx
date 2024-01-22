@@ -11,13 +11,13 @@ export default function PopularPolls() {
       <p className="text-lg text-subtle_text">Popular Polls</p>
 
       <div className="space-y-4">
-        {loadingPolls ? (
-          <Skeleton className="h-40 rounded-[40px] bg-slate-200" />
-        ) : (
-          popularPolls?.map((popularPoll) => (
-            <PopularPoll key={popularPoll.id} poll={popularPoll} />
-          ))
-        )}
+        {loadingPolls
+          ? Array.from({ length: 3 }).map((_, i) => (
+              <Skeleton key={i} className="h-40 rounded-[40px] bg-slate-200" />
+            ))
+          : popularPolls?.map((popularPoll) => (
+              <PopularPoll key={popularPoll.id} poll={popularPoll} />
+            ))}
       </div>
     </>
   );

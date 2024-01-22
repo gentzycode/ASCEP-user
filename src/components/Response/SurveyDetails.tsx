@@ -121,23 +121,23 @@ export default function SurveyDetails({ survey }: SurveyDetailsProps) {
 
   return (
     <div className="space-y-8">
-      <h3>{survey.title}</h3>
-      <div className="items-center gap-1 text-sm md:flex">
-        <div className="flex items-center gap-1">
-          <Location color="black" size={14} />
-          <p>{survey.location_meta}</p>
-        </div>
+      <div>
+        <h3 className="mb-2 text-text">{survey.title}</h3>
+        <div className="items-center gap-1 text-sm md:flex">
+          <div className="flex items-center gap-1">
+            <Location color="black" size={14} />
+            <p>{survey.location_meta}</p>
+          </div>
 
-        <div className="flex items-center gap-1">
-          <p className="font-bold text-link">
-            Posted on {new Date(survey.createdAt).toDateString()}
-          </p>
+          <div className="flex items-center gap-1">
+            <p className="font-bold text-link">
+              Posted on {new Date(survey.createdAt).toDateString()}
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="my-5 font-medium text-dark">
-        <p>{survey.description}</p>
-      </div>
+      <div className="my-5 leading-7 text-text">{survey.description}</div>
 
       <div className="flex gap-6">
         {survey.surveySDGs.map((sdg) => (
@@ -157,8 +157,8 @@ export default function SurveyDetails({ survey }: SurveyDetailsProps) {
           );
 
           return (
-            <div key={question.id} className="space-y-4">
-              <p className="text-lg">Question {i + 1}</p>
+            <div key={question.id} className="space-y-4 leading-7 text-text">
+              <p className="text-lg leading-7 text-text">Question {i + 1}</p>
               <p>{question.question_text}</p>
               {question.response_type === "text" ? (
                 <Input

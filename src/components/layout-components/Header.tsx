@@ -14,7 +14,9 @@ const Header = () => {
     <div className="sticky top-0 z-10 items-center justify-between hidden px-8 py-4 md:flex bg-light">
       <div>
         {activeModule === "main" ? (
-          <h2 className="text-2xl font-bold">Good Morning Dexter 🤝</h2>
+          <h2 className="text-2xl font-bold">
+            Good Morning {user?.firstname} 🤝
+          </h2>
         ) : (
           <h2 className="text-2xl font-bold capitalize">{activeModule}</h2>
         )}

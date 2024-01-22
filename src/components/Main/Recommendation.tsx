@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { IconWrapper } from "../custom";
+import { IconWrapper, UserAvatar } from "../custom";
 
 export default function Recommendation({
   recommendation,
@@ -46,10 +46,7 @@ export default function Recommendation({
     >
       <div className="flex-1 ml-3 mr-auto">
         <IconWrapper className="h-[50px] w-[50px] rounded-full">
-          <img
-            src={recommendation.createdBy.profile_picture}
-            className="object-cover w-full h-full rounded-full"
-          />
+          <UserAvatar size={50} user={recommendation.createdBy} />
         </IconWrapper>
       </div>
       <div className="ml-[18px] mr-11">
@@ -57,7 +54,7 @@ export default function Recommendation({
           {recommendation.title}
         </p>
         <div className="flex gap-1 mb-[10px] ">
-          created by
+          Created by
           <span className="font-medium text-link">
             {recommendation.createdBy.firstname}{" "}
             {recommendation.createdBy.lastname}

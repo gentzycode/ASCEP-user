@@ -24,8 +24,8 @@ export default function ResponseDetails({ report }: ResponseDetailsProps) {
   };
   return (
     <div>
-      <h3>{report.title}</h3>
-      <div className="items-center gap-1 space-y-2 text-sm md:flex">
+      <h3 className="mb-2 text-text">{report.title}</h3>
+      <div className="flex flex-col items-center gap-1 text-sm md:flex-row">
         <div className="flex items-center gap-1">
           <Location color="black" size={14} />
           <p>{report.location_meta}</p>
@@ -42,8 +42,8 @@ export default function ResponseDetails({ report }: ResponseDetailsProps) {
         </div>
       </div>
 
-      <div className="my-5 font-medium text-dark">
-        <p>{report.description}</p>
+      <div className="my-5 text-text">
+        <p className="leading-7">{report.description}</p>
       </div>
 
       <div className="flex gap-6">

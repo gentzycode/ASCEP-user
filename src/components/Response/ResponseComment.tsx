@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { AddSquare, CloseCircle } from "iconsax-react";
 import React, { useState } from "react";
-import { CommentInput } from "../custom";
+import { CommentInput, UserAvatar } from "../custom";
 import { usePostComment } from "@/api/response";
 
 import { DeleteComment } from "./DeleteComment";
@@ -24,11 +25,8 @@ const ResponseComment = ({ comment, reportId }: ResponseCommentProps) => {
       <div className="bg-white rounded-[24px] space-y-4 shadow-sm p-4 md:p-8">
         <div className="flex items-center justify-between gap-8 md:justify-start">
           <div className="flex items-center gap-2">
-            <img
-              src={comment.author.profile_picture}
-              className="w-10 h-10 rounded-full"
-              alt=""
-            />
+            {/* @ts-ignore */}
+            <UserAvatar size={40} user={comment.author} />
             <p className="text-lg font-bold md:text-xl text-dark">
               {comment.author.username}
             </p>

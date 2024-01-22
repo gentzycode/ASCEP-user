@@ -9,16 +9,19 @@ export default function DataViewItem({ report }: DataViewItemProps) {
   return (
     <Link to={`/response/reports/${report.id}`}>
       <div className="flex gap-3 h-[160px] ">
-        <img
-          src={
-            report.reportImages.length > 0
-              ? report.reportImages[0].image_url
-              : "/images/activity.png"
-          }
-          className="hidden md:block w-full max-w-20 md:max-w-[165px] rounded-[20px]  object-cover "
-          alt=""
-        />
-
+        {report.reportImages.length > 0 ? (
+          <img
+            src={
+              report.reportImages.length > 0
+                ? report.reportImages[0].image_url
+                : "/images/activity.png"
+            }
+            className="hidden md:block w-full max-w-20 md:max-w-[165px] rounded-[20px]  object-cover "
+            alt=""
+          />
+        ) : (
+          <div className="md:max-w-[165px] w-full bg-slate-300 rounded-[20px]  "></div>
+        )}
         <div className="md:py-6 md:px-[18px]  p-3 bg-white w-full rounded-xl md:rounded-[20px] space-y-3  ">
           <div className="flex items-center gap-3">
             <h4 className="text-base font-semibold md:text-xl">

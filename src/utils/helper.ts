@@ -59,3 +59,13 @@ export function getAlphabetLetter(number: number) {
     return null;
   }
 }
+
+export const formatStringWithLineBreaks = (textAreaValue: string) => {
+  // Split the textarea value using the newline character
+  const lines = textAreaValue.split("\n");
+
+  // Map through the lines and create a new array with <p> tags for each line
+  const formattedLines = lines.map((line) => `<p>${line}</p>`);
+
+  return formattedLines;
+};

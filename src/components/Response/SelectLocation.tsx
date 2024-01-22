@@ -38,14 +38,18 @@ export default function SelectLocation({ onSelect }: SelectLocationProps) {
           <div className="relative w-full">
             <Input
               className="bg-[#F5F5F5] capitalize w-full text-base text-text focus-visible:ring-0 focus-visible:ring-primary border-none focus:border-none focus-visible:ring-offset-0 rounded-[20px] h-11 sm:h-[50px] placeholder:text-base placeholder:text-subtle_text/30 placeholder:font-medium"
-              value={selected?.ward || "Select Location"}
+              value={
+                selected
+                  ? `${selected?.ward} ${selected?.lga}`
+                  : "Select Location"
+              }
             />
             <div className="absolute rounded-r-[20px] bg-[#f5f5f5] top-0 flex items-center h-full pr-4 pl-1 right-0 ">
               <Gps size={24} color="#000" />
             </div>
           </div>
         </PopoverTrigger>
-        <PopoverContent align="end" className="p-0 max-w-[230px] ">
+        <PopoverContent align="end" className="p-0 max-w-[270px] ">
           {fetchingWards ? (
             <PageLoader />
           ) : (
@@ -61,8 +65,9 @@ export default function SelectLocation({ onSelect }: SelectLocationProps) {
                       handleSelect(currentValue);
                       setOpen(false);
                     }}
+                    className="line-clamp-1"
                   >
-                    {ward.ward}
+                    {ward.ward}, {ward.lga}
                   </CommandItem>
                 ))}
               </CommandGroup>
