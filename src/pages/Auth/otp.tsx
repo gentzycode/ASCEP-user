@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { FormCard } from "@/components/Auth";
 import { CardBackBtn, CustomPinInput } from "@/components/custom";
@@ -6,19 +6,31 @@ import { Button } from "@/components/ui/button";
 import { SyntheticEvent, useEffect, useState } from "react";
 import useCountdown from "@/hooks/useCountdown";
 import { useResendOTP, useVerifyEmail } from "@/api/auth";
+import config from "@/utils/config";
+
+const timeout = Number.parseInt(
+  localStorage.getItem(config.key.timeout) as string
+);
+const registerEmail = localStorage.getItem(config.key.register_email);
 
 export default function OTPPage() {
   const [otp, setotp] = useState("");
   const [otpError, setOtpError] = useState<string | null>(null);
   const navigate = useNavigate();
   const [email, setEmail] = useState<string | null>(null);
+  const [register_email, setRegisterEmail] = useState(registerEmail);
 
-  const { state } = useLocation();
+  useEffect(() => {
+    setRegisterEmail(localStorage.getItem(config.key.register_email));
+  }, []);
 
-  const { minutes, remainingSeconds, time } = useCountdown(state.timeLimit);
-  const { isLoading: resending, isSuccess } = useResendOTP(email);
+  const { minutes, remainingSeconds, time } = useCountdown(timeout);
+  const { isLoading: resending, isFetching, isSuccess } = useResendOTP(email);
 
   const { mutate: verifyEmail, isLoading } = useVerifyEmail();
+
+  console.log(register_email);
+  console.log(email);
 
   useEffect(() => {
     if (isSuccess) setEmail(null);
@@ -64,7 +76,7 @@ export default function OTPPage() {
                 />
               </div>
 
-              {state.timeLimit > 0 && (
+              {register_email && timeout > 0 && (
                 <div className="flex gap-1 text-sm font-bold text-dark">
                   {time > 0 ? (
                     <p>
@@ -72,8 +84,8 @@ export default function OTPPage() {
                     </p>
                   ) : (
                     <Button
-                      isLoading={resending}
-                      onClick={() => setEmail(state.email)}
+                      isLoading={resending || isFetching}
+                      onClick={() => setEmail(register_email)}
                       size="xs"
                       type="button"
                     >
