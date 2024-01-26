@@ -3,6 +3,7 @@ import { Location } from "iconsax-react";
 import { CommentInput } from "../custom";
 import { usePostComment } from "@/api/response";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { useAppContext } from "@/contexts/AppContext";
 // import { useState } from "react";
 
 interface ResponseDetailsProps {
@@ -11,7 +12,8 @@ interface ResponseDetailsProps {
 
 export default function ResponseDetails({ report }: ResponseDetailsProps) {
   const { mutate, isLoading, isSuccess } = usePostComment();
-  const { isLoggedIn, logout } = useAuthContext();
+  const { isLoggedIn } = useAuthContext();
+  const { handleOpenModal } = useAppContext();
   // const [defaultVaule, setDefaultValue] = useState("Hoola my nigga");
 
   const handleSend = (data: { content: string }) => {
@@ -19,7 +21,7 @@ export default function ResponseDetails({ report }: ResponseDetailsProps) {
       mutate({ ...data, report_id: report.id.toString() });
     } else {
       // localStorage.setItem( 'temporary-comment',  data.content);
-      logout();
+      handleOpenModal();
     }
   };
   return (

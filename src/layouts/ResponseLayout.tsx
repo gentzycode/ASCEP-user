@@ -1,6 +1,7 @@
 import { CreateReportModal, ResponseFilters } from "@/components/Response";
 import GroupedFiltersButton from "@/components/custom/GroupedFiltersButton";
 import { Button } from "@/components/ui/button";
+import { useAppContext } from "@/contexts/AppContext";
 import useDisclosure from "@/hooks/useDisclosure";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { Add } from "iconsax-react";
@@ -9,7 +10,8 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 
 export default function ResponseLayout() {
   const [selectedPage, setSelectedPage] = useState("");
-  const { isLoggedIn, logout } = useAuthContext();
+  const { isLoggedIn } = useAuthContext();
+  const { handleOpenModal } = useAppContext();
 
   const location = useLocation();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -23,7 +25,7 @@ export default function ResponseLayout() {
   const handleOpen = () => {
     if (isLoggedIn) {
       onOpen();
-    } else logout();
+    } else handleOpenModal();
     // else
   };
 

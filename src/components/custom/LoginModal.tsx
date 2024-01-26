@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useAppContext } from "@/contexts/AppContext";
-import { CloseCircle } from "iconsax-react";
+import { MdClose } from "react-icons/md";
 
 interface LoginModalProp {
   isOpen: boolean;
@@ -45,12 +45,12 @@ export const LoginModal: React.FC<LoginModalProp> = ({ isOpen, onClose }) => {
 
   return (
     <AlertDialog open={isOpen}>
-      <AlertDialogContent className="max-w-[600px] w-[98%] !px-4">
+      <AlertDialogContent className="max-w-[600px] w-[98%] !px-4 py-10  !md:px-10 rounded-3xl md:rounded-[40px]">
         <IconWrapper
-          className="absolute top-2 right-2 bg-transparent cursor-pointer"
+          className="absolute bg-transparent cursor-pointer top-4 md:top-6 right-4 md:right-6"
           onClick={onClose}
         >
-          <CloseCircle size={35} />
+          <MdClose size={24} />
         </IconWrapper>
         <FormCard className=" !max-w-none !p-2">
           <div className="space-y-7 mb-7">
