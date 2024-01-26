@@ -49,13 +49,12 @@ export default function AuthProvider({ children }: PropsWithChildren) {
   };
 
   const logout = () => {
-    console.log("Logout");
     localStorage.removeItem(config.key.accessToken);
     localStorage.removeItem(config.key.refreshToken);
     localStorage.removeItem(config.key.isLoggedIn);
     localStorage.removeItem(config.key.expiresAt);
     localStorage.setItem(config.key.redirect, location.pathname);
-    navigate("/auth/login");
+    // navigate("/auth/login");
     setIsLoggedIn(false);
   };
 

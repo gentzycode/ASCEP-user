@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import baseUrl from "./baseUrl";
 import { loginSchema, signupSchema } from "@/schemas/AuthSchema";
 import { z } from "zod";
@@ -8,22 +8,27 @@ import { useAuthContext } from "@/providers/AuthProvider";
 import { useToast } from "@/components/ui/use-toast";
 import { useForgotPasswordContext } from "@/providers/ForgotPasswordProvider";
 import { useSettingsContext } from "@/providers/SettingsProvider";
+import config from "@/utils/config";
 
 export const useRegister = () => {
   const navigate = useNavigate();
-  const { setEmail, email } = useAuthContext();
+  // const { setEmail, email } = useAuthContext();
+
+  let email = "";
 
   return useMutation(
     (values: z.infer<typeof signupSchema>) => {
-      setEmail(values.email);
+      email = values.email;
       return axios
         .post(`${baseUrl}/user/register`, values)
         .then((res) => res.data);
     },
     {
       onSuccess: (res) => {
+        localStorage.setItem(config.key.register_email, email);
+        localStorage.setItem(config.key.timeout, res.data.timeLimit);
         navigate("/auth/otp", {
-          state: { email, timeLimit: res.data.timeLimit },
+          // state: { email, timeLimit: res.data.timeLimit },
         });
       },
     }
@@ -178,6 +183,7 @@ export const useResetPassword = () => {
 };
 
 export const useGetUserProfile = () => {
+  const { logout } = useAuthContext();
   return useQuery(
     ["user-profile"],
     (): Promise<UserData> => {
@@ -187,7 +193,11 @@ export const useGetUserProfile = () => {
     },
     {
       retry: false,
-      refetchOnWindowFocus: false,
+      onError: (error: AxiosError) => {
+        if (error?.response?.status === 401) {
+          logout();
+        }
+      },
     }
   );
 };
