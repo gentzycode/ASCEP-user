@@ -19,7 +19,7 @@ export const DialogueLinks: NavLinkType[] = [
     path: "/dialogue/browse-request",
   },
   {
-    title: "View Authorities",
+    title: "View MDAs",
     path: "/dialogue/view-authorities",
   },
   {

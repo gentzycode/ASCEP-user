@@ -44,19 +44,19 @@ const data: DataProp[] = [
 const SubModules = () => {
   return (
     <>
-      <div className="py-2 grid grid-cols-1 gap-6 md:grid-cols-2">
+      <div className="py-2 grid grid-cols-1 gap-6 lg:grid-cols-2">
         {data.map((submodule, i) => (
           <SubModuleCard submodule={submodule} key={i} />
         ))}
       </div>
       {/* SDG */}
-      <div className="bg-white rounded-3xl flex flex-col md:flex-row gap-6 p-3 md:p-8">
+      <div className="bg-white rounded-3xl flex flex-col lg:flex-row gap-6 p-3 md:p-8">
         <div>
-          <div className="flex gap-2 items-center ">
+          <div className="flex   gap-2 items-center justify-center">
             <img src="/images/SDG/sdg-logo.png" alt="sdg-logo" />
             <h1 className="text-2xl md:text-3xl capitalize py-1">SDGs</h1>
           </div>
-          <h1 className="capitalize text-primary text-2xl lg:text-4xl">
+          <h1 className="capitalize text-primary text-2xl lg:text-4xl text-center">
             Sustainable development goals
           </h1>
         </div>

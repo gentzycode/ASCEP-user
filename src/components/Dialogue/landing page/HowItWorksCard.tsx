@@ -77,7 +77,7 @@ const HowItWorksCard: React.FC<HowItWorksCardProp> = () => {
             cancelButton={true}
           />
           {searchResult && searchResult?.length > 0 && (
-            <SearchedAuthoritiesList searchResult={searchResult} />
+            <SearchedAuthoritiesList searchResult={searchResult.slice(0, 2)} />
           )}
         </div>
       </div>

@@ -27,7 +27,7 @@ const CommentCardHeader: React.FC<CommentCardHeaderProp> = ({
           {formattedDate(createdAt)}
         </p>
       </div>
-      <p className=" pb-2 text-base-500 pl-14 text-sm">{content}</p>
+      <p className=" pb-2 text-base-500 text-sm">{content}</p>
     </>
   );
 };

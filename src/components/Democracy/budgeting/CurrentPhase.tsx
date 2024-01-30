@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import {
   AcceptingProjects,
   CurrentPhaseCard,
+  FetchingError,
   FinishedBudget,
   Information,
   PublishValuation,
@@ -13,14 +14,12 @@ import {
 } from "@/components/Democracy";
 import { Separator } from "@/components/ui/separator";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import {
-  useGetBudgetPhases,
-  useGetCurrentBudget,
-} from "@/api/democracy/budgeting";
+import { useGetCurrentBudget } from "@/api/democracy/budgeting";
 import { IconWrapper } from "@/components/custom";
 import { FaSpinner } from "react-icons/fa";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { format } from "date-fns";
 
 interface CurrentPhaseProp {}
 interface AvailablePhaseType {
@@ -31,9 +30,14 @@ interface AvailablePhaseType {
 }
 
 const CurrentPhase: React.FC<CurrentPhaseProp> = () => {
-  const { data: currentBudget, isLoading } = useGetCurrentBudget();
-  const { data: budgetPhases, isLoading: isLoadingPhases } =
-    useGetBudgetPhases();
+  const {
+    data: currentBudget,
+    isLoading,
+    isError,
+    refetch: refetchCurrentBudget,
+    isFetching,
+  } = useGetCurrentBudget();
+
   const [currentPhase, setCurrentPhase] = useState("");
 
   const phaseTemplate = [
@@ -111,7 +115,7 @@ const CurrentPhase: React.FC<CurrentPhaseProp> = () => {
   return (
     <>
       {/* LOADING */}
-      {(isLoading || isLoadingPhases) && (
+      {isLoading && (
         <div className="w-full max-w-[1000px] h-[50vh] flex justify-center items-center">
           <Skeleton className="flex justify-center items-center flex-wrap gap-3 bg-transparent">
             <p className="text-lg text-primary">Loading current budget</p>
@@ -121,14 +125,36 @@ const CurrentPhase: React.FC<CurrentPhaseProp> = () => {
           </Skeleton>
         </div>
       )}
+
+      {isError && !isLoading && !currentBudget && (
+        <FetchingError
+          message="Error fetching budget"
+          refetching={isFetching}
+          retryFunction={refetchCurrentBudget}
+        />
+      )}
       {currentBudget && (
         <div className="my-14">
-          <h2 className="text-text text-2xl md:text-4xl">Current Phase</h2>
-          <div className="flex gap-6 py-8 flex-wrap">
-            <p className="text-lg text-primary">Voting project</p>
-            <p className="text-text capitalize text-xl">
-              December 26, 2023 - January 25, 2024
-            </p>
+          <div className="relative h-6 w-full my-16">
+            <img
+              src="/images/democracy/budget.png"
+              alt="image"
+              className="absolute top-0 left-0 w-full h-full object-cover"
+            />
+          </div>
+          <h1 className="text-text text-2xl lg:text-5xl mb-16">
+            Participatory budgeting {currentBudget.fiscal_year}
+          </h1>
+
+          <div className="mb-10">
+            <h2 className="text-text text-2xl md:text-4xl">Current Phase</h2>
+            <div className="flex gap-6  flex-wrap">
+              <p className="text-lg text-primary">Voting project</p>
+              <p className="text-text capitalize text-xl">
+                {format(new Date(currentBudget.start_date), "MMMM dd yyy")} -{" "}
+                {format(new Date(currentBudget.end_date), "MMMM dd yyy")}
+              </p>
+            </div>
           </div>
 
           {/* CURRENT PHASE CARD */}
@@ -137,19 +163,22 @@ const CurrentPhase: React.FC<CurrentPhaseProp> = () => {
               type="single"
               defaultValue={currentPhase}
               onValueChange={(value) => setCurrentPhase(value)}
-              className="grid grid-cols-4 gap-4"
+              // className="grid grid-cols-4 gap-4"
+              className="flex justify-start flex-wrap gap-4"
             >
               {currentBudget.budgetPhases.map((phase, i) => (
                 <ToggleGroupItem
                   value={phase.id}
                   aria-label="Toggle bold"
-                  className="h-fit disabled:opacity-100"
+                  className="h-fit disabled:opacity-100 w-max"
                   key={phase.id}
                   disabled={
-                    !phase.current_phase &&
-                    currentBudget.budgetPhases.find(
-                      (phase) => !!phase.current_phase
-                    )!.phase_index < phase.phase_index
+                    // (
+                    //   !phase.current_phase &&
+                    //   currentBudget.budgetPhases.find(
+                    //     (phase) => !!phase.current_phase
+                    //   )!.phase_index < phase.phase_index) ||
+                    phase.id === currentPhase
                   }
                 >
                   <CurrentPhaseCard
@@ -163,18 +192,22 @@ const CurrentPhase: React.FC<CurrentPhaseProp> = () => {
           </div>
           <Separator
             orientation="horizontal"
-            className="my-10 bg-subtitle_text"
+            className="my-16 bg-subtitle_text"
           />
-          <Tabs
-            defaultValue="account"
-            value={currentPhase}
-            className="w-[400px]"
-          >
+          <Tabs defaultValue={currentPhase} value={currentPhase}>
             {availablePhase.length > 0 &&
               availablePhase?.map((phase) => (
                 <TabsContent value={phase.id}>{phase.component}</TabsContent>
               ))}
           </Tabs>
+
+          <div className="relative h-6 w-full my-16">
+            <img
+              src="/images/democracy/budget.png"
+              alt="image"
+              className="absolute top-0 left-0 w-full h-full object-cover"
+            />
+          </div>
         </div>
       )}
     </>

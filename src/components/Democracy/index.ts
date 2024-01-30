@@ -75,6 +75,10 @@ export { default as Investments } from "./budgeting/Investments";
 export { default as InvestmentCard } from "./budgeting/InvestmentCard";
 export { default as InvestmentInfo } from "./budgeting/InvestmentInfo";
 export { default as InvestmentCommentSection } from "./budgeting/InvestmentCommentSection";
+export { default as FinishedBudget } from "./budgeting/FinishedBudget";
+export { default as FormSelectInitiatives } from "./budgeting/FormSelectInitiatives";
+export { default as FormSelectProposal } from "./budgeting/FormSelectProposal";
+export { default as PreviousBudget } from "./budgeting/PreviousBudget";
 
 //BUDGET PHASES
 export { default as AcceptingProjects } from "./budgeting/AcceptingProjects";
@@ -85,7 +89,7 @@ export { default as ValuatingProjects } from "./budgeting/ValuatingProjects";
 export { default as PublishValuation } from "./budgeting/PublishValuation";
 export { default as VotingProjects } from "./budgeting/VotingProjects";
 export { default as ReviewingVotes } from "./budgeting/ReviewingVotes";
-export { default as FinishedBudget } from "./budgeting/FinishedBudget";
+export { default as BudgetProjectTable } from "./budgeting/BudgetProjectTable";
 
 //VOTING
 export { default as PollLIst } from "./voting/PollLIst";

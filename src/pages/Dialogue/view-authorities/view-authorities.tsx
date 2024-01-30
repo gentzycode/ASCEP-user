@@ -36,7 +36,7 @@ const ViewAuthoritiesHomePage: React.FC<ViewAuthoritiesHomePageProp> = () => {
   }, []);
   return (
     <div>
-      <div className="max-w-[900px] mb-16">
+      <div className="max-w-[900px] mb-16 mt-11">
         <MakeARequestHeading />
         {/* SEARCH FIELD */}
         <SearchAuthoritiesForm
