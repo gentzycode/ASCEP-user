@@ -41,7 +41,7 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
           <Button className="w-[175px] mb-4">Start a proposal</Button>
         </Link>
       )}
-      <div className=" flex flex-col gap-16 mt-[50px] w-full max-w-[1200px]">
+      <div className=" flex flex-col gap-16 mt-[50px] w-full">
         {/* ADVANCED SEARCH */}
         <AdvancedSearch
           filterButtonOptions={proposalFilterButtonOptions}
@@ -81,10 +81,13 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
 
         {/* CARD VIEW */}
         {view === "card-view" && fetchedProposalData && (
-          <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-14 justify-stretch">
-            {fetchedProposalData?.proposals.map((proposal: ProposalType) => (
-              <ProposalCardViewCard proposal={proposal} key={proposal.id} />
-            ))}
+          // <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-14 justify-stretch">
+          <div className="flex justify-start w-full">
+            <div className="grid justify-start gap-10 my-10 grid-col-1 xl:grid-cols-2">
+              {fetchedProposalData?.proposals.map((proposal: ProposalType) => (
+                <ProposalCardViewCard proposal={proposal} key={proposal.id} />
+              ))}
+            </div>
           </div>
         )}
 

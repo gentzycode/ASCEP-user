@@ -5,7 +5,7 @@ const DemocracyLandingePage: React.FC<DemocracyLandingPageProp> = () => {
   return (
     <div className="">
       <Hero />
-        <div className="w-full relative px-3 min-[600px]:px-6 py-10 max-w-[900px]">
+        <div className="w-full relative px-3 min-[600px]:px-6 py-10 max-w-[1100px]">
         <SubModules />
         <FAQ />
       </div>

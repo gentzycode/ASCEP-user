@@ -41,7 +41,7 @@ const InitiativesHomePage = () => {
           <Button className="w-[175px] mb-4">Start Initiative</Button>
         </Link>
       )}
-      <div className=" flex flex-col gap-16 mt-[50px] w-full max-w-[1200px]">
+      <div className=" flex flex-col gap-16 mt-[50px] w-full">
         {/* ADVANCED SEARCH */}
         <AdvancedSearch
           filterButtonOptions={initiativeFilterButtonOptions}
@@ -81,13 +81,15 @@ const InitiativesHomePage = () => {
 
         {/* CARD VIEW */}
         {view === "card-view" && fetchedInitiativeData && (
-          <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-14 justify-stretch">
-            {fetchedInitiativeData?.initiatives.map((initiative) => (
-              <InitiativesCardViewCard
-                initiative={initiative}
-                key={initiative.id}
-              />
-            ))}
+          <div className="flex justify-start w-full">
+            <div className="grid justify-start gap-10 my-10 grid-col-1 xl:grid-cols-2">
+              {fetchedInitiativeData?.initiatives.map((initiative) => (
+                <InitiativesCardViewCard
+                  initiative={initiative}
+                  key={initiative.id}
+                />
+              ))}
+            </div>
           </div>
         )}
 

@@ -1,3 +1,4 @@
+import { useGetAllAuthorities } from "@/api/authorities";
 import { useGetAllRequests } from "@/api/dialogue/requests";
 import { FetchingError, NotFound } from "@/components/Democracy";
 import { RequestList, SearchRequest } from "@/components/Dialogue";
@@ -35,16 +36,18 @@ const BrowseRequestHomePage: React.FC<BrowseRequestHomePageProp> = () => {
   const refetch = () => {
     getRequests({ page, perPage, filter: filterOptions });
   };
+  const { data: authorities } = useGetAllAuthorities();
+
   return (
-    <div className="max-w-[900px]">
+    <div className="max-w-[900px] mt-11">
       <div className=" space-y-2">
         <h2 className="text-text text-3xl xl:text-4xl">
           Browse and search requests
         </h2>
-        <p className="text-base text-subtitle_text">
-          ACEPS Dialogue covers requests to 46,398 authorities, type in the name
-          of the public authority or keywords related to your topic you'd like
-          information from.
+        <p className="text-base lg:text-2xl text-subtitle_text">
+          ACEPS Dialogue covers requests to {authorities?.length} authorities,
+          type in the name of the public authority or keywords related to your
+          topic you'd like information from.
         </p>
       </div>
       <SearchRequest

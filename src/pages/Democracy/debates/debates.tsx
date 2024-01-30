@@ -43,7 +43,7 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
       )}
 
       {/* ADVANCED SEARCH */}
-      <div className="max-w-[1000px] mt-8">
+      <div className=" mt-8">
         <AdvancedSearch
           filterButtonOptions={debateFilterButtonOptions}
           setView={setView}

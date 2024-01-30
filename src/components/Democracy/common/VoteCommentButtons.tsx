@@ -23,8 +23,11 @@ const VoteCommentButtons: React.FC<VoteCommentButtonsProp> = ({
 
   return (
     <div className="flex justify-start items-center  gap-2">
-      <Button className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px]">
-        {likes + dislikes} Vote(s)
+      <Button
+        className="bg-transparent hover:bg-transparent h-fit w-fit p-0 text-[14px] disabled:opacity-100"
+        disabled
+      >
+        {likes + dislikes} {likes + dislikes > 1 ? "Votes" : "Vote"}
       </Button>
       {isLoggedIn && (
         <>

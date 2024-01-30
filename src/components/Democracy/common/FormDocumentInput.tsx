@@ -12,9 +12,7 @@ import {
 
 import { FormControl, FormField, FormItem, FormMessage } from "../../ui/form";
 import { InputProps } from "../../ui/input";
-import { Button } from "@/components/ui/button";
 import { CloseCircle, DocumentText1 } from "iconsax-react";
-import { v4 } from "uuid";
 import PdfPreview from "@/components/Democracy/common/PreviewPDF";
 import { IconWrapper } from "@/components/custom";
 type FormDocumentInputProps<TFormValues extends FieldValues = FieldValues> = {
@@ -48,10 +46,7 @@ const FormDocumentInput = <TFormValues extends Record<string, unknown>>({
           <FormItem>
             <p className="text-dark text-[14px]">{description}</p>
             <FormControl>
-              <div
-                // type="button"
-                className="w-full max-w-[300px] p-0 flex justify-center items-center bg-primary py-3 rounded-2xl"
-              >
+              <div className="w-full max-w-[300px] p-0 flex justify-center items-center bg-primary py-3 rounded-2xl">
                 <input
                   type="file"
                   className="hidden"
@@ -61,7 +56,6 @@ const FormDocumentInput = <TFormValues extends Record<string, unknown>>({
                   multiple
                   ref={field.ref}
                   {...props}
-                  // key={v4()}
                 />
                 <label
                   htmlFor="fileInputDoc"

@@ -13,7 +13,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { SelectViewport } from "@radix-ui/react-select";
 interface PaginationComponentProp {
   paginationData: MetaDataType;
   page: number;

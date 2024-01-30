@@ -27,7 +27,7 @@ const FAQ = () => {
               key={i}
               className="bg-white rounded-2xl"
             >
-              <AccordionTrigger className="text-text text-base p-4 hover:no-underline">
+              <AccordionTrigger className="text-text text-base p-4 hover:no-underline text-left">
                 {faq.heading}
               </AccordionTrigger>
               <AccordionContent className="text-base text-text p-4 text-justify">

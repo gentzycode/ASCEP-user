@@ -25,7 +25,7 @@ const InitiativesCardViewCard: React.FC<InitiativesCardViewCardProps> = ({
   };
 
   return (
-    <div className=" flex flex-col gap-3 max-w-[600px] ">
+    <div className=" flex flex-col gap-3">
       {/* TOP CON */}
       <div className="bg-[#FFFFFF] shadow-xl flex flex-col justify-start rounded-xl overflow-hidden flex-1">
         <div className="p-8">
