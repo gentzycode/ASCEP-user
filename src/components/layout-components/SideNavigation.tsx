@@ -65,7 +65,7 @@ const SideNavigation: React.FC<SideNavigationProps> = () => {
                     {!openSidebar && (
                       <TooltipContent
                         side="right"
-                        className="ml-2 border-none  bg-primary text-dark"
+                        className="ml-2 border-none bg-primary text-dark"
                       >
                         <p className="text-[14px] font-[500] capitalize">
                           {links.module}

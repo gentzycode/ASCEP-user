@@ -60,14 +60,14 @@ export default function ResponseLayout() {
         </Button>
       </div>
 
-      <div className="fixed z-50 top-[92vh] md:top-[90vh] left-0 flex justify-center w-full md:w-[115vw] ml-auto">
-        <div className="bg-white p-1 md:p-[6px] rounded-xl md:rounded-[20px] flex items-center gap-1 shadow-lg">
+      <div className="fixed  z-50 top-[92vh] md:top-[90vh] left-0 flex justify-center w-full md:w-[115vw] ml-auto">
+        <div className="bg-white p-1 md:p-[6px] rounded-xl md:rounded-[20px] flex items-center gap-1 overflow-x-scroll w-[88%] custom-scrollbar md:w-auto shadow-lg">
           {responsePages.map((page) => (
             <Link
               to={page.path}
-              className={` px-4 md:px-8 py-2  ${
+              className={` px-4 md:px-8 py-2 text-nowrap ${
                 page.path === location.pathname
-                  ? "bg-primary text-dark rounded-lg text-sm md:text-base md:rounded-xl"
+                  ? "bg-primary text-dark  rounded-lg text-sm md:text-base md:rounded-xl"
                   : ""
               }  `}
               key={page.title}
@@ -94,5 +94,9 @@ const responsePages: NavLinkType[] = [
   {
     title: "Map View",
     path: "/response/map-view",
+  },
+  {
+    title: "Incoming Requests",
+    path: "/response/incoming-requests",
   },
 ];

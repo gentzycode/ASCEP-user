@@ -13,7 +13,7 @@ const Header = () => {
   console.log(isLoggedIn);
 
   return (
-    <div className="sticky top-0 z-10 items-center justify-between hidden px-8 py-4 md:flex bg-light">
+    <div className="sticky top-0 z-10 items-center justify-between flex-1 hidden w-full px-8 py-4 md:flex bg-light">
       <div>
         {activeModule === "main" ? (
           <h2 className="text-2xl font-bold">

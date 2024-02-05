@@ -39,7 +39,12 @@ import {
   StateInvestmentProjectsPage,
   InvestmentInfoPage,
 } from "./Democracy";
-import { ActivityPage, DataView, MapView } from "./Response";
+import {
+  ActivityPage,
+  DataView,
+  IncomingRequestsPage,
+  MapView,
+} from "./Response";
 import DebateProvider from "@/contexts/DebateContext";
 import { ContactUs, LandingPage } from "./Landing";
 import ProposalProvider from "@/contexts/ProposalContext";
@@ -327,11 +332,11 @@ export const responseRoutes: RouterType[] = [
     element: <ActivityPage />,
     title: "Activity",
   },
-  // {
-  //   path: `/response/1`,
-  //   element: <ViewResponsePage />,
-  //   title: "View Response",
-  // },
+  {
+    path: `/response/incoming-requests`,
+    element: <IncomingRequestsPage />,
+    title: "View Response",
+  },
 ];
 
 export const unauthenticatedRoutes: RouterType[] = [

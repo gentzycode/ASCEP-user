@@ -14,9 +14,9 @@ export default function MainLayout() {
         <MobileNavigation />
         <div className="w-full md:flex">
           <SideNavigation />
-          <div className="flex-1 w-full max-w-[1440px] md:flex-auto">
+          <div className="flex-1 max-w-[1440px] md:flex-auto">
             <Header />
-            <div className="min-h-screen">
+            <div className="flex-1 min-h-screen overflow-hidden">
               <Outlet />
             </div>
             <Footer />

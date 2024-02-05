@@ -10,7 +10,7 @@ export default function DataView() {
     <Tabs defaultValue={state?.tab || "reports"}>
       <TabsList className="gap-2 mb-5">
         <TabsTrigger
-          className="h-10 px-12 rounded-xl data-[state=active]:bg-primary "
+          className="h-10 px-12 rounded-xl bg-slate-200 data-[state=active]:bg-primary "
           value="reports"
           onClick={() =>
             navigate("/response/data-view", {
@@ -21,7 +21,7 @@ export default function DataView() {
           Reports
         </TabsTrigger>
         <TabsTrigger
-          className="h-10 px-12 rounded-xl data-[state=active]:bg-primary "
+          className="h-10 px-12 rounded-xl bg-slate-200 data-[state=active]:bg-primary "
           value="surveys"
           onClick={() =>
             navigate("/response/data-view", {
