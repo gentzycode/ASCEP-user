@@ -12,31 +12,31 @@ const data: DataProp[] = [
   {
     title: "debates",
     summary:
-      "Citizens' proposals are an opportunity for neighbours and collectives to decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.",
+      "Debates is a dynamic feature designed to engage the community in meaningful and structured discussions on a wide range of topics. This interactive platform allows citizens to voice their opinions, share insights, and engage in healthy debate on issues that matter to them and their community",
     link: ROUTES.DEBATES_HOME_ROUTE,
   },
   {
     title: "proposals",
     summary:
-      "Citizens' proposals are an opportunity for neighbours and collectives to decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.",
+      "Proposals is a participatory feature where community members can submit suggestions or plans for new projects, policies, or changes within the community. This platform encourages users to present their ideas, which are then open for discussion, refinement, and voting by the community.",
     link: ROUTES.PROPOSALS_HOME_ROUTE,
   },
   {
     title: "initiatives",
     summary:
-      "Citizens' Initiatives are an opportunity for neighbours and collectives to decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.",
+      "Initiatives is a citizen-driven feature that empowers individuals and groups to propose and promote actions or projects aimed at community improvement and development. Mirroring the essence of grassroots activism, this platform allows users to create and support initiatives, gather endorsements, and work towards bringing about tangible change.",
     link: ROUTES.INITIATIVES_HOME_ROUTE,
   },
   {
     title: "voting",
     summary:
-      "Citizens' proposals are an opportunity for neighbours and collectives to decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.",
+      "Citizens' polls are a participatory mechanism by which citizens with voting rights can make direct decisions. This will help citizens vote on the relevant proposals and Initiatives for their community and collectives to decide directly how they want their city to be, after posting and creating sufficient support and effective plan.",
     link: ROUTES.VOTING_HOME_ROUTE,
   },
   {
     title: "budgeting",
     summary:
-      "Citizens' proposals are an opportunity for neighbours and collectives to decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.",
+      "Budget is a key feature that introduces the concept of participatory budgeting to the community. It allows citizens to have a direct say in how a portion of the public budget is allocated. Users can propose, discuss, and vote on budget allocations for various community projects and initiatives. ",
     link: ROUTES.BUDGETING_HOME_ROUTE,
   },
 ];
@@ -44,19 +44,19 @@ const data: DataProp[] = [
 const SubModules = () => {
   return (
     <>
-      <div className="py-2 grid grid-cols-1 gap-6 md:grid-cols-2">
+      <div className="py-2 grid grid-cols-1 gap-6 lg:grid-cols-2">
         {data.map((submodule, i) => (
           <SubModuleCard submodule={submodule} key={i} />
         ))}
       </div>
       {/* SDG */}
-      <div className="bg-white rounded-3xl flex flex-col md:flex-row gap-6 p-3 md:p-8">
+      <div className="bg-white rounded-3xl flex flex-col lg:flex-row gap-6 p-3 md:p-8">
         <div>
-          <div className="flex gap-2 items-center ">
+          <div className="flex   gap-2 items-center justify-center">
             <img src="/images/SDG/sdg-logo.png" alt="sdg-logo" />
             <h1 className="text-2xl md:text-3xl capitalize py-1">SDGs</h1>
           </div>
-          <h1 className="capitalize text-primary text-2xl lg:text-4xl">
+          <h1 className="capitalize text-primary text-2xl lg:text-4xl text-center">
             Sustainable development goals
           </h1>
         </div>

@@ -1,9 +1,12 @@
+import { useGetAuthoritiesAndRequestCount } from "@/api/dialogue/requests";
 import { UserRequestSummary } from "@/components/Dialogue";
 import { Button } from "@/components/ui/button";
+import ROUTES from "@/utils/routesNames";
 import { Link } from "react-router-dom";
 
 interface FreedomOfInformationProp {}
 const FreedomOfInformation: React.FC<FreedomOfInformationProp> = () => {
+  const { data } = useGetAuthoritiesAndRequestCount();
   return (
     <div className="mt-16">
       {/* USER REQUEST */}
@@ -12,7 +15,7 @@ const FreedomOfInformation: React.FC<FreedomOfInformationProp> = () => {
           What information has been released?
         </h2>
         <p className="text-subtle_text py-4 text-xl xl:text-2xl">
-          Users have made 1,006,241 requests, including:
+          Users have made {data?.totalRequests} requests, including:
         </p>
         <UserRequestSummary />
       </div>
@@ -24,7 +27,11 @@ const FreedomOfInformation: React.FC<FreedomOfInformationProp> = () => {
         <p className="text-subtle_text py-4 text-xl xl:text-2xl">
           The Freedom of Information Act, also known as FOI gives you the right
           to{" "}
-          <Link to="#" className="text-primary underline">
+          <Link
+            to={ROUTES.DIALOGUE_HELP_HOME_ROUTE}
+            state={{ helpTab: "making-request" }}
+            className="text-primary underline"
+          >
             request recorded information
           </Link>{" "}
           from public authorities. As well as documents and emails, it also
@@ -33,19 +40,29 @@ const FreedomOfInformation: React.FC<FreedomOfInformationProp> = () => {
         </p>
         <p className="text-subtle_text py-4 text-xl xl:text-2xl">
           By law requests have to be answered promptly and within{" "}
-          <Link to="#" className="text-primary underline">
-            20 working days.
+          <Link
+            to={ROUTES.DIALOGUE_HELP_HOME_ROUTE}
+            state={{ helpTab: "about-fio" }}
+            className="text-primary underline"
+          >
+            3 working days.
           </Link>{" "}
           In most cases information should be released, but various{" "}
-          <Link to="#" className="text-primary underline">
+          <Link
+            to={ROUTES.DIALOGUE_HELP_HOME_ROUTE}
+            state={{ helpTab: "exemptions" }}
+            className="text-primary underline"
+          >
             exemptions
-          </Link>
+          </Link>{" "}
           allow authorities to withhold information.
         </p>
 
-        <Button className="h-12 w-full max-w-[200px] text-dark my-6">
-          Learn more About FOI
-        </Button>
+        <Link to={ROUTES.DIALOGUE_HELP_HOME_ROUTE}>
+          <Button className="h-12 w-full max-w-[200px] text-dark my-6">
+            Learn more About FOI
+          </Button>
+        </Link>
       </div>
     </div>
   );

@@ -1,29 +1,17 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Navigation } from "swiper/modules";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { VscChevronLeft, VscChevronRight } from "react-icons/vsc";
 
 import TestimonialQuote from "./TestimonialQuote";
+import useScreenWidth from "@/hooks/useScreenWidth";
 
 export default function Testimonials() {
   const swiperRef = useRef<SwiperRef>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-
-  const handleResize = (e: UIEvent) => {
-    // Handle the window resize event
-    // @ts-ignore
-    setScreenWidth(e?.target?.innerWidth);
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", (e) => handleResize(e));
-
-    return window.removeEventListener("resize", handleResize);
-  }, []);
+  const { screenWidth } = useScreenWidth();
 
   const goNext = () => {
     if (swiperRef.current && swiperRef.current.swiper) {

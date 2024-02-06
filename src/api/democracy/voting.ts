@@ -33,6 +33,8 @@ import {
   pollQuestionAnswerSchema,
   votePollCommentSchema,
 } from "@/schemas/VotingSchema";
+import { useAppContext } from "@/contexts/AppContext";
+import baseUrl from "../baseUrl";
 
 // PUBLISH POLL
 export const usePublishPoll = () => {
@@ -82,11 +84,9 @@ export const usePublishPollComment = () => {
         .then((res) => res.data as ResponseDataType);
     },
     {
-      onSuccess: (res, variables) => {
+      onSuccess: (res) => {
         queryClient.invalidateQueries("poll-comments");
-        queryClient.invalidateQueries({
-          queryKey: ["proposal-info", variables.voting_id],
-        });
+        queryClient.invalidateQueries("poll-info");
         toast({
           title: "Success!",
           variant: "success",
@@ -158,7 +158,7 @@ export const useGetPollComments = (
 // GET POLL COMMENT RESPONSES
 export const useGetPollCommentResponses = (commentId: string) => {
   return useInfiniteQuery(
-    ["poll-comments-responses"],
+    ["poll-comments-responses", commentId],
     (
       context: QueryFunctionContext<string[], number>
     ): Promise<CommentDataType> => {
@@ -171,7 +171,7 @@ export const useGetPollCommentResponses = (commentId: string) => {
       staleTime: 0,
       refetchOnWindowFocus: false,
       enabled: false,
-      getNextPageParam: (lastPage, pages) => pages.length + 1,
+      getNextPageParam: (_, pages) => pages.length + 1,
     }
   );
 };
@@ -256,6 +256,7 @@ export const useLinkProposal = () => {
 export const usePublishQuestionAnswers = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { handleOpenModal } = useAppContext();
   return useMutation(
     (
       values: z.infer<typeof pollQuestionAnswerSchema>
@@ -273,6 +274,20 @@ export const usePublishQuestionAnswers = () => {
           title: "Success!",
           variant: "success",
           description: res.message,
+        });
+      },
+      onError: (error: any) => {
+        const errors = error.response.data.errors;
+
+        errors.map((error: { message: string }) => {
+          if (error.message === "E_UNAUTHORIZED_ACCESS: Unauthorized access") {
+            handleOpenModal();
+            toast({
+              title: "Error!",
+              variant: "error",
+              description: "Please login to perform this action",
+            });
+          }
         });
       },
     }
@@ -311,6 +326,20 @@ export const useResolvePollShareID = (shareableId: string) => {
     },
     {
       refetchOnWindowFocus: false,
+      retry: false,
+    }
+  );
+};
+
+export const useGetPopularPolls = () => {
+  return useQuery(
+    ["popular-polls"],
+    (): Promise<PollType[]> => {
+      return axios
+        .get(`${baseUrl}/voting/popular`)
+        .then((res) => res.data.data.polls);
+    },
+    {
       retry: false,
     }
   );

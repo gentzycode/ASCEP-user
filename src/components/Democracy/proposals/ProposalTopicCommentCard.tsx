@@ -10,10 +10,12 @@ import { CommentCard, FormInput, ProposalTopicCommentResponse } from "..";
 import { IconWrapper } from "@/components/custom";
 import { useClickAway } from "@uidotdev/usehooks";
 import {
+  useGetProposalTopicCommentResponses,
   usePublishProposalTopicComment,
   useVoteProposalTopicComment,
 } from "@/api/democracy/proposals";
 import { proposalTopicCommentSchema } from "@/schemas/ProposalSchema";
+import { Separator } from "@/components/ui/separator";
 
 interface ProposalTopicCommentCardProps {
   comment: CommentType;
@@ -29,9 +31,18 @@ const ProposalTopicCommentCard: React.FC<ProposalTopicCommentCardProps> = ({
   const { mutateAsync: publishResponse, isLoading: isPublishingComment } =
     usePublishProposalTopicComment();
 
+  const {
+    data: Data,
+    isRefetching: isLoadingResponses,
+    refetch: getResponses,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useGetProposalTopicCommentResponses(comment.id);
+
   const { mutate: voteComment, isLoading: isVotingComment } =
     useVoteProposalTopicComment();
 
+  // CLose responses on click away
   const ref = useClickAway<HTMLDivElement>(() => {
     setTimeout(() => {
       setIsReplying(false);
@@ -65,25 +76,34 @@ const ProposalTopicCommentCard: React.FC<ProposalTopicCommentCardProps> = ({
     closeResponse();
   }
 
+  //close response
   const closeResponse = () => {
     reset();
     setIsReplying(false);
+  };
+
+  // like comment
+  const handleLike = () => {
+    voteComment({ type: "like", comment_id: comment.id });
+  };
+
+  // dislike comment
+  const handleDislike = () => {
+    voteComment({ type: "dislike", comment_id: comment.id });
   };
 
   return (
     <div className="bg-[#fff] p-6 rounded-xl" ref={ref}>
       <CommentCard
         comment={comment}
-        isVotingComment={isVotingComment}
-        likeComment={() =>
-          voteComment({ type: "like", comment_id: comment.id })
-        }
-        dislikeComment={() =>
-          voteComment({ type: "dislike", comment_id: comment.id })
-        }
         setIsReplying={setIsReplying}
         setShowResponse={setShowResponse}
         showResponse={showResponse}
+        getResponses={getResponses}
+        isLoadingResponses={isLoadingResponses}
+        isVotingComment={isVotingComment}
+        handleLike={handleLike}
+        handleDislike={handleDislike}
       />
 
       {/* REPLY INPUT */}
@@ -105,8 +125,9 @@ const ProposalTopicCommentCard: React.FC<ProposalTopicCommentCardProps> = ({
               <div className="flex justify-between items-center">
                 <Button
                   type="submit"
-                  className="w-fit h-fit text-[12px] font-[500]"
+                  className="w-full max-w-[200px] h-10"
                   isLoading={isPublishingComment}
+                  disabled={isPublishingComment}
                 >
                   Publish response
                 </Button>
@@ -124,17 +145,32 @@ const ProposalTopicCommentCard: React.FC<ProposalTopicCommentCardProps> = ({
 
       {/* RESPONSE */}
       <div
-        className={` ${
-          showResponse ? "" : "h-0  overflow-hidden"
-        } duration-300`}
+        className={`${showResponse ? "" : "h-0  overflow-hidden"} ${
+          isLoadingResponses && "opacity-50 pointer-events-none"
+        }`}
       >
-        {comment.responses.map((response) => (
-          <ProposalTopicCommentResponse
-            key={response.response_id}
-            response={response}
-            paddingLeft={dynamicPadding + 20}
-          />
+        {Data?.pages.map((commentsData, i) => (
+          <div key={i}>
+            {commentsData.comments.map((response) => (
+              <ProposalTopicCommentResponse
+                key={response.id}
+                response={response}
+                paddingLeft={dynamicPadding + 10}
+                refetchParentResponses={getResponses}
+              />
+            ))}
+          </div>
         ))}
+        <Separator orientation="horizontal" className="bg-base-500 my-1" />
+        {Data?.pages[Data.pages.length - 1].meta.next_page_url && (
+          <Button
+            className="w-full h-fit bg-transparent py-4 hover:bg-transparent -mb-5"
+            onClick={() => fetchNextPage()}
+            isLoading={isFetchingNextPage}
+          >
+            Load more
+          </Button>
+        )}
       </div>
     </div>
   );

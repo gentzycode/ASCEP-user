@@ -1,13 +1,17 @@
 import { CreateReportModal, ResponseFilters } from "@/components/Response";
 import GroupedFiltersButton from "@/components/custom/GroupedFiltersButton";
 import { Button } from "@/components/ui/button";
+import { useAppContext } from "@/contexts/AppContext";
 import useDisclosure from "@/hooks/useDisclosure";
+import { useAuthContext } from "@/providers/AuthProvider";
 import { Add } from "iconsax-react";
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 export default function ResponseLayout() {
   const [selectedPage, setSelectedPage] = useState("");
+  const { isLoggedIn } = useAuthContext();
+  const { handleOpenModal } = useAppContext();
 
   const location = useLocation();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -16,7 +20,14 @@ export default function ResponseLayout() {
     setSelectedPage(
       responsePages?.filter((page) => page.path === location.pathname)[0]?.title
     );
-  }, []);
+  }, [location]);
+
+  const handleOpen = () => {
+    if (isLoggedIn) {
+      onOpen();
+    } else handleOpenModal();
+    // else
+  };
 
   return (
     <div className="relative w-full min-h-[calc(100%-93px)] px-2 md:px-8 overflow-y-auto pt-4 md:pt-0 pb-12 ">
@@ -26,15 +37,15 @@ export default function ResponseLayout() {
         <div className="flex gap-4">
           <Button
             className="hidden md:block"
-            onClick={onOpen}
+            onClick={handleOpen}
             size="xs"
             variant="primary"
           >
             + Add new report
           </Button>
-          <Button size="xs" variant="pill">
+          {/* <Button size="xs" variant="pill">
             Post history
-          </Button>
+          </Button> */}
           <GroupedFiltersButton variant="pill">
             <ResponseFilters />
           </GroupedFiltersButton>
@@ -49,14 +60,14 @@ export default function ResponseLayout() {
         </Button>
       </div>
 
-      <div className="fixed z-50 top-[92vh] md:top-[90vh] left-0 flex justify-center w-full md:w-[115vw] ml-auto">
-        <div className="bg-white p-1 md:p-[6px] rounded-xl md:rounded-[20px] flex items-center gap-1 shadow-lg">
+      <div className="fixed  z-50 top-[92vh] md:top-[90vh] left-0 flex justify-center w-full md:w-[115vw] ml-auto">
+        <div className="bg-white p-1 md:p-[6px] rounded-xl md:rounded-[20px] flex items-center gap-1 overflow-x-scroll w-[88%] custom-scrollbar md:w-auto shadow-lg">
           {responsePages.map((page) => (
             <Link
               to={page.path}
-              className={` px-4 md:px-8 py-2  ${
+              className={` px-4 md:px-8 py-2 text-nowrap ${
                 page.path === location.pathname
-                  ? "bg-primary text-dark rounded-lg text-sm md:text-base md:rounded-xl"
+                  ? "bg-primary text-dark  rounded-lg text-sm md:text-base md:rounded-xl"
                   : ""
               }  `}
               key={page.title}
@@ -66,16 +77,12 @@ export default function ResponseLayout() {
           ))}
         </div>
       </div>
-      <CreateReportModal isOpen={isOpen} onClose={onClose} />
+      {isOpen && <CreateReportModal isOpen={isOpen} onClose={onClose} />}
     </div>
   );
 }
 
 const responsePages: NavLinkType[] = [
-  {
-    title: "Map View",
-    path: "/response/map-view",
-  },
   {
     title: "Data View",
     path: "/response/data-view",
@@ -83,5 +90,13 @@ const responsePages: NavLinkType[] = [
   {
     title: "Activity",
     path: "/response/activity",
+  },
+  {
+    title: "Map View",
+    path: "/response/map-view",
+  },
+  {
+    title: "Incoming Requests",
+    path: "/response/incoming-requests",
   },
 ];

@@ -31,7 +31,7 @@ const InitiativesHomePage = () => {
   const { isLoggedIn } = useAuthContext();
 
   const pageDescription =
-    "Citizens' proposals are an opportunity for neighbours and collectivesto decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.";
+    "Initiatives is a citizen-driven feature that empowers individuals and groups to propose and promote actions or projects aimed at community improvement and development. Mirroring the essence of grassroots activism, this platform allows users to create and support initiatives, gather endorsements, and work towards bringing about tangible change. It provides a structured pathway for turning ideas into action, ensuring that community needs and aspirations are directly addressed. The Initiatives feature embodies the spirit of collaborative problem-solving and civic engagement, enabling citizens to take an active role in shaping their community's future.";
   return (
     <>
       {/* HEADING */}
@@ -41,7 +41,7 @@ const InitiativesHomePage = () => {
           <Button className="w-[175px] mb-4">Start Initiative</Button>
         </Link>
       )}
-      <div className=" flex flex-col gap-16 mt-[50px] w-full max-w-[1200px]">
+      <div className=" flex flex-col gap-16 mt-[50px] w-full">
         {/* ADVANCED SEARCH */}
         <AdvancedSearch
           filterButtonOptions={initiativeFilterButtonOptions}
@@ -81,24 +81,33 @@ const InitiativesHomePage = () => {
 
         {/* CARD VIEW */}
         {view === "card-view" && fetchedInitiativeData && (
-          <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-14 justify-stretch">
-            {fetchedInitiativeData?.initiatives.map((initiative) => (
-              <InitiativesCardViewCard
-                initiative={initiative}
-                key={initiative.id}
-              />
-            ))}
+          <div className="flex justify-start w-full">
+            <div className="grid justify-start gap-10 my-10 grid-col-1 xl:grid-cols-2">
+              {fetchedInitiativeData?.initiatives.map((initiative) => (
+                <InitiativesCardViewCard
+                  initiative={initiative}
+                  key={initiative.id}
+                />
+              ))}
+            </div>
           </div>
         )}
 
         {/* PAGINATION */}
-        {fetchedInitiativeData && (
-          <Pagination
-            paginationData={fetchedInitiativeData.meta}
-            page={page}
-            setPage={setPage}
-          />
-        )}
+        {fetchedInitiativeData &&
+          fetchedInitiativeData.initiatives.length === 0 && (
+            <h1 className="text-text text-base md:text-lg bg-primary/10 p-4 rounded-xl">
+              No Initiatives
+            </h1>
+          )}
+        {fetchedInitiativeData &&
+          fetchedInitiativeData.initiatives.length !== 0 && (
+            <Pagination
+              paginationData={fetchedInitiativeData.meta}
+              page={page}
+              setPage={setPage}
+            />
+          )}
       </div>
     </>
   );

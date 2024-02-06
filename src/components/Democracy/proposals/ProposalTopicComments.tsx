@@ -1,4 +1,9 @@
-import { FilterButtons, FormInput, ProposalTopicCommentCard } from "..";
+import {
+  FilterButtons,
+  FormInput,
+  LoginSigninPrompt,
+  ProposalTopicCommentCard,
+} from "..";
 import { debateCommentFilterButtonOptions } from "@/utils/Democracy/Debates";
 import { IconWrapper, PageLoader, Pagination } from "@/components/custom";
 import { CloseCircle, Danger } from "iconsax-react";
@@ -62,28 +67,7 @@ const ProposalTopicComments: React.FC<ProposalTopicCommentsCardProps> = () => {
   return (
     <>
       {!isLoggedIn ? (
-        <div className="flex items-center justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10">
-
-          <div className="flex justify-start items-center gap-1">
-            <IconWrapper className="text-primary rounded-full">
-              <Danger size="32" />
-            </IconWrapper>
-            <p className="text-[16px]">
-              You must{" "}
-              <Link to={ROUTES.SIGNIN_ROUTE} className="underline">
-                sign in
-              </Link>{" "}
-              or{" "}
-              <Link to={ROUTES.SIGNIN_ROUTE} className="underline">
-                sign up
-              </Link>{" "}
-              to leave a comment.
-            </p>
-          </div>
-          <Button className="bg-transparent hover:bg-transparent w-fit h-fit">
-            <CloseCircle size="32" />
-          </Button>
-        </div>
+        <LoginSigninPrompt />
       ) : (
         <div>
           <Form {...form}>
@@ -100,8 +84,9 @@ const ProposalTopicComments: React.FC<ProposalTopicCommentsCardProps> = () => {
 
               <Button
                 type="submit"
-                className="w-fit"
+                className="w-full max-w-[200px] h-12"
                 isLoading={isPublishingComment}
+                disabled={isPublishingComment}
               >
                 Publish Comment
               </Button>
@@ -124,7 +109,7 @@ const ProposalTopicComments: React.FC<ProposalTopicCommentsCardProps> = () => {
       {commentsData?.comments?.length === 0 && (
         <div>
           <h1 className="text-dark text-[16px] md:text-[20px]">
-            This topic has no comments
+            This Topic has no comments
           </h1>
         </div>
       )}

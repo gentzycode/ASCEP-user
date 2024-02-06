@@ -1,6 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Location } from "iconsax-react";
 import { CommentInput } from "../custom";
 import { usePostComment } from "@/api/response";
+import { useAuthContext } from "@/providers/AuthProvider";
+import { useAppContext } from "@/contexts/AppContext";
+// import { useState } from "react";
 
 interface ResponseDetailsProps {
   report: ReportData;
@@ -8,10 +12,22 @@ interface ResponseDetailsProps {
 
 export default function ResponseDetails({ report }: ResponseDetailsProps) {
   const { mutate, isLoading, isSuccess } = usePostComment();
+  const { isLoggedIn } = useAuthContext();
+  const { handleOpenModal } = useAppContext();
+  // const [defaultVaule, setDefaultValue] = useState("Hoola my nigga");
+
+  const handleSend = (data: { content: string }) => {
+    if (isLoggedIn) {
+      mutate({ ...data, report_id: report.id.toString() });
+    } else {
+      // localStorage.setItem( 'temporary-comment',  data.content);
+      handleOpenModal();
+    }
+  };
   return (
     <div>
-      <h3>{report.title}</h3>
-      <div className="items-center gap-1 space-y-2 text-sm md:flex">
+      <h3 className="mb-2 text-text">{report.title}</h3>
+      <div className="flex flex-col items-center gap-1 text-sm md:flex-row">
         <div className="flex items-center gap-1">
           <Location color="black" size={14} />
           <p>{report.location_meta}</p>
@@ -28,8 +44,8 @@ export default function ResponseDetails({ report }: ResponseDetailsProps) {
         </div>
       </div>
 
-      <div className="my-5 font-medium text-dark">
-        <p>{report.description}</p>
+      <div className="my-5 text-text">
+        <p className="leading-7">{report.description}</p>
       </div>
 
       <div className="flex gap-6">
@@ -58,9 +74,10 @@ export default function ResponseDetails({ report }: ResponseDetailsProps) {
         <div className="absolute w-full px-2 md:px-20 bottom-3 md:bottom-10 ">
           <CommentInput
             isLoading={isLoading}
-            handleSend={(data) => mutate({ ...data, report_id: report.id })}
+            handleSend={(data) => handleSend(data)}
             placeholder="Type your comment here"
             isSent={isSuccess}
+            // defaultValue={defaultVaule}
           />
         </div>
       </div>

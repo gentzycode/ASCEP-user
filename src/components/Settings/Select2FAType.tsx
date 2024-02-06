@@ -21,7 +21,7 @@ export default function Select2FAType({ next }: Select2FATypeProps) {
             Two factor authentication is turned on{" "}
           </p>
 
-          <div className="flex items-center justify-end">
+          <div className="flex items-center md:justify-end">
             <Button
               onClick={() => disable()}
               className="px-20"
@@ -37,7 +37,7 @@ export default function Select2FAType({ next }: Select2FATypeProps) {
             Enable two step authentication to secure your account from unwanted
             access
           </p>
-          <div className="flex gap-4">
+          <div className="flex flex-col gap-4 lg:flex-row">
             <Button
               className={`w-full ${
                 selected === "email" ? "border-2 border-primary/50" : ""
@@ -65,7 +65,7 @@ export default function Select2FAType({ next }: Select2FATypeProps) {
             A mail will be sent to your mail box fro validation
           </p>
 
-          <div className="flex items-center justify-end">
+          <div className="flex items-center md:justify-end">
             <Button
               disabled={selected === null}
               onClick={() => next(2)}

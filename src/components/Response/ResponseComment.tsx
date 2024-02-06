@@ -1,31 +1,32 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { AddSquare, CloseCircle } from "iconsax-react";
-import { useState } from "react";
-import { CommentInput } from "../custom";
+import React, { useState } from "react";
+import { CommentInput, UserAvatar } from "../custom";
 import { usePostComment } from "@/api/response";
+
+import { DeleteComment } from "./DeleteComment";
+import CommentResponses from "./CommentResponses";
+import { useAppContext } from "@/contexts/AppContext";
+import { useAuthContext } from "@/providers/AuthProvider";
 
 interface ResponseCommentProps {
   comment: ReportComment;
   reportId: string;
 }
 
-export default function ResponseComment({
-  comment,
-  reportId,
-}: ResponseCommentProps) {
+const ResponseComment = ({ comment, reportId }: ResponseCommentProps) => {
   const [showInput, setShowInput] = useState(false);
-
   const { mutate, isLoading, isSuccess } = usePostComment();
+  const { user } = useAppContext();
+  const { isLoggedIn, logout } = useAuthContext();
 
   return (
     <div className="space-y-4">
       <div className="bg-white rounded-[24px] space-y-4 shadow-sm p-4 md:p-8">
         <div className="flex items-center justify-between gap-8 md:justify-start">
           <div className="flex items-center gap-2">
-            <img
-              src={comment.author.profile_picture}
-              className="w-10 h-10 rounded-full"
-              alt=""
-            />
+            {/* @ts-ignore */}
+            <UserAvatar size={40} user={comment.author} />
             <p className="text-lg font-bold md:text-xl text-dark">
               {comment.author.username}
             </p>
@@ -34,15 +35,21 @@ export default function ResponseComment({
           <p className="text-sm md:text-base text-subtle_text">
             {new Date(comment.createdAt).toDateString()}
           </p>
+          {comment.user_id === user?.id && (
+            <DeleteComment commentId={comment.id} />
+          )}
         </div>
 
         <p className="text-sm text-dark">{comment.content}</p>
 
-        <div className="border-[1px] border-dark/20"></div>
+        {comment.comment_response_cache > 0 && (
+          <CommentResponses comment={comment} reportId={reportId} />
+        )}
+        <div className="border-[1px] border-dark/10"></div>
 
         <div
-          onClick={() => setShowInput(!showInput)}
-          className="flex items-center gap-2 font-medium cursor-pointer w-fit"
+          onClick={() => (isLoggedIn ? setShowInput(!showInput) : logout())}
+          className="flex items-center gap-2 ml-4 font-medium cursor-pointer sm:ml-8 w-fit"
         >
           {showInput ? (
             <CloseCircle color="black" />
@@ -69,4 +76,6 @@ export default function ResponseComment({
       )}
     </div>
   );
-}
+};
+
+export default React.memo(ResponseComment);

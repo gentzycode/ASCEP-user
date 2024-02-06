@@ -29,7 +29,7 @@ export const initiativeCommentSchema = z.object({
     .refine((data) => data.trim() !== "", {
       message: "comment text cannot be empty",
     }),
-  initiative_id: z.string({ required_error: "Proposal_id id is required" }),
+  initiative_id: z.string({ required_error: "Initiative id is required" }),
   comment_reference: z.string().optional(),
 });
 

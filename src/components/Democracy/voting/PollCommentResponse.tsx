@@ -15,24 +15,42 @@ import {
 } from "..";
 import { IconWrapper } from "@/components/custom";
 import { useClickAway } from "@uidotdev/usehooks";
-import { usePublishPollComment } from "@/api/democracy/voting";
+import {
+  useGetPollCommentResponses,
+  usePublishPollComment,
+  useVotePollComment,
+} from "@/api/democracy/voting";
 import { pollCommentSchema } from "@/schemas/VotingSchema";
 
 interface PollCommentResponseProps {
   response: CommentType;
   paddingLeft: number;
+  refetchParentResponses: () => void;
 }
 const PollCommentResponse: React.FC<PollCommentResponseProps> = ({
   response,
   paddingLeft,
+  refetchParentResponses,
 }) => {
-  const { proposalId } = useParams();
+  const { pollId } = useParams();
 
   const { mutateAsync: publishResponse, isLoading: isPublishingComment } =
-  usePublishPollComment();
+    usePublishPollComment();
+
+  const { mutateAsync: voteComment, isLoading: isVotingComment } =
+    useVotePollComment();
 
   const [showResponse, setShowResponse] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const {
+    data: Data,
+    isRefetching: isLoadingResponses,
+    refetch: getResponses,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useGetPollCommentResponses(response.id);
 
   const ref = useClickAway<HTMLDivElement>(() => {
     setTimeout(() => {
@@ -61,25 +79,43 @@ const PollCommentResponse: React.FC<PollCommentResponseProps> = ({
   async function onSubmit(values: z.infer<typeof pollCommentSchema>) {
     await publishResponse({
       ...values,
-      voting_id: proposalId!,
+      voting_id: pollId!,
       comment_reference: response.id,
     });
+    refetchParentResponses();
     closeResponse();
   }
 
+  // close  responses
   const closeResponse = () => {
     reset();
     setIsReplying(false);
   };
 
+  const fetchResponse = async () => {
+    setLoading(true);
+    setIsReplying(false);
+    await getResponses();
+    setLoading(false);
+    setShowResponse(true);
+  };
+
+  const handleLike = async () => {
+    await voteComment({ type: "like", comment_id: response.id });
+    refetchParentResponses();
+  };
+  const handleDislike = async () => {
+    await voteComment({ type: "dislike", comment_id: response.id });
+    refetchParentResponses();
+  };
   return (
     <>
       <div ref={ref}>
-        <Separator orientation="horizontal" className="bg-base-500" />
         <div
           className={`pl-[${paddingLeft}px]`}
           style={{ paddingLeft: `${paddingLeft}px` }}
         >
+          <Separator orientation="horizontal" className="bg-base-500 my-1" />
           <CommentCardHeader
             username={response.author.username}
             content={response.content}
@@ -90,20 +126,19 @@ const PollCommentResponse: React.FC<PollCommentResponseProps> = ({
           {/* FOOTER */}
           <div className="flex justify-between items-center flex-wrap-reverse gap-2">
             <CommentCardFooter
-              numberOfResponses={0}
+              numberOfResponses={response.comment_response_cache}
               setIsReplying={setIsReplying}
               setShowResponse={setShowResponse}
               showResponse={showResponse}
-              fetchResponse={() => {}}
-              isLoadingResponses={false}
-              loading={false}
+              fetchResponse={fetchResponse}
+              isLoadingResponses={isLoadingResponses}
+              loading={loading}
             />
-
             <VoteCommentButtons
-              dislikeComment={() => {}}
-              likeComment={() => {}}
+              dislikeComment={handleDislike}
+              likeComment={handleLike}
               dislikes={response.dislikes}
-              isVoting={false}
+              isVoting={isVotingComment}
               likes={response.likes}
               reactionType={response.userVoted.reactionType}
             />
@@ -128,10 +163,11 @@ const PollCommentResponse: React.FC<PollCommentResponseProps> = ({
                   <div className="flex justify-between items-center">
                     <Button
                       type="submit"
-                      className="w-fit h-fit text-[12px] font-[500]"
+                      className="w-full max-w-[200px] h-10"
                       isLoading={isPublishingComment}
+                      disabled={isPublishingComment}
                     >
-                      Publish response
+                      Publish Comment
                     </Button>
                     <IconWrapper
                       className="text-dark p-0 cursor-pointer"
@@ -146,19 +182,35 @@ const PollCommentResponse: React.FC<PollCommentResponseProps> = ({
           )}
         </div>
 
-        <div
-          className={` ${
-            showResponse ? "" : "h-0  overflow-hidden"
-          } duration-300`}
-        >
-          {response?.responses?.map((response) => (
-            <PollCommentResponse
-              key={response.response_id}
-              response={response}
-              paddingLeft={paddingLeft + 20}
-            />
-          ))}
-        </div>
+        {Data && (
+          <div
+            className={`${showResponse ? "" : "h-0  overflow-hidden"} ${
+              isLoadingResponses && "opacity-50 pointer-events-none"
+            }`}
+          >
+            {Data?.pages.map((commentsData, i) => (
+              <div key={i}>
+                {commentsData.comments.map((response) => (
+                  <PollCommentResponse
+                    key={response.id}
+                    response={response}
+                    paddingLeft={paddingLeft + 30}
+                    refetchParentResponses={getResponses}
+                  />
+                ))}
+              </div>
+            ))}
+            {Data?.pages[Data.pages.length - 1].meta.next_page_url && (
+              <Button
+                className="w-full h-fit bg-transparent py-4 hover:bg-transparent -mb-5"
+                onClick={() => fetchNextPage()}
+                isLoading={isFetchingNextPage}
+              >
+                Load more
+              </Button>
+            )}
+          </div>
+        )}
       </div>
     </>
   );

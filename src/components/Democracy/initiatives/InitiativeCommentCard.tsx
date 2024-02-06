@@ -24,7 +24,6 @@ const InitiativeCommentCard: React.FC<InitiativeCommentCardProps> = ({
   comment,
 }) => {
   const [dynamicPadding] = useState(20);
-
   const { initiativeId } = useParams();
 
   const [showResponse, setShowResponse] = useState(false);
@@ -125,14 +124,14 @@ const InitiativeCommentCard: React.FC<InitiativeCommentCardProps> = ({
               />
 
               <div className="flex justify-between items-center">
-                <Button
-                  type="submit"
-                  className="w-fit h-fit text-[12px] font-[500]"
-                  isLoading={isPublishingComment}
-                  disabled={isPublishingComment}
-                >
-                  Publish response
-                </Button>
+              <Button
+                type="submit"
+                className="w-full max-w-[200px] h-10"
+                isLoading={isPublishingComment}
+                disabled={isPublishingComment}
+              >
+                Publish Comment
+              </Button>
                 <IconWrapper
                   className="text-dark p-0 cursor-pointer"
                   onClick={closeResponse}
@@ -157,6 +156,7 @@ const InitiativeCommentCard: React.FC<InitiativeCommentCardProps> = ({
                 key={response.id}
                 response={response}
                 paddingLeft={dynamicPadding + 20}
+                refetchParentResponses={getResponses}
               />
             ))}
           </div>

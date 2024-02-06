@@ -3,16 +3,22 @@ import baseUrl from "../baseUrl";
 //DEBATES ENDPOINTS
 const perPage = 10;
 export const PUBLISH_DEBATES_ENDPOINT = baseUrl + "/debate/publish";
+
 export const PUBLISH_COMMENT_ENDPOINT = baseUrl + "/debate/comment";
+
 export const GET_ALL_DEBATES_ENDPOINT = baseUrl + "/debate/all";
+
 export const GET_DEBATE_INFO_ENDPOINT = (debateId: string) =>
   baseUrl + `/debate/info/${debateId}`;
+
 export const VOTE_DEBATE_ENDPOINT = (type: string, debate_id: string) =>
   baseUrl + `/debate/vote/${type}/${debate_id}`;
+
 export const VOTE_DEBATE_COMMENT_ENDPOINT = (
   type: string,
   comment_id: string
 ) => baseUrl + `/debate/vote-comment/${type}/${comment_id}`;
+
 export const GET_DEBATE_COMMENTS_ENDPOINT = (
   debateId: string,
   page: number,
@@ -91,6 +97,14 @@ export const GET_PROPOSAL_TOPIC_COMMENTS_ENDPOINT = (
 ) =>
   baseUrl +
   `/proposal/topic/comments?page=${page}&perPage=${perPage}&filter=${filter}&proposalTopic=${topicId}`;
+
+export const GET_PROPOSAL_TOPIC_COMMENTS_RESPONSES_ENDPOINT = (
+  commentId: string,
+  page: number
+) =>
+  baseUrl +
+  `/proposal/topic/comment-responses?page=${page}&perPage=${perPage}&comment=${commentId}`;
+
 export const PUBLISH_PROPOSAL_TOPIC_COMMENT_ENDPOINT =
   baseUrl + "/proposal/topic/comment";
 export const VOTE_PROPOSAL_TOPIC_COMMENT_ENDPOINT = (
@@ -173,6 +187,12 @@ export const DELETE_POLL_ENDPOINT = (pollId: string) =>
 
 export const RESOLVE_POLL_SHARE_ID_ENDPOINT = (shareableId: string) =>
   baseUrl + `/voting/resolve-link/${shareableId}`;
+
+//BUDGETING
+export const GET_ALL_BUDGET_ENDPOINT = (page: string) =>
+  baseUrl + `/budget/all/${page}/${perPage}`;
+export const GET_CURRENT_BUDGET_ENDPOINT = baseUrl + "/budget/current";
+export const GET_BUDGET_PHASES_ENDPOINT = baseUrl + "/budget/phase-modules";
 
 //SDG
 export const GET_ALL_SDGs_ENDPOINT = baseUrl + "/sdg/all";

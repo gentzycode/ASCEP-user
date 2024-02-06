@@ -36,8 +36,15 @@ import {
   ResolveInitiativeSharedIdPage,
   ResolveProposalSharedIdPage,
   ResolvePollSharedIdPage,
+  StateInvestmentProjectsPage,
+  InvestmentInfoPage,
 } from "./Democracy";
-import { ActivityPage, DataView, MapView } from "./Response";
+import {
+  ActivityPage,
+  DataView,
+  IncomingRequestsPage,
+  MapView,
+} from "./Response";
 import DebateProvider from "@/contexts/DebateContext";
 import { ContactUs, LandingPage } from "./Landing";
 import ProposalProvider from "@/contexts/ProposalContext";
@@ -45,12 +52,14 @@ import InitiativeProvider from "@/contexts/InitiativeContext";
 import DemocracyLandingePage from "./Democracy/landing-page";
 import VotingProvider from "@/contexts/VotingContext";
 import {
+  AuthorityInfoPage,
   BrowseRequestHomePage,
   CreateRequestPage,
   DialoguLandingPage,
   DialogueHelpHomePage,
   MakeARequestHomePage,
   RequestInfoPage,
+  ResolveRequestSharedIdPage,
   ViewAuthoritiesHomePage,
 } from "./Dialogue";
 
@@ -69,13 +78,18 @@ export const landingPages: RouterType[] = [
 
 const routes: RouterType[] = [
   {
+    path: "",
+    element: <Navigate to="/home" />,
+    title: "home",
+  },
+  {
     path: "/main",
     element: <MainPage />,
     title: "main",
   },
   {
     path: "/response",
-    element: <Navigate to="/response/map-view" />,
+    element: <Navigate to="/response/data-view" />,
     title: "response",
   },
   {
@@ -102,7 +116,7 @@ export const dialogueRoutes: RouterType[] = [
     title: "dailogue",
   },
   {
-    path: "/dialogue/make-a-request/create-request",
+    path: "/dialogue/make-a-request/create-request/:authorityId",
     element: <CreateRequestPage />,
     title: "dailogue-create-request",
   },
@@ -112,14 +126,24 @@ export const dialogueRoutes: RouterType[] = [
     title: "dailogue-request",
   },
   {
-    path: "/dialogue/browse-request/:requestId",
+    path: "/dialogue/browse-request/info/:requestId",
     element: <RequestInfoPage />,
     title: "dailogue-request-info",
   },
   {
+    path: "/dialogue/share/:shareableId",
+    element: <ResolveRequestSharedIdPage />,
+    title: "democracy-debate-shared-id",
+  },
+  {
     path: "/dialogue/view-authorities",
     element: <ViewAuthoritiesHomePage />,
-    title: "dailogue",
+    title: "dailogue-authority",
+  },
+  {
+    path: "/dialogue/view-authorities/:authorityId",
+    element: <AuthorityInfoPage />,
+    title: "dailogue-authority-info",
   },
   {
     path: "/dialogue/dialogue-help",
@@ -280,6 +304,16 @@ export const democracyRoutes: RouterType[] = [
     element: <WardProjectsHomePage />,
     title: "democracy-budgeting-ward-project",
   },
+  {
+    path: "/democracy/budgeting/state-investment-projects",
+    element: <StateInvestmentProjectsPage />,
+    title: "democracy-budgeting-state-investment-projects",
+  },
+  {
+    path: "/democracy/budgeting/investment-info/:investmentId",
+    element: <InvestmentInfoPage />,
+    title: "democracy-budgeting-investment-info",
+  },
 ];
 
 export const responseRoutes: RouterType[] = [
@@ -298,11 +332,11 @@ export const responseRoutes: RouterType[] = [
     element: <ActivityPage />,
     title: "Activity",
   },
-  // {
-  //   path: `/response/1`,
-  //   element: <ViewResponsePage />,
-  //   title: "View Response",
-  // },
+  {
+    path: `/response/incoming-requests`,
+    element: <IncomingRequestsPage />,
+    title: "View Response",
+  },
 ];
 
 export const unauthenticatedRoutes: RouterType[] = [

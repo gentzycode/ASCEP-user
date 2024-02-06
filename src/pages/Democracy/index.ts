@@ -35,4 +35,5 @@ export { default as ResolvePollSharedIdPage } from "./voting/resolve-shared-id";
 // BUDGETING
 export { default as BudgetingHomePage } from "./budgeting/budgeting";
 export { default as WardProjectsHomePage } from "./budgeting/ward-project";
-
+export { default as StateInvestmentProjectsPage } from "./budgeting/state-investment-projects";
+export { default as InvestmentInfoPage } from "./budgeting/investment-info";

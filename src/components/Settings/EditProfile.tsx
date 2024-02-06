@@ -70,7 +70,7 @@ export default function EditProfile({
         {renderedImg || defaultValues.profile_picture ? (
           <img
             src={(renderedImg as string) || defaultValues.profile_picture}
-            className="w-[109px] h-[109px] rounded-full"
+            className="w-20 md:w-[109px] h-20 md:h-[109px] rounded-full"
             alt="profile-photo"
           />
         ) : (
@@ -83,7 +83,7 @@ export default function EditProfile({
 
         <button
           onClick={() => inputRef.current?.click()}
-          className="px-3 py-2 text-sm font-medium rounded-full active:opacity-60 text-brand_green2 bg-faded_green"
+          className="px-2 py-1 text-sm font-medium rounded-full md:px-3 md:py-2 active:opacity-60 text-brand_green2 bg-faded_green"
         >
           Change Profile picture
         </button>
@@ -99,7 +99,7 @@ export default function EditProfile({
 
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="flex items-center justify-between ">
+          <div className="flex flex-col justify-between lg:flex-row lg:items-center ">
             <p className="text-subtle_text">First Name</p>
             <div className=" w-full max-w-[350px]">
               <FormInput
@@ -111,7 +111,7 @@ export default function EditProfile({
               />
             </div>
           </div>
-          <div className="flex items-center justify-between ">
+          <div className="flex flex-col justify-between lg:flex-row lg:items-center ">
             <p className="text-subtle_text">Last Name</p>
             <div className=" w-full max-w-[350px]">
               <FormInput
@@ -123,7 +123,7 @@ export default function EditProfile({
               />
             </div>
           </div>
-          <div className="flex items-center justify-between ">
+          <div className="flex flex-col justify-between lg:flex-row lg:items-center ">
             <p className="text-subtle_text">Email</p>
             <div className=" w-full max-w-[350px]">
               <FormInput
@@ -135,7 +135,7 @@ export default function EditProfile({
               />
             </div>
           </div>
-          <div className="flex items-center justify-between ">
+          <div className="flex flex-col justify-between lg:flex-row lg:items-center ">
             <p className="text-subtle_text">Username</p>
             <div className=" w-full max-w-[350px]">
               <FormInput
@@ -147,7 +147,7 @@ export default function EditProfile({
               />
             </div>
           </div>
-          <div className="flex items-center justify-between ">
+          <div className="flex flex-col justify-between lg:flex-row lg:items-center ">
             <p className="text-subtle_text">Phone number</p>
             <div className=" w-full max-w-[350px] ">
               <FormInput

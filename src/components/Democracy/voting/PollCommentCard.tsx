@@ -125,7 +125,7 @@ const PollCommentCard: React.FC<PollCommentCardProps> = ({ comment }) => {
               <div className="flex justify-between items-center">
                 <Button
                   type="submit"
-                  className="w-fit h-fit text-[12px] font-[500]"
+                  className="w-full max-w-[200px] h-10"
                   isLoading={isPublishingComment}
                   disabled={isPublishingComment}
                 >
@@ -155,6 +155,7 @@ const PollCommentCard: React.FC<PollCommentCardProps> = ({ comment }) => {
                 key={response.id}
                 response={response}
                 paddingLeft={dynamicPadding + 20}
+                refetchParentResponses={getResponses}
               />
             ))}
           </div>

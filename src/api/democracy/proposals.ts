@@ -28,6 +28,7 @@ import {
   GET_PROPOSAL_COMMUNITY_MEMBERS_ENDPOINT,
   GET_PROPOSAL_INFO_ENDPOINT,
   GET_PROPOSAL_TOPIC_COMMENTS_ENDPOINT,
+  GET_PROPOSAL_TOPIC_COMMENTS_RESPONSES_ENDPOINT,
   GET_PROPOSAL_TOPIC_INFO_ENDPOINT,
   PUBLISH_PROPOSALS_ENDPOINT,
   PUBLISH_PROPOSAL_COMMENT_ENDPOINT,
@@ -38,6 +39,7 @@ import {
   VOTE_PROPOSAL_COMMENT_ENDPOINT,
   VOTE_PROPOSAL_TOPIC_COMMENT_ENDPOINT,
 } from ".";
+import { useAppContext } from "@/contexts/AppContext";
 
 // PUBLISH PROPOSAL
 export const usePublishProposal = () => {
@@ -55,17 +57,24 @@ export const usePublishProposal = () => {
         .then((res) => res.data);
     },
     {
-      onSuccess: (res) => {
+      onSuccess: (res, variables) => {
+        const id = variables.get("id") as string;
         toast({
           title: "Success!",
           variant: "success",
           description: res.message,
         });
-        navigate(ROUTES.PROPOSALS_HOME_ROUTE);
+
+        if (id) {
+          navigate(ROUTES.PROPOSAL_INFO_ROUTE(id));
+        } else {
+          navigate(ROUTES.PROPOSALS_HOME_ROUTE);
+        }
       },
     }
   );
 };
+
 // PUBLISH PROPOSAL COMMENT
 export const usePublishProposalComment = () => {
   const queryClient = useQueryClient();
@@ -81,11 +90,9 @@ export const usePublishProposalComment = () => {
         .then((res) => res.data as ResponseDataType);
     },
     {
-      onSuccess: (res, variables) => {
+      onSuccess: (res) => {
         queryClient.invalidateQueries("proposal-comments");
-        queryClient.invalidateQueries({
-          queryKey: ["proposal-info", variables.proposal_id],
-        });
+        queryClient.invalidateQueries("proposal-info");
         toast({
           title: "Success!",
           variant: "success",
@@ -95,6 +102,7 @@ export const usePublishProposalComment = () => {
     }
   );
 };
+
 // GET PROPOSAL
 export const useGetAllProposals = () => {
   return useMutation(
@@ -143,7 +151,7 @@ export const useGetProposalComments = (
 // GET PROPOSAL COMMENT RESPONSES
 export const useGetProposalCommentResponses = (commentId: string) => {
   return useInfiniteQuery(
-    ["proposal-comments-responses"],
+    ["proposal-comments-responses", commentId],
     (
       context: QueryFunctionContext<string[], number>
     ): Promise<CommentDataType> => {
@@ -158,11 +166,10 @@ export const useGetProposalCommentResponses = (commentId: string) => {
       staleTime: 0,
       refetchOnWindowFocus: false,
       enabled: false,
-      getNextPageParam: (lastPage, pages) => pages.length + 1,
+      getNextPageParam: (_, pages) => pages.length + 1,
     }
   );
 };
-
 
 // VOTE PROPOSAL COMMENT
 export const useVoteProposalComment = () => {
@@ -193,6 +200,7 @@ export const useVoteProposalComment = () => {
 export const useSupportProposal = (proposalId: string) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { handleOpenModal } = useAppContext();
   return useMutation(
     (): Promise<ResponseDataType> => {
       return axios
@@ -206,6 +214,19 @@ export const useSupportProposal = (proposalId: string) => {
           title: "Success!",
           variant: "success",
           description: res.message,
+        });
+      },
+      onError: (error: any) => {
+        const errors = error.response.data.errors;
+        errors.map((error: { message: string }) => {
+          if (error.message === "E_UNAUTHORIZED_ACCESS: Unauthorized access") {
+            handleOpenModal();
+            toast({
+              title: "Error!",
+              variant: "error",
+              description: "Please login to perform this action",
+            });
+          }
         });
       },
     }
@@ -389,6 +410,32 @@ export const useGetProposalTopicComments = (
     staleTime: 0,
     refetchOnWindowFocus: false,
   });
+};
+
+// GET PROPOSAL TOPIC COMMENT RESPONSES
+export const useGetProposalTopicCommentResponses = (commentId: string) => {
+  return useInfiniteQuery(
+    ["proposal-topic-comment-responses", commentId],
+    (
+      context: QueryFunctionContext<string[], number>
+    ): Promise<CommentDataType> => {
+      const { pageParam = 1 } = context;
+      return axios
+        .get(
+          GET_PROPOSAL_TOPIC_COMMENTS_RESPONSES_ENDPOINT(
+            commentId,
+            Number(pageParam)
+          )
+        )
+        .then((res) => res.data.data);
+    },
+    {
+      staleTime: 0,
+      refetchOnWindowFocus: false,
+      enabled: false,
+      getNextPageParam: (_, pages) => pages.length + 1,
+    }
+  );
 };
 
 // vote proposal topic comment

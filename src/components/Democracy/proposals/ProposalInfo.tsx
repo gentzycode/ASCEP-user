@@ -22,6 +22,7 @@ import useDisclosure from "@/hooks/useDisclosure";
 import ALert from "@/components/custom/Alert";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { frontendURL } from "@/api/baseUrl";
+import { useAppContext } from "@/contexts/AppContext";
 
 interface ProposalInfoProps {
   proposal: ProposalType;
@@ -33,7 +34,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
   scrollToComments,
 }) => {
   const { isLoggedIn } = useAuthContext();
-
+  const { user } = useAppContext();
   const { mutate: supportProposal, isLoading: isSupportingProposal } =
     useSupportProposal(proposal.id);
 
@@ -66,12 +67,16 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
     await deleteProposal();
     close();
   };
+  const createdByUser = user?.id === Number(proposal.author.id);
+
   return (
     <div className="flex justify-start gap-10 xl:flex-row flex-col">
       <div className=" w-full xl:min-w-[700px] flex flex-col gap-6">
         {/* MAIN INFO */}
         <div className="flex flex-col w-full">
-          <h1 className="text-[20px] text-dark">{proposal.title}</h1>
+          <h1 className="text-2xl lg:text-3xl text-dark py-3">
+            {proposal.title}
+          </h1>
           <div className="flex justify-start items-center gap-6 flex-wrap">
             <Avatar className="h-12 w-12">
               <AvatarImage
@@ -128,12 +133,12 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
           </div>
 
           {/* MAP */}
-          <div>
+          {/* <div>
             <h2 className="pb-2  pl-0 my-6 border-b-4 text-[18px] font-medium border-primary w-fit">
               Map view
             </h2>
             <div className="bg-subtle_text h-[400px] rounded-2xl w-full max-w-[700px] my-2"></div>
-          </div>
+          </div> */}
 
           {/* VIDEO */}
           <div className="py-4 my-8 px-2 max-w-[700px] flex-wrap bg-light border border-primary rounded-lg flex justify-between items-center">
@@ -206,6 +211,7 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
               <CategoryDisplay
                 category={category.categoryDetail.name}
                 index={i}
+                key={category.category_id}
               />
             ))}
           </div>
@@ -237,25 +243,35 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
             </div>
 
             {/* AUTHOR */}
-            {proposal.user_id === proposal.author.id && (
+            {createdByUser && (
               <div>
                 <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
                   Author
                 </h2>
-                <Link to={ROUTES.EDIT_PROPOSAL_ROUTE(proposal.id)}>
-                  <Button
-                    className="text-dark text-base h-fit my-4 px-8 py-3 w-full justify-center
-               gap-3 flex rounded-lg max-w-[220px]"
+                <Button
+                  className="text-dark text-base h-fit my-4  w-full p-0  justify-center gap-3 flex rounded-lg max-w-[220px]"
+                  disabled={
+                    proposal.total_comments_cache > 0 ||
+                    proposal.total_support_cache > 0
+                  }
+                >
+                  <Link
+                    to={ROUTES.EDIT_PROPOSAL_ROUTE(proposal.id)}
+                    className="justify-center gap-3 flex w-full h-full px-8 py-3"
                   >
                     <span>Edit</span>
                     <CardEdit />
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
                 <Button
                   className="text-red-500 border border-red-500
                  hover:text-light text-base  bg-transparent hover:bg-red-400 h-fit my-4 px-8 py-3 
                  justify-center gap-1 flex rounded-lg w-full max-w-[220px]"
                   onClick={openAlert}
+                  disabled={
+                    proposal.total_comments_cache > 0 ||
+                    proposal.total_support_cache > 0
+                  }
                 >
                   <span>Delete Proposal</span>
                   <Trash />
@@ -301,42 +317,33 @@ const ProposalInfo: React.FC<ProposalInfoProps> = ({
               <Messages1 size="25" />
               <span>{proposal.supportNeeded} support needed</span>
             </Button>
-            {isLoggedIn ? (
-              <Button
-                className="h-12  max-w-[200px] py-4 text-lg w-full rounded-full"
-                isLoading={isSupportingProposal}
-                onClick={() => supportProposal()}
-              >
-                Support
-              </Button>
-            ) : (
-              <Link to={ROUTES.SIGNIN_ROUTE}>
-                <Button className="bg-transparent border-dark border-2 w-[175px]">
-                  Log in
-                </Button>
-              </Link>
-            )}
+            <Button
+              className="h-12  max-w-[200px] py-4 text-lg w-full rounded-full"
+              isLoading={isSupportingProposal}
+              onClick={() => supportProposal()}
+            >
+              Support
+            </Button>
           </div>
         </div>
         {/* SHARE */}
         <Share
           shareableURL={
-            frontendURL +
-            `/democracy/proposal/share/${proposal.proposal_code}`
+            frontendURL + `/democracy/proposal/share/${proposal.proposal_code}`
           }
         />
 
         {/* FOLLOW */}
         {isLoggedIn && (
           <>
-            <div>
+            {/* <div>
               <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
                 Follow
               </h2>
               <Button className="bg-transparent border border-primary mt-3 text-primary hover:text-light h-12">
                 Follow citizen Proposal
               </Button>
-            </div>
+            </div> */}
 
             {/* COMMUNITY */}
             <div>

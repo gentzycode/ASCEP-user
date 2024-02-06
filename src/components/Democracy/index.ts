@@ -28,6 +28,7 @@ export { default as CategoryDisplay } from "./common/CategoryDisplay";
 export { default as VoteCommentButtons } from "./common/VoteCommentButtons";
 export { default as CommentCardFooter } from "./common/CommentCardFooter";
 export { default as CommentCardHeader } from "./common/CommentCardHeader";
+export { default as LoginSigninPrompt } from "./common/LoginSigninPrompt";
 
 // DEBATES
 export { default as DebatesCardViewCard } from "./debates/DebatesCardViewCard";
@@ -39,7 +40,6 @@ export { default as DebateCommentSection } from "./debates/DebateCommentSection"
 // PROPOSAL
 export { default as ProposalCardViewCard } from "./proposals/ProposalCardViewCard";
 export { default as ProposalInfo } from "./proposals/ProposalInfo";
-export { default as ProposalComments } from "./proposals/ProposalComments";
 export { default as ProposalCommentCard } from "./proposals/ProposalCommentCard";
 export { default as ProposalCommentResponse } from "./proposals/ProposalCommentResponse";
 export { default as ProposalCommentSection } from "./proposals/ProposalCommentSection";
@@ -73,6 +73,23 @@ export { default as WardProjects } from "./budgeting/WardProjects";
 export { default as WardProjectCard } from "./budgeting/WardProjectCard";
 export { default as Investments } from "./budgeting/Investments";
 export { default as InvestmentCard } from "./budgeting/InvestmentCard";
+export { default as InvestmentInfo } from "./budgeting/InvestmentInfo";
+export { default as InvestmentCommentSection } from "./budgeting/InvestmentCommentSection";
+export { default as FinishedBudget } from "./budgeting/FinishedBudget";
+export { default as FormSelectInitiatives } from "./budgeting/FormSelectInitiatives";
+export { default as FormSelectProposal } from "./budgeting/FormSelectProposal";
+export { default as PreviousBudget } from "./budgeting/PreviousBudget";
+
+//BUDGET PHASES
+export { default as AcceptingProjects } from "./budgeting/AcceptingProjects";
+export { default as Information } from "./budgeting/Information";
+export { default as SelectingProjects } from "./budgeting/SelectingProjects";
+export { default as ReviewingProjects } from "./budgeting/ReviewingProjects";
+export { default as ValuatingProjects } from "./budgeting/ValuatingProjects";
+export { default as PublishValuation } from "./budgeting/PublishValuation";
+export { default as VotingProjects } from "./budgeting/VotingProjects";
+export { default as ReviewingVotes } from "./budgeting/ReviewingVotes";
+export { default as BudgetProjectTable } from "./budgeting/BudgetProjectTable";
 
 //VOTING
 export { default as PollLIst } from "./voting/PollLIst";

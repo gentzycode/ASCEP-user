@@ -1,3 +1,4 @@
+import useScreenWidth from "@/hooks/useScreenWidth";
 import PinInput from "react-pin-input";
 
 interface CustomPinInputProps {
@@ -11,6 +12,8 @@ export default function CustomPinInput({
   error,
   onChange,
 }: CustomPinInputProps) {
+  const { screenWidth } = useScreenWidth();
+
   return (
     <div>
       <PinInput
@@ -28,14 +31,14 @@ export default function CustomPinInput({
           display: "flex",
           justifyContent: "space-between",
           maxWidth: 400,
-          gap: 8,
+          gap: screenWidth > 768 ? 6 : 8,
         }}
         inputStyle={{
           borderColor: "transparent",
           backgroundColor: "#F5F5f5",
-          borderRadius: 20,
-          height: 52,
-          width: 55,
+          borderRadius: screenWidth > 758 ? 20 : 12,
+          height: screenWidth > 1024 ? 52 : screenWidth > 768 ? 44 : 36,
+          width: screenWidth > 1024 ? 52 : screenWidth > 768 ? 44 : 36,
         }}
         // style={{
         //   gap: 20,

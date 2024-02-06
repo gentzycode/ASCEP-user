@@ -9,6 +9,7 @@ import {
 
 interface ResponseContextType {
   reports: ReportData[];
+  filters: ResponseFilter;
   isLoading: boolean;
   filtersString: string;
   clearFilter: () => void;
@@ -16,9 +17,21 @@ interface ResponseContextType {
   filterLocation: (arg: string | null) => void;
   filterCategory: (arg: string | null) => void;
 }
+interface ResponseFilter {
+  longitude: string | null;
+  start_date: string | null;
+  category: string | null;
+}
+
+const filtersDefault: ResponseFilter = {
+  longitude: null,
+  start_date: null,
+  category: null,
+};
 
 const ResponseContext = createContext<ResponseContextType>({
   reports: [],
+  filters: filtersDefault,
   isLoading: false,
   filtersString: "",
   clearFilter: () => {},
@@ -29,17 +42,6 @@ const ResponseContext = createContext<ResponseContextType>({
 
 export const useResponseContext = () => useContext(ResponseContext);
 
-interface ResponseFilter {
-  location: string | null;
-  start_date: string | null;
-  category: string | null;
-}
-
-const filtersDefault: ResponseFilter = {
-  location: null,
-  start_date: null,
-  category: null,
-};
 export default function RepsonseProvider({ children }: PropsWithChildren) {
   const [filters, setFilters] = useState(filtersDefault);
   const [reports, setReports] = useState<ReportData[]>([]);
@@ -79,7 +81,7 @@ export default function RepsonseProvider({ children }: PropsWithChildren) {
   };
 
   const filterLocation = (arg: string | null) => {
-    setFilters({ ...filters, location: arg });
+    setFilters({ ...filters, longitude: arg });
   };
 
   const filterCategory = (arg: string | null) => {
@@ -92,6 +94,7 @@ export default function RepsonseProvider({ children }: PropsWithChildren) {
         isLoading,
         reports,
         filtersString,
+        filters,
         clearFilter,
         filterCategory,
         filterDate,

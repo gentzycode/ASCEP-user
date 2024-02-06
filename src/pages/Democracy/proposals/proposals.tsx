@@ -29,7 +29,7 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
     setPage,
   } = useProposalContext();
   const pageDescription =
-    "Citizens' proposals are an opportunity for neighbours and collectivesto decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.";
+    "Proposals is a participatory feature where community members can submit suggestions or plans for new projects, policies, or changes within the community. This platform encourages users to present their ideas, which are then open for discussion, refinement, and voting by the community. It's a space where innovative ideas are nurtured and developed through collective wisdom. The Proposals feature plays a critical role in ensuring that governance is responsive and inclusive, allowing citizens to directly influence the agenda and priorities of their community.";
   const { isLoggedIn } = useAuthContext();
 
   return (
@@ -41,7 +41,7 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
           <Button className="w-[175px] mb-4">Start a proposal</Button>
         </Link>
       )}
-      <div className=" flex flex-col gap-16 mt-[50px] w-full max-w-[1200px]">
+      <div className=" flex flex-col gap-16 mt-[50px] w-full">
         {/* ADVANCED SEARCH */}
         <AdvancedSearch
           filterButtonOptions={proposalFilterButtonOptions}
@@ -68,7 +68,6 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
 
         {/* LIST VIEW */}
         {view === "list-view" && fetchedProposalData && (
-
           <div className="grid grid-cols-1 my-10 gap-10">
             {fetchedProposalData?.proposals.map((proposal) => (
               <ListViewCard
@@ -82,16 +81,23 @@ const ProposalsHomePage: React.FC<ProposalsHomePageProps> = () => {
 
         {/* CARD VIEW */}
         {view === "card-view" && fetchedProposalData && (
-
-          <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-14 justify-stretch">
-            {fetchedProposalData?.proposals.map((proposal: ProposalType) => (
-              <ProposalCardViewCard proposal={proposal} key={proposal.id} />
-            ))}
+          // <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-14 justify-stretch">
+          <div className="flex justify-start w-full">
+            <div className="grid justify-start gap-10 my-10 grid-col-1 xl:grid-cols-2">
+              {fetchedProposalData?.proposals.map((proposal: ProposalType) => (
+                <ProposalCardViewCard proposal={proposal} key={proposal.id} />
+              ))}
+            </div>
           </div>
         )}
 
         {/* PAGINATION */}
-        {fetchedProposalData && (
+        {fetchedProposalData && fetchedProposalData.proposals.length === 0 && (
+          <h1 className="text-text text-base md:text-lg bg-primary/10 p-4 rounded-xl">
+            No Proposals
+          </h1>
+        )}
+        {fetchedProposalData && fetchedProposalData.proposals.length !== 0 && (
           <Pagination
             page={page}
             paginationData={fetchedProposalData.meta}

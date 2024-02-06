@@ -1,6 +1,6 @@
 import { Button } from "../ui/button";
 import { CustomPinInput } from "../custom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSettingsContext } from "@/providers/SettingsProvider";
 import useCountdown from "@/hooks/useCountdown";
 import {
@@ -17,11 +17,12 @@ export default function TwoFactorAuthOTP() {
   const { timeLimit } = useSettingsContext();
 
   const { data } = useGetUserProfile();
-  const { minutes, remainingSeconds, time } = useCountdown(timeLimit);
+  const { minutes, remainingSeconds, time, resetCountdown } =
+    useCountdown(timeLimit);
 
   const { mutate: resend, isLoading: resending } = useResend2faToken();
 
-  const { mutate: verify, isLoading } = useVerify2faToken();
+  const { mutate: verify, isLoading, isSuccess } = useVerify2faToken();
   const { mutate: verifyDisable, isLoading: disabling } =
     useVerifyDisable2faToken();
 
@@ -29,6 +30,10 @@ export default function TwoFactorAuthOTP() {
     setOtpError(null);
     setotp(value);
   };
+
+  useEffect(() => {
+    resetCountdown();
+  }, [isSuccess]);
 
   function onSubmit() {
     if (otp.length < 6) {
@@ -39,6 +44,10 @@ export default function TwoFactorAuthOTP() {
     }
   }
 
+  const handleResend = () => {
+    resend();
+  };
+
   return (
     <div className="space-y-6">
       <p className="text-sm text-dark">
@@ -46,7 +55,7 @@ export default function TwoFactorAuthOTP() {
       </p>
 
       <form className="space-y-6">
-        <div className="flex items-center justify-between ">
+        <div className="flex flex-col justify-between gap-4 lg:items-center lg:flex-row ">
           <p className="text-subtle_text">Verify OTP</p>
           <div className=" w-full max-w-[350px] flex justify-center">
             <CustomPinInput
@@ -71,7 +80,7 @@ export default function TwoFactorAuthOTP() {
           ) : (
             <Button
               isLoading={resending}
-              onClick={() => resend()}
+              onClick={handleResend}
               size="xs"
               type="button"
             >

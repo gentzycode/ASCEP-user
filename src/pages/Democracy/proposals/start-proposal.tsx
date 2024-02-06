@@ -19,6 +19,7 @@ import { startProposalSchema } from "@/schemas/ProposalSchema";
 import FormTextArea from "@/components/Democracy/common/FormTextArea";
 import { usePublishProposal } from "@/api/democracy/proposals";
 import TargetsMultiSelect from "@/components/custom/TargetsMultiSelect";
+import ROUTES from "@/utils/routesNames";
 
 interface StartProposalPageProps {}
 const StartProposalPage: React.FC<StartProposalPageProps> = () => {
@@ -121,6 +122,10 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
     trigger("documents");
   }, [selectedDocuments]);
 
+  useEffect(() => {
+    trigger("image");
+  }, [selectedImage]);
+
   const editorContent = watch("content");
 
   return (
@@ -184,7 +189,9 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
               label="Proposal summary (maximum of 200 characters)"
               control={control}
               errors={errors}
+              rows={6}
             />
+
             {/* PROPOSAL TEXT */}
             <TextEditor
               name="content"
@@ -242,6 +249,7 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
             <FormImageInput
               name="image"
               control={control}
+              errors={errors}
               description="You can upload one image of following content types: jpg, up to 1 MB."
               setSelectedImage={setSelectedImage}
               selectedImage={selectedImage}
@@ -274,15 +282,16 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
             />
 
             {/* MAP */}
-            <div>
+            {/* <div>
               <h4 className="text-[14px] text-dark ">Map location</h4>
               <p className="text-subtle_text text-[14px]">
                 Navigate the map to the location and place the marker
               </p>
-            </div>
+            </div> */}
 
             {/* TAGS */}
             <FormTags tags={tags} setTags={setTags} />
+
             {/* SDGs */}
             <div>
               <h5 className="text-[16px] md:text-[18px] text-dark -tracking-[0.36px] ">
@@ -297,7 +306,11 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
               <p className="text-[14px] md:text-[16px] text-subtle_text -tracking-[0.36px] my-2">
                 You can introduce the code of a specific goal/target or a text
                 to find one. For more information visit the
-                <Link to="#" className="text-primary ml-1">
+                <Link
+                  to={ROUTES.SDGs_HOME_ROUTE}
+                  className="text-primary ml-1"
+                  target="_blank"
+                >
                   SDG help page.
                 </Link>
               </p>
@@ -307,8 +320,9 @@ const StartProposalPage: React.FC<StartProposalPageProps> = () => {
             <TargetsMultiSelect selected={targets} setSelected={setTargets} />
             <Button
               type="submit"
-              className="w-full max-w-[400px] p-0 h-fit py-3"
+              className="w-full max-w-[400px] p-0 h-12"
               isLoading={isLoading}
+              disabled={isLoading}
             >
               Start A Proposal
             </Button>

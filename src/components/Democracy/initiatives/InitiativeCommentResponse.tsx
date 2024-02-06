@@ -15,24 +15,42 @@ import {
 } from "..";
 import { IconWrapper } from "@/components/custom";
 import { useClickAway } from "@uidotdev/usehooks";
-import { proposalCommentSchema } from "@/schemas/ProposalSchema";
-import { usePublishProposalComment } from "@/api/democracy/proposals";
+import {
+  useGetInitiativeCommentResponses,
+  usePublishInitiativeComment,
+  useVoteInitiativeComment,
+} from "@/api/democracy/initiatives";
+import { initiativeCommentSchema } from "@/schemas/InitiativesSchema";
 
 interface InitiativeCommentResponseProps {
   response: CommentType;
   paddingLeft: number;
+  refetchParentResponses: () => void;
 }
 const InitiativeCommentResponse: React.FC<InitiativeCommentResponseProps> = ({
   response,
   paddingLeft,
+  refetchParentResponses,
 }) => {
-  const { proposalId } = useParams();
+  const { initiativeId } = useParams();
 
   const { mutateAsync: publishResponse, isLoading: isPublishingComment } =
-    usePublishProposalComment();
+    usePublishInitiativeComment();
+
+  const { mutateAsync: voteComment, isLoading: isVotingComment } =
+    useVoteInitiativeComment();
 
   const [showResponse, setShowResponse] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const {
+    data: Data,
+    isRefetching: isLoadingResponses,
+    refetch: getResponses,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useGetInitiativeCommentResponses(response.id);
 
   const ref = useClickAway<HTMLDivElement>(() => {
     setTimeout(() => {
@@ -41,12 +59,12 @@ const InitiativeCommentResponse: React.FC<InitiativeCommentResponseProps> = ({
     }, 500);
   });
 
-  const form = useForm<z.infer<typeof proposalCommentSchema>>({
-    resolver: zodResolver(proposalCommentSchema),
+  const form = useForm<z.infer<typeof initiativeCommentSchema>>({
+    resolver: zodResolver(initiativeCommentSchema),
     mode: "onChange",
     defaultValues: {
       content: "",
-      proposal_id: "",
+      initiative_id: "",
       comment_reference: "",
     },
   });
@@ -58,18 +76,36 @@ const InitiativeCommentResponse: React.FC<InitiativeCommentResponseProps> = ({
     formState: { errors },
   } = form;
 
-  async function onSubmit(values: z.infer<typeof proposalCommentSchema>) {
+  async function onSubmit(values: z.infer<typeof initiativeCommentSchema>) {
     await publishResponse({
       ...values,
-      proposal_id: proposalId!,
+      initiative_id: initiativeId!,
       comment_reference: response.id,
     });
+    refetchParentResponses();
     closeResponse();
   }
 
   const closeResponse = () => {
     reset();
     setIsReplying(false);
+  };
+
+  const fetchResponse = async () => {
+    setLoading(true);
+    setIsReplying(false);
+    await getResponses();
+    setLoading(false);
+    setShowResponse(true);
+  };
+
+  const handleLike = async () => {
+    await voteComment({ type: "like", comment_id: response.id });
+    refetchParentResponses();
+  };
+  const handleDislike = async () => {
+    await voteComment({ type: "dislike", comment_id: response.id });
+    refetchParentResponses();
   };
 
   return (
@@ -89,20 +125,20 @@ const InitiativeCommentResponse: React.FC<InitiativeCommentResponseProps> = ({
           {/* FOOTER */}
           <div className="flex justify-between items-center flex-wrap-reverse gap-2">
             <CommentCardFooter
-              numberOfResponses={0}
+              numberOfResponses={response.comment_response_cache}
               setIsReplying={setIsReplying}
               setShowResponse={setShowResponse}
               showResponse={showResponse}
-              fetchResponse={() => {}}
-              isLoadingResponses={false}
-              loading={false}
+              fetchResponse={fetchResponse}
+              isLoadingResponses={isLoadingResponses}
+              loading={loading}
             />
 
             <VoteCommentButtons
-              dislikeComment={() => {}}
-              likeComment={() => {}}
+              dislikeComment={handleDislike}
+              likeComment={handleLike}
               dislikes={response.dislikes}
-              isVoting={false}
+              isVoting={isVotingComment}
               likes={response.likes}
               reactionType={response.userVoted.reactionType}
             />
@@ -127,10 +163,11 @@ const InitiativeCommentResponse: React.FC<InitiativeCommentResponseProps> = ({
                   <div className="flex justify-between items-center">
                     <Button
                       type="submit"
-                      className="w-fit h-fit text-[12px] font-[500]"
+                      className="w-full max-w-[200px] h-10"
                       isLoading={isPublishingComment}
+                      disabled={isPublishingComment}
                     >
-                      Publish response
+                      Publish Comment
                     </Button>
                     <IconWrapper
                       className="text-dark p-0 cursor-pointer"
@@ -145,19 +182,35 @@ const InitiativeCommentResponse: React.FC<InitiativeCommentResponseProps> = ({
           )}
         </div>
 
-        <div
-          className={` ${
-            showResponse ? "" : "h-0  overflow-hidden"
-          } duration-300`}
-        >
-          {response?.responses?.map((response) => (
-            <InitiativeCommentResponse
-              key={response.response_id}
-              response={response}
-              paddingLeft={paddingLeft + 20}
-            />
-          ))}
-        </div>
+        {Data && (
+          <div
+            className={`${showResponse ? "" : "h-0  overflow-hidden"} ${
+              isLoadingResponses && "opacity-50 pointer-events-none"
+            }`}
+          >
+            {Data?.pages.map((commentsData, i) => (
+              <div key={i}>
+                {commentsData.comments.map((response) => (
+                  <InitiativeCommentResponse
+                    key={response.id}
+                    response={response}
+                    paddingLeft={paddingLeft + 30}
+                    refetchParentResponses={getResponses}
+                  />
+                ))}
+              </div>
+            ))}
+            {Data?.pages[Data.pages.length - 1].meta.next_page_url && (
+              <Button
+                className="w-full h-fit bg-transparent py-4 hover:bg-transparent -mb-5"
+                onClick={() => fetchNextPage()}
+                isLoading={isFetchingNextPage}
+              >
+                Load more
+              </Button>
+            )}
+          </div>
+        )}
       </div>
     </>
   );

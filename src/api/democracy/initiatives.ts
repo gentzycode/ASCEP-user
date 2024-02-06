@@ -31,6 +31,7 @@ import {
   SUPPORT_INITIATIVE_ENDPOINT,
   VOTE_INITIATIVE_COMMENT_ENDPOINT,
 } from ".";
+import { useAppContext } from "@/contexts/AppContext";
 
 // PUBLISH INITIATIVE
 export const usePublishInitiative = () => {
@@ -67,7 +68,7 @@ export const usePublishInitiative = () => {
   );
 };
 
-// PUBLISH PROPOSAL COMMENT
+// PUBLISH INITIATIVE COMMENT
 export const usePublishInitiativeComment = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -87,6 +88,12 @@ export const usePublishInitiativeComment = () => {
         queryClient.invalidateQueries({
           queryKey: ["initiative-info", variables.initiative_id],
         });
+        queryClient.invalidateQueries({
+          queryKey: [
+            "initiative-comments-responses",
+            variables.comment_reference,
+          ],
+        });
         toast({
           title: "Success!",
           variant: "success",
@@ -96,6 +103,7 @@ export const usePublishInitiativeComment = () => {
     }
   );
 };
+
 // GET INITIATIVES
 export const useGetAllInitiatives = () => {
   return useMutation(
@@ -145,7 +153,7 @@ export const useGetInitiativeComments = (
 // GET INITIATIVE COMMENT RESPONSES
 export const useGetInitiativeCommentResponses = (commentId: string) => {
   return useInfiniteQuery(
-    ["initiative-comments-responses"],
+    ["initiative-comments-responses", commentId],
     (
       context: QueryFunctionContext<string[], number>
     ): Promise<CommentDataType> => {
@@ -163,11 +171,11 @@ export const useGetInitiativeCommentResponses = (commentId: string) => {
       staleTime: 0,
       refetchOnWindowFocus: false,
       enabled: false,
-      getNextPageParam: (lastPage, pages) => pages.length + 1,
+      getNextPageParam: (_, pages) => pages.length + 1,
     }
   );
 };
-// VOTE PROPOSAL COMMENT
+// VOTE INITIATIVE COMMENT
 export const useVoteInitiativeComment = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -181,7 +189,7 @@ export const useVoteInitiativeComment = () => {
     },
     {
       onSuccess: (res) => {
-        queryClient.invalidateQueries({ queryKey: ["initiative-comments"] });
+        queryClient.invalidateQueries("initiative-comments");
         toast({
           title: "Success!",
           variant: "success",
@@ -195,6 +203,7 @@ export const useVoteInitiativeComment = () => {
 export const useSupportInitiative = (initiativeId: string) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { handleOpenModal } = useAppContext();
   return useMutation(
     (): Promise<ResponseDataType> => {
       return axios
@@ -211,6 +220,20 @@ export const useSupportInitiative = (initiativeId: string) => {
           description: res.message,
         });
       },
+      onError: (error: any) => {
+        const errors = error.response.data.errors;
+
+        errors.map((error: { message: string }) => {
+          if (error.message === "E_UNAUTHORIZED_ACCESS: Unauthorized access") {
+            handleOpenModal();
+            toast({
+              title: "Error!",
+              variant: "error",
+              description: "Please login to perform this action",
+            });
+          }
+        });
+      },
     }
   );
 };
@@ -219,6 +242,7 @@ export const useSupportInitiative = (initiativeId: string) => {
 export const useFollowInitiative = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { handleOpenModal } = useAppContext();
   return useMutation(
     (
       values: z.infer<typeof followInitiativeSchema>
@@ -234,6 +258,19 @@ export const useFollowInitiative = () => {
           title: "Success!",
           variant: "success",
           description: res.message,
+        });
+      },
+      onError: (error: any) => {
+        const errors = error.response.data.errors;
+        errors.map((error: { message: string }) => {
+          if (error.message === "E_UNAUTHORIZED_ACCESS: Unauthorized access") {
+            handleOpenModal();
+            toast({
+              title: "Error!",
+              variant: "error",
+              description: "Please login to perform this action",
+            });
+          }
         });
       },
     }

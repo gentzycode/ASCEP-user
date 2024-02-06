@@ -74,7 +74,7 @@ const EditVotePage: React.FC<EditVotePageProps> = () => {
     formData.append("id", pollId!);
 
     if (values.image) {
-      formData.append("image", values.image);
+      formData.append("descriptive_image", values.image);
     }
 
     if (values.sdgs && values.sdgs.length > 0) {

@@ -1,6 +1,9 @@
+import { useGetUserProfile } from "@/api/auth";
 import { useGetAllCategories } from "@/api/category";
 import { useGetAllSDGs } from "@/api/democracy/debates";
 import { useGetAllWards } from "@/api/locale";
+import useDisclosure from "@/hooks/useDisclosure";
+import config from "@/utils/config";
 import {
   PropsWithChildren,
   createContext,
@@ -8,9 +11,13 @@ import {
   useEffect,
   useState,
 } from "react";
+import { useLocation } from "react-router-dom";
 
 interface AppContextType {
   fetchingSdgs: boolean;
+  user: UserData | null;
+  setUser: React.Dispatch<React.SetStateAction<UserData | null>>;
+  fetchingUser: boolean;
   sdgData: SDGsType[];
   targets: SDGTarget[];
   setTargets: React.Dispatch<React.SetStateAction<SDGTarget[]>>;
@@ -18,10 +25,18 @@ interface AppContextType {
   fetchingWards: boolean;
   fetchingCategories: boolean;
   categories: CategoryType[];
+  isLoginModalOpen: boolean;
+  onLoginModalClose: () => void;
+  onLoginModalOpen: () => void;
+  handleOpenModal: () => void;
+  refetchUser: () => void;
 }
 
 const AppContext = createContext<AppContextType>({
   fetchingSdgs: false,
+  fetchingUser: false,
+  user: null,
+  setUser: () => {},
   sdgData: [],
   targets: [],
   setTargets: () => {},
@@ -29,20 +44,47 @@ const AppContext = createContext<AppContextType>({
   fetchingWards: false,
   fetchingCategories: false,
   categories: [],
+  isLoginModalOpen: false,
+  onLoginModalClose: () => {},
+  onLoginModalOpen: () => {},
+  handleOpenModal: () => {},
+  refetchUser: () => {},
 });
 
 export const useAppContext = () => useContext(AppContext);
 
 export default function AppProvider({ children }: PropsWithChildren) {
+  const location = useLocation();
+  const {
+    isOpen: isLoginModalOpen,
+    onClose: onLoginModalClose,
+    onOpen: onLoginModalOpen,
+  } = useDisclosure();
+
+  const handleOpenModal = () => {
+    localStorage.setItem(config.key.redirect, location.pathname);
+    return onLoginModalOpen();
+  };
+
   const { isLoading: fetchingSdgs, data: sdgData, isSuccess } = useGetAllSDGs();
   const { isLoading: fetchingWards, data: wards } = useGetAllWards();
   const { isLoading: fetchingCategories, data: categories } =
     useGetAllCategories();
   const [targets, setTargets] = useState<SDGTarget[]>([]);
+  const [user, setUser] = useState<UserData | null>(null);
+
+  const {
+    data,
+    isLoading: fetchingUser,
+    refetch: refetchUser,
+  } = useGetUserProfile();
+  useEffect(() => {
+    if (data) setUser(data);
+  }, [data]);
 
   useEffect(() => {
     if (isSuccess) {
-      let newTargets: SDGTarget[] = [];
+      const newTargets: SDGTarget[] = [];
       if (sdgData) {
         sdgData.forEach((sdg: SDGsType) => {
           newTargets.push(...sdg.sdgTarget);
@@ -54,6 +96,8 @@ export default function AppProvider({ children }: PropsWithChildren) {
   return (
     <AppContext.Provider
       value={{
+        user,
+        fetchingUser,
         sdgData: sdgData ?? [],
         fetchingSdgs,
         setTargets,
@@ -62,6 +106,12 @@ export default function AppProvider({ children }: PropsWithChildren) {
         fetchingWards,
         categories: categories ?? [],
         fetchingCategories,
+        isLoginModalOpen,
+        onLoginModalClose,
+        onLoginModalOpen,
+        handleOpenModal,
+        refetchUser,
+        setUser,
       }}
     >
       {children}

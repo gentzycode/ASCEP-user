@@ -31,6 +31,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/utils/routesNames";
+import { useAppContext } from "@/contexts/AppContext";
 
 // PUBLISH DEBATE
 export const usePublishDebate = () => {
@@ -54,7 +55,7 @@ export const usePublishDebate = () => {
           description: res.message,
         });
         if (variables.id) {
-          navigate(ROUTES.DEBATE_INFO_ROUTE(variables.id), { replace: true,  });
+          navigate(ROUTES.DEBATE_INFO_ROUTE(variables.id), { replace: true });
         } else {
           navigate(ROUTES.DEBATES_HOME_ROUTE, { replace: true });
         }
@@ -141,7 +142,7 @@ export const useGetDebateComments = (
 // GET DEBATE RESPONSES
 export const useGetDebateCommentResponses = (commentId: string) => {
   return useInfiniteQuery(
-    ["debate-comments-responses"],
+    ["debate-comments-responses", commentId],
     (
       context: QueryFunctionContext<string[], number>
     ): Promise<CommentDataType> => {
@@ -165,6 +166,7 @@ export const useGetDebateCommentResponses = (commentId: string) => {
 export const useVoteDebate = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { handleOpenModal } = useAppContext();
   return useMutation(
     (values: z.infer<typeof voteDebateSchema>) => {
       return axios
@@ -178,6 +180,20 @@ export const useVoteDebate = () => {
           title: "Success!",
           variant: "success",
           description: res.message,
+        });
+      },
+      onError: (error: any) => {
+        const errors = error.response.data.errors;
+
+        errors.map((error: { message: string }) => {
+          if (error.message === "E_UNAUTHORIZED_ACCESS: Unauthorized access") {
+            handleOpenModal();
+            toast({
+              title: "Error!",
+              variant: "error",
+              description: "Please login to perform this action",
+            });
+          }
         });
       },
     }

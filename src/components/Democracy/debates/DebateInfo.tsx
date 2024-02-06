@@ -19,6 +19,7 @@ import ALert from "@/components/custom/Alert";
 import useDisclosure from "@/hooks/useDisclosure";
 import { frontendURL } from "@/api/baseUrl";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { useAppContext } from "@/contexts/AppContext";
 
 interface DebateInfoProps {
   debate: DebateType;
@@ -29,6 +30,7 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
   scrollToComments,
 }) => {
   const { isLoggedIn } = useAuthContext();
+  const { user } = useAppContext();
 
   const { mutate: voteDebate, isLoading: isVoting } = useVoteDebate();
 
@@ -57,13 +59,14 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
     userVoted,
     total_comments_cache,
   } = debate;
+  const createdByUser = user?.id === Number(debate.author.id);
 
   return (
     <div className="flex justify-start gap-10 lg:flex-row flex-col">
       <div className=" w-full xl:min-w-[700px] flex flex-col gap-6">
         {/* MAIN INFO */}
         <div>
-          <h1 className="text-[20px] text-dark">{title}</h1>
+          <h1 className="text-2xl lg:text-3xl text-dark py-3">{title}</h1>
           <div className="flex justify-start items-center gap-6 my-4 flex-wrap">
             <Avatar className="h-12 w-12">
               <AvatarImage
@@ -147,85 +150,96 @@ const DebateInfo: React.FC<DebateInfoProps> = ({
             </div>
 
             {/* AUTHOR */}
-            {debate.user_id === debate.author.id && (
+            {createdByUser && (
               <div>
                 <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
                   Author
                 </h2>
-                <Link to={ROUTES.EDIT_DEBATE_ROUTE(debate.id)}>
-                  <Button className="text-dark text-base h-fit my-4 px-8 py-3 w-full   justify-center gap-3 flex rounded-lg max-w-[200px]">
+                <Button
+                  className="text-dark text-base h-fit my-4  w-full p-0  justify-center gap-3 flex rounded-lg max-w-[200px]"
+                  disabled={
+                    debate.total_comments_cache > 0 ||
+                    debate.total_comments_cache > 0
+                  }
+                >
+                  <Link to={ROUTES.EDIT_DEBATE_ROUTE(debate.id)} className="justify-center gap-3 flex w-full h-full px-8 py-3">
                     <span>Edit</span>
                     <CardEdit />
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
                 <Button
                   className="text-red-500 border border-red-500 hover:text-light text-base bg-transparent hover:bg-red-400 h-fit my-4 px-8 py-3 justify-center gap-3 flex rounded-lg w-full max-w-[200px]"
                   onClick={openAlert}
+                  disabled={
+                    debate.total_comments_cache > 0 ||
+                    debate.total_comments_cache > 0
+                  }
                 >
                   <span>Delete Debate</span>
                   <Trash />
                 </Button>
               </div>
             )}
-
-            {/* SUPPORT */}
-            <div>
-              <div className="flex justify-start items-center gap-8">
-                <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
-                  Support
-                </h2>
-                <h3 className="capitalize text-dark text-[14px] ">
-                  {debate.total_votes_cache} votes
-                </h3>
-              </div>
-
-              {/* LIKE AND DISLIKE */}
-              <div className="flex gap-4 my-4">
-                <Button
-                  className="w-[72px] h-[72px] p-0 bg-transparent hover:bg-transparent"
-                  isLoading={isVoting}
-                >
-                  <IconWrapper
-                    className={`${
-                      userVoted.reactionType === "like"
-                        ? "bg-[#31D0AA]/10 text-[#31D0AA]"
-                        : "bg-subtle_text text-light"
-                    } h-full w-full flex gap-1`}
-                    onClick={() =>
-                      voteDebate({ type: "like", debate_id: debate.id })
-                    }
-                  >
-                    <Like1 />
-                    {debate.likePercentage}%
-                  </IconWrapper>
-                </Button>
-
-                <Button
-                  className="w-[72px] h-[72px] p-0 bg-transparent hover:bg-transparent"
-                  isLoading={isVoting}
-                >
-                  <IconWrapper
-                    className={`${
-                      userVoted.reactionType === "dislike"
-                        ? " bg-[#E43F40]/10 text-[#E43F40]"
-                        : "bg-subtle_text text-light"
-                    } w-full h-full    flex gap-1`}
-                    onClick={() =>
-                      voteDebate({ type: "dislike", debate_id: debate.id })
-                    }
-                  >
-                    <Dislike />
-                    {debate.dislikePercentage}%
-                  </IconWrapper>
-                </Button>
-              </div>
-            </div>
           </>
         )}
+        {/* SUPPORT */}
+        <div>
+          <div className="flex justify-start items-center gap-8">
+            <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
+              Support
+            </h2>
+            <h3 className="capitalize text-dark text-[14px] ">
+              {debate.total_votes_cache} votes
+            </h3>
+          </div>
+
+          {/* LIKE AND DISLIKE */}
+          <div className="flex gap-4 my-4">
+            <Button
+              className="w-[72px] h-[72px] p-0 bg-transparent hover:bg-transparent"
+              isLoading={isVoting}
+            >
+              <IconWrapper
+                className={`${
+                  userVoted.reactionType === "like"
+                    ? "bg-[#31D0AA]/10 text-[#31D0AA]"
+                    : "bg-subtle_text text-light"
+                } h-full w-full flex gap-1`}
+                onClick={() =>
+                  voteDebate({ type: "like", debate_id: debate.id })
+                }
+              >
+                <Like1 />
+                {debate.likePercentage}%
+              </IconWrapper>
+            </Button>
+
+            <Button
+              className="w-[72px] h-[72px] p-0 bg-transparent hover:bg-transparent"
+              isLoading={isVoting}
+            >
+              <IconWrapper
+                className={`${
+                  userVoted.reactionType === "dislike"
+                    ? " bg-[#E43F40]/10 text-[#E43F40]"
+                    : "bg-subtle_text text-light"
+                } w-full h-full    flex gap-1`}
+                onClick={() =>
+                  voteDebate({ type: "dislike", debate_id: debate.id })
+                }
+              >
+                <Dislike />
+                {debate.dislikePercentage}%
+              </IconWrapper>
+            </Button>
+          </div>
+        </div>
 
         {/* SHARE */}
         <Share
-          shareableURL={frontendURL + `/democracy/debate/share/${debate.shareable_id}`}
+          shareableURL={
+            frontendURL + `/democracy/debate/share/${debate.shareable_id}`
+          }
         />
 
         {/* DELETE ALERT */}

@@ -8,7 +8,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { pollQuestionAnswerSchema } from "@/schemas/VotingSchema";
@@ -89,7 +88,7 @@ const SingleAnswerQuestion: React.FC<SingleAnswerQuestionProp> = ({
                                 disabled={isPublishingAnswer}
                               />
                               <Button
-                                className="text-sm text-text h-4 w-fit p-0 bg-transparent "
+                                className="text-sm text-text h-4 w-fit p-0 bg-transparent px-4"
                                 isLoading={isPublishingAnswer}
                               >
                                 {item}

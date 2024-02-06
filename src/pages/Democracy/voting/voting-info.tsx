@@ -6,12 +6,14 @@ import {
   NotFound,
 } from "@/components/Democracy";
 import { PageLoader } from "@/components/custom";
-import { useRef } from "react";
+import useScrollToComments from "@/hooks/useScrollToComments";
 import { useParams } from "react-router-dom";
 
 interface VotingInfoPageProp {}
 
 const VotingInfoPage: React.FC<VotingInfoPageProp> = () => {
+  const { commentsSectionRef, scrollToComments } = useScrollToComments();
+
   const { pollId } = useParams();
 
   const {
@@ -20,11 +22,7 @@ const VotingInfoPage: React.FC<VotingInfoPageProp> = () => {
     isError,
   } = useGetPollInfo(pollId!);
 
-  const commentsSectionRef = useRef<HTMLDivElement | null>(null);
 
-  const scrollToComments = () => {
-    commentsSectionRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
     <>

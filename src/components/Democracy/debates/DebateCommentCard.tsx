@@ -96,7 +96,7 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
   return (
     <div className="bg-[#fff] p-6 rounded-xl" ref={ref}>
       <CommentCard
-        comment={comment}
+        comment={comment} 
         setIsReplying={setIsReplying}
         setShowResponse={setShowResponse}
         showResponse={showResponse}
@@ -126,11 +126,11 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
               <div className="flex items-center justify-between">
                 <Button
                   type="submit"
-                  className="w-fit h-fit text-[12px] font-[500]"
+                  className="w-full max-w-[200px] h-10"
                   isLoading={isPublishingComment}
                   disabled={isPublishingComment}
                 >
-                  Publish response
+                  Publish Comment
                 </Button>
                 <IconWrapper
                   className="p-0 cursor-pointer text-dark"
@@ -155,7 +155,8 @@ const DebateCommentCard: React.FC<DebateCommentCardProps> = ({ comment }) => {
               <DebateCommentResponse
                 key={response.id}
                 response={response}
-                paddingLeft={dynamicPadding + 20}
+                paddingLeft={dynamicPadding + 10}
+                refetchParentResponses={getResponses}
               />
             ))}
           </div>

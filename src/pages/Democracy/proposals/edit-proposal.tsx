@@ -26,6 +26,7 @@ import TargetsMultiSelect from "@/components/custom/TargetsMultiSelect";
 import { useAppContext } from "@/contexts/AppContext";
 import { useGetAllCategories } from "@/api/category";
 import { PageLoader } from "@/components/custom";
+import ROUTES from "@/utils/routesNames";
 
 interface EditProposalPageProps {}
 const EditProposalPage: React.FC<EditProposalPageProps> = () => {
@@ -56,16 +57,16 @@ const EditProposalPage: React.FC<EditProposalPageProps> = () => {
   const form = useForm<z.infer<typeof startProposalSchema>>({
     resolver: zodResolver(startProposalSchema),
     defaultValues: {
-      title: proposal?.title,
-      summary: proposal?.summary,
-      content: proposal?.content,
-      external_video_url: proposal?.external_video_url,
-      ward_id: proposal?.ward_id,
+      title: undefined,
+      summary: undefined,
+      content: undefined,
+      external_video_url: undefined,
+      ward_id: undefined,
       tags: [],
-      categories: proposal?.proposalCategory.map((item) => item.category_id),
-      sdgs: proposal?.proposalSDGs.map((item) => item.sdgs_id),
+      categories: [],
+      sdgs: [],
       targets: [],
-      support_needed: proposal?.support_needed,
+      support_needed: undefined,
       documents: undefined,
       image: undefined,
     },
@@ -82,7 +83,45 @@ const EditProposalPage: React.FC<EditProposalPageProps> = () => {
   } = form;
 
   async function onSubmit(values: z.infer<typeof startProposalSchema>) {
-    console.log({ ...values, id: proposal?.id });
+    const formData = new FormData();
+    formData.append("id", proposal?.id!);
+    formData.append("title", values.title!);
+    formData.append("summary", values.summary!);
+    formData.append("content", values.content!);
+    formData.append("ward_id", JSON.stringify(values.ward_id!));
+    formData.append("support_needed", JSON.stringify(values.support_needed!));
+    formData.append("external_video_url", String(values.external_video_url!));
+
+    if (values.image) {
+      formData.append("image", values.image);
+    }
+    if (values.documents && values.documents.length > 0) {
+      values.documents.forEach((doc, index) => {
+        formData.append(`documents[${index}]`, doc);
+      });
+    }
+    if (values.sdgs && values.sdgs.length > 0) {
+      values.sdgs.forEach((sdg, index) => {
+        formData.append(`sdgs[${index}]`, JSON.stringify(sdg));
+      });
+    }
+
+    if (values.tags && values.tags.length > 0) {
+      values.tags.forEach((tag, index) => {
+        formData.append(`tags[${index}]`, tag);
+      });
+    }
+    if (values.targets && values.targets.length > 0) {
+      values.targets.forEach((target, index) => {
+        formData.append(`targets[${index}]`, JSON.stringify(target));
+      });
+    }
+    if (values.categories && values.categories.length > 0) {
+      values.categories.forEach((category, index) => {
+        formData.append(`categories[${index}]`, JSON.stringify(category));
+      });
+    }
+    await UpdateProposal(formData);
   }
 
   useEffect(() => {
@@ -143,6 +182,33 @@ const EditProposalPage: React.FC<EditProposalPageProps> = () => {
     getTargets();
     getCategories();
   }, []);
+
+  useEffect(() => {
+    if (proposal) {
+      getTargets();
+      getCategories();
+      const {
+        title,
+        summary,
+        proposalSDGs,
+        proposalTag,
+        ward_id,
+        support_needed,
+        content,
+      } = proposal;
+      setValue("id", proposalId);
+      setValue("title", title);
+      setValue("summary", summary);
+      setValue("content", content);
+      setValue("ward_id", ward_id);
+      setValue("support_needed", support_needed);
+      setTags(proposalTag.map((tag) => tag.tag_name));
+      setValue(
+        "sdgs",
+        proposalSDGs.map((item) => item.sdgs_id)
+      );
+    }
+  }, [proposal, allTargets, allCategories]);
 
   return (
     <>
@@ -209,6 +275,7 @@ const EditProposalPage: React.FC<EditProposalPageProps> = () => {
                 label="Proposal summary (maximum of 200 characters)"
                 control={control}
                 errors={errors}
+                rows={6}
               />
               {/* PROPOSAL TEXT */}
               <TextEditor
@@ -301,12 +368,12 @@ const EditProposalPage: React.FC<EditProposalPageProps> = () => {
               />
 
               {/* MAP */}
-              <div>
+              {/* <div>
                 <h4 className="text-[14px] text-dark ">Map location</h4>
                 <p className="text-subtle_text text-[14px]">
                   Navigate the map to the location and place the marker
                 </p>
-              </div>
+              </div> */}
 
               {/* TAGS */}
               <FormTags tags={tags} setTags={setTags} />
@@ -325,7 +392,11 @@ const EditProposalPage: React.FC<EditProposalPageProps> = () => {
                 <p className="text-[14px] md:text-[16px] text-subtle_text -tracking-[0.36px] my-2">
                   You can introduce the code of a specific goal/target or a text
                   to find one. For more information visit the
-                  <Link to="#" className="text-primary ml-1">
+                  <Link
+                    to={ROUTES.SDGs_HOME_ROUTE}
+                    className="text-primary ml-1"
+                    target="_blank"
+                  >
                     SDG help page.
                   </Link>
                 </p>
@@ -338,9 +409,9 @@ const EditProposalPage: React.FC<EditProposalPageProps> = () => {
                 type="submit"
                 className="w-full max-w-[300px] p-0 h-12"
                 isLoading={isUpdatingProposal}
-                disabled
+                disabled={isUpdatingProposal}
               >
-                Coming soon
+                Update proposal
               </Button>
             </form>
           </Form>

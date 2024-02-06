@@ -84,7 +84,7 @@ const SdgDetailsPage: React.FC<SdgDetailsPageProps> = () => {
             </h2>
             <div className="flex flex-col gap-2">
               {SDG.sdgTarget.map((target) => (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2" key={target.id}>
                   <h1 className="text-base md:text-lg">{target.code}</h1>
                   <p className="text-subtitle_text text-sm md:text-base">
                     {target.description}

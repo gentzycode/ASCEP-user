@@ -18,15 +18,17 @@ export default function ResponseImageSelect({
         />
       </div>
 
-      <div className="grid grid-cols-2 col-span-5 gap-2 md:gap-4 md:h-auto max-h-[250px] overflow-y-auto">
+      <div className="grid grid-cols-2 col-span-5 gap-2 md:gap-4 md:h-auto max-h-[250px] md:max-h-[300px] overflow-y-auto">
         {images.map((img) => (
           <img
             onClick={() => setSelectedImg(img.image_url)}
             src={img.image_url}
             alt="image"
             key={img.image_url}
-            className={`border-2 cursor-pointer border-primary rounded-xl w-full object-cover object-center h-[135px] md:h-[150px]  ${
-              selectedImg === img.image_url ? "border-2 border-primary " : ""
+            className={`border-2 cursor-pointer  rounded-xl w-full object-cover object-center h-[135px] md:h-[150px]  ${
+              selectedImg === img.image_url
+                ? "border-[3px] border-primary "
+                : ""
             }`}
           />
         ))}

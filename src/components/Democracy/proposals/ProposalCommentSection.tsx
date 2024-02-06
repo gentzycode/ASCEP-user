@@ -1,14 +1,17 @@
-import { IconWrapper, PageLoader, Pagination } from "@/components/custom";
+import { PageLoader, Pagination } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { useAuthContext } from "@/providers/AuthProvider";
-import ROUTES from "@/utils/routesNames";
-import { CloseCircle, Danger } from "iconsax-react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
-import { FilterButtons, FormInput, ProposalCommentCard } from "..";
+import {
+  FilterButtons,
+  FormInput,
+  LoginSigninPrompt,
+  ProposalCommentCard,
+} from "..";
 import { commentFilterButtonOptions } from "@/utils/Democracy/General";
 import { useEffect, useState } from "react";
 import {
@@ -70,27 +73,7 @@ const ProposalCommentSection: React.FC<ProposalCommentSectionProp> = () => {
         </h2>
       </div>
       {!isLoggedIn ? (
-        <div className="flex items-center justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10">
-          <div className="flex justify-start items-center gap-1">
-            <IconWrapper className="text-primary rounded-full">
-              <Danger size="32" />
-            </IconWrapper>
-            <p className="text-[16px]">
-              You must{" "}
-              <Link to={ROUTES.SIGNIN_ROUTE} className="underline">
-                sign in
-              </Link>
-              or
-              <Link to={ROUTES.SIGNIN_ROUTE} className="underline">
-                sign up
-              </Link>{" "}
-              to leave a comment.
-            </p>
-          </div>
-          <Button className="bg-transparent hover:bg-transparent w-fit h-fit">
-            <CloseCircle size="32" />
-          </Button>
-        </div>
+        <LoginSigninPrompt />
       ) : (
         <div>
           <Form {...form}>
@@ -107,7 +90,7 @@ const ProposalCommentSection: React.FC<ProposalCommentSectionProp> = () => {
 
               <Button
                 type="submit"
-                className="w-fit"
+                className="w-full max-w-[200px] h-10"
                 isLoading={isPublishingComment}
                 disabled={isPublishingComment}
               >
@@ -125,10 +108,12 @@ const ProposalCommentSection: React.FC<ProposalCommentSectionProp> = () => {
             setFilter(value);
             setPage(1);
           }}
+          isFiltering={isFetchingComments}
           defaultFilterButtonValue="newest"
         />
       </div>
 
+      {/* LOADING */}
       {isLoadingComments && <PageLoader />}
       {commentsData?.comments?.length === 0 && (
         <div>

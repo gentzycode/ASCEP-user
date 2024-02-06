@@ -11,15 +11,8 @@ import {
   Path,
 } from "react-hook-form";
 
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../../ui/form";
-import { Input, InputProps } from "../../ui/input";
+import { FormControl, FormField, FormItem, FormMessage } from "../../ui/form";
+import { InputProps } from "../../ui/input";
 import {
   Select,
   SelectContent,
@@ -59,7 +52,8 @@ const FormSelecteResponseType = <TFormValues extends Record<string, unknown>>({
           <h3 className="text-sm md:text-base text-text">{label}</h3>
           <Select
             onValueChange={field.onChange}
-            defaultValue={field.value}
+            // @ts-ignore
+            defaultValue={field.value!}
             {...props}
           >
             <FormControl>

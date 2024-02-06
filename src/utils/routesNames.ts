@@ -3,7 +3,7 @@ const ROUTES = {
   SIGNUP_ROUTE: "/auth/signup",
   MAIN_ROUTE: "/main",
 
-
+  DEMOCRACY_LANDING_PAGE: "/democracy",
   // DEBATE
   DEBATES_HOME_ROUTE: "/democracy/debates",
   DEBATE_INFO_ROUTE: (debateId: string) => `/democracy/debates/${debateId}`,
@@ -48,15 +48,24 @@ const ROUTES = {
   WARD_PROJECTS_HOME_ROUTE: (wardId: string) =>
     `/democracy/budgeting/ward-project/${wardId}`,
 
+  STATE_INVESTMENT_PROJECTS_ROUTE: `/democracy/budgeting/state-investment-projects`,
+  INVESTMENT_INFO_ROUTE: (investmentId: string) =>
+    `/democracy/budgeting/investment-info/${investmentId}`,
+
   //MAKE A REQUEST
   MAKE_A_REQUEST_HOME_ROUTE: "/dialogue/make-a-request",
-  CREATE_REQUEST_ROUTE: "/dialogue/make-a-request/create-request",
+  CREATE_REQUEST_ROUTE: (authorityId: string) =>
+    `/dialogue/make-a-request/create-request/${authorityId}`,
 
   //BROWSE REQUEST
   BROWSE_REQUEST_HOME_ROUTE: "/dialogue/browse-request",
+  REQUEST_INFO_ROUTE: (requestId: string) =>
+    `/dialogue/browse-request/info/${requestId}`,
 
   //VIEW AUTHORITIES
   VIEW_AUTHORITIES_HOME_ROUTE: "/dialogue/view-authorities",
+  AUTHORITY_INFO_ROUTE: (authorityId: string) =>
+    `/dialogue/view-authorities/${authorityId}`,
 
   //DIALOGUE HELP
   DIALOGUE_HELP_HOME_ROUTE: "/dialogue/dialogue-help",

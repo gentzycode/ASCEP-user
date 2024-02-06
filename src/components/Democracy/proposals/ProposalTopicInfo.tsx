@@ -16,7 +16,7 @@ const ProposalTopicInfo: React.FC<ProposalTopicInfoProp> = ({
   return (
     <div className="flex justify-start gap-10 xl:flex-row flex-col">
       <div className=" w-full xl:min-w-[700px] flex flex-col gap-6">
-        <h1 className="text-xl md:text-2xl text-dark my-2">{topic.title}</h1>
+      <h1 className="text-2xl lg:text-3xl text-dark py-3">{topic.title}</h1>
         <div className="flex justify-start items-center gap-6 flex-wrap">
           <Avatar className="h-12 w-12">
             <AvatarImage

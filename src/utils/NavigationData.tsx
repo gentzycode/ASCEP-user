@@ -19,7 +19,7 @@ export const DialogueLinks: NavLinkType[] = [
     path: "/dialogue/browse-request",
   },
   {
-    title: "View Authorities",
+    title: "View MDAs",
     path: "/dialogue/view-authorities",
   },
   {
@@ -84,12 +84,12 @@ export const sidebarLinks: NavLinkType[] = [
     path: "/response",
     module: "response",
   },
-  {
-    title: "ASCEP Dialogue",
-    Icon: <Profile2User size={25} />,
-    path: "/dialogue",
-    module: "dialogue",
-  },
+  // {
+  //   title: "ASCEP Dialogue",
+  //   Icon: <Profile2User size={25} />,
+  //   path: "/dialogue",
+  //   module: "dialogue",
+  // },
   {
     title: "ASCEP Democracy",
     Icon: <TickSquare size={25} />,

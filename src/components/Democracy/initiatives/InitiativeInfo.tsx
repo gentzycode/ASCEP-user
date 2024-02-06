@@ -16,6 +16,7 @@ import {
 import { useEffect, useState } from "react";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { frontendURL } from "@/api/baseUrl";
+import { useAppContext } from "@/contexts/AppContext";
 
 interface InitiativeInfoProps {
   initiative: InitiativeType;
@@ -26,6 +27,7 @@ const InitiativeInfo: React.FC<InitiativeInfoProps> = ({
   initiative,
   scrollToComments,
 }) => {
+  const { user } = useAppContext();
   const { isLoggedIn } = useAuthContext();
 
   const [copied, setCopied] = useState(false);
@@ -67,12 +69,17 @@ const InitiativeInfo: React.FC<InitiativeInfoProps> = ({
   const handleFollow = async () => {
     await followInitiative({ initiative_id: initiative.id });
   };
+
+  const createdByUser = user?.id === Number(initiative.author.id);
+
   return (
     <div className="flex justify-start gap-10 xl:flex-row flex-col">
       <div className=" w-full xl:min-w-[700px] flex flex-col gap-6">
         {/* MAIN INFO */}
         <div className="flex flex-col w-full">
-          <h1 className="text-[20px] text-dark">{initiative.title}</h1>
+          <h1 className="text-2xl lg:text-3xl text-dark py-3">
+            {initiative.title}
+          </h1>
           <div className="flex justify-start items-center gap-6 flex-wrap">
             <Avatar className="h-12 w-12">
               <AvatarImage
@@ -99,6 +106,15 @@ const InitiativeInfo: React.FC<InitiativeInfoProps> = ({
               <Messages1 size={20} />
               {initiative.total_comments_cache} Comments
             </div>
+            <p
+              className={`${
+                initiative.status === "in review"
+                  ? "text-primary bg-primary/10"
+                  : "text-[#31D0AA] bg-[#31D0AA]/10"
+              } text-base font-extrabold my-3 capitalize px-4 rounded-full`}
+            >
+              {initiative.status}
+            </p>
           </div>
 
           {/* SUMMARY */}
@@ -217,7 +233,7 @@ const InitiativeInfo: React.FC<InitiativeInfoProps> = ({
             </div>
 
             {/* AUTHOR */}
-            {initiative.created_by === initiative.author.id && (
+            {createdByUser && (
               <div>
                 <h2 className="pb-2 pt-0 pl-0 border-b-4 text-[18px] font-medium border-primary w-fit">
                   Author
@@ -283,8 +299,7 @@ const InitiativeInfo: React.FC<InitiativeInfoProps> = ({
               <Messages1 size="25" />
               <span>{initiative.supportNeeded} support needed</span>
             </Button>
-
-            {isLoggedIn ? (
+            {initiative.status !== "in review" && (
               <Button
                 className="h-12  max-w-[200px] py-4 text-lg w-full rounded-full"
                 isLoading={isSupportingProposal}
@@ -292,12 +307,6 @@ const InitiativeInfo: React.FC<InitiativeInfoProps> = ({
               >
                 Support
               </Button>
-            ) : (
-              <Link to={ROUTES.SIGNIN_ROUTE}>
-                <Button className="bg-transparent border-dark border-2 w-[175px] h-12">
-                  Log in
-                </Button>
-              </Link>
             )}
           </div>
         </div>

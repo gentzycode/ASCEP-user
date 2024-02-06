@@ -29,7 +29,7 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
     page,
   } = useDebateContext();
   const pageDescription =
-    "Citizens' proposals are an opportunity for neighbours and collectives to decide directly how they want their city to be, after getting sufficient support and submitting to a citizens' vote.";
+    "Debates is a dynamic feature designed to engage the community in meaningful and structured discussions on a wide range of topics. This interactive platform allows citizens to voice their opinions, share insights, and engage in healthy debate on issues that matter to them and their community. Users can initiate debates, contribute to ongoing discussions, and even respond to others' viewpoints, fostering a culture of open dialogue and informed discourse. The Debates feature is instrumental in creating a participatory environment where diverse perspectives are welcomed and valued, ultimately contributing to more inclusive decision-making processes.";
   const { isLoggedIn } = useAuthContext();
 
   return (
@@ -43,7 +43,7 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
       )}
 
       {/* ADVANCED SEARCH */}
-      <div className="max-w-[1000px] mt-8">
+      <div className=" mt-8">
         <AdvancedSearch
           filterButtonOptions={debateFilterButtonOptions}
           setView={setView}
@@ -80,7 +80,6 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
         {/* LOADING */}
         {fetchingDebates && <PageLoader />}
 
-
         {/* CARD VIEW */}
         {view === "card-view" && fetchedDebatesData && (
           <div className="flex justify-start w-full">
@@ -94,12 +93,11 @@ const DebatesHomePage: React.FC<DebatesProps> = () => {
 
         {/* PAGINATION */}
         {fetchedDebatesData && fetchedDebatesData.debates.length === 0 && (
-
-          <h1 className="text-dark text-base md:text-lg bg-primary/10 p-4">
-            No Debates meets the search criteria
+          <h1 className="text-text text-base md:text-lg bg-primary/10 p-4 rounded-xl">
+            No Debates
           </h1>
         )}
-        {fetchedDebatesData && (
+        {fetchedDebatesData && fetchedDebatesData.debates.length !== 0 && (
           <Pagination
             paginationData={fetchedDebatesData?.meta}
             page={page}

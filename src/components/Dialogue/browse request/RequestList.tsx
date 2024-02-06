@@ -1,15 +1,14 @@
 import { RequestListCard } from "@/components/Dialogue";
 
-interface RequestListProp {}
-const RequestList: React.FC<RequestListProp> = () => {
+interface RequestListProp {
+  requests: RequestType[];
+}
+const RequestList: React.FC<RequestListProp> = ({ requests }) => {
   return (
     <div className="space-y-8 my-16">
-      <RequestListCard />
-      <RequestListCard />
-      <RequestListCard />
-      <RequestListCard />
-      <RequestListCard />
-      <RequestListCard />
+      {requests.map((request) => (
+        <RequestListCard key={request.id} request={request} />
+      ))}
     </div>
   );
 };

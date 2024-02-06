@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
@@ -26,9 +27,6 @@ export const useCreateReport = () => {
   );
 };
 
-interface GetAllReportsQueryArgs {
-  filtersString: string;
-}
 export const useGetAllReports = ({ filtersString }: GetAllReportsQueryArgs) => {
   return useQuery(
     ["all-reports", filtersString],
@@ -45,12 +43,19 @@ export const useGetAllReports = ({ filtersString }: GetAllReportsQueryArgs) => {
 
 export const useGetAllActivities = ({
   filtersString,
+  page,
 }: GetAllReportsQueryArgs) => {
   return useQuery(
-    ["all-activities", filtersString],
+    ["all-activities", filtersString, page],
     (): Promise<ActivityResponse> => {
       return axios
-        .get(`${baseUrl}/report/activities${filtersString}`)
+        .get(
+          `${baseUrl}/report/activities${filtersString}${
+            filtersString
+              ? `&page=${page}&perPage=10`
+              : `?page=${page}&perPage=10`
+          }`
+        )
         .then((res) => res.data.data);
     },
     {
@@ -61,7 +66,7 @@ export const useGetAllActivities = ({
 
 export const useGetReportInfo = (id: string) => {
   return useQuery(
-    ["all-activities", id],
+    ["report-info", id],
     (): Promise<ReportData> => {
       return axios
         .get(`${baseUrl}/report/info/${id}`)
@@ -75,9 +80,14 @@ export const useGetReportInfo = (id: string) => {
 
 export const usePostComment = () => {
   const { toast } = useToast();
+  // const [commentResponseId, setCommentResponseId] = useState<
+  //   string | undefined
+  // >();
   const queryClient = useQueryClient();
+  let commentResponseId: undefined | number;
   return useMutation(
-    (values: any) => {
+    (values: PostCommentPayload) => {
+      commentResponseId = values.comment_reference;
       return axios
         .post(`${baseUrl}/report/comment`, values)
         .then((res) => res.data);
@@ -85,6 +95,10 @@ export const usePostComment = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("report-comments");
+        if (commentResponseId) {
+          //@ts-ignore
+          queryClient.invalidateQueries(commentResponseId);
+        }
         toast({
           title: "Success!",
           variant: "success",
@@ -95,16 +109,68 @@ export const usePostComment = () => {
   );
 };
 
-export const useReportGetComments = (id: string) => {
+export const useGetReportComments = ({
+  id,
+  page,
+}: GetReportCommentsQueryArgs) => {
   return useQuery(
-    ["report-comments", id],
+    ["report-comments", id, page],
     (): Promise<ReportCommentsResponse> => {
       return axios
-        .get(`${baseUrl}/report/comments?report=${id}`)
+        .get(`${baseUrl}/report/comments?report=${id}&page=${page}&perPage=2`)
         .then((res) => res.data.data);
     },
     {
       retry: false,
+    }
+  );
+};
+
+export const useGetReportCommentsResonponses = ({
+  id,
+  perPage,
+}: GetReportCommentsResonponsesQueryArgs) => {
+  return useQuery(
+    [id, perPage],
+    (): Promise<ReportCommentsResponse> => {
+      return axios
+        .get(
+          `${baseUrl}/report/comment-responses?comment=${id}&perPage=${perPage}`
+        )
+        .then((res) => res.data.data);
+    },
+    {
+      retry: false,
+      enabled: !!id,
+    }
+  );
+};
+
+export const useDeleteComment = () => {
+  const { toast } = useToast();
+
+  const queryClient = useQueryClient();
+  let commentResponseId: undefined | number;
+  return useMutation(
+    (id: number) => {
+      commentResponseId = id;
+      return axios
+        .delete(`${baseUrl}/report/comment/${id}`)
+        .then((res) => res.data);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("report-comments");
+        if (commentResponseId) {
+          //@ts-ignore
+          queryClient.invalidateQueries(commentResponseId);
+        }
+        toast({
+          title: "Success!",
+          variant: "success",
+          description: `Comment deleted`,
+        });
+      },
     }
   );
 };

@@ -8,7 +8,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
-import { FilterButtons, FormInput, PollCommentCard } from "..";
+import {
+  FilterButtons,
+  FormInput,
+  LoginSigninPrompt,
+  PollCommentCard,
+} from "..";
 import { commentFilterButtonOptions } from "@/utils/Democracy/General";
 import {
   useGetPollComments,
@@ -69,27 +74,7 @@ const PollCommentSection: React.FC<PollCommentSectionProp> = () => {
         </h2>
       </div>
       {!isLoggedIn ? (
-        <div className="flex items-center justify-between border-2 border-primary rounded-md p-2 bg-[#F59E0B]/10">
-          <div className="flex justify-start items-center gap-1">
-            <IconWrapper className="text-primary rounded-full">
-              <Danger size="32" />
-            </IconWrapper>
-            <p className="text-[16px]">
-              You must{" "}
-              <Link to={ROUTES.SIGNIN_ROUTE} className="underline">
-                sign in
-              </Link>
-              or
-              <Link to={ROUTES.SIGNIN_ROUTE} className="underline">
-                sign up
-              </Link>{" "}
-              to leave a comment.
-            </p>
-          </div>
-          <Button className="bg-transparent hover:bg-transparent w-fit h-fit">
-            <CloseCircle size="32" />
-          </Button>
-        </div>
+        <LoginSigninPrompt />
       ) : (
         <div>
           <Form {...form}>
@@ -106,7 +91,7 @@ const PollCommentSection: React.FC<PollCommentSectionProp> = () => {
 
               <Button
                 type="submit"
-                className="w-fit"
+                className="w-full max-w-[200px] h-12"
                 isLoading={isPublishingComment}
                 disabled={isPublishingComment}
               >
@@ -125,6 +110,7 @@ const PollCommentSection: React.FC<PollCommentSectionProp> = () => {
             setFilter(value);
             setPage(1);
           }}
+          defaultFilterButtonValue="newest"
         />
       </div>
 

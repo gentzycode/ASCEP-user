@@ -1,8 +1,10 @@
+import { useGetAuthoritiesAndRequestCount } from "@/api/dialogue/requests";
 import { IconWrapper } from "@/components/custom";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useEffect, useState } from "react";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineEmail } from "react-icons/md";
+import { SearchAuthoritiesForm, SearchedAuthoritiesList } from "..";
+import { useGetAllAuthorities } from "@/api/authorities";
 
 interface HowItWorksCardProp {}
 
@@ -28,6 +30,20 @@ const cardDetails = [
 ];
 
 const HowItWorksCard: React.FC<HowItWorksCardProp> = () => {
+  const { data } = useGetAuthoritiesAndRequestCount();
+
+  const [searchResult, setsearchResult] = useState<AuthorityType[] | undefined>(
+    undefined
+  );
+
+  const { data: allAuthorities, isLoading } = useGetAllAuthorities();
+
+  useEffect(() => {
+    if (allAuthorities && !isLoading) {
+      setsearchResult(allAuthorities.slice(0, 3));
+    }
+  }, [allAuthorities]);
+
   return (
     <>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-8">
@@ -49,16 +65,20 @@ const HowItWorksCard: React.FC<HowItWorksCardProp> = () => {
           Who can I request information from?
         </h2>
         <p className="text-base text-subtitle_text">
-          ACEPS Dialogue covers requests to 46,398 authorities, type in the name
-          of the public authority you'd like information from. By law, they have
-          to respond (<span className="text-primary">why?</span>).
+          ACEPS Dialogue covers requests to {data?.totalAuthorities}{" "}
+          authorities, type in the name of the public authority you'd like
+          information from. By law, they have to respond (
+          <span className="text-primary">why?</span>).
         </p>
-        <div className="flex items-start justify-start gap-4 flex-wrap flex-col min-[500px]:flex-row">
-          <Input
-            placeholder="e.g Ministry of health"
-            className="flex-1 h-11 rounded-full"
+        <div className="flex items-start justify-start gap-4 flex-wrap flex-col">
+          <SearchAuthoritiesForm
+            setsearchResult={setsearchResult}
+            resetButton={false}
+            cancelButton={true}
           />
-          <Button className="h-11 text-base text-dark w-[150px]">Search</Button>
+          {searchResult && searchResult?.length > 0 && (
+            <SearchedAuthoritiesList searchResult={searchResult.slice(0, 2)} />
+          )}
         </div>
       </div>
     </>

@@ -47,9 +47,18 @@ const WardProjects: React.FC<WardProjectsProp> = () => {
         <WardProjectCard />
         <WardProjectCard />
       </div>
-      <h4 className="py-8 text-text text-xl md:text:2xl">Budget investments' proposals located geographically</h4>
-      <div className="w-full max-w-[900px] rounded-3xl bg-dark h-[500px]">
-
+      <h4 className="py-8 text-text text-xl md:text:2xl">
+        Budget investments' proposals located geographically
+      </h4>
+      {/* <div className="w-full max-w-[900px] rounded-3xl bg-dark h-[500px]"> */}
+      
+      {/* MAP */}
+      <div className="w-full max-w-[900px] rounded-3xl bg-dark h-[500px] relative">
+        <img
+          src="/images/democracy/map.png"
+          alt="map"
+          className="absolute top-0 left-0 w-full h-full object-cover"
+        />
       </div>
     </div>
   );

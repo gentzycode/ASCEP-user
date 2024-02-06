@@ -268,6 +268,8 @@ interface CommentType {
     reactionType: "like" | "dislike";
   };
   createdAt: string;
+  comment_response_cache: number;
+  comment_vote_cache: number;
 }
 
 interface CommentResponseDataType {
@@ -458,4 +460,58 @@ interface VotingProposalType {
     document_url: string;
     proposal_id: string;
   }[];
+}
+
+// BUDGET
+interface BudgetDataType {
+  meta: MetaDataType;
+  budgets: BudgetType[];
+}
+
+interface BudgetType {
+  id: string;
+  fiscal_year: string;
+  start_date: string;
+  end_date: string;
+  total_amount: string;
+  status: string;
+  total_phases_cache: number;
+  currentPhase: BudgetCurrentPhaseType[];
+}
+interface BudgetCurrentPhaseType {
+  id: string;
+  phase_name: string;
+  phase_index: number;
+  budget_id: string;
+}
+
+interface CurrentBudgetType {
+  id: string;
+  title: string;
+  fiscal_year: string;
+  description: string;
+  total_amount: string;
+  status: string;
+  updatedAt: string;
+  createdAt: string;
+  start_date: string;
+  end_date: string;
+  total_phases_cache: number;
+  budgetPhases: CurrentBudgetPhaseType[];
+  distinctWards: any[];
+}
+interface CurrentBudgetPhaseType {
+  id: string;
+  budget_id: string;
+  phase_name: string;
+  start_date: string;
+  end_date: string;
+  current_phase: boolean;
+  phase_index: number;
+  phase_module_code: string;
+}
+
+interface BudgetPhaseType {
+  phase_module_name: string;
+  phase_module_code: string;
 }
