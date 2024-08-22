@@ -17,7 +17,7 @@ export default function ContactCard({ card }: ContactCardProps) {
       </p>
 
       <p className="text-[#F9F6FB] text-xs sm:text-base font-light">
-        sales@paybox360.com
+        info@anambrastate.gov.ng
       </p>
     </div>
   );

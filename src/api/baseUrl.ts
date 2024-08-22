@@ -1,4 +1,4 @@
-const baseUrl = "https://ascep.onrender.com";
-export const frontendURL = "http://localhost:5173";
+const baseUrl = "https://app.ascep.anambrastate.gov.ng";
+export const frontendURL = "http://localhost:5175";
 
 export default baseUrl;
