@@ -2,10 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // @ts-ignore
 import * as lodash from "lodash";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import "react-quill/dist/quill.bubble.css";
-import "react-quill/dist/quill.core.css";
+
 import {
   Control,
   DeepMap,
